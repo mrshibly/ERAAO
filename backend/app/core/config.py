@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     )
 
     # ---- General ----
-    APP_NAME: str = "Academy Platform"
+    APP_NAME: str = "Eraao Platform"
     ENVIRONMENT: str = "local"  # local | staging | production
     DEBUG: bool = False
 
@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     # ---- CORS ----
-    ALLOWED_ORIGINS: str = "http://localhost:3000"
+    ALLOWED_ORIGINS: str = "http://localhost:3000,https://eraao.com,https://www.eraao.com"
 
     @property
     def allowed_origins_list(self) -> List[str]:
@@ -62,7 +62,7 @@ class Settings(BaseSettings):
     SSLCOMMERZ_IS_SANDBOX: bool = True
 
     # ---- S3 / Object Storage ----
-    S3_BUCKET_NAME: str = "academy-uploads"
+    S3_BUCKET_NAME: str = "eraao-uploads"
     S3_REGION: str = "us-east-1"
     S3_ENDPOINT_URL: str | None = None  # Set for MinIO / local dev
     AWS_ACCESS_KEY_ID: str = ""
@@ -73,8 +73,8 @@ class Settings(BaseSettings):
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
-    EMAILS_FROM_EMAIL: str = "noreply@academy.dev"
-    EMAILS_FROM_NAME: str = "Academy Platform"
+    EMAILS_FROM_EMAIL: str = "noreply@eraao.com"
+    EMAILS_FROM_NAME: str = "Eraao Platform"
 
     # ---- OAuth ----
     GOOGLE_CLIENT_ID: str = ""

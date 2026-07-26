@@ -1,0 +1,61 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="eraao-outer-grad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="40%" stop-color="#0ea5e9" />
+      <stop offset="75%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+
+    <linearGradient id="eraao-core-grad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7dd3fc" />
+      <stop offset="50%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#2dd4bf" />
+    </linearGradient>
+
+    <radialGradient id="eraao-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(14, 165, 233, 0.45)" />
+      <stop offset="100%" stop-color="rgba(15, 23, 42, 0)" />
+    </radialGradient>
+  </defs>
+
+  {/* Background */}
+  <rect width="48" height="48" rx="10" fill="#0f172a"/>
+
+  {/* Radiant Glow */}
+  <circle cx="24" cy="24" r="22" fill="url(#eraao-glow)" />
+
+  {/* Outer Precision Tech Shield */}
+  <path
+    d="M24 3L42 12V36L24 45L6 36V12L24 3Z"
+    stroke="url(#eraao-outer-grad)"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+    fill="rgba(15, 23, 42, 0.85)"
+  />
+
+  {/* Inner Cyber Hex Geometry */}
+  <path
+    d="M24 8L37 15.5V32.5L24 40L11 32.5V15.5L24 8Z"
+    stroke="rgba(56, 189, 248, 0.35)"
+    stroke-width="1.2"
+    stroke-dasharray="3 2"
+  />
+
+  {/* Futuristic 'E' Neural Circuit Core */}
+  <path
+    d="M16 15H32M16 15V33M16 24H28M16 33H32"
+    stroke="url(#eraao-core-grad)"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  {/* Quantum Node Spheres */}
+  <circle cx="32" cy="15" r="2.5" fill="#38bdf8" />
+  <circle cx="28" cy="24" r="2.5" fill="#c084fc" />
+  <circle cx="32" cy="33" r="2.5" fill="#2dd4bf" />
+
+  {/* Center Power Signal Core */}
+  <circle cx="16" cy="24" r="2" fill="#ffffff" />
+</svg>

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { Shield, PhoneCall, User, LogOut, Layout, Menu, X } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -46,10 +47,7 @@ export default function Navbar() {
       <div className="container nav" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "4.5rem", position: "relative" }}>
         
         {/* Brand Logo */}
-        <Link href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, fontSize: "1.25rem", color: "var(--text-primary)" }}>
-          <Shield className="text-accent" style={{ color: "var(--accent-blue)" }} size={28} />
-          <span>Academy<span style={{ color: "var(--accent-blue)" }}>.</span></span>
-        </Link>
+        <Logo size={30} />
         
         {/* Mobile Toggle Button */}
         <button 

@@ -67,7 +67,10 @@ class PaymentService:
         await self.db.flush()
 
         settings = get_settings()
-        use_sslcommerz = (order_currency == "BDT") or (settings.STRIPE_SECRET_KEY == "sk_test_xxx" or not settings.STRIPE_SECRET_KEY)
+        use_sslcommerz = (
+            (order_currency == "BDT")
+            or (settings.STRIPE_SECRET_KEY in ("sk_test_xxx", "sk_test_mock") or not settings.STRIPE_SECRET_KEY)
+        )
 
         if use_sslcommerz:
             import httpx
@@ -89,9 +92,9 @@ class PaymentService:
                 "total_amount": str(total),
                 "currency": order_currency,
                 "tran_id": str(order.id),
-                "success_url": f"{settings.ALLOWED_ORIGINS}/api/v1/payments/sslcommerz/success?order_id={order.id}",
-                "fail_url": f"{settings.ALLOWED_ORIGINS}/api/v1/payments/sslcommerz/fail?order_id={order.id}",
-                "cancel_url": f"{settings.ALLOWED_ORIGINS}/api/v1/payments/sslcommerz/cancel?order_id={order.id}",
+                "success_url": f"{settings.allowed_origins_list[0]}/api/v1/payments/sslcommerz/success?order_id={order.id}",
+                "fail_url": f"{settings.allowed_origins_list[0]}/api/v1/payments/sslcommerz/fail?order_id={order.id}",
+                "cancel_url": f"{settings.allowed_origins_list[0]}/api/v1/payments/sslcommerz/cancel?order_id={order.id}",
                 "cus_name": cus_name,
                 "cus_email": cus_email,
                 "cus_phone": "01700000000",

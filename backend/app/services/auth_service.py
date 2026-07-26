@@ -55,11 +55,12 @@ class AuthService:
         # Trigger welcome/verification email background task
         try:
             from app.workers.tasks.email_tasks import send_email_task
-            verification_url = f"{get_settings().ALLOWED_ORIGINS}/verify-email?token={verification_token}"
+            base_url = get_settings().allowed_origins_list[0]
+            verification_url = f"{base_url}/verify-email?token={verification_token}"
             send_email_task.delay(
                 to_email=user.email,
-                subject="Verify Your Email — Academy",
-                body_html=f"<h3>Welcome to Academy!</h3><p>Please click the link below to verify your email address:</p><p><a href='{verification_url}'>Verify Email</a></p>"
+                subject="Verify Your Email — Eraao",
+                body_html=f"<h3>Welcome to Eraao!</h3><p>Please click the link below to verify your email address:</p><p><a href='{verification_url}'>Verify Email</a></p>"
             )
         except Exception:
             import structlog

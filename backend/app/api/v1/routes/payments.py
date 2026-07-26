@@ -58,7 +58,8 @@ async def sslcommerz_success(
             await db.commit()
             
     settings = get_settings()
-    return RedirectResponse(url=f"{settings.ALLOWED_ORIGINS}/dashboard/student?payment=success", status_code=303)
+    base_url = settings.allowed_origins_list[0]
+    return RedirectResponse(url=f"{base_url}/dashboard/student?payment=success", status_code=303)
 
 @router.post("/sslcommerz/fail")
 async def sslcommerz_fail(
@@ -67,7 +68,8 @@ async def sslcommerz_fail(
 ):
     """Callback for failed SSLCommerz transactions."""
     settings = get_settings()
-    return RedirectResponse(url=f"{settings.ALLOWED_ORIGINS}/academy?payment=failed", status_code=303)
+    base_url = settings.allowed_origins_list[0]
+    return RedirectResponse(url=f"{base_url}/academy?payment=failed", status_code=303)
 
 @router.post("/sslcommerz/cancel")
 async def sslcommerz_cancel(
@@ -76,4 +78,5 @@ async def sslcommerz_cancel(
 ):
     """Callback for cancelled SSLCommerz transactions."""
     settings = get_settings()
-    return RedirectResponse(url=f"{settings.ALLOWED_ORIGINS}/academy?payment=cancelled", status_code=303)
+    base_url = settings.allowed_origins_list[0]
+    return RedirectResponse(url=f"{base_url}/academy?payment=cancelled", status_code=303)

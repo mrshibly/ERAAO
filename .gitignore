@@ -22,7 +22,9 @@ env/
 
 # Environment
 .env
-*.env.local
+.env.*
+!.env.example
+!.env.*.example
 
 # OS
 .DS_Store

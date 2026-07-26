@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { Menu, Shield } from "lucide-react";
 import DashboardSidebar from "./Sidebar";
 
+import Logo from "@/components/Logo";
+
 export default function DashboardLayout({
   children,
 }: {
@@ -81,10 +83,7 @@ export default function DashboardLayout({
     <div className="dashboard-container">
       {/* Mobile Top Header */}
       <div className="mobile-dashboard-header">
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: 800, fontSize: "1.2rem", color: "var(--text-primary)" }}>
-          <Shield style={{ color: "var(--accent-blue)" }} size={24} />
-          <span>Academy<span style={{ color: "var(--accent-blue)" }}>.</span></span>
-        </div>
+        <Logo size={26} />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-primary)" }}

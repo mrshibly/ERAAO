@@ -26,10 +26,20 @@ class BookingRepository:
             select(TimeSlot)
             .where(TimeSlot.id == slot_id, TimeSlot.is_available == True)  # noqa: E712
         )
-        # SQLite does not support SELECT ... FOR UPDATE; skip it for SQLite
-        dialect_name = self.db.bind.dialect.name if self.db.bind else ""
-        if dialect_name != "sqlite":
-            stmt = stmt.with_for_update()
+        is_sqlite = False
+        try:
+            bind = getattr(self.db, "bind", None)
+            if bind and hasattr(bind, "dialect") and bind.dialect.name == "sqlite":
+                is_sqlite = True
+        except Exception:
+            pass
+
+        if not is_sqlite:
+            try:
+                stmt = stmt.with_for_update()
+            except Exception:
+                pass
+
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 
