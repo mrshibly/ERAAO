@@ -13,7 +13,7 @@ interface LogoProps {
 
 export default function Logo({
   size = 36,
-  withText = true,
+  withText = false,
   withSlogan = false,
   textColor = "var(--text-primary)",
   href = "/",
