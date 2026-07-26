@@ -6,6 +6,7 @@ import Link from "next/link";
 interface LogoProps {
   size?: number;
   withText?: boolean;
+  withSlogan?: boolean;
   textColor?: string;
   href?: string | null;
 }
@@ -13,6 +14,7 @@ interface LogoProps {
 export default function Logo({
   size = 36,
   withText = true,
+  withSlogan = false,
   textColor = "var(--text-primary)",
   href = "/",
 }: LogoProps) {
@@ -88,18 +90,34 @@ export default function Logo({
     <div style={{ display: "inline-flex", alignItems: "center", gap: `${size * 0.3}px`, textDecoration: "none" }}>
       {logoMark}
       {withText && (
-        <span
-          style={{
-            fontWeight: 900,
-            fontSize: `${size * 0.046}rem`,
-            letterSpacing: "-0.035em",
-            color: textColor,
-            lineHeight: 1,
-            textTransform: "uppercase"
-          }}
-        >
-          ERAAO<span style={{ color: "#0ea5e9" }}>.</span>
-        </span>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <span
+            style={{
+              fontWeight: 900,
+              fontSize: `${size * 0.046}rem`,
+              letterSpacing: "-0.035em",
+              color: textColor,
+              lineHeight: 1,
+              textTransform: "uppercase"
+            }}
+          >
+            ERAAO<span style={{ color: "#0ea5e9" }}>.</span>
+          </span>
+          {withSlogan && (
+            <span
+              style={{
+                fontSize: `${size * 0.019}rem`,
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                color: "#38bdf8",
+                textTransform: "none",
+                marginTop: "2px"
+              }}
+            >
+              Lighting the future.
+            </span>
+          )}
+        </div>
       )}
     </div>
   );

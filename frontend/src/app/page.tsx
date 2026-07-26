@@ -52,17 +52,19 @@ export default function Home() {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.5rem",
-              background: "rgba(14, 165, 233, 0.15)",
-              border: "1px solid rgba(14, 165, 233, 0.3)",
+              background: "linear-gradient(90deg, rgba(14, 165, 233, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%)",
+              border: "1px solid rgba(56, 189, 248, 0.4)",
               color: "#7dd3fc",
-              padding: "0.4rem 1rem",
+              padding: "0.45rem 1.25rem",
               borderRadius: "9999px",
               fontSize: "0.85rem",
-              fontWeight: 600,
-              marginBottom: "2rem"
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              marginBottom: "2rem",
+              boxShadow: "0 0 20px rgba(56, 189, 248, 0.25)"
             }}>
-              <Zap size={14} />
-              Trusted by 50+ Enterprise Clients
+              <Zap size={15} style={{ color: "#38bdf8", filter: "drop-shadow(0 0 6px #38bdf8)" }} />
+              <span>ERAAO &mdash; Lighting the Future</span>
             </span>
 
             <h1 style={{

@@ -23,10 +23,10 @@ import JsonLd from "@/components/JsonLd";
 export const metadata: Metadata = {
   metadataBase: new URL("https://eraao.com"),
   title: {
-    default: "Eraao — AI Dev & Cybersecurity Platform",
-    template: "%s | Eraao"
+    default: "Eraao — Lighting the future.",
+    template: "%s | Eraao — Lighting the future."
   },
-  description: "Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy in Bangladesh.",
+  description: "Eraao — Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy in Bangladesh.",
   keywords: [
     "Cybersecurity Bangladesh",
     "AI Development Dhaka",
@@ -34,7 +34,8 @@ export const metadata: Metadata = {
     "Offensive Security Bootcamps",
     "LLM Architecture",
     "Ethical Hacking Course",
-    "Eraao"
+    "Eraao",
+    "Lighting the future"
   ],
   icons: {
     icon: "/icon.svg",
@@ -42,8 +43,8 @@ export const metadata: Metadata = {
     apple: "/icon.svg"
   },
   openGraph: {
-    title: "Eraao — AI Dev & Cybersecurity Platform",
-    description: "Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy.",
+    title: "Eraao — Lighting the future.",
+    description: "Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy.",
     url: "https://eraao.com",
     siteName: "Eraao",
     locale: "en_US",
@@ -51,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eraao — AI Dev & Cybersecurity Platform",
-    description: "Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy."
+    title: "Eraao — Lighting the future.",
+    description: "Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy."
   },
   verification: {
     google: "0KgnlJEXvcjNUrVF4Q4ni8_sfxzf0Hzxgu1ew5H1FNw"
@@ -75,8 +76,18 @@ export default function RootLayout({
               <footer style={{ backgroundColor: "#0f172a", color: "#f8fafc", padding: "4rem 0 2rem 0" }}>
                 <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "3rem" }}>
                   <div>
-                    <div className="logo" style={{ marginBottom: "1rem" }}>
+                    <div className="logo" style={{ marginBottom: "0.75rem" }}>
                       <Logo size={28} textColor="#ffffff" />
+                    </div>
+                    <div style={{
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      color: "#38bdf8",
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      marginBottom: "0.75rem"
+                    }}>
+                      Lighting the future.
                     </div>
                     <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
                       Leading security and artificial intelligence service provider & practitioner development training institute.
