@@ -52,6 +52,11 @@ class Settings(BaseSettings):
         """Parse comma-separated origins into a list."""
         return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",")]
 
+    # ---- OpenRouter AI ----
+    OPENROUTER_API_KEY: str = ""
+    OPENROUTER_MODEL: str = "meta-llama/llama-3.3-70b-instruct:free"
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+
     # ---- Stripe ----
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""

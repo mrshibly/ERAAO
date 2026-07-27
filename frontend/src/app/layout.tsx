@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 
 import Logo from "@/components/Logo";
 import JsonLd from "@/components/JsonLd";
+import Chatbot from "@/components/Chatbot";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://eraao.com"),
@@ -131,6 +132,7 @@ export default function RootLayout({
             }
           >
             {children}
+            <Chatbot />
           </ConditionalWrapper>
         </AuthProvider>
       </body>

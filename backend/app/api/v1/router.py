@@ -107,3 +107,8 @@ api_v1_router.include_router(student_dashboard_router, prefix="/dashboard/studen
 api_v1_router.include_router(instructor_dashboard_router, prefix="/dashboard/instructor", tags=["Dashboard - Instructor"])
 api_v1_router.include_router(client_dashboard_router, prefix="/dashboard/client", tags=["Dashboard - Client"])
 api_v1_router.include_router(admin_dashboard_router, prefix="/dashboard/admin", tags=["Dashboard - Admin"])
+
+# ---- AI Chatbot ----
+from app.api.v1.routes.chat import router as chat_router
+
+api_v1_router.include_router(chat_router, prefix="/chat", tags=["AI Chatbot"])
