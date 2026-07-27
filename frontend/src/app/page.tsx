@@ -4,209 +4,296 @@ import { ArrowRight, ShieldCheck, BrainCircuit, Cpu, Users, Award, BookOpen, Pho
 export default function Home() {
   return (
     <div>
-      {/* Hero Section — Full visual impact with Unsplash image */}
+      {/* ═══════════════════════════════════════════════════════════════
+          HERO SECTION — Premium Animated Dark Mode
+          CSS-only animated grid mesh + gradient orbs, centered layout
+       ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         position: "relative",
-        minHeight: "92vh",
+        minHeight: "100vh",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
         overflow: "hidden",
-        background: "#0f172a"
+        background: "#060918"
       }}>
-        {/* Background Image */}
+        {/* Layer 1: Animated Grid Mesh */}
         <div style={{
           position: "absolute",
           inset: 0,
+          backgroundImage: `
+            repeating-linear-gradient(0deg, rgba(56,189,248,0.04) 0px, transparent 1px, transparent 80px),
+            repeating-linear-gradient(90deg, rgba(56,189,248,0.04) 0px, transparent 1px, transparent 80px)
+          `,
+          animation: "gridPulse 8s ease-in-out infinite",
           zIndex: 0
-        }}>
-          <img
-            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80&auto=format&fit=crop"
-            alt="Cybersecurity and AI technology background"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: 0.35
-            }}
-          />
-          {/* Gradient overlay for readability */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(135deg, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.6) 50%, rgba(14,165,233,0.15) 100%)"
-          }} />
-        </div>
+        }} />
 
-        <div className="container responsive-grid-split" style={{
+        {/* Layer 2: Drifting Gradient Orb — Cyan */}
+        <div style={{
+          position: "absolute",
+          top: "-10%",
+          right: "-5%",
+          width: "600px",
+          height: "600px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, rgba(14,165,233,0.05) 40%, transparent 70%)",
+          animation: "drift 20s ease-in-out infinite",
+          zIndex: 0,
+          pointerEvents: "none"
+        }} />
+
+        {/* Layer 3: Drifting Gradient Orb — Violet */}
+        <div style={{
+          position: "absolute",
+          bottom: "-15%",
+          left: "-8%",
+          width: "500px",
+          height: "500px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0.04) 40%, transparent 70%)",
+          animation: "driftReverse 25s ease-in-out infinite",
+          zIndex: 0,
+          pointerEvents: "none"
+        }} />
+
+        {/* Layer 4: Subtle Teal Accent Orb */}
+        <div style={{
+          position: "absolute",
+          top: "60%",
+          right: "20%",
+          width: "300px",
+          height: "300px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(13,148,136,0.1) 0%, transparent 60%)",
+          animation: "drift 18s ease-in-out infinite",
+          animationDelay: "-5s",
+          zIndex: 0,
+          pointerEvents: "none"
+        }} />
+
+        {/* Hero Content */}
+        <div className="container" style={{
           position: "relative",
           zIndex: 1,
-          display: "grid",
-          gridTemplateColumns: "1.2fr 1fr",
-          gap: "4rem",
-          alignItems: "center",
-          padding: "4rem 1.5rem"
+          textAlign: "center",
+          padding: "6rem 1.5rem 3rem",
+          maxWidth: "860px"
         }}>
-          {/* Left — Text Content */}
-          <div>
+          {/* Badge — Slogan */}
+          <div style={{
+            animation: "heroFadeIn 0.8s ease-out forwards",
+            opacity: 0,
+            animationDelay: "0.1s",
+            marginBottom: "2rem"
+          }}>
             <span style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "0.5rem",
-              background: "linear-gradient(90deg, rgba(14, 165, 233, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%)",
-              border: "1px solid rgba(56, 189, 248, 0.4)",
+              background: "linear-gradient(90deg, rgba(14,165,233,0.15) 0%, rgba(139,92,246,0.15) 100%)",
+              border: "1px solid rgba(56,189,248,0.25)",
               color: "#7dd3fc",
-              padding: "0.45rem 1.25rem",
+              padding: "0.5rem 1.25rem",
               borderRadius: "9999px",
               fontSize: "0.85rem",
               fontWeight: 700,
               letterSpacing: "0.04em",
-              marginBottom: "2rem",
-              boxShadow: "0 0 20px rgba(56, 189, 248, 0.25)"
+              animation: "glowPulse 4s ease-in-out infinite"
             }}>
               <Zap size={15} style={{ color: "#38bdf8", filter: "drop-shadow(0 0 6px #38bdf8)" }} />
               <span>ERAAO &mdash; Lighting the Future</span>
             </span>
-
-            <h1 style={{
-              fontSize: "3.75rem",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              color: "#ffffff",
-              marginBottom: "1.5rem"
-            }}>
-              The Convergence of
-              <span style={{
-                display: "block",
-                background: "linear-gradient(135deg, #0ea5e9, #8b5cf6, #0d9488)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text"
-              }}>
-                Applied AI & Offensive Security
-              </span>
-            </h1>
-
-            <p style={{
-              fontSize: "1.2rem",
-              color: "#cbd5e1",
-              lineHeight: 1.6,
-              marginBottom: "2.5rem",
-              maxWidth: "32rem"
-            }}>
-              Enterprise AI architectures, advanced penetration testing services, and professional-grade practitioner bootcamps to future-proof your organization.
-            </p>
-
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-              <Link href="/academy" className="btn btn-accent" style={{
-                padding: "0.85rem 2rem",
-                fontSize: "1rem",
-                boxShadow: "0 0 30px rgba(14, 165, 233, 0.3)"
-              }}>
-                <span>Explore Academy</span>
-                <ArrowRight size={18} />
-              </Link>
-              <Link href="/book" className="btn" style={{
-                padding: "0.85rem 2rem",
-                fontSize: "1rem",
-                background: "rgba(255,255,255,0.1)",
-                backdropFilter: "blur(8px)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "white"
-              }}>
-                <Phone size={18} />
-                <span>Book Consultation</span>
-              </Link>
-            </div>
-
-            {/* Trust indicators */}
-            <div style={{
-              display: "flex",
-              gap: "2rem",
-              marginTop: "3rem",
-              paddingTop: "2rem",
-              borderTop: "1px solid rgba(255,255,255,0.1)"
-            }}>
-              <div>
-                <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#0ea5e9" }}>98%</div>
-                <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Completion Rate</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#8b5cf6" }}>10k+</div>
-                <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Graduates</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#0d9488" }}>24/7</div>
-                <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>SOC Monitoring</div>
-              </div>
-            </div>
           </div>
 
-          {/* Right — Floating Image Cards */}
-          <div style={{ position: "relative", height: "500px" }}>
-            {/* Main card */}
-            <div style={{
-              position: "absolute",
-              top: "0",
-              right: "0",
-              width: "380px",
-              height: "280px",
-              borderRadius: "16px",
-              overflow: "hidden",
-              boxShadow: "0 25px 60px rgba(0,0,0,0.4)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              animation: "float 6s ease-in-out infinite"
+          {/* Headline */}
+          <h1 style={{
+            fontSize: "4.25rem",
+            fontWeight: 900,
+            letterSpacing: "-0.04em",
+            lineHeight: 1.05,
+            color: "#f1f5f9",
+            marginBottom: "1.75rem",
+            animation: "heroFadeIn 0.8s ease-out forwards",
+            opacity: 0,
+            animationDelay: "0.3s"
+          }}>
+            The Convergence of{" "}
+            <span style={{
+              background: "linear-gradient(135deg, #38bdf8 0%, #818cf8 40%, #c084fc 70%, #2dd4bf 100%)",
+              backgroundSize: "200% auto",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              animation: "shimmer 6s linear infinite"
             }}>
-              <img
-                src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&q=80&auto=format&fit=crop"
-                alt="Software development and coding"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
+              Applied AI & Offensive Security
+            </span>
+          </h1>
 
-            {/* Secondary card */}
-            <div style={{
-              position: "absolute",
-              bottom: "40px",
-              left: "0",
-              width: "320px",
-              height: "220px",
-              borderRadius: "16px",
-              overflow: "hidden",
-              boxShadow: "0 25px 60px rgba(0,0,0,0.4)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              animation: "float 6s ease-in-out infinite",
-              animationDelay: "-3s"
-            }}>
-              <img
-                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80&auto=format&fit=crop"
-                alt="Cybersecurity hacking terminal"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
+          {/* Subheadline */}
+          <p style={{
+            fontSize: "1.2rem",
+            color: "#94a3b8",
+            lineHeight: 1.7,
+            maxWidth: "38rem",
+            margin: "0 auto 2.5rem auto",
+            animation: "heroFadeIn 0.8s ease-out forwards",
+            opacity: 0,
+            animationDelay: "0.5s"
+          }}>
+            Enterprise AI architectures, advanced penetration testing, and
+            professional-grade practitioner bootcamps to future-proof
+            your organization.
+          </p>
 
-            {/* Accent floating badge */}
-            <div style={{
-              position: "absolute",
-              top: "220px",
-              right: "20px",
-              background: "rgba(14,165,233,0.15)",
-              backdropFilter: "blur(16px)",
-              border: "1px solid rgba(14,165,233,0.3)",
+          {/* CTA Buttons */}
+          <div style={{
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            animation: "heroFadeIn 0.8s ease-out forwards",
+            opacity: 0,
+            animationDelay: "0.7s"
+          }}>
+            <Link href="/academy" className="btn btn-accent" style={{
+              padding: "0.9rem 2.25rem",
+              fontSize: "1rem",
+              fontWeight: 700,
               borderRadius: "12px",
-              padding: "1rem 1.25rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              animation: "float 6s ease-in-out infinite",
-              animationDelay: "-1.5s"
+              boxShadow: "0 0 30px rgba(14,165,233,0.35), 0 4px 15px rgba(14,165,233,0.2)"
             }}>
-              <ShieldCheck size={24} style={{ color: "#0ea5e9" }} />
-              <div>
-                <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "white" }}>SOC-2 Ready</div>
-                <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Enterprise Certified</div>
+              <span>Explore Academy</span>
+              <ArrowRight size={18} />
+            </Link>
+            <Link href="/book" className="btn" style={{
+              padding: "0.9rem 2.25rem",
+              fontSize: "1rem",
+              fontWeight: 600,
+              borderRadius: "12px",
+              background: "rgba(255,255,255,0.06)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              color: "#e2e8f0"
+            }}>
+              <Phone size={18} />
+              <span>Book Consultation</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Bento Feature Cards */}
+        <div className="container" style={{
+          position: "relative",
+          zIndex: 1,
+          padding: "0 1.5rem 2rem",
+          maxWidth: "960px",
+          animation: "heroFadeIn 0.8s ease-out forwards",
+          opacity: 0,
+          animationDelay: "0.9s"
+        }}>
+          <div className="responsive-grid-3" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1rem"
+          }}>
+            {[
+              {
+                icon: <ShieldCheck size={22} style={{ color: "#2dd4bf" }} />,
+                title: "Offensive Security",
+                desc: "Red Team Ops & Pentesting",
+                accent: "rgba(45,212,191,0.12)",
+                border: "rgba(45,212,191,0.2)"
+              },
+              {
+                icon: <BrainCircuit size={22} style={{ color: "#818cf8" }} />,
+                title: "AI Engineering",
+                desc: "LLM Agents & MLOps",
+                accent: "rgba(129,140,248,0.12)",
+                border: "rgba(129,140,248,0.2)"
+              },
+              {
+                icon: <Award size={22} style={{ color: "#38bdf8" }} />,
+                title: "Academy",
+                desc: "Certified Practitioner Training",
+                accent: "rgba(56,189,248,0.12)",
+                border: "rgba(56,189,248,0.2)"
+              }
+            ].map((card, i) => (
+              <div key={i} className="hover-lift" style={{
+                background: card.accent,
+                backdropFilter: "blur(16px)",
+                border: `1px solid ${card.border}`,
+                borderRadius: "14px",
+                padding: "1.5rem",
+                transition: "all 0.3s ease",
+                cursor: "default"
+              }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  marginBottom: "0.5rem"
+                }}>
+                  {card.icon}
+                  <span style={{
+                    fontWeight: 700,
+                    fontSize: "0.95rem",
+                    color: "#f1f5f9"
+                  }}>{card.title}</span>
+                </div>
+                <p style={{
+                  fontSize: "0.85rem",
+                  color: "#64748b",
+                  lineHeight: 1.5
+                }}>{card.desc}</p>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Trust Metrics Bar */}
+        <div style={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          background: "rgba(255,255,255,0.02)",
+          backdropFilter: "blur(8px)",
+          animation: "heroFadeIn 0.8s ease-out forwards",
+          opacity: 0,
+          animationDelay: "1.1s"
+        }}>
+          <div className="container" style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: "3rem",
+            padding: "1.75rem 1.5rem"
+          }}>
+            {[
+              { value: "98%", label: "Completion Rate", color: "#38bdf8" },
+              { value: "10k+", label: "Graduates", color: "#818cf8" },
+              { value: "50+", label: "Enterprise Clients", color: "#2dd4bf" },
+              { value: "24/7", label: "SOC Monitoring", color: "#f472b6" }
+            ].map((stat, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <div style={{
+                  fontSize: "1.75rem",
+                  fontWeight: 800,
+                  color: stat.color,
+                  letterSpacing: "-0.02em"
+                }}>{stat.value}</div>
+                <div style={{
+                  fontSize: "0.78rem",
+                  color: "#64748b",
+                  fontWeight: 500,
+                  marginTop: "0.15rem"
+                }}>{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
