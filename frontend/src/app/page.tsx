@@ -5,36 +5,35 @@ export default function Home() {
   return (
     <div>
       {/* ═══════════════════════════════════════════════════════════════
-          HERO SECTION — Premium Light Mode (Unsplash + Glassmorphism)
-          Matches the website's clean white/slate light aesthetic
+          HERO SECTION — 60-30-10 Light Mode Ultra-Premium
+          60% Light Canvas | 30% Dark Slate Structure | 10% Cyan/Violet Accent
        ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         position: "relative",
-        minHeight: "92vh",
+        minHeight: "90vh",
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
         background: "linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)",
-        borderBottom: "1px solid var(--border-color)"
+        borderBottom: "1px solid #e2e8f0"
       }}>
-        {/* Ambient Subtle Background Pattern */}
+        {/* 60% Dominant Canvas — Soft Ambient Radial Glow & Grid Pattern */}
         <div style={{
           position: "absolute",
           inset: 0,
           backgroundImage: `
-            radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.07) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.07) 0%, transparent 40%),
-            radial-gradient(circle at 50% 50%, rgba(13, 148, 136, 0.04) 0%, transparent 60%)
+            radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
+            radial-gradient(circle at 85% 75%, rgba(124, 58, 237, 0.08) 0%, transparent 45%)
           `,
           zIndex: 0
         }} />
 
-        {/* Subtle CSS Dot Grid */}
+        {/* Lightweight Fast-Loading Dot Matrix Grid */}
         <div style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px)`,
-          backgroundSize: "24px 24px",
+          backgroundImage: "radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
           zIndex: 0
         }} />
 
@@ -47,29 +46,38 @@ export default function Home() {
           alignItems: "center",
           padding: "4rem 1.5rem"
         }}>
-          {/* Left Column — Content & CTAs */}
+          {/* Left Column — 30% Text Structure & 10% Accent Buttons */}
           <div>
-            {/* Slogan Badge */}
-            <span style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              background: "rgba(14, 165, 233, 0.08)",
-              border: "1px solid rgba(14, 165, 233, 0.25)",
-              color: "#0284c7",
-              padding: "0.45rem 1.25rem",
-              borderRadius: "9999px",
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              letterSpacing: "0.03em",
-              marginBottom: "1.75rem",
-              boxShadow: "0 2px 10px rgba(14, 165, 233, 0.1)"
-            }}>
-              <Zap size={15} style={{ color: "#0ea5e9" }} />
-              <span>ERAAO &mdash; Lighting the Future</span>
-            </span>
+            {/* Live Status + Slogan Badge */}
+            <div style={{ marginBottom: "1.5rem" }}>
+              <span style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.6rem",
+                background: "rgba(255, 255, 255, 0.9)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(14, 165, 233, 0.3)",
+                color: "#0f172a",
+                padding: "0.45rem 1.1rem",
+                borderRadius: "9999px",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                boxShadow: "0 4px 15px rgba(14, 165, 233, 0.12)"
+              }}>
+                <span style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: "#10b981",
+                  boxShadow: "0 0 10px #10b981"
+                }} />
+                <span style={{ color: "#0ea5e9", fontWeight: 800 }}>ERAAO</span>
+                <span style={{ color: "#cbd5e1" }}>|</span>
+                <span style={{ color: "#475569" }}>Lighting the Future</span>
+              </span>
+            </div>
 
-            {/* Main Headline */}
+            {/* 30% Secondary — High Contrast Main Title */}
             <h1 style={{
               fontSize: "3.75rem",
               fontWeight: 900,
@@ -81,7 +89,7 @@ export default function Home() {
               The Convergence of
               <span style={{
                 display: "block",
-                background: "linear-gradient(135deg, #0284c7 0%, #7c3aed 50%, #0d9488 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #7c3aed 60%, #0d9488 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text"
@@ -90,9 +98,9 @@ export default function Home() {
               </span>
             </h1>
 
-            {/* Description */}
+            {/* Subheadline Paragraph */}
             <p style={{
-              fontSize: "1.18rem",
+              fontSize: "1.15rem",
               color: "#475569",
               lineHeight: 1.65,
               marginBottom: "2.5rem",
@@ -101,14 +109,16 @@ export default function Home() {
               Enterprise AI architectures, advanced penetration testing services, and professional-grade practitioner bootcamps to future-proof your organization.
             </p>
 
-            {/* CTA Buttons */}
+            {/* 10% Accent CTAs */}
             <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <Link href="/academy" className="btn btn-accent" style={{
                 padding: "0.9rem 2.25rem",
                 fontSize: "1rem",
-                fontWeight: 600,
+                fontWeight: 700,
                 borderRadius: "12px",
-                boxShadow: "0 10px 25px rgba(14, 165, 233, 0.3)"
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)",
+                boxShadow: "0 10px 25px rgba(14, 165, 233, 0.35)",
+                color: "white"
               }}>
                 <span>Explore Academy</span>
                 <ArrowRight size={18} />
@@ -119,14 +129,16 @@ export default function Home() {
                 fontWeight: 600,
                 borderRadius: "12px",
                 background: "#ffffff",
-                borderColor: "#cbd5e1"
+                borderColor: "#cbd5e1",
+                color: "#0f172a",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
               }}>
                 <Phone size={18} />
                 <span>Book Consultation</span>
               </Link>
             </div>
 
-            {/* Metrics Trust Row */}
+            {/* 30% Structural Trust Bar */}
             <div style={{
               display: "flex",
               gap: "2.5rem",
@@ -149,121 +161,123 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column — Unsplash Image Showcase Cards */}
+          {/* Right Column — 30% Secondary Dark Framing & 10% Accent Floating Cards */}
           <div style={{ position: "relative", minHeight: "480px" }}>
-            {/* Primary Card (Cyber Security Code Terminal) */}
+            {/* Primary Frame (Cyber Security Terminal — Fast Load WebP) */}
             <div style={{
               position: "absolute",
               top: "0",
               right: "0",
               width: "88%",
-              height: "300px",
+              height: "310px",
               borderRadius: "20px",
               overflow: "hidden",
-              boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.18)",
-              border: "1px solid rgba(226, 232, 240, 0.8)",
+              boxShadow: "0 25px 60px -15px rgba(15, 23, 42, 0.25)",
+              border: "1px solid #e2e8f0",
               animation: "float 6s ease-in-out infinite"
             }}>
               <img
-                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&q=80&auto=format&fit=crop"
-                alt="Cybersecurity defense operations"
+                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=75"
+                alt="Cybersecurity terminal interface"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                loading="eager"
               />
               <div style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%)"
+                background: "linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.5) 100%)"
               }} />
             </div>
 
-            {/* Overlapping Secondary Card (AI Neural Core Visualization) */}
+            {/* Secondary Frame (AI Neural Core — Fast Load WebP) */}
             <div style={{
               position: "absolute",
               bottom: "20px",
               left: "0",
               width: "68%",
-              height: "230px",
+              height: "240px",
               borderRadius: "18px",
               overflow: "hidden",
-              boxShadow: "0 20px 40px -10px rgba(15, 23, 42, 0.22)",
-              border: "3px solid #ffffff",
+              boxShadow: "0 20px 45px -10px rgba(15, 23, 42, 0.28)",
+              border: "4px solid #ffffff",
               animation: "float 6s ease-in-out infinite",
               animationDelay: "-3s"
             }}>
               <img
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=700&q=80&auto=format&fit=crop"
-                alt="AI neural network engineering"
+                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format&fit=crop&q=75"
+                alt="AI neural network architecture"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                loading="eager"
               />
             </div>
 
             {/* Floating Glassmorphic Badge 1: SOC-2 Ready */}
             <div style={{
               position: "absolute",
-              top: "220px",
-              right: "-10px",
-              background: "rgba(255, 255, 255, 0.92)",
+              top: "210px",
+              right: "-15px",
+              background: "rgba(255, 255, 255, 0.95)",
               backdropFilter: "blur(16px)",
               border: "1px solid rgba(226, 232, 240, 0.9)",
-              borderRadius: "14px",
+              borderRadius: "16px",
               padding: "1rem 1.25rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.75rem",
-              boxShadow: "0 15px 35px rgba(0, 0, 0, 0.1)",
+              gap: "0.85rem",
+              boxShadow: "0 15px 35px rgba(15, 23, 42, 0.12)",
               animation: "float 6s ease-in-out infinite",
               animationDelay: "-1.5s",
               zIndex: 10
             }}>
               <div style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "10px",
-                background: "rgba(14, 165, 233, 0.1)",
+                width: "42px",
+                height: "42px",
+                borderRadius: "12px",
+                background: "rgba(14, 165, 233, 0.12)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center"
               }}>
-                <ShieldCheck size={22} style={{ color: "#0ea5e9" }} />
+                <ShieldCheck size={24} style={{ color: "#0ea5e9" }} />
               </div>
               <div>
                 <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "#0f172a" }}>SOC-2 & ISO Ready</div>
-                <div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>Enterprise Defense</div>
+                <div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 600 }}>Enterprise Defense</div>
               </div>
             </div>
 
-            {/* Floating Glassmorphic Badge 2: AI Multi-Agent */}
+            {/* Floating Glassmorphic Badge 2: LLM Multi-Agent */}
             <div style={{
               position: "absolute",
               bottom: "-10px",
-              right: "40px",
-              background: "rgba(255, 255, 255, 0.92)",
+              right: "30px",
+              background: "rgba(255, 255, 255, 0.95)",
               backdropFilter: "blur(16px)",
               border: "1px solid rgba(226, 232, 240, 0.9)",
-              borderRadius: "14px",
-              padding: "0.85rem 1.15rem",
+              borderRadius: "16px",
+              padding: "0.9rem 1.2rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.75rem",
-              boxShadow: "0 15px 35px rgba(0, 0, 0, 0.1)",
+              gap: "0.85rem",
+              boxShadow: "0 15px 35px rgba(15, 23, 42, 0.12)",
               animation: "float 6s ease-in-out infinite",
               animationDelay: "-4.5s",
               zIndex: 10
             }}>
               <div style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "10px",
-                background: "rgba(124, 58, 237, 0.1)",
+                width: "38px",
+                height: "38px",
+                borderRadius: "12px",
+                background: "rgba(124, 58, 237, 0.12)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center"
               }}>
-                <BrainCircuit size={20} style={{ color: "#7c3aed" }} />
+                <BrainCircuit size={22} style={{ color: "#7c3aed" }} />
               </div>
               <div>
-                <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0f172a" }}>LLM Multi-Agent</div>
-                <div style={{ fontSize: "0.72rem", color: "#64748b", fontWeight: 500 }}>Custom Orchestration</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: 800, color: "#0f172a" }}>LLM Multi-Agent</div>
+                <div style={{ fontSize: "0.74rem", color: "#64748b", fontWeight: 600 }}>Custom Orchestration</div>
               </div>
             </div>
           </div>
