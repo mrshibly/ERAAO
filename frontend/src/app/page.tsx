@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, BrainCircuit, Cpu, Users, Award, BookOpen, Phone, Zap, Globe, Target } from "lucide-react";
+import Chatbot from "@/components/Chatbot";
 
 export default function Home() {
   return (
@@ -629,6 +630,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* AI Assistant Chatbot — Landing Page Only */}
+      <Chatbot />
     </div>
   );
 }
