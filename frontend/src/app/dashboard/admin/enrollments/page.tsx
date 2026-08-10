@@ -35,19 +35,27 @@ export default function AdminEnrollmentsPage() {
     fetchEnrollments();
   }, []);
 
-  const handleDeleteEnrollment = async (enrollmentId: string) => {
-    if (!confirm("Are you sure you want to cancel this student's enrollment?")) return;
-    try {
-      const res = await fetch(`/api/v1/enrollments/${enrollmentId}`, { method: "DELETE", headers });
-      if (res.ok) {
-        showMessage("Enrollment cancelled successfully.");
-        fetchEnrollments();
-      } else {
-        showMessage("Failed to cancel enrollment.", "error");
+  const handleDeleteEnrollment = (enrollmentId: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Cancel Student Enrollment",
+      message: "Are you sure you want to cancel this student's enrollment?",
+      confirmText: "Cancel Enrollment",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/enrollments/${enrollmentId}`, { method: "DELETE", headers });
+          if (res.ok) {
+            showMessage("Enrollment cancelled successfully.");
+            fetchEnrollments();
+          } else {
+            showMessage("Failed to cancel enrollment.", "error");
+          }
+        } catch {
+          showMessage("Error connecting to server.", "error");
+        }
       }
-    } catch {
-      showMessage("Error connecting to server.", "error");
-    }
+    });
   };
 
   const filtered = enrollments.filter(e =>

@@ -127,22 +127,30 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
   };
 
   // Delete Module
-  const handleDeleteModule = async (moduleId: string) => {
-    if (!confirm("Are you sure you want to delete this module section and all its contents?")) return;
-    setSavingStatus("Deleting module...");
-    try {
-      const res = await fetch(`/api/v1/courses/modules/${moduleId}`, { method: "DELETE", headers });
-      if (res.ok) {
-        showMessage("Module deleted.");
-        await fetchCourseData();
-      } else {
-        showMessage("Failed to delete module.", "error");
+  const handleDeleteModule = (moduleId: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Module Section",
+      message: "Are you sure you want to delete this module section and all its contents?",
+      confirmText: "Delete Section",
+      onConfirm: async () => {
+        setSavingStatus("Deleting module...");
+        try {
+          const res = await fetch(`/api/v1/courses/modules/${moduleId}`, { method: "DELETE", headers });
+          if (res.ok) {
+            showMessage("Module deleted.");
+            await fetchCourseData();
+          } else {
+            showMessage("Failed to delete module.", "error");
+          }
+        } catch {
+          showMessage("Error connecting to server.", "error");
+        } finally {
+          setSavingStatus(null);
+        }
       }
-    } catch {
-      showMessage("Error connecting to server.", "error");
-    } finally {
-      setSavingStatus(null);
-    }
+    });
   };
 
   // Add Item to Module (Video, Material, Assignment, Quiz)
@@ -219,23 +227,31 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
   };
 
   // Delete Item
-  const handleDeleteLesson = async (lessonId: string) => {
-    if (!confirm("Are you sure you want to delete this content item?")) return;
-    setSavingStatus("Deleting item...");
-    try {
-      const res = await fetch(`/api/v1/courses/lessons/${lessonId}`, { method: "DELETE", headers });
-      if (res.ok) {
-        showMessage("Item deleted.");
-        setActiveLessonId(null);
-        await fetchCourseData();
-      } else {
-        showMessage("Failed to delete item.", "error");
+  const handleDeleteLesson = (lessonId: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Content Item",
+      message: "Are you sure you want to delete this content item?",
+      confirmText: "Delete Item",
+      onConfirm: async () => {
+        setSavingStatus("Deleting item...");
+        try {
+          const res = await fetch(`/api/v1/courses/lessons/${lessonId}`, { method: "DELETE", headers });
+          if (res.ok) {
+            showMessage("Item deleted.");
+            setActiveLessonId(null);
+            await fetchCourseData();
+          } else {
+            showMessage("Failed to delete item.", "error");
+          }
+        } catch {
+          showMessage("Error deleting item.", "error");
+        } finally {
+          setSavingStatus(null);
+        }
       }
-    } catch {
-      showMessage("Error deleting item.", "error");
-    } finally {
-      setSavingStatus(null);
-    }
+    });
   };
 
   const getItemIcon = (type: string) => {

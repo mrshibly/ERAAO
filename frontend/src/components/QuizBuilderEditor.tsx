@@ -18,12 +18,16 @@ interface QuizBuilderEditorProps {
 export default function QuizBuilderEditor({ initialContent, onChange }: QuizBuilderEditorProps) {
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
 
-  // Parse initial JSON content into form state
   useEffect(() => {
     try {
       if (initialContent && initialContent.trim().startsWith("[")) {
         const parsed = JSON.parse(initialContent);
         if (Array.isArray(parsed) && parsed.length > 0) {
+          // Reset legacy demo question to blank inputs
+          if (parsed[0]?.question?.includes("penetration testing") || parsed[0]?.question?.includes("primary objective")) {
+            setQuestions([{ question: "", options: ["", "", "", ""], answer: 0, explanation: "" }]);
+            return;
+          }
           setQuestions(parsed);
           return;
         }
@@ -33,12 +37,16 @@ export default function QuizBuilderEditor({ initialContent, onChange }: QuizBuil
           setQuestions(parsed.questions);
           return;
         } else if (parsed.question) {
+          if (parsed.question.includes("penetration testing")) {
+            setQuestions([{ question: "", options: ["", "", "", ""], answer: 0, explanation: "" }]);
+            return;
+          }
           setQuestions([parsed]);
           return;
         }
       }
     } catch {
-      // If parsing fails, fall back to a default question
+      // If parsing fails, fall back to a blank question form
     }
 
     // Default starting blank form if empty or new
@@ -72,10 +80,7 @@ export default function QuizBuilderEditor({ initialContent, onChange }: QuizBuil
   };
 
   const handleRemoveQuestion = (qIndex: number) => {
-    if (questions.length === 1) {
-      alert("A quiz must have at least one question.");
-      return;
-    }
+    if (questions.length <= 1) return;
     const updated = questions.filter((_, idx) => idx !== qIndex);
     updateQuestions(updated);
   };

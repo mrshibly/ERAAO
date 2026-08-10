@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { FileText, Plus, Trash2, Edit3, Search } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function AdminBlogPage() {
   const { token } = useAuth();
@@ -10,6 +11,14 @@ export default function AdminBlogPage() {
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
   const [blogForm, setBlogForm] = useState({ title: "", slug: "", content: "", excerpt: "", status: "draft" });
   const [editId, setEditId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("all");
@@ -70,29 +79,43 @@ export default function AdminBlogPage() {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this blog post?")) return;
-    try {
-      const res = await fetch(`/api/v1/blog/${id}`, { method: "DELETE", headers });
-      if (res.ok) {
-        showMessage("Blog post deleted.");
-        fetchBlogs();
-      } else {
-        showMessage("Failed to delete post.", "error");
+  const handleDelete = (id: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Blog Post",
+      message: "Are you sure you want to delete this blog post?",
+      confirmText: "Delete Post",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/blog/${id}`, { method: "DELETE", headers });
+          if (res.ok) {
+            showMessage("Blog post deleted.");
+            fetchBlogs();
+          } else {
+            showMessage("Failed to delete post.", "error");
+          }
+        } catch {
+          showMessage("Error connecting to server.", "error");
+        }
       }
-    } catch {
-      showMessage("Error connecting to server.", "error");
-    }
+    });
   };
 
-  const handleApprove = async (id: string) => {
-    if (!confirm("Approve and publish this blog post?")) return;
-    try {
-      const res = await fetch(`/api/v1/blog/${id}`, {
-        method: "PATCH",
-        headers,
-        body: JSON.stringify({ status: "published" })
-      });
+  const handleApprove = (id: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "confirm",
+      title: "Publish Blog Post",
+      message: "Approve and publish this blog post to the live website?",
+      confirmText: "Publish Post",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/blog/${id}`, {
+            method: "PATCH",
+            headers,
+            body: JSON.stringify({ status: "published" })
+          });
       if (res.ok) {
         showMessage("Blog post published successfully!");
         fetchBlogs();
@@ -277,6 +300,16 @@ export default function AdminBlogPage() {
           </form>
         </div>
       </div>
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }

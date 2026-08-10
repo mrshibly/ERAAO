@@ -84,19 +84,27 @@ export default function AdminUsersPage() {
     }
   };
 
-  const handleDeleteUser = async (userId: string) => {
-    if (!confirm("Are you sure you want to soft-delete this user?")) return;
-    try {
-      const res = await fetch(`/api/v1/users/${userId}`, { method: "DELETE", headers });
-      if (res.ok) {
-        showMessage("User account deleted successfully.");
-        fetchUsers();
-      } else {
-        showMessage("Failed to delete user.", "error");
+  const handleDeleteUser = (userId: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Soft Delete User Account",
+      message: "Are you sure you want to soft-delete this user account?",
+      confirmText: "Delete Account",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/users/${userId}`, { method: "DELETE", headers });
+          if (res.ok) {
+            showMessage("User account deleted successfully.");
+            fetchUsers();
+          } else {
+            showMessage("Failed to delete user.", "error");
+          }
+        } catch {
+          showMessage("Error connecting to server.", "error");
+        }
       }
-    } catch {
-      showMessage("Error connecting to server.", "error");
-    }
+    });
   };
 
   const filtered = users.filter(u =>

@@ -105,24 +105,32 @@ export default function SyllabusBuilder({ courseId, courseSlug, token, onClose }
     }
   };
 
-  const handleDeleteModule = async (moduleId: string) => {
-    if (!confirm("Are you sure you want to delete this module and all its lectures?")) return;
-    setSavingStatus("Deleting module...");
-    try {
-      const res = await fetch(`/api/v1/courses/modules/${moduleId}`, {
-        method: "DELETE",
-        headers
-      });
-      if (res.ok) {
-        await fetchCourseDetails();
-      } else {
-        setActionError("Failed to delete module.");
+  const handleDeleteModule = (moduleId: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Module",
+      message: "Are you sure you want to delete this module and all its lectures?",
+      confirmText: "Delete Module",
+      onConfirm: async () => {
+        setSavingStatus("Deleting module...");
+        try {
+          const res = await fetch(`/api/v1/courses/modules/${moduleId}`, {
+            method: "DELETE",
+            headers
+          });
+          if (res.ok) {
+            await fetchCourseDetails();
+          } else {
+            setActionError("Failed to delete module.");
+          }
+        } catch {
+          setActionError("Network error deleting module.");
+        } finally {
+          setSavingStatus(null);
+        }
       }
-    } catch {
-      setActionError("Network error deleting module.");
-    } finally {
-      setSavingStatus(null);
-    }
+    });
   };
 
   const handleAddLesson = async (e: React.FormEvent, moduleId: string) => {
@@ -190,19 +198,33 @@ export default function SyllabusBuilder({ courseId, courseSlug, token, onClose }
     }
   };
 
-  const handleDeleteLesson = async (lessonId: string) => {
-    if (!confirm("Are you sure you want to delete this lecture?")) return;
-    setSavingStatus("Deleting lecture...");
-    try {
-      const res = await fetch(`/api/v1/courses/lessons/${lessonId}`, {
-        method: "DELETE",
-        headers
-      });
-      if (res.ok) {
-        await fetchCourseDetails();
-      } else {
-        setActionError("Failed to delete lecture.");
+  const handleDeleteLesson = (lessonId: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Lecture",
+      message: "Are you sure you want to delete this lecture?",
+      confirmText: "Delete Lecture",
+      onConfirm: async () => {
+        setSavingStatus("Deleting lecture...");
+        try {
+          const res = await fetch(`/api/v1/courses/lessons/${lessonId}`, {
+            method: "DELETE",
+            headers
+          });
+          if (res.ok) {
+            await fetchCourseDetails();
+          } else {
+            setActionError("Failed to delete lecture.");
+          }
+        } catch {
+          setActionError("Network error deleting lecture.");
+        } finally {
+          setSavingStatus(null);
+        }
       }
+    });
+  };
     } catch {
       setActionError("Network error deleting lecture.");
     } finally {

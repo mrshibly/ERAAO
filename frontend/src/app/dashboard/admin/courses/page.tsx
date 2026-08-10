@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { BookOpen, Plus, Trash2, Edit3, Search, List } from "lucide-react";
 import SyllabusBuilder from "@/components/SyllabusBuilder";
+import CustomModal from "@/components/CustomModal";
 
 export default function AdminCoursesPage() {
   const { token } = useAuth();
@@ -12,6 +13,14 @@ export default function AdminCoursesPage() {
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
   const [courseForm, setCourseForm] = useState({
     title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft"
   });
@@ -64,30 +73,48 @@ export default function AdminCoursesPage() {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this course?")) return;
-    try {
-      const res = await fetch(`/api/v1/courses/${id}`, { method: "DELETE", headers });
-      if (res.ok) { showMessage("Course deleted."); fetchCourses(); }
-      else showMessage("Failed to delete course.", "error");
-    } catch { showMessage("Error connecting to server.", "error"); }
+  const handleDelete = (id: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Course Track",
+      message: "Are you sure you want to delete this course and all its syllabus modules?",
+      confirmText: "Delete Course",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/courses/${id}`, { method: "DELETE", headers });
+          if (res.ok) { showMessage("Course deleted."); fetchCourses(); }
+          else showMessage("Failed to delete course.", "error");
+        } catch { showMessage("Error connecting to server.", "error"); }
+      }
+    });
   };
 
-  const handleApprove = async (id: string) => {
-    if (!confirm("Approve and publish this course to the public directory?")) return;
-    try {
-      const res = await fetch(`/api/v1/courses/${id}`, {
-        method: "PATCH",
-        headers,
-        body: JSON.stringify({ status: "published" })
-      });
-      if (res.ok) {
-        showMessage("Course published successfully!");
-        fetchCourses();
-      } else {
-        const err = await res.json().catch(() => ({}));
-        showMessage(err.detail || err.error?.message || "Failed to publish course.", "error");
+  const handleApprove = (id: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "confirm",
+      title: "Publish Course Track",
+      message: "Approve and publish this course to the public directory?",
+      confirmText: "Publish Course",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/courses/${id}`, {
+            method: "PATCH",
+            headers,
+            body: JSON.stringify({ status: "published" })
+          });
+          if (res.ok) {
+            showMessage("Course published successfully!");
+            fetchCourses();
+          } else {
+            const err = await res.json().catch(() => ({}));
+            showMessage(err.detail || err.error?.message || "Failed to publish course.", "error");
+          }
+        } catch { showMessage("Error connecting to server.", "error"); }
       }
+    });
+  };
     } catch {
       showMessage("Error connecting to server.", "error");
     }
@@ -317,6 +344,16 @@ export default function AdminCoursesPage() {
           onClose={() => setSelectedCourseForSyllabus(null)}
         />
       )}
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }

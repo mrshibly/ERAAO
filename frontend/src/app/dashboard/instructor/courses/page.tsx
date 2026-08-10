@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { BookOpen, Plus, Trash2, Edit3, Search, AlertCircle, List } from "lucide-react";
 import SyllabusBuilder from "@/components/SyllabusBuilder";
+import CustomModal from "@/components/CustomModal";
 
 export default function InstructorCoursesPage() {
   const { token } = useAuth();
@@ -12,6 +13,14 @@ export default function InstructorCoursesPage() {
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
   
   const [courseForm, setCourseForm] = useState({
     title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft"
@@ -81,19 +90,27 @@ export default function InstructorCoursesPage() {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this course draft?")) return;
-    try {
-      const res = await fetch(`/api/v1/courses/${id}`, { method: "DELETE", headers });
-      if (res.ok) {
-        showMessage("Course deleted.");
-        fetchCourses();
-      } else {
-        showMessage("Failed to delete course.", "error");
+  const handleDelete = (id: string) => {
+    setModalConfig({
+      isOpen: true,
+      type: "danger",
+      title: "Delete Course Draft",
+      message: "Are you sure you want to delete this course draft?",
+      confirmText: "Delete Draft",
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/courses/${id}`, { method: "DELETE", headers });
+          if (res.ok) {
+            showMessage("Course deleted.");
+            fetchCourses();
+          } else {
+            showMessage("Failed to delete course.", "error");
+          }
+        } catch {
+          showMessage("Error connecting to server.", "error");
+        }
       }
-    } catch {
-      showMessage("Error connecting to server.", "error");
-    }
+    });
   };
 
   const filtered = courses.filter(c =>
@@ -264,6 +281,16 @@ export default function InstructorCoursesPage() {
           onClose={() => setSelectedCourseForSyllabus(null)}
         />
       )}
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }
