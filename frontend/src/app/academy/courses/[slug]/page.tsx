@@ -9,6 +9,7 @@ import {
   Shield, Check, User, Sparkles, HelpCircle, FileText, Video,
   CheckSquare, ArrowRight, Lock
 } from "lucide-react";
+import BrandLoader from "@/components/BrandLoader";
 
 export default function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -89,15 +90,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   };
 
   if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "75vh" }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ width: "38px", height: "38px", border: "3px solid rgba(14, 165, 233, 0.2)", borderTopColor: "var(--accent-blue)", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 1rem auto" }} />
-          <p style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Loading course syllabus details...</p>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        </div>
-      </div>
-    );
+    return <BrandLoader message="Loading course syllabus & lab details..." />;
   }
 
   if (error || !course) {

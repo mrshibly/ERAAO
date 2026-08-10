@@ -9,6 +9,7 @@ import {
   ArrowRight, Sparkles, HelpCircle, Activity, Compass
 } from "lucide-react";
 import StudentOnboardingModal from "@/components/StudentOnboardingModal";
+import BrandLoader from "@/components/BrandLoader";
 
 export default function StudentDashboard() {
   const router = useRouter();
@@ -58,15 +59,7 @@ export default function StudentDashboard() {
   }, [user, token, loading, router]);
 
   if (loading || fetching) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "70vh" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
-          <div style={{ width: "36px", height: "36px", border: "3px solid rgba(14, 165, 233, 0.2)", borderTopColor: "var(--accent-blue)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", fontWeight: 600 }}>Loading dashboard...</p>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        </div>
-      </div>
-    );
+    return <BrandLoader message="Loading your student command center..." />;
   }
 
   const getCourseImage = (title: string) => {
