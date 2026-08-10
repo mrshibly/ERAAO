@@ -5,14 +5,16 @@ Run via: python -m scripts.seed
 import asyncio
 import uuid
 from sqlalchemy import select
-from app.db.session import async_session_factory
+from app.db.session import async_session_factory, engine
+from app.db.base import Base
+import app.models  # Ensure all models are loaded
 from app.models.role import Role, Permission, RolePermission, UserRole
 from app.models.user import User
 from app.core.security import hash_password
 
 DEFAULT_ROLES = ["student", "instructor", "corporate_client", "admin"]
 
-RESOURCES = ["users", "courses", "enrollments", "blog", "research", "services", "bookings", "contacts", "quotes", "certificates", "cohorts", "tickets", "careers", "audit_logs", "orders"]
+RESOURCES = ["users", "courses", "enrollments", "blog", "services", "bookings", "contacts", "quotes", "certificates", "cohorts", "tickets", "careers", "audit_logs", "orders"]
 ACTIONS = ["create", "read", "update", "delete"]
 
 # Admin gets all permissions; other roles get subset
@@ -25,6 +27,10 @@ ROLE_PERMISSIONS = {
 
 
 async def seed() -> None:
+    # Ensure tables exist
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
     async with async_session_factory() as db:
         # Create roles
         roles = {}

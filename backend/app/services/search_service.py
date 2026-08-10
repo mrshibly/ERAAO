@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.course import Course, CourseStatus
 from app.models.blog import BlogPost, PostStatus
 from app.models.service import ServicePage, ServiceStatus
-from app.models.research import Publication, PublicationStatus
 
 class SearchService:
     def __init__(self, db: AsyncSession) -> None:
@@ -42,14 +41,6 @@ class SearchService:
             rows = (await self.db.execute(stmt)).all()
             return [{"type": "service", "id": str(r.id), "title": r.title, "slug": r.slug, "excerpt": (r.description or "")[:200]} for r in rows]
 
-        async def search_research():
-            stmt = select(Publication.id, Publication.title, Publication.slug, Publication.abstract).where(
-                Publication.status == PublicationStatus.PUBLISHED,
-                or_(Publication.title.ilike(search_term), Publication.abstract.ilike(search_term))
-            )
-            rows = (await self.db.execute(stmt)).all()
-            return [{"type": "research", "id": str(r.id), "title": r.title, "slug": r.slug, "excerpt": (r.abstract or "")[:200]} for r in rows]
-
         tasks = []
         if entity_type is None or entity_type == "course":
             tasks.append(search_courses())
@@ -57,8 +48,6 @@ class SearchService:
             tasks.append(search_blog())
         if entity_type is None or entity_type == "service":
             tasks.append(search_services())
-        if entity_type is None or entity_type == "research":
-            tasks.append(search_research())
 
         # Run queries concurrently to achieve maximum speed under concurrent request loads
         outputs = await asyncio.gather(*tasks)

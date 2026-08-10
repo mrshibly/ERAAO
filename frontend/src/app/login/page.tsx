@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { Mail, Lock, LogIn, AlertCircle, Shield } from "lucide-react";
+import { Mail, Lock, LogIn, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function LoginPage() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || "Google authentication failed.");
+        throw new Error(body.detail || "Google sign in failed.");
       }
 
       const data = await res.json();
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
-        throw new Error(body.detail || "Authentication failed. Please verify credentials.");
+        throw new Error(body.detail || "Invalid email or password. Please try again.");
       }
 
       const data = await response.json();
@@ -127,46 +127,36 @@ export default function LoginPage() {
 
   return (
     <div style={{
-      minHeight: "92vh",
+      minHeight: "85vh",
       display: "flex",
       width: "100%",
-      backgroundColor: "#ffffff",
-      fontFamily: "inherit"
+      backgroundColor: "#ffffff"
     }} className="responsive-flex-column">
       
-      {/* Left Column - Clean Light Form Panel */}
+      {/* Left Column — Simple, Clean Form */}
       <div style={{
-        flex: "1 1 45%",
+        flex: "1 1 50%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        padding: "3.5rem 2rem",
+        padding: "3rem 2rem",
         backgroundColor: "#ffffff"
       }}>
-        <div style={{ width: "100%", maxWidth: "25rem" }}>
+        <div style={{ width: "100%", maxWidth: "24rem" }}>
           
-          {/* Logo / Badge */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "2rem" }}>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "36px",
-              height: "36px",
-              borderRadius: "8px",
-              background: "rgba(14, 165, 233, 0.08)",
-              color: "var(--accent-blue)"
-            }}>
-              <Shield size={20} />
-            </div>
-            <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "0.02em" }}>Academy.</span>
-          </div>
-
           <div style={{ marginBottom: "2rem" }}>
-            <h1 style={{ fontSize: "1.85rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>Welcome Back</h1>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.25rem" }}>
-              Sign in to access your modules, sandboxes, and achievements.
+            <h1 style={{
+              fontSize: "2rem",
+              fontWeight: 800,
+              color: "#0f172a",
+              letterSpacing: "-0.02em",
+              marginBottom: "0.5rem"
+            }}>
+              Sign In
+            </h1>
+            <p style={{ color: "#64748b", fontSize: "0.95rem" }}>
+              Enter your email and password to access your ERAAO account.
             </p>
           </div>
 
@@ -174,16 +164,16 @@ export default function LoginPage() {
             <div style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.5rem",
+              gap: "0.6rem",
               background: "#fef2f2",
               border: "1px solid #fecaca",
-              color: "#b91c1c",
+              color: "#991b1b",
               padding: "0.8rem 1rem",
-              borderRadius: "8px",
-              fontSize: "0.85rem",
+              borderRadius: "10px",
+              fontSize: "0.875rem",
               marginBottom: "1.5rem"
             }}>
-              <AlertCircle size={16} style={{ flexShrink: 0 }} />
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
               <span>{error}</span>
             </div>
           )}
@@ -197,23 +187,30 @@ export default function LoginPage() {
               alignItems: "center",
               width: "100%",
               margin: "1.25rem 0 0.5rem 0",
-              color: "var(--text-muted)",
+              color: "#94a3b8",
               fontSize: "0.75rem",
-              fontWeight: 600,
-              letterSpacing: "0.05em"
+              fontWeight: 600
             }}>
-              <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
-              <span style={{ padding: "0 0.75rem" }}>OR</span>
-              <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
+              <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
+              <span style={{ padding: "0 0.75rem" }}>or sign in with email</span>
+              <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
             </div>
           </div>
 
-          {/* Login Inputs Form */}
+          {/* Form */}
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             <div>
-              <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.02em" }}>Email Address</label>
-              <div style={{ position: "relative", marginTop: "0.35rem" }}>
-                <Mail size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+              <label style={{
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                color: "#334155",
+                display: "block",
+                marginBottom: "0.4rem"
+              }}>
+                Email address
+              </label>
+              <div style={{ position: "relative" }}>
+                <Mail size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
                 <input
                   required
                   type="email"
@@ -223,11 +220,11 @@ export default function LoginPage() {
                   style={{
                     width: "100%",
                     background: "#ffffff",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "8px",
-                    padding: "0.7rem 1rem 0.7rem 2.25rem",
-                    fontSize: "0.9rem",
-                    color: "var(--text-primary)",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "10px",
+                    padding: "0.75rem 1rem 0.75rem 2.5rem",
+                    fontSize: "0.925rem",
+                    color: "#0f172a",
                     outline: "none",
                     boxSizing: "border-box"
                   }}
@@ -236,26 +233,34 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.02em" }}>Password</label>
-                <Link href="/forgot-password" style={{ fontSize: "0.8rem", color: "var(--accent-blue)", fontWeight: 600, textDecoration: "none" }}>Forgot password?</Link>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+                <label style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  color: "#334155"
+                }}>
+                  Password
+                </label>
+                <Link href="/forgot-password" style={{ fontSize: "0.825rem", color: "#0ea5e9", fontWeight: 600, textDecoration: "none" }}>
+                  Forgot password?
+                </Link>
               </div>
-              <div style={{ position: "relative", marginTop: "0.35rem" }}>
-                <Lock size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+              <div style={{ position: "relative" }}>
+                <Lock size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
                 <input
                   required
                   type="password"
-                  placeholder="••••••••••••"
+                  placeholder="Your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   style={{
                     width: "100%",
                     background: "#ffffff",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "8px",
-                    padding: "0.7rem 1rem 0.7rem 2.25rem",
-                    fontSize: "0.9rem",
-                    color: "var(--text-primary)",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "10px",
+                    padding: "0.75rem 1rem 0.75rem 2.5rem",
+                    fontSize: "0.925rem",
+                    color: "#0f172a",
                     outline: "none",
                     boxSizing: "border-box"
                   }}
@@ -267,11 +272,11 @@ export default function LoginPage() {
               disabled={loading}
               type="submit"
               style={{
-                background: "var(--text-primary)",
+                background: "#0ea5e9",
                 color: "#ffffff",
-                padding: "0.75rem",
-                borderRadius: "8px",
-                fontSize: "0.9rem",
+                padding: "0.8rem",
+                borderRadius: "10px",
+                fontSize: "0.95rem",
                 fontWeight: 700,
                 display: "flex",
                 alignItems: "center",
@@ -279,8 +284,8 @@ export default function LoginPage() {
                 gap: "0.5rem",
                 border: "none",
                 cursor: loading ? "not-allowed" : "pointer",
-                transition: "all 0.2s ease",
-                marginTop: "0.5rem"
+                marginTop: "0.5rem",
+                transition: "background 0.2s ease"
               }}
             >
               <LogIn size={18} />
@@ -288,79 +293,54 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-            Don't have an account? <Link href="/register" style={{ color: "var(--accent-blue)", fontWeight: 700, textDecoration: "none" }}>Create free account</Link>
+          <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.9rem", color: "#64748b" }}>
+            Don't have an account? <Link href="/register" style={{ color: "#0ea5e9", fontWeight: 700, textDecoration: "none" }}>Create one here</Link>
           </p>
 
         </div>
       </div>
 
-      {/* Right Column - unDraw Style Flat Vector Panel (Hidden on mobile via CSS) */}
+      {/* Right Column — Simple High-Quality Tech Image Card */}
       <div className="login-graphic" style={{
-        flex: "1 1 55%",
+        flex: "1 1 50%",
         position: "relative",
-        background: "#f8fafc",
-        borderLeft: "1px solid var(--border-color)",
+        overflow: "hidden",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        padding: "4rem"
+        justifyContent: "center",
+        padding: "2rem"
       }}>
-        
-        {/* unDraw Style Inline SVG Vector Illustration */}
-        <div style={{ width: "100%", maxWidth: "440px", marginBottom: "3rem" }}>
-          <svg viewBox="0 0 500 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Ground Shadow */}
-            <ellipse cx="250" cy="330" rx="160" ry="12" fill="#e2e8f0" />
-            
-            {/* Big Laptop Monitor (unDraw Style) */}
-            <rect x="100" y="80" width="300" height="200" rx="12" fill="#3f3d56" />
-            <rect x="115" y="95" width="270" height="170" fill="#ffffff" />
-            
-            {/* Keyboard base */}
-            <path d="M70,280 H430 L410,310 H90 Z" fill="#e6e6e6" />
-            <path d="M90,310 H410 V315 H90 Z" fill="#cbd5e1" />
-            <rect x="220" y="285" width="60" height="15" fill="#3f3d56" rx="4" opacity="0.1" />
-
-            {/* Central Glowing Shield Icon on Screen */}
-            <path d="M250,120 L290,135 V185 C290,215 250,235 250,235 C250,235 210,215 210,185 V135 Z" fill="#0ea5e9" />
-            <path d="M250,140 L275,150 V185 C275,205 250,220 250,220 C250,220 225,205 225,185 V150 Z" fill="#7dd3fc" />
-            <path d="M245,160 L235,175 H247 L242,200 L260,175 H248 L253,160 Z" fill="#ffffff" />
-
-            {/* Flat Human Character (unDraw Style) */}
-            {/* Sitting/leaning character on the laptop base */}
-            {/* Legs */}
-            <path d="M370,240 L385,310 H405 L390,240 Z" fill="#2f2e41" />
-            {/* Torso */}
-            <rect x="345" y="160" width="35" height="70" rx="10" fill="#0ea5e9" />
-            <circle cx="362" cy="135" r="15" fill="#ffdbb5" />
-            {/* Hair */}
-            <path d="M347,130 C347,120 377,120 377,130 C377,122 355,118 347,130 Z" fill="#2f2e41" />
-            {/* Arms interacting with screen */}
-            <path d="M345,175 C310,175 300,165 295,165" stroke="#ffdbb5" strokeWidth="8" strokeLinecap="round" />
-            
-            {/* Decorative unDraw Dots & Plants */}
-            <circle cx="80" cy="120" r="15" fill="#a7f3d0" opacity="0.7" />
-            <circle cx="430" cy="160" r="25" fill="#e0f2fe" opacity="0.8" />
-            <circle cx="120" cy="320" r="8" fill="#fef08a" />
-            
-            {/* Tiny floating vectors */}
-            <path d="M60,190 H80 V210" stroke="#0ea5e9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M420,100 L435,115 M435,100 L420,115" stroke="#3f3d56" strokeWidth="3" strokeLinecap="round" />
-          </svg>
+        <div style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          minHeight: "480px",
+          borderRadius: "24px",
+          overflow: "hidden",
+          boxShadow: "0 20px 40px rgba(15, 23, 42, 0.12)"
+        }}>
+          <img
+            src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1000&auto=format&fit=crop&q=80"
+            alt="Cybersecurity and technology"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            padding: "3rem"
+          }}>
+            <h2 style={{ fontSize: "1.85rem", fontWeight: 800, color: "#ffffff", marginBottom: "0.75rem", lineHeight: 1.3 }}>
+              Build Skills. Protect Assets.
+            </h2>
+            <p style={{ color: "#cbd5e1", fontSize: "1rem", lineHeight: 1.6, maxWidth: "28rem" }}>
+              Access your training courses, cloud labs, and security tools all in one simple dashboard.
+            </p>
+          </div>
         </div>
-
-        {/* Catchy unDraw style messaging */}
-        <div style={{ textAlign: "center", maxWidth: "26rem" }}>
-          <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
-            Secure Academic Sandbox
-          </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.925rem", lineHeight: 1.6 }}>
-            Our multi-layered virtual laboratories and cryptographically signed achievements give you industry-grade capabilities in applied artificial intelligence and cybersecurity.
-          </p>
-        </div>
-
       </div>
 
     </div>

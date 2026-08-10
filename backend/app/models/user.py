@@ -31,5 +31,12 @@ class User(Base, UUIDPrimaryKeyMixin, TimestampMixin, SoftDeleteMixin):
     oauth_provider_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
     signature_url: Mapped[str | None] = mapped_column(Text, nullable=True)
 
+    # Student Profile Onboarding Fields
+    phone: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    skill_level: Mapped[str | None] = mapped_column(String(50), nullable=True)  # beginner, intermediate, advanced
+    primary_goal: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    organization: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+
     # Relationships
     user_roles: Mapped[List["UserRole"]] = relationship("UserRole", back_populates="user", lazy="selectin")

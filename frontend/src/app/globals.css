@@ -690,3 +690,125 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS — Simple, tasteful entrance & ambient motion
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes subtleGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Entrance animation utility classes */
+.anim-fade-up {
+  opacity: 0;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.anim-slide-right {
+  opacity: 0;
+  animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered delay utilities */
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.25s; }
+.anim-delay-3 { animation-delay: 0.4s; }
+.anim-delay-4 { animation-delay: 0.55s; }
+.anim-delay-5 { animation-delay: 0.7s; }
+.anim-delay-6 { animation-delay: 0.85s; }
+
+/* Ambient float for hero cards */
+.anim-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.anim-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+/* Hover lift for cards */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.15);
+}
+
+/* Hero gradient text shimmer */
+.gradient-text-animated {
+  background-size: 200% auto;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Subtle glow pulse for hero ambient elements */
+.anim-glow {
+  animation: subtleGlow 4s ease-in-out infinite;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up,
+  .anim-fade-in,
+  .anim-slide-right {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+  .anim-float,
+  .anim-float-delayed,
+  .gradient-text-animated,
+  .anim-glow {
+    animation: none;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+}

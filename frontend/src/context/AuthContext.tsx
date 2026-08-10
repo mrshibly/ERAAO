@@ -8,6 +8,11 @@ interface UserProfile {
   full_name: string;
   avatar_url: string | null;
   signature_url?: string | null;
+  phone?: string | null;
+  skill_level?: string | null;
+  primary_goal?: string | null;
+  organization?: string | null;
+  onboarding_completed?: boolean;
   is_active: boolean;
   is_verified: boolean;
   roles: string[];

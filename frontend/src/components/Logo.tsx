@@ -13,7 +13,7 @@ interface LogoProps {
 
 export default function Logo({
   size = 36,
-  withText = false,
+  withText = true,
   withSlogan = false,
   textColor = "var(--text-primary)",
   href = "/",
@@ -22,102 +22,95 @@ export default function Logo({
     <svg
       width={size}
       height={size}
-      viewBox="0 0 48 48"
+      viewBox="0 0 512 512"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ flexShrink: 0, filter: "drop-shadow(0 0 12px rgba(14, 165, 233, 0.4))" }}
+      style={{ flexShrink: 0 }}
     >
       <defs>
-        <linearGradient id="eraao-outer-grad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="40%" stopColor="#0ea5e9" />
-          <stop offset="75%" stopColor="#8b5cf6" />
-          <stop offset="100%" stopColor="#14b8a6" />
+        <linearGradient id="logo-grad-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1565a0"/>
+          <stop offset="100%" stopColor="#2196c8"/>
         </linearGradient>
-
-        <linearGradient id="eraao-core-grad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7dd3fc" />
-          <stop offset="50%" stopColor="#c084fc" />
-          <stop offset="100%" stopColor="#2dd4bf" />
+        <linearGradient id="logo-grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1e88c8"/>
+          <stop offset="100%" stopColor="#42b4e6"/>
         </linearGradient>
-
-        <radialGradient id="eraao-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="rgba(14, 165, 233, 0.35)" />
-          <stop offset="100%" stopColor="rgba(15, 23, 42, 0)" />
-        </radialGradient>
+        <linearGradient id="logo-grad-light" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38a8d8"/>
+          <stop offset="100%" stopColor="#6dd5f5"/>
+        </linearGradient>
+        <linearGradient id="logo-grad-s1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#1e88c8"/>
+          <stop offset="100%" stopColor="#48c0e8"/>
+        </linearGradient>
+        <linearGradient id="logo-grad-s2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#2196c8"/>
+          <stop offset="100%" stopColor="#52c8ec"/>
+        </linearGradient>
+        <linearGradient id="logo-grad-s3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#2ba4d4"/>
+          <stop offset="100%" stopColor="#5cd0f0"/>
+        </linearGradient>
       </defs>
 
-      {/* Radiant Background Ambient Glow */}
-      <circle cx="24" cy="24" r="22" fill="url(#eraao-glow)" />
+      {/* A triangle - left leg */}
+      <polygon points="256,40 80,460 160,460 256,165" fill="url(#logo-grad-dark)"/>
 
-      {/* Layer 1: Outer Precision Tech Shield */}
-      <path
-        d="M24 3L42 12V36L24 45L6 36V12L24 3Z"
-        stroke="url(#eraao-outer-grad)"
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-        fill="rgba(15, 23, 42, 0.75)"
-      />
+      {/* A triangle - right leg */}
+      <polygon points="256,40 432,460 352,460 256,165" fill="url(#logo-grad-light)"/>
 
-      {/* Layer 2: Inner Cyber Hex Geometry */}
-      <path
-        d="M24 8L37 15.5V32.5L24 40L11 32.5V15.5L24 8Z"
-        stroke="rgba(56, 189, 248, 0.3)"
-        strokeWidth="1.2"
-        strokeDasharray="3 2"
-      />
+      {/* A triangle - top peak overlay */}
+      <polygon points="256,40 220,130 292,130" fill="url(#logo-grad-mid)"/>
 
-      {/* Layer 3: Futuristic 'E' Neural Circuit Core */}
-      <path
-        d="M16 15H32M16 15V33M16 24H28M16 33H32"
-        stroke="url(#eraao-core-grad)"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {/* Inner triangle hole */}
+      <polygon points="256,180 200,310 312,310" fill="white" fillOpacity="0"/>
 
-      {/* Layer 4: Quantum Node Spheres */}
-      <circle cx="32" cy="15" r="2.5" fill="#38bdf8" />
-      <circle cx="28" cy="24" r="2.5" fill="#c084fc" />
-      <circle cx="32" cy="33" r="2.5" fill="#2dd4bf" />
+      {/* E stripe 1 (top) */}
+      <polygon points="118,260 270,260 262,290 126,290" fill="url(#logo-grad-s1)"/>
 
-      {/* Layer 5: Center Power Signal Core */}
-      <circle cx="16" cy="24" r="2" fill="#ffffff" />
+      {/* E stripe 2 (middle) */}
+      <polygon points="104,330 254,330 246,360 112,360" fill="url(#logo-grad-s2)"/>
+
+      {/* E stripe 3 (bottom) */}
+      <polygon points="88,400 236,400 230,430 95,430" fill="url(#logo-grad-s3)"/>
+
+      {/* Right side notch accent */}
+      <polygon points="345,290 372,245 380,260 353,305" fill="url(#logo-grad-light)"/>
     </svg>
   );
 
   const content = (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: `${size * 0.3}px`, textDecoration: "none" }}>
+    <div style={{ display: "inline-flex", alignItems: "center", gap: `${size * 0.25}px`, textDecoration: "none" }}>
       {logoMark}
       {withText && (
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <span
-            style={{
-              fontWeight: 900,
-              fontSize: `${size * 0.046}rem`,
-              letterSpacing: "-0.035em",
-              color: textColor,
-              lineHeight: 1,
-              textTransform: "uppercase"
-            }}
-          >
-            ERAAO<span style={{ color: "#0ea5e9" }}>.</span>
-          </span>
-          {withSlogan && (
-            <span
-              style={{
-                fontSize: `${size * 0.019}rem`,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                color: "#38bdf8",
-                textTransform: "none",
-                marginTop: "2px"
-              }}
-            >
-              Lighting the future.
-            </span>
-          )}
-        </div>
+        <span
+          style={{
+            fontWeight: 800,
+            fontSize: `${size * 0.048}rem`,
+            letterSpacing: "0.04em",
+            color: textColor,
+            lineHeight: 1,
+            textTransform: "uppercase",
+            fontFamily: "'Inter', 'Segoe UI', sans-serif"
+          }}
+        >
+          ERAAO
+        </span>
+      )}
+      {withSlogan && (
+        <span
+          style={{
+            fontSize: `${size * 0.019}rem`,
+            fontWeight: 600,
+            letterSpacing: "0.04em",
+            color: "#64748b",
+            textTransform: "none",
+            marginLeft: `${size * 0.1}px`
+          }}
+        >
+          Lighting the future.
+        </span>
       )}
     </div>
   );

@@ -12,7 +12,6 @@ from app.models.order import Order, OrderItem, Invoice  # noqa: F401
 from app.models.booking import Booking, TimeSlot  # noqa: F401
 from app.models.contact import ContactSubmission, QuoteRequest  # noqa: F401
 from app.models.blog import BlogPost, BlogPostTag  # noqa: F401
-from app.models.research import Publication  # noqa: F401
 from app.models.service import ServicePage  # noqa: F401
 from app.models.certificate import Certificate  # noqa: F401
 from app.models.ticket import SupportTicket, TicketReply  # noqa: F401

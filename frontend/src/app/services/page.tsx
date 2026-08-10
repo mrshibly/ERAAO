@@ -47,8 +47,8 @@ export default function ServicesPage() {
               <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem" }}>
                 Built a secure custom LLM agent platform for a financial advisory firm, automating 85% of document classification tasks with full SOC-2 readiness.
               </p>
-              <Link href="/research" style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.9rem", fontWeight: 600, color: "var(--accent-violet)" }}>
-                <span>Read whitepaper</span>
+              <Link href="/contact" style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.9rem", fontWeight: 600, color: "var(--accent-violet)" }}>
+                <span>Get in touch</span>
                 <ArrowRight size={14} />
               </Link>
             </div>
@@ -80,12 +80,12 @@ export default function ServicesPage() {
               </div>
             </div>
             <div style={{ flex: "1 1 300px", padding: "1.5rem", background: "var(--bg-secondary)", borderRadius: "var(--radius-md)", border: "1px dashed var(--border-color)" }}>
-              <h4 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Research & Advisories</h4>
+              <h4 style={{ fontWeight: 600, marginBottom: "0.75rem" }}>Security Assessments</h4>
               <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem" }}>
                 We actively discover and disclose CVE vulnerabilities to build authority and ensure the global digital footprint remains protected.
               </p>
-              <Link href="/research" style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.9rem", fontWeight: 600, color: "var(--accent-teal)" }}>
-                <span>View Advisories</span>
+              <Link href="/contact" style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.9rem", fontWeight: 600, color: "var(--accent-teal)" }}>
+                <span>Request an Assessment</span>
                 <ArrowRight size={14} />
               </Link>
             </div>

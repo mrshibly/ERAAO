@@ -100,7 +100,6 @@ export default function DashboardSidebar({
       title: "Content Hub",
       items: [
         { label: "Blog Workspace", href: "/dashboard/admin/blog", icon: <FileText size={18} />, description: "Compose, edit, and publish platform articles" },
-        { label: "Research Publications", href: "/dashboard/admin/research", icon: <Sliders size={18} />, description: "Manage technical whitepapers & writeups" },
         { label: "Careers Portal", href: "/dashboard/admin/careers", icon: <Briefcase size={18} />, description: "Add and review open corporate job applications" }
       ]
     },
@@ -127,10 +126,19 @@ export default function DashboardSidebar({
 
   const studentCategories: NavCategory[] = [
     {
-      title: "Sandbox",
+      title: "Learning Hub",
       items: [
-        { label: "My Lab Overview", href: "/dashboard/student", icon: <Home size={18} />, description: "Check progress roadmaps and download certificates" },
-        { label: "Browse Academy", href: "/academy", icon: <BookOpen size={18} />, description: "Explore cyber security and AI courses catalog" }
+        { label: "Command Center", href: "/dashboard/student", icon: <Home size={18} />, description: "Overview of progress, active courses & streak" },
+        { label: "My Enrolled Courses", href: "/dashboard/student/courses", icon: <BookOpen size={18} />, description: "Access active course syllabi & lab modules" },
+        { label: "Certificates & Badges", href: "/dashboard/student/certificates", icon: <Award size={18} />, description: "View cryptographically verified credentials" }
+      ]
+    },
+    {
+      title: "Academy & Support",
+      items: [
+        { label: "Browse Catalog", href: "/dashboard/student/catalog", icon: <FolderKanban size={18} />, description: "Explore cybersecurity and AI training bootcamps" },
+        { label: "Helpdesk & Tickets", href: "/dashboard/student/tickets", icon: <ShieldAlert size={18} />, description: "Ask academic questions or request lab support" },
+        { label: "Profile & Goals", href: "/dashboard/profile", icon: <User size={18} />, description: "Update profile, phone number, and learning goals" }
       ]
     }
   ];

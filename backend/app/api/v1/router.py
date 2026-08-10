@@ -57,10 +57,6 @@ from app.api.v1.routes.blog import router as blog_router
 
 api_v1_router.include_router(blog_router, prefix="/blog", tags=["Blog"])
 
-# ---- Research ----
-from app.api.v1.routes.research import router as research_router
-
-api_v1_router.include_router(research_router, prefix="/research", tags=["Research"])
 
 # ---- Services (CMS) ----
 from app.api.v1.routes.services import router as services_router

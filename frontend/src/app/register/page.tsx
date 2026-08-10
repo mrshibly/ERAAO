@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { User, Mail, Lock, UserPlus, AlertCircle, CheckCircle2, Shield } from "lucide-react";
+import { User, Mail, Lock, UserPlus, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -99,7 +99,7 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
-        throw new Error(body.detail || "Registration failed. Email might already be taken.");
+        throw new Error(body.detail || "Registration failed. Email might already be registered.");
       }
 
       setSuccess(true);
@@ -112,59 +112,59 @@ export default function RegisterPage() {
 
   return (
     <div style={{
-      minHeight: "92vh",
+      minHeight: "85vh",
       display: "flex",
       width: "100%",
-      backgroundColor: "#ffffff",
-      fontFamily: "inherit"
+      backgroundColor: "#ffffff"
     }} className="responsive-flex-column">
       
-      {/* Left Column - Clean Light Form Panel */}
+      {/* Left Column — Simple, Clean Form */}
       <div style={{
-        flex: "1 1 45%",
+        flex: "1 1 50%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        padding: "3.5rem 2rem",
+        padding: "3rem 2rem",
         backgroundColor: "#ffffff"
       }}>
-        <div style={{ width: "100%", maxWidth: "25rem" }}>
+        <div style={{ width: "100%", maxWidth: "24rem" }}>
           
-          {/* Logo / Badge */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "2rem" }}>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "36px",
-              height: "36px",
-              borderRadius: "8px",
-              background: "rgba(16, 185, 129, 0.08)",
-              color: "var(--accent-emerald)"
-            }}>
-              <Shield size={20} />
-            </div>
-            <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "0.02em" }}>Academy.</span>
-          </div>
-
           {success ? (
             <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
-              <CheckCircle2 size={64} style={{ color: "var(--accent-emerald)", margin: "0 auto 1.5rem auto" }} />
-              <h2 style={{ fontSize: "1.5rem", fontWeight: 800, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Account Created</h2>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "2rem", lineHeight: 1.5 }}>
-                An email verification link has been sent to <strong>{email}</strong>. Please verify your email to unlock your workspace.
+              <CheckCircle2 size={56} style={{ color: "#10b981", margin: "0 auto 1.25rem auto" }} />
+              <h2 style={{ fontSize: "1.65rem", fontWeight: 800, marginBottom: "0.5rem", color: "#0f172a" }}>Account Created</h2>
+              <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "1.75rem", lineHeight: 1.6 }}>
+                We sent a verification link to <strong>{email}</strong>. Please check your inbox to activate your account.
               </p>
-              <Link href="/login" className="btn btn-primary" style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", fontWeight: 750 }}>
-                Proceed to Login
+              <Link href="/login" style={{
+                display: "block",
+                width: "100%",
+                padding: "0.8rem",
+                borderRadius: "10px",
+                fontWeight: 700,
+                background: "#0ea5e9",
+                color: "white",
+                textDecoration: "none",
+                textAlign: "center"
+              }}>
+                Sign In Now
               </Link>
             </div>
           ) : (
             <>
               <div style={{ marginBottom: "2rem" }}>
-                <h1 style={{ fontSize: "1.85rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>Create Account</h1>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.25rem" }}>
-                  Join our cybersecurity & AI training tracks to earn certified digital credentials.
+                <h1 style={{
+                  fontSize: "2rem",
+                  fontWeight: 800,
+                  color: "#0f172a",
+                  letterSpacing: "-0.02em",
+                  marginBottom: "0.5rem"
+                }}>
+                  Create Account
+                </h1>
+                <p style={{ color: "#64748b", fontSize: "0.95rem" }}>
+                  Join ERAAO to start learning and accessing security tools.
                 </p>
               </div>
 
@@ -172,16 +172,16 @@ export default function RegisterPage() {
                 <div style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.5rem",
+                  gap: "0.6rem",
                   background: "#fef2f2",
                   border: "1px solid #fecaca",
-                  color: "#b91c1c",
+                  color: "#991b1b",
                   padding: "0.8rem 1rem",
-                  borderRadius: "8px",
-                  fontSize: "0.85rem",
+                  borderRadius: "10px",
+                  fontSize: "0.875rem",
                   marginBottom: "1.5rem"
                 }}>
-                  <AlertCircle size={16} style={{ flexShrink: 0 }} />
+                  <AlertCircle size={18} style={{ flexShrink: 0 }} />
                   <span>{error}</span>
                 </div>
               )}
@@ -195,23 +195,30 @@ export default function RegisterPage() {
                   alignItems: "center",
                   width: "100%",
                   margin: "1.25rem 0 0.5rem 0",
-                  color: "var(--text-muted)",
+                  color: "#94a3b8",
                   fontSize: "0.75rem",
-                  fontWeight: 600,
-                  letterSpacing: "0.05em"
+                  fontWeight: 600
                 }}>
-                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
-                  <span style={{ padding: "0 0.75rem" }}>OR JOIN WITH EMAIL</span>
-                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
+                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
+                  <span style={{ padding: "0 0.75rem" }}>or sign up with email</span>
+                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
                 </div>
               </div>
 
-              {/* Inputs Form */}
+              {/* Form */}
               <form onSubmit={handleRegister} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                 <div>
-                  <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.02em" }}>Full Name</label>
-                  <div style={{ position: "relative", marginTop: "0.35rem" }}>
-                    <User size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+                  <label style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    color: "#334155",
+                    display: "block",
+                    marginBottom: "0.4rem"
+                  }}>
+                    Full name
+                  </label>
+                  <div style={{ position: "relative" }}>
+                    <User size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
                     <input
                       required
                       type="text"
@@ -221,11 +228,11 @@ export default function RegisterPage() {
                       style={{
                         width: "100%",
                         background: "#ffffff",
-                        border: "1px solid var(--border-color)",
-                        borderRadius: "8px",
-                        padding: "0.7rem 1rem 0.7rem 2.25rem",
-                        fontSize: "0.9rem",
-                        color: "var(--text-primary)",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "10px",
+                        padding: "0.75rem 1rem 0.75rem 2.5rem",
+                        fontSize: "0.925rem",
+                        color: "#0f172a",
                         outline: "none",
                         boxSizing: "border-box"
                       }}
@@ -234,9 +241,17 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.02em" }}>Email Address</label>
-                  <div style={{ position: "relative", marginTop: "0.35rem" }}>
-                    <Mail size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+                  <label style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    color: "#334155",
+                    display: "block",
+                    marginBottom: "0.4rem"
+                  }}>
+                    Email address
+                  </label>
+                  <div style={{ position: "relative" }}>
+                    <Mail size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
                     <input
                       required
                       type="email"
@@ -246,11 +261,11 @@ export default function RegisterPage() {
                       style={{
                         width: "100%",
                         background: "#ffffff",
-                        border: "1px solid var(--border-color)",
-                        borderRadius: "8px",
-                        padding: "0.7rem 1rem 0.7rem 2.25rem",
-                        fontSize: "0.9rem",
-                        color: "var(--text-primary)",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "10px",
+                        padding: "0.75rem 1rem 0.75rem 2.5rem",
+                        fontSize: "0.925rem",
+                        color: "#0f172a",
                         outline: "none",
                         boxSizing: "border-box"
                       }}
@@ -259,23 +274,31 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.02em" }}>Password</label>
-                  <div style={{ position: "relative", marginTop: "0.35rem" }}>
-                    <Lock size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+                  <label style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    color: "#334155",
+                    display: "block",
+                    marginBottom: "0.4rem"
+                  }}>
+                    Password
+                  </label>
+                  <div style={{ position: "relative" }}>
+                    <Lock size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
                     <input
                       required
                       type="password"
-                      placeholder="••••••••••••"
+                      placeholder="Choose a password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       style={{
                         width: "100%",
                         background: "#ffffff",
-                        border: "1px solid var(--border-color)",
-                        borderRadius: "8px",
-                        padding: "0.7rem 1rem 0.7rem 2.25rem",
-                        fontSize: "0.9rem",
-                        color: "var(--text-primary)",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "10px",
+                        padding: "0.75rem 1rem 0.75rem 2.5rem",
+                        fontSize: "0.925rem",
+                        color: "#0f172a",
                         outline: "none",
                         boxSizing: "border-box"
                       }}
@@ -287,11 +310,11 @@ export default function RegisterPage() {
                   disabled={loading}
                   type="submit"
                   style={{
-                    background: "var(--accent-emerald)",
+                    background: "#10b981",
                     color: "#ffffff",
-                    padding: "0.75rem",
-                    borderRadius: "8px",
-                    fontSize: "0.9rem",
+                    padding: "0.8rem",
+                    borderRadius: "10px",
+                    fontSize: "0.95rem",
                     fontWeight: 700,
                     display: "flex",
                     alignItems: "center",
@@ -299,8 +322,8 @@ export default function RegisterPage() {
                     gap: "0.5rem",
                     border: "none",
                     cursor: loading ? "not-allowed" : "pointer",
-                    transition: "all 0.2s ease",
-                    marginTop: "0.5rem"
+                    marginTop: "0.5rem",
+                    transition: "background 0.2s ease"
                   }}
                 >
                   <UserPlus size={18} />
@@ -308,8 +331,8 @@ export default function RegisterPage() {
                 </button>
               </form>
 
-              <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                Already have an account? <Link href="/login" style={{ color: "var(--accent-emerald)", fontWeight: 700, textDecoration: "none" }}>Log in</Link>
+              <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.9rem", color: "#64748b" }}>
+                Already have an account? <Link href="/login" style={{ color: "#0ea5e9", fontWeight: 700, textDecoration: "none" }}>Sign in</Link>
               </p>
             </>
           )}
@@ -317,73 +340,47 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Right Column - unDraw Style Flat Vector Panel (Hidden on mobile via CSS) */}
+      {/* Right Column — Simple High-Quality Tech Image Card */}
       <div className="login-graphic" style={{
-        flex: "1 1 55%",
+        flex: "1 1 50%",
         position: "relative",
-        background: "#f8fafc",
-        borderLeft: "1px solid var(--border-color)",
+        overflow: "hidden",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        padding: "4rem"
+        justifyContent: "center",
+        padding: "2rem"
       }}>
-        
-        {/* unDraw Style Inline SVG Vector Illustration */}
-        <div style={{ width: "100%", maxWidth: "440px", marginBottom: "3rem" }}>
-          <svg viewBox="0 0 500 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Ground Shadow */}
-            <ellipse cx="250" cy="330" rx="160" ry="12" fill="#e2e8f0" />
-            
-            {/* Massive Tech Dashboard screen (unDraw style) */}
-            <rect x="120" y="70" width="260" height="210" rx="10" fill="#3f3d56" />
-            <rect x="135" y="85" width="230" height="180" fill="#ffffff" />
-            
-            {/* Dashboard Graphs inside Screen */}
-            <rect x="150" y="105" width="90" height="40" fill="#e0f2fe" rx="4" />
-            <rect x="250" y="105" width="100" height="40" fill="#d1fae5" rx="4" />
-            <rect x="150" y="160" width="200" height="8" fill="#e2e8f0" rx="4" />
-            <rect x="150" y="175" width="160" height="8" fill="#e2e8f0" rx="4" />
-            <rect x="150" y="190" width="180" height="8" fill="#e2e8f0" rx="4" />
-            <circle cx="170" cy="225" r="12" fill="#10b981" />
-            <circle cx="210" cy="225" r="12" fill="#0ea5e9" />
-            <circle cx="250" cy="225" r="12" fill="#8b5cf6" />
-            
-            {/* Character standing and building nodes (unDraw style) */}
-            {/* Legs */}
-            <path d="M100,240 L85,320 H105 L115,240 Z" fill="#2f2e41" />
-            <path d="M130,240 L145,320 H125 L120,240 Z" fill="#2f2e41" />
-            {/* Torso */}
-            <rect x="90" y="160" width="40" height="80" rx="12" fill="#10b981" />
-            <circle cx="110" cy="130" r="16" fill="#ffdbb5" />
-            {/* Hair */}
-            <path d="M92,125 C92,112 128,112 128,125 C128,115 105,110 92,125 Z" fill="#2f2e41" />
-            {/* Arms pointing at dashboard */}
-            <path d="M125" />
-            <path d="M115,180 C145,180 155,165 160,165" stroke="#ffdbb5" strokeWidth="8" strokeLinecap="round" />
-
-            {/* Plants & Shapes */}
-            <circle cx="430" cy="280" r="30" fill="#a7f3d0" opacity="0.6" />
-            <circle cx="60" cy="90" r="20" fill="#e0f2fe" opacity="0.8" />
-            <circle cx="390" cy="100" r="10" fill="#fef08a" />
-            
-            {/* Tiny floating elements */}
-            <path d="M380,180 L400,200 M400,180 L380,200" stroke="#3f3d56" strokeWidth="3" strokeLinecap="round" />
-            <path d="M420,130 H440 V150" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+        <div style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          minHeight: "480px",
+          borderRadius: "24px",
+          overflow: "hidden",
+          boxShadow: "0 20px 40px rgba(15, 23, 42, 0.12)"
+        }}>
+          <img
+            src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000&auto=format&fit=crop&q=80"
+            alt="Programming and technology training"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            padding: "3rem"
+          }}>
+            <h2 style={{ fontSize: "1.85rem", fontWeight: 800, color: "#ffffff", marginBottom: "0.75rem", lineHeight: 1.3 }}>
+              Practical Hands-On Learning
+            </h2>
+            <p style={{ color: "#cbd5e1", fontSize: "1rem", lineHeight: 1.6, maxWidth: "28rem" }}>
+              Join thousands of students and security professionals mastering cybersecurity and artificial intelligence.
+            </p>
+          </div>
         </div>
-
-        {/* Messaging */}
-        <div style={{ textAlign: "center", maxWidth: "26rem" }}>
-          <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
-            Certified Professional Education
-          </h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.925rem", lineHeight: 1.6 }}>
-            Gain hands-on validation, track specialized syllabus modules, and compile verifiable digital credentials respected by industry-leading security teams.
-          </p>
-        </div>
-
       </div>
 
     </div>

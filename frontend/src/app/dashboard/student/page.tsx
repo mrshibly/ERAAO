@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { BookOpen, Award, CheckCircle, Clock, ExternalLink, Shield, Cpu, Terminal, Share2, Compass, Activity, Server, ArrowRight, BookOpenText, GraduationCap, HelpCircle } from "lucide-react";
+import {
+  BookOpen, Award, CheckCircle, Clock, Play, Flame, Shield, Cpu,
+  Terminal, Activity, ArrowRight, Calendar, Sparkles, ExternalLink,
+  ShieldCheck, HelpCircle, Layers, Compass
+} from "lucide-react";
+import StudentOnboardingModal from "@/components/StudentOnboardingModal";
 
 export default function StudentDashboard() {
   const router = useRouter();
@@ -13,6 +18,7 @@ export default function StudentDashboard() {
   const [activeCourses, setActiveCourses] = useState<any[]>([]);
   const [certificates, setCertificates] = useState<any[]>([]);
   const [fetching, setFetching] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -20,12 +26,15 @@ export default function StudentDashboard() {
       router.push("/login");
       return;
     }
+    if (!user.onboarding_completed) {
+      setShowOnboarding(true);
+    }
 
     const fetchData = async () => {
       try {
         const headers = { "Authorization": `Bearer ${token}` };
 
-        // Fetch student dashboard overview
+        // Fetch student stats overview
         const statsRes = await fetch("/api/v1/dashboard/student/overview", { headers });
         if (statsRes.ok) {
           setStats(await statsRes.json());
@@ -43,7 +52,7 @@ export default function StudentDashboard() {
           setCertificates(await certRes.json());
         }
       } catch (err) {
-        console.error(err);
+        console.error("Dashboard fetch error:", err);
       } finally {
         setFetching(false);
       }
@@ -57,7 +66,7 @@ export default function StudentDashboard() {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "75vh", backgroundColor: "var(--bg-primary)" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
           <div style={{ width: "40px", height: "40px", border: "3px solid rgba(14, 165, 233, 0.15)", borderTopColor: "var(--accent-blue)", borderRadius: "50%", animation: "spin 1s linear infinite" }}></div>
-          <p style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Loading Academic Workspace...</p>
+          <p style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Loading Student Learning Command Center...</p>
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       </div>
@@ -65,458 +74,503 @@ export default function StudentDashboard() {
   }
 
   const getCourseImage = (title: string) => {
-    const t = title.toLowerCase();
-    if (t.includes("hack") || t.includes("penetration") || t.includes("security") || t.includes("defense")) {
+    const t = (title || "").toLowerCase();
+    if (t.includes("hack") || t.includes("penetration") || t.includes("security") || t.includes("defense") || t.includes("cyber")) {
       return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=600";
     }
-    if (t.includes("ai") || t.includes("intelligence") || t.includes("machine") || t.includes("neural") || t.includes("model")) {
+    if (t.includes("ai") || t.includes("intelligence") || t.includes("machine") || t.includes("model") || t.includes("neural")) {
       return "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&q=80&w=600";
     }
     return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600";
   };
 
+  const currentActiveCourse = activeCourses[0];
+  const activeProgress = currentActiveCourse ? Math.round(currentActiveCourse.progress || 0) : 0;
+
   return (
-    <div style={{ minHeight: "95vh" }}>
-      {/* Styles for dynamic interactions and glassmorphism elements */}
+    <div style={{ minHeight: "95vh", paddingBottom: "3rem" }}>
       <style>{`
-        .academic-header {
-          background: var(--card-bg);
-          border: 1px solid var(--border-color);
+        .portal-hero-banner {
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
           border-radius: var(--radius-lg);
           padding: 2.5rem 2rem;
-          margin-bottom: 2.5rem;
-          box-shadow: var(--shadow-sm);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 2rem;
+          color: white;
           position: relative;
           overflow: hidden;
+          box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.3);
+          margin-bottom: 2.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .academic-header::after {
+        .portal-hero-banner::after {
           content: "";
           position: absolute;
-          right: 0; top: 0; bottom: 0;
+          right: -50px;
+          bottom: -50px;
           width: 300px;
-          background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.02));
+          height: 300px;
+          background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
           pointer-events: none;
         }
-        @media (max-width: 768px) {
-          .academic-header {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 2rem 1.5rem;
-          }
+        .portal-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1.25rem;
+          margin-bottom: 2.5rem;
         }
-        .stat-badge-grid {
-          display: flex;
-          gap: 1.5rem;
+        @media (max-width: 1024px) {
+          .portal-stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 480px) {
-          .stat-badge-grid {
-            flex-direction: column;
-            width: 100%;
-          }
+          .portal-stats-grid { grid-template-columns: 1fr; }
         }
-        .stat-badge-card {
-          background: var(--bg-primary);
+        .portal-stat-card {
+          background: var(--card-bg);
           border: 1px solid var(--border-color);
           border-radius: var(--radius-md);
-          padding: 1rem 1.5rem;
+          padding: 1.25rem 1.5rem;
           display: flex;
           align-items: center;
-          gap: 1rem;
-          min-width: 160px;
+          gap: 1.25rem;
+          box-shadow: var(--shadow-sm);
         }
-        .icon-circle {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: rgba(14, 165, 233, 0.08);
-          color: var(--accent-blue);
-        }
-        .lms-grid-container {
+        .portal-grid-main {
           display: grid;
-          grid-template-columns: 2.3fr 1fr;
+          grid-template-columns: 2.4fr 1fr;
           gap: 2.5rem;
         }
         @media (max-width: 1024px) {
-          .lms-grid-container {
-            grid-template-columns: 1fr;
-            gap: 3rem;
-          }
+          .portal-grid-main { grid-template-columns: 1fr; }
         }
-        .course-card-premium {
+        .streak-tracker-bar {
           background: var(--card-bg);
           border: 1px solid var(--border-color);
           border-radius: var(--radius-md);
-          overflow: hidden;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
           display: flex;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          align-items: center;
+          justify-content: space-between;
+          gap: 1.5rem;
           box-shadow: var(--shadow-sm);
         }
-        .course-card-premium:hover {
-          transform: translateY(-4px);
-          box-shadow: var(--shadow-md), 0 10px 20px rgba(0, 0, 0, 0.02);
-          border-color: var(--accent-blue);
-        }
         @media (max-width: 640px) {
-          .course-card-premium {
-            flex-direction: column;
-          }
-          .cover-aside {
-            width: 100% !important;
-            height: 160px;
-          }
+          .streak-tracker-bar { flex-direction: column; align-items: flex-start; }
         }
-        .cover-aside {
-          width: 210px;
-          position: relative;
-          overflow: hidden;
-          background: #0f172a;
-          flex-shrink: 0;
-        }
-        .cover-aside img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          opacity: 0.85;
-          transition: transform 0.4s ease;
-        }
-        .course-card-premium:hover .cover-aside img {
-          transform: scale(1.05);
-        }
-        .course-details-pane {
-          padding: 1.75rem;
-          flex: 1;
+        .streak-days-flex {
           display: flex;
-          flex-direction: column;
-          justify-content: space-between;
+          gap: 0.5rem;
         }
-        .curriculum-progress-track {
-          height: 6px;
-          background: var(--border-color);
-          border-radius: 10px;
-          overflow: hidden;
-          margin: 0.5rem 0 1.25rem 0;
-        }
-        .curriculum-progress-fill {
-          height: 100%;
-          border-radius: 10px;
-        }
-        .btn-academic-primary {
-          background: var(--text-primary);
-          color: white;
-          padding: 0.55rem 1.25rem;
-          border-radius: var(--radius-sm);
-          font-size: 0.85rem;
-          font-weight: 700;
-          text-decoration: none;
-          display: inline-flex;
+        .streak-day-bubble {
+          width: 34px;
+          height: 34px;
+          borderRadius: 50%;
+          display: flex;
           align-items: center;
-          gap: 0.4rem;
-          transition: all 0.2s ease;
-        }
-        .btn-academic-primary:hover {
-          background: #1e293b;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
-        }
-        .academic-cert-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-md);
-          padding: 1.5rem;
-          transition: all 0.3s ease;
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-        }
-        .academic-cert-card:hover {
-          border-color: var(--accent-violet);
-          box-shadow: var(--shadow-md);
-        }
-        .sidebar-widget {
-          background: var(--card-bg);
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-md);
-          padding: 1.5rem;
-          margin-top: 1.5rem;
+          justify-content: center;
+          font-size: 0.75rem;
+          font-weight: 700;
         }
       `}</style>
 
-      <div className="container">
-        
-        {/* Academic Student Header Dashboard */}
-        <div className="academic-header">
-          <div>
-            <span style={{ fontSize: "0.75rem", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "0.35rem" }}>
-              Academy Student Hub
-            </span>
-            <h1 style={{ fontSize: "1.85rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
-              Welcome back, {user?.full_name}
+      {/* Hero Banner — Quick Resume Learning */}
+      <div className="portal-hero-banner anim-fade-up">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "2rem", position: "relative", zIndex: 2 }}>
+          <div style={{ maxWidth: "600px" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: "rgba(14, 165, 233, 0.2)", border: "1px solid rgba(14, 165, 233, 0.4)", color: "#38bdf8", padding: "0.25rem 0.75rem", borderRadius: "20px", fontSize: "0.75rem", fontWeight: 700, marginBottom: "1rem" }}>
+              <Sparkles size={14} /> Student Command Center
+            </div>
+            <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: "1.2" }}>
+              Welcome back, {user?.full_name || "Student"}!
             </h1>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
-              Track your syllabus modules, review earned credentials, and resume active courses.
+            <p style={{ color: "#94a3b8", fontSize: "0.95rem", marginTop: "0.5rem", lineHeight: "1.5" }}>
+              {currentActiveCourse
+                ? `You're currently making progress in ${currentActiveCourse.course?.title || "your cybersecurity bootcamp"}. Keep your learning momentum going!`
+                : "Explore ERAAO's industry-grade bootcamps in Ethical Hacking, Cyber Defense, and Applied AI to kickstart your journey."}
             </p>
-          </div>
 
-          {/* Quick Metrics Badge List */}
-          <div className="stat-badge-grid">
-            <div className="stat-badge-card">
-              <div className="icon-circle" style={{ color: "var(--accent-blue)", background: "rgba(14, 165, 233, 0.08)" }}>
-                <BookOpenText size={18} />
-              </div>
-              <div>
-                <span style={{ display: "block", fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1 }}>{stats.enrolled_courses}</span>
-                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase" }}>Enrolled</span>
-              </div>
-            </div>
-
-            <div className="stat-badge-card">
-              <div className="icon-circle" style={{ color: "var(--accent-emerald)", background: "rgba(16, 185, 129, 0.08)" }}>
-                <CheckCircle size={18} />
-              </div>
-              <div>
-                <span style={{ display: "block", fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1 }}>{stats.completed_courses}</span>
-                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase" }}>Completed</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Workspace Layout Grid */}
-        <div className="lms-grid-container">
-          
-          {/* Main Area: Enrolled Pathways */}
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <GraduationCap size={22} style={{ color: "var(--accent-blue)" }} /> Enrolled Course Pathways
-              </h2>
-              <Link href="/academy" style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--accent-blue)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.25rem" }}>
-                Explore Curriculum <ArrowRight size={14} />
-              </Link>
-            </div>
-
-            {activeCourses.length === 0 ? (
-              <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "4rem 2rem", textAlign: "center" }}>
-                <BookOpenText size={40} style={{ color: "var(--text-muted)", opacity: 0.4, marginBottom: "1rem" }} />
-                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.5rem" }}>No Enrolled Courses Found</h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-                  Begin your specialized cybersecurity or AI engineering pathway by enrolling in our courses.
-                </p>
-                <Link href="/academy" className="btn btn-primary" style={{ padding: "0.6rem 1.5rem" }}>
-                  Browse Course Catalog
+            {currentActiveCourse && (
+              <div style={{ marginTop: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }}>
+                <Link
+                  href={`/learn/${currentActiveCourse.id}`}
+                  style={{
+                    background: "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)",
+                    color: "white",
+                    padding: "0.75rem 1.75rem",
+                    borderRadius: "12px",
+                    fontWeight: 800,
+                    fontSize: "0.95rem",
+                    textDecoration: "none",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    boxShadow: "0 8px 20px rgba(14, 165, 233, 0.35)"
+                  }}
+                >
+                  <Play size={18} fill="white" />
+                  <span>Resume Course ({activeProgress}% Done)</span>
                 </Link>
-              </div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                {activeCourses.map((enrollment) => {
-                  const coverUrl = getCourseImage(enrollment.course?.title || "");
-                  return (
-                    <div key={enrollment.id} className="course-card-premium">
-                      <div className="cover-aside">
-                        <img src={coverUrl} alt="Course cover" />
-                        <div style={{ position: "absolute", top: "12px", left: "12px" }}>
-                          <span style={{ fontSize: "0.65rem", background: enrollment.status === "active" ? "var(--accent-blue)" : "var(--accent-emerald)", color: "white", padding: "0.25rem 0.6rem", borderRadius: "20px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                            {enrollment.status === "active" ? "In Progress" : "Completed"}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="course-details-pane">
-                        <div>
-                          <span style={{ fontSize: "0.7rem", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", display: "block" }}>
-                            {enrollment.course?.level || "Specialized"} Course Track
-                          </span>
-                          <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "0.25rem" }}>
-                            {enrollment.course?.title || "Specialized Training"}
-                          </h3>
-                          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.35rem", lineHeight: 1.5 }}>
-                            {enrollment.course?.short_description || "Comprehensive modular learning path designed to elevate professional capabilities and practical engineering skills."}
-                          </p>
-                        </div>
-
-                        <div style={{ marginTop: "1.5rem" }}>
-                          {/* Syllabus progress status indicator */}
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Syllabus Progress</span>
-                            <span style={{ fontSize: "0.75rem", color: "var(--text-primary)", fontWeight: 700 }}>
-                              {enrollment.status === "completed" ? "100% Completed" : "In Progress"}
-                            </span>
-                          </div>
-                          
-                          <div className="curriculum-progress-track">
-                            <div
-                              className="curriculum-progress-fill"
-                              style={{
-                                width: enrollment.status === "completed" ? "100%" : "35%",
-                                background: enrollment.status === "completed" ? "linear-gradient(to right, var(--accent-emerald), #059669)" : "linear-gradient(to right, var(--accent-blue), #60a5fa)"
-                              }}
-                            ></div>
-                          </div>
-
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                              Registered: {new Date(enrollment.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                            </span>
-                            <Link href={`/learn/${enrollment.id}`} className="btn-academic-primary">
-                              Resume Lectures <ArrowRight size={14} />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                <Link
+                  href="/dashboard/student/courses"
+                  style={{ color: "#94a3b8", fontSize: "0.875rem", textDecoration: "none", fontWeight: 600 }}
+                >
+                  View All Syllabi →
+                </Link>
               </div>
             )}
           </div>
 
-          {/* Sidebar Area: Achievements & Support */}
+          {/* Quick Learning Stats Widget */}
+          <div style={{
+            background: "rgba(255, 255, 255, 0.05)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            borderRadius: "16px",
+            padding: "1.5rem",
+            minWidth: "220px",
+            textAlign: "center"
+          }}>
+            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "48px", height: "48px", borderRadius: "50%", background: "rgba(16, 185, 129, 0.2)", color: "#10b981", marginBottom: "0.75rem" }}>
+              <Flame size={26} />
+            </div>
+            <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#ffffff" }}>5 Days</div>
+            <div style={{ fontSize: "0.78rem", color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Current Study Streak 🔥</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Metric Cards Grid */}
+      <div className="portal-stats-grid anim-fade-up">
+        <div className="portal-stat-card">
+          <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <BookOpen size={22} />
+          </div>
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.5rem" }}>
-              <Award size={20} style={{ color: "var(--accent-violet)" }} />
-              <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)" }}>My Achievements</h2>
+            <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text-primary)" }}>{stats.enrolled_courses}</div>
+            <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 600 }}>Enrolled Bootcamps</div>
+          </div>
+        </div>
+
+        <div className="portal-stat-card">
+          <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(16, 185, 129, 0.1)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <CheckCircle size={22} />
+          </div>
+          <div>
+            <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text-primary)" }}>{stats.completed_courses}</div>
+            <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 600 }}>Completed Syllabi</div>
+          </div>
+        </div>
+
+        <div className="portal-stat-card">
+          <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Award size={22} />
+          </div>
+          <div>
+            <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text-primary)" }}>{stats.certificates_earned}</div>
+            <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 600 }}>Verified Badges</div>
+          </div>
+        </div>
+
+        <div className="portal-stat-card">
+          <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(139, 92, 246, 0.1)", color: "#8b5cf6", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Clock size={22} />
+          </div>
+          <div>
+            <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text-primary)" }}>18.5 hrs</div>
+            <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 600 }}>Weekly Lab Time</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Command Center Grid */}
+      <div className="portal-grid-main">
+
+        {/* Left Column — Active Courses & Lab Modules */}
+        <div>
+          {/* Weekly Learning Activity Tracker */}
+          <div className="streak-tracker-bar">
+            <div>
+              <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <Activity size={18} style={{ color: "var(--accent-blue)" }} /> Learning Activity Tracker
+              </div>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
+                Complete 1 module daily to maintain your study streak.
+              </p>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              {certificates.length === 0 ? (
-                <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "3rem 1.5rem", textAlign: "center" }}>
-                  <Award size={36} style={{ color: "var(--text-muted)", opacity: 0.35, marginBottom: "0.75rem" }} />
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                    Your graduation certificates will render here automatically upon course pathway completion.
-                  </p>
+            <div className="streak-days-flex">
+              {[
+                { day: "M", active: true },
+                { day: "T", active: true },
+                { day: "W", active: true },
+                { day: "T", active: true },
+                { day: "F", active: true },
+                { day: "S", active: false },
+                { day: "S", active: false }
+              ].map((d, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    background: d.active ? "var(--accent-blue)" : "var(--bg-primary)",
+                    color: d.active ? "white" : "var(--text-muted)",
+                    border: d.active ? "none" : "1px solid var(--border-color)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.75rem",
+                    fontWeight: 700
+                  }}
+                >
+                  {d.day}
                 </div>
-              ) : (
-                certificates.map((cert) => {
-                  const verifyUrl = typeof window !== "undefined"
-                    ? `${window.location.origin}/verify/${cert.verification_id}`
-                    : "";
-                  const linkedInUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME` +
-                    `&name=${encodeURIComponent(cert.course?.title || "Specialized Tech Certificate")}` +
-                    `&organizationName=${encodeURIComponent("Academy")}` +
-                    `&certUrl=${encodeURIComponent(verifyUrl)}` +
-                    `&certId=${encodeURIComponent(cert.verification_id)}`;
+              ))}
+            </div>
+          </div>
 
-                  return (
-                    <div key={cert.id} className="academic-cert-card">
-                      <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
-                        <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(139, 92, 246, 0.08)", color: "var(--accent-violet)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
-                          <Award size={18} style={{ margin: "auto" }} />
-                        </div>
-                        <div>
-                          <h4 style={{ fontWeight: 800, fontSize: "0.95rem", color: "var(--text-primary)", lineHeight: 1.4 }}>
-                            {cert.course?.title}
-                          </h4>
-                          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "block", marginTop: "0.15rem" }}>
-                            Graduation: {new Date(cert.issued_at).toLocaleDateString()}
+          {/* Section Title */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+            <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)" }}>
+              Active Enrolled Syllabi
+            </h2>
+            <Link href="/dashboard/student/courses" style={{ color: "var(--accent-blue)", fontSize: "0.85rem", fontWeight: 700, textDecoration: "none" }}>
+              View All ({activeCourses.length}) →
+            </Link>
+          </div>
+
+          {/* Courses List */}
+          {activeCourses.length === 0 ? (
+            <div style={{
+              background: "var(--card-bg)",
+              border: "1px dashed var(--border-color)",
+              borderRadius: "var(--radius-lg)",
+              padding: "3rem 1.5rem",
+              textAlign: "center",
+              marginBottom: "2rem"
+            }}>
+              <BookOpen size={36} style={{ color: "var(--text-muted)", marginBottom: "0.75rem" }} />
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)" }}>No enrolled courses yet</h3>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", marginTop: "0.3rem", marginBottom: "1.25rem" }}>
+                Join an ERAAO bootcamp to access video lectures, virtual labs, and certifications.
+              </p>
+              <Link href="/dashboard/student/catalog" style={{
+                background: "var(--accent-blue)",
+                color: "white",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "var(--radius-md)",
+                fontWeight: 700,
+                fontSize: "0.875rem",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}>
+                Browse Catalog <ArrowRight size={16} />
+              </Link>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginBottom: "2.5rem" }}>
+              {activeCourses.map((item) => {
+                const course = item.course || {};
+                const progress = Math.round(item.progress || 0);
+
+                return (
+                  <div
+                    key={item.id}
+                    style={{
+                      background: "var(--card-bg)",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "var(--radius-md)",
+                      overflow: "hidden",
+                      display: "flex",
+                      boxShadow: "var(--shadow-sm)",
+                      transition: "all 0.25 ease"
+                    }}
+                    className="hover-lift"
+                  >
+                    <div style={{ width: "180px", position: "relative", overflow: "hidden", background: "#0f172a", flexShrink: 0 }}>
+                      <img src={getCourseImage(course.title)} alt={course.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+
+                    <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                      <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                          <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: "1.3" }}>
+                            {course.title || "Cybersecurity Course"}
+                          </h3>
+                          <span style={{
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            padding: "0.2rem 0.6rem",
+                            borderRadius: "12px",
+                            background: progress >= 100 ? "rgba(16, 185, 129, 0.1)" : "rgba(14, 165, 233, 0.1)",
+                            color: progress >= 100 ? "#10b981" : "var(--accent-blue)"
+                          }}>
+                            {progress >= 100 ? "Completed" : `${progress}% Done`}
                           </span>
                         </div>
+                        <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.35rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                          {course.description || "Master hands-on labs and core security principles."}
+                        </p>
                       </div>
 
-                      <div style={{ display: "flex", gap: "0.75rem" }}>
-                        <a
-                          href={cert.pdf_url}
-                          download={`certificate-${cert.verification_id || 'completion'}.pdf`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            background: "rgba(139, 92, 246, 0.06)",
-                            color: "var(--accent-violet)",
-                            padding: "0.5rem 0.9rem",
-                            borderRadius: "6px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "0.35rem",
-                            fontSize: "0.8rem",
-                            fontWeight: 700,
-                            textDecoration: "none",
-                            border: "1px solid rgba(139, 92, 246, 0.12)",
-                            transition: "all 0.2s ease",
-                            flex: 1
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "var(--accent-violet)";
-                            e.currentTarget.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
-                            e.currentTarget.style.color = "var(--accent-violet)";
-                          }}
-                        >
-                          <ExternalLink size={12} /> PDF Copy
-                        </a>
+                      <div style={{ marginTop: "1rem" }}>
+                        <div style={{ height: "6px", background: "var(--border-color)", borderRadius: "4px", overflow: "hidden", marginBottom: "0.85rem" }}>
+                          <div style={{ height: "100%", width: `${progress}%`, background: progress >= 100 ? "#10b981" : "var(--accent-blue)", borderRadius: "4px" }} />
+                        </div>
 
-                        <a
-                          href={linkedInUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            background: "rgba(10, 102, 194, 0.06)",
-                            color: "#0a66c2",
-                            padding: "0.5rem 0.9rem",
-                            borderRadius: "6px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "0.35rem",
-                            fontSize: "0.8rem",
-                            fontWeight: 700,
-                            textDecoration: "none",
-                            border: "1px solid rgba(10, 102, 194, 0.12)",
-                            transition: "all 0.2s ease",
-                            flex: 1
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#0a66c2";
-                            e.currentTarget.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "rgba(10, 102, 194, 0.06)";
-                            e.currentTarget.style.color = "#0a66c2";
-                          }}
-                        >
-                          <Share2 size={12} /> Add to Profile
-                        </a>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                            Modules: 6 Completed
+                          </span>
+                          <Link
+                            href={`/learn/${item.id}`}
+                            style={{
+                              background: "var(--accent-blue)",
+                              color: "white",
+                              padding: "0.45rem 1rem",
+                              borderRadius: "var(--radius-sm)",
+                              fontWeight: 700,
+                              fontSize: "0.825rem",
+                              textDecoration: "none",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "0.35rem"
+                            }}
+                          >
+                            <Play size={14} /> Continue Lesson
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                  );
-                })
-              )}
+                  </div>
+                );
+              })}
             </div>
+          )}
+        </div>
 
-            {/* Quick Links / Support Desk */}
-            <div className="sidebar-widget">
-              <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <HelpCircle size={16} style={{ color: "var(--accent-blue)" }} /> Student Resources
-              </h3>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.85rem" }}>
-                <li>
-                  <Link href="/contact" style={{ color: "var(--text-secondary)", textDecoration: "none", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>Technical Support Desk</span>
-                    <ArrowRight size={12} style={{ opacity: 0.6 }} />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/academy" style={{ color: "var(--text-secondary)", textDecoration: "none", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>Syllabus Catalog & Advising</span>
-                    <ArrowRight size={12} style={{ opacity: 0.6 }} />
-                  </Link>
-                </li>
-              </ul>
+        {/* Right Column — Widgets & Upcoming Live Sessions */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
+
+          {/* Upcoming Live Sessions Widget */}
+          <div style={{
+            background: "var(--card-bg)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "var(--radius-md)",
+            padding: "1.5rem"
+          }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Calendar size={18} style={{ color: "var(--accent-blue)" }} /> Live Lab Sessions & Q&A
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+              {[
+                { title: "Penetration Testing Lab Q&A", time: "Tomorrow, 8:00 PM BDT", tag: "Interactive" },
+                { title: "AI Security & Threat Modeling Workshop", time: "Friday, 7:30 PM BDT", tag: "Bootcamp" }
+              ].map((ev, i) => (
+                <div key={i} style={{ padding: "0.85rem", borderRadius: "var(--radius-sm)", background: "var(--bg-primary)", border: "1px solid var(--border-color)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)" }}>{ev.title}</div>
+                    <span style={{ fontSize: "0.7rem", color: "var(--accent-blue)", fontWeight: 700 }}>{ev.tag}</span>
+                  </div>
+                  <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "0.3rem", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                    <Clock size={12} /> {ev.time}
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
 
+          {/* Verified Badges Widget */}
+          <div style={{
+            background: "var(--card-bg)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "var(--radius-md)",
+            padding: "1.5rem"
+          }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Award size={18} style={{ color: "#f59e0b" }} /> Verified Badges
+            </h3>
+            {certificates.length === 0 ? (
+              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                No certificates earned yet. Complete your first syllabus to earn a verified credential badge.
+              </p>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {certificates.slice(0, 2).map((cert) => (
+                  <Link
+                    key={cert.id}
+                    href={`/verify/${cert.verification_id || cert.id}`}
+                    target="_blank"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                      padding: "0.75rem",
+                      borderRadius: "var(--radius-sm)",
+                      background: "var(--bg-primary)",
+                      border: "1px solid var(--border-color)",
+                      textDecoration: "none"
+                    }}
+                  >
+                    <ShieldCheck size={20} style={{ color: "#10b981", flexShrink: 0 }} />
+                    <div style={{ overflow: "hidden" }}>
+                      <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {cert.course_title}
+                      </div>
+                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Verified Credentials</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Quick Academic Support Widget */}
+          <div style={{
+            background: "var(--card-bg)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "var(--radius-md)",
+            padding: "1.5rem"
+          }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <HelpCircle size={18} style={{ color: "var(--accent-blue)" }} /> Need Assistance?
+            </h3>
+            <p style={{ fontSize: "0.825rem", color: "var(--text-secondary)", marginBottom: "1rem" }}>
+              Encountering virtual lab issues or syllabus questions? Our instructors are ready to assist.
+            </p>
+            <Link
+              href="/dashboard/student/tickets"
+              style={{
+                width: "100%",
+                padding: "0.6rem",
+                borderRadius: "var(--radius-md)",
+                background: "var(--bg-primary)",
+                border: "1px solid var(--border-color)",
+                color: "var(--text-primary)",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.4rem",
+                boxSizing: "border-box"
+              }}
+            >
+              Open Support Ticket
+            </Link>
           </div>
 
         </div>
 
       </div>
+
+      {/* Onboarding Modal */}
+      {showOnboarding && (
+        <StudentOnboardingModal onComplete={() => setShowOnboarding(false)} />
+      )}
     </div>
   );
 }

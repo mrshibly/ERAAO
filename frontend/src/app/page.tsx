@@ -18,7 +18,7 @@ export default function Home() {
         borderBottom: "1px solid #e2e8f0"
       }}>
         {/* 60% Dominant Canvas — Soft Ambient Radial Glow & Grid Pattern */}
-        <div style={{
+        <div className="anim-glow" style={{
           position: "absolute",
           inset: 0,
           backgroundImage: `
@@ -29,7 +29,7 @@ export default function Home() {
         }} />
 
         {/* Lightweight Fast-Loading Dot Matrix Grid */}
-        <div style={{
+        <div className="anim-fade-in" style={{
           position: "absolute",
           inset: 0,
           backgroundImage: "radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px)",
@@ -48,37 +48,10 @@ export default function Home() {
         }}>
           {/* Left Column — 30% Text Structure & 10% Accent Buttons */}
           <div>
-            {/* Live Status + Slogan Badge */}
-            <div style={{ marginBottom: "1.5rem" }}>
-              <span style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.6rem",
-                background: "rgba(255, 255, 255, 0.9)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(14, 165, 233, 0.3)",
-                color: "#0f172a",
-                padding: "0.45rem 1.1rem",
-                borderRadius: "9999px",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                boxShadow: "0 4px 15px rgba(14, 165, 233, 0.12)"
-              }}>
-                <span style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  backgroundColor: "#10b981",
-                  boxShadow: "0 0 10px #10b981"
-                }} />
-                <span style={{ color: "#0ea5e9", fontWeight: 800 }}>ERAAO</span>
-                <span style={{ color: "#cbd5e1" }}>|</span>
-                <span style={{ color: "#475569" }}>Lighting the Future</span>
-              </span>
-            </div>
+
 
             {/* 30% Secondary — High Contrast Main Title */}
-            <h1 style={{
+            <h1 className="anim-fade-up anim-delay-1" style={{
               fontSize: "3.75rem",
               fontWeight: 900,
               letterSpacing: "-0.035em",
@@ -87,19 +60,20 @@ export default function Home() {
               marginBottom: "1.5rem"
             }}>
               The Convergence of
-              <span style={{
+              <span className="gradient-text-animated" style={{
                 display: "block",
                 background: "linear-gradient(135deg, #0ea5e9 0%, #7c3aed 60%, #0d9488 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                backgroundClip: "text"
+                backgroundClip: "text",
+                backgroundSize: "200% auto"
               }}>
                 Applied AI & Offensive Security
               </span>
             </h1>
 
             {/* Subheadline Paragraph */}
-            <p style={{
+            <p className="anim-fade-up anim-delay-2" style={{
               fontSize: "1.15rem",
               color: "#475569",
               lineHeight: 1.65,
@@ -110,7 +84,7 @@ export default function Home() {
             </p>
 
             {/* 10% Accent CTAs */}
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div className="anim-fade-up anim-delay-3" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <Link href="/academy" className="btn btn-accent" style={{
                 padding: "0.9rem 2.25rem",
                 fontSize: "1rem",
@@ -139,7 +113,7 @@ export default function Home() {
             </div>
 
             {/* 30% Structural Trust Bar */}
-            <div style={{
+            <div className="anim-fade-up anim-delay-4" style={{
               display: "flex",
               gap: "2.5rem",
               marginTop: "3rem",
@@ -162,9 +136,9 @@ export default function Home() {
           </div>
 
           {/* Right Column — 30% Secondary Dark Framing & 10% Accent Floating Cards */}
-          <div style={{ position: "relative", minHeight: "480px" }}>
+          <div className="anim-slide-right anim-delay-3" style={{ position: "relative", minHeight: "480px" }}>
             {/* Primary Frame (Cyber Security Terminal — Fast Load WebP) */}
-            <div style={{
+            <div className="anim-float" style={{
               position: "absolute",
               top: "0",
               right: "0",
@@ -173,8 +147,7 @@ export default function Home() {
               borderRadius: "20px",
               overflow: "hidden",
               boxShadow: "0 25px 60px -15px rgba(15, 23, 42, 0.25)",
-              border: "1px solid #e2e8f0",
-              animation: "float 6s ease-in-out infinite"
+              border: "1px solid #e2e8f0"
             }}>
               <img
                 src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=75"
@@ -190,7 +163,7 @@ export default function Home() {
             </div>
 
             {/* Secondary Frame (AI Neural Core — Fast Load WebP) */}
-            <div style={{
+            <div className="anim-float-delayed" style={{
               position: "absolute",
               bottom: "20px",
               left: "0",
@@ -199,9 +172,7 @@ export default function Home() {
               borderRadius: "18px",
               overflow: "hidden",
               boxShadow: "0 20px 45px -10px rgba(15, 23, 42, 0.28)",
-              border: "4px solid #ffffff",
-              animation: "float 6s ease-in-out infinite",
-              animationDelay: "-3s"
+              border: "4px solid #ffffff"
             }}>
               <img
                 src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format&fit=crop&q=75"
@@ -212,7 +183,7 @@ export default function Home() {
             </div>
 
             {/* Floating Glassmorphic Badge 1: SOC-2 Ready */}
-            <div style={{
+            <div className="anim-float" style={{
               position: "absolute",
               top: "210px",
               right: "-15px",
@@ -225,7 +196,6 @@ export default function Home() {
               alignItems: "center",
               gap: "0.85rem",
               boxShadow: "0 15px 35px rgba(15, 23, 42, 0.12)",
-              animation: "float 6s ease-in-out infinite",
               animationDelay: "-1.5s",
               zIndex: 10
             }}>
@@ -247,7 +217,7 @@ export default function Home() {
             </div>
 
             {/* Floating Glassmorphic Badge 2: LLM Multi-Agent */}
-            <div style={{
+            <div className="anim-float-delayed" style={{
               position: "absolute",
               bottom: "-10px",
               right: "30px",
@@ -260,7 +230,6 @@ export default function Home() {
               alignItems: "center",
               gap: "0.85rem",
               boxShadow: "0 15px 35px rgba(15, 23, 42, 0.12)",
-              animation: "float 6s ease-in-out infinite",
               animationDelay: "-4.5s",
               zIndex: 10
             }}>

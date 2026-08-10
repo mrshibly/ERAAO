@@ -67,7 +67,6 @@ export default function Navbar() {
             <li><Link href="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link></li>
             <li><Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Services</Link></li>
             <li><Link href="/academy" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Academy</Link></li>
-            <li><Link href="/research" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Research</Link></li>
             <li><Link href="/careers" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Careers</Link></li>
             <li><Link href="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About</Link></li>
             <li><Link href="/blog" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Blog</Link></li>
