@@ -30,6 +30,8 @@ class ContentType(str, enum.Enum):
     VIDEO = "video"
     TEXT = "text"
     QUIZ = "quiz"
+    ASSIGNMENT = "assignment"
+    MATERIAL = "material"
 
 
 class Course(Base, UUIDPrimaryKeyMixin, TimestampMixin, SoftDeleteMixin):

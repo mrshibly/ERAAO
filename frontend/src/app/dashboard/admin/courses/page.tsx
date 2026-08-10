@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { BookOpen, Plus, Trash2, Edit3, Search, List } from "lucide-react";
 import SyllabusBuilder from "@/components/SyllabusBuilder";
@@ -212,9 +213,24 @@ export default function AdminCoursesPage() {
                           Approve
                         </button>
                       )}
-                      <button onClick={() => setSelectedCourseForSyllabus({ id: course.id, slug: course.slug })} style={{ color: "var(--accent-violet)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Syllabus">
-                        <List size={16} />
-                      </button>
+                      <Link
+                        href={`/dashboard/admin/courses/builder/${course.id}`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.3rem",
+                          background: "rgba(14, 165, 233, 0.1)",
+                          color: "var(--accent-blue)",
+                          padding: "0.35rem 0.75rem",
+                          borderRadius: "6px",
+                          textDecoration: "none",
+                          fontWeight: 700,
+                          fontSize: "0.8rem"
+                        }}
+                        title="Open Syllabus Studio"
+                      >
+                        <List size={14} /> <span>Syllabus Studio</span>
+                      </Link>
                       <button onClick={() => handleEdit(course)} style={{ color: "var(--accent-blue)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Edit">
                         <Edit3 size={16} />
                       </button>
