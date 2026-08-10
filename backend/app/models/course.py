@@ -90,7 +90,7 @@ class Lesson(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     )
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    content_type: Mapped[ContentType] = mapped_column(Enum(ContentType), nullable=False, default=ContentType.TEXT)
+    content_type: Mapped[str] = mapped_column(String(50), nullable=False, default="text")
     content_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     content_body: Mapped[str | None] = mapped_column(Text, nullable=True)
     duration_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)

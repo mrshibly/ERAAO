@@ -31,6 +31,16 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     await init_cache()
 
+    # Ensure PostgreSQL lessons.content_type column is VARCHAR(50)
+    try:
+        from app.db.session import engine
+        from sqlalchemy import text
+        async with engine.begin() as conn:
+            await conn.execute(text("ALTER TABLE lessons ALTER COLUMN content_type TYPE VARCHAR(50) USING content_type::text;"))
+    except Exception as exc:
+        import structlog
+        structlog.get_logger().warning("column_migration_failed", error=str(exc))
+
     yield
 
     # Shutdown: close Redis pool
