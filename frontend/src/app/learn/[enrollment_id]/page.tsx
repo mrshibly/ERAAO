@@ -10,17 +10,17 @@ export default function LearnPage() {
   const params = useParams();
   const router = useRouter();
   const { token, loading } = useAuth();
-  
-  const enrollmentId = params?.enrollment_id as string;
-  const [courseTitle, setCourseTitle] = useState("Curriculum");
-  const [modules, setModules] = useState<any[]>([]);
-  const [activeLesson, setActiveLesson] = useState<any | null>(null);
-  const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
-  const [fetching, setFetching] = useState(true);
-  const [certificate, setCertificate] = useState<any | null>(null);
+  const enrollmentId = params.enrollment_id as string;
 
-  // Quiz interactive states
-  const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
+  const [course, setCourse] = useState<any>(null);
+  const [modules, setModules] = useState<any[]>([]);
+  const [activeLesson, setActiveLesson] = useState<any>(null);
+  const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
+  const [certificate, setCertificate] = useState<any>(null);
+  const [fetching, setFetching] = useState(true);
+
+  // Quiz state
+  const [quizAnswers, setQuizAnswers] = useState<{ [qIdx: number]: number }>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
@@ -55,50 +55,50 @@ export default function LearnPage() {
         });
         if (res.ok) {
           const data = await res.json();
-          setCourseTitle(data.course.title);
-          
-          // Sort modules and lessons by order
-          const sortedModules = (data.course.modules || [])
-            .sort((a: any, b: any) => a.order - b.order)
-            .map((mod: any) => ({
-              ...mod,
-              lessons: (mod.lessons || []).sort((a: any, b: any) => a.order - b.order)
-            }));
-          
-          setModules(sortedModules);
-          setCompletedLessonIds(new Set(data.completed_lessons || []));
-          setCertificate(data.certificate || null);
-          
-          if (sortedModules.length > 0 && sortedModules[0].lessons.length > 0) {
-            setActiveLesson(sortedModules[0].lessons[0]);
+          setCourse(data.course);
+          const mods = data.course?.modules || [];
+          setModules(mods);
+
+          if (data.certificate) {
+            setCertificate(data.certificate);
           }
+
+          // Pick initial lesson
+          if (mods.length > 0 && mods[0].lessons?.length > 0) {
+            setActiveLesson(mods[0].lessons[0]);
+          }
+
+          // Load completed lesson IDs
+          const doneSet = new Set<string>();
+          (data.progress || []).forEach((p: any) => {
+            if (p.is_completed) doneSet.add(p.lesson_id);
+          });
+          setCompletedLessonIds(doneSet);
         }
       } catch (err) {
-        console.error("Failed to load enrollment data:", err);
+        console.error("Error loading enrollment:", err);
       } finally {
         setFetching(false);
       }
     };
 
     loadData();
-  }, [token, loading, router, enrollmentId]);
+  }, [enrollmentId, token, loading, router]);
 
   const handleToggleComplete = async (lessonId: string) => {
+    const isDone = completedLessonIds.has(lessonId);
+    const newDoneState = !isDone;
+
     try {
-      const headers = {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      };
-
-      const isCompleted = completedLessonIds.has(lessonId);
-      const nextStatus = isCompleted ? "not_started" : "completed";
-
       const res = await fetch(`/api/v1/enrollments/${enrollmentId}/progress`, {
-        method: "PATCH",
-        headers,
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           lesson_id: lessonId,
-          status: nextStatus
+          is_completed: newDoneState
         })
       });
 
@@ -126,68 +126,69 @@ export default function LearnPage() {
 
       setCompletedLessonIds((prev) => {
         const next = new Set(prev);
-        if (next.has(lessonId)) {
-          next.delete(lessonId);
-        } else {
+        if (newDoneState) {
           next.add(lessonId);
+        } else {
+          next.delete(lessonId);
         }
-        
-        // If this completion marks the entire syllabus finished, fetch the certificate!
-        if (next.size === totalLessons && !isCompleted) {
-          setTimeout(async () => {
-            try {
-              const freshRes = await fetch(`/api/v1/enrollments/${enrollmentId}`, {
-                headers: { "Authorization": `Bearer ${token}` }
-              });
-              if (freshRes.ok) {
-                const freshData = await freshRes.json();
-                setCertificate(freshData.certificate || null);
-              }
-            } catch (e) {
-              console.error("Failed to refetch certificate:", e);
-            }
-          }, 1500);
-        }
-        
         return next;
       });
+
+      // Auto advance to next lesson if completing
+      if (newDoneState) {
+        let allLessons: any[] = [];
+        modules.forEach(m => {
+          if (m.lessons) allLessons.push(...m.lessons);
+        });
+        const currentIdx = allLessons.findIndex(l => l.id === lessonId);
+        if (currentIdx !== -1 && currentIdx < allLessons.length - 1) {
+          setActiveLesson(allLessons[currentIdx + 1]);
+        }
+      }
+
     } catch (err) {
-      console.error(err);
-      alert("Network error updating progress.");
+      console.error("Error updating progress:", err);
     }
   };
 
-  if (loading || fetching) {
+  if (fetching) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", padding: "8rem 0" }}>
-        <p style={{ color: "var(--text-secondary)" }}>Initializing LMS player...</p>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+        <p>Loading course environment...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ display: "flex", height: "calc(100vh - 4.5rem)", background: "#f8fafc" }}>
+    <div style={{ display: "flex", height: "calc(100vh - 64px)", overflow: "hidden", background: "var(--bg-secondary)" }}>
       
-      {/* Left panel: Lesson Menu Sidebar */}
-      <div style={{ width: "22rem", borderRight: "1px solid var(--border-color)", background: "white", display: "flex", flexDirection: "column", height: "100%" }}>
-        <div style={{ padding: "1.25rem", borderBottom: "1px solid var(--border-color)", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <button onClick={() => router.push("/dashboard/student")} style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", color: "var(--text-secondary)" }}>
-            <ArrowLeft size={20} />
+      {/* Left Sidebar: Modules & Lessons Navigation */}
+      <div style={{ width: "320px", borderRight: "1px solid var(--border-color)", background: "white", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
+          <button onClick={() => router.push("/dashboard/student/courses")} style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", fontWeight: 600, marginBottom: "0.5rem" }}>
+            <ArrowLeft size={14} /> Back to Courses
           </button>
-          <div>
-            <h3 style={{ fontSize: "1.05rem", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: "16rem" }}>{courseTitle}</h3>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 500 }}>LMS Interactive Sandbox</span>
+          <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {course?.title || "Course Player"}
+          </h2>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.75rem" }}>
+            <div style={{ flex: 1, height: "6px", background: "#e2e8f0", borderRadius: "3px", overflow: "hidden" }}>
+              <div style={{ height: "100%", background: "var(--accent-emerald)", width: `${totalLessons ? Math.round((completedLessonIds.size / totalLessons) * 100) : 0}%`, transition: "width 0.3s ease" }} />
+            </div>
+            <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-secondary)" }}>
+              {totalLessons ? Math.round((completedLessonIds.size / totalLessons) * 100) : 0}%
+            </span>
           </div>
         </div>
 
         <div style={{ flex: 1, overflowY: "auto", padding: "1rem 0" }}>
-          {modules.map((mod, modIdx) => (
-            <div key={modIdx} style={{ marginBottom: "1.5rem" }}>
-              <div style={{ padding: "0.5rem 1.25rem", fontSize: "0.8rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.025em" }}>
-                {mod.title}
+          {modules.map((mod: any, mIdx: number) => (
+            <div key={mod.id || mIdx} style={{ marginBottom: "1rem" }}>
+              <div style={{ padding: "0.5rem 1.5rem", fontSize: "0.75rem", fontWeight: 800, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Module {mIdx + 1}: {mod.title}
               </div>
-              <div style={{ display: "flex", flexDirection: "column", marginTop: "0.5rem" }}>
-                {mod.lessons.map((les: any) => {
+              <div>
+                {mod.lessons?.map((les: any) => {
                   const isActive = activeLesson?.id === les.id;
                   const isDone = completedLessonIds.has(les.id);
                   return (
@@ -236,99 +237,37 @@ export default function LearnPage() {
       {/* Right panel: Main Lesson Content Area */}
       <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
         
-        {/* Congratulations Graduation Card */}
+        {/* Graduation Banner when completed */}
         {totalLessons > 0 && completedLessonIds.size === totalLessons && (
           <div style={{
             background: "linear-gradient(135deg, var(--accent-blue), var(--accent-violet))",
             color: "white",
-            padding: "2.5rem 3rem",
+            padding: "2rem 2.5rem",
             margin: "2rem auto 0 auto",
             maxWidth: "45rem",
             width: "calc(100% - 6rem)",
             borderRadius: "12px",
-            boxShadow: "var(--shadow-md)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1.25rem",
-            position: "relative",
-            overflow: "hidden"
+            boxShadow: "var(--shadow-md)"
           }}>
-            <div>
-              <span style={{ fontSize: "0.7rem", background: "rgba(255,255,255,0.25)", color: "white", padding: "0.25rem 0.6rem", borderRadius: "20px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                Course Completed!
-              </span>
-              <h2 style={{ fontSize: "1.85rem", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations, Graduate! 🎓</h2>
-              <p style={{ opacity: 0.9, fontSize: "0.95rem", marginTop: "0.35rem", lineHeight: 1.6 }}>
-                You have successfully completed all syllabus lectures and passed the required certification exams. Your formal certificate of completion has been generated!
-              </p>
-              <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
-                {certificate?.pdf_url ? (
-                  <a
-                    href={certificate.pdf_url}
-                    download={`certificate-${certificate.verification_id || 'completion'}.pdf`}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      background: "white", color: "var(--accent-violet)", padding: "0.6rem 1.25rem",
-                      borderRadius: "6px", fontSize: "0.9rem", fontWeight: 700,
-                      textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                      boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
-                    }}
-                  >
-                    <Award size={18} /> Download Certificate PDF
-                  </a>
-                ) : (
-                  <button
-                    onClick={async () => {
-                      const res = await fetch(`/api/v1/enrollments/${enrollmentId}`, {
-                        headers: { "Authorization": `Bearer ${token}` }
-                      });
-                      if (res.ok) {
-                        const data = await res.json();
-                        if (data.certificate) {
-                          setCertificate(data.certificate);
-                        } else {
-                          setModalConfig({
-                            isOpen: true,
-                            type: "info",
-                            title: "Generating Certificate",
-                            message: "Generating your official certificate... please wait a few seconds and try again."
-                          });
-                        }
-                      }
-                    }}
-                    style={{
-                      background: "white", color: "var(--accent-violet)", padding: "0.6rem 1.25rem",
-                      border: "none", cursor: "pointer",
-                      borderRadius: "6px", fontSize: "0.9rem", fontWeight: 700,
-                      boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
-                    }}
-                  >
-                    Retrieve Certificate
-                  </button>
-                )}
-                {certificate?.verification_id && (
-                  <a
-                    href={`/verify/${certificate.verification_id}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{
-                      background: "rgba(255,255,255,0.2)", color: "white", padding: "0.6rem 1.25rem",
-                      borderRadius: "6px", fontSize: "0.9rem", fontWeight: 600,
-                      textDecoration: "none", display: "inline-flex", alignItems: "center", border: "1px solid rgba(255,255,255,0.3)"
-                    }}
-                  >
-                    Verify Credential
-                  </a>
-                )}
-              </div>
+            <span style={{ fontSize: "0.7rem", background: "rgba(255,255,255,0.25)", color: "white", padding: "0.25rem 0.6rem", borderRadius: "20px", fontWeight: 700, textTransform: "uppercase" }}>
+              Course Completed!
+            </span>
+            <h2 style={{ fontSize: "1.75rem", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations, Graduate! 🎓</h2>
+            <p style={{ opacity: 0.9, fontSize: "0.95rem", marginTop: "0.35rem" }}>
+              You have completed all syllabus requirements and earned your official certificate!
+            </p>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1.25rem" }}>
+              {certificate?.pdf_url && (
+                <a href={certificate.pdf_url} download target="_blank" rel="noreferrer" style={{ background: "white", color: "var(--accent-violet)", padding: "0.6rem 1.25rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                  <Award size={18} /> Download Certificate PDF
+                </a>
+              )}
             </div>
           </div>
         )}
 
         {activeLesson ? (
           <div style={{ padding: "3rem", maxWidth: "45rem", margin: "0 auto", width: "100%" }}>
-            
             <div style={{ marginBottom: "2rem" }}>
               <span style={{ fontSize: "0.75rem", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", padding: "0.25rem 0.5rem", borderRadius: "4px", fontWeight: 700, textTransform: "uppercase" }}>
                 Active Lesson
@@ -336,14 +275,22 @@ export default function LearnPage() {
               <h1 style={{ fontSize: "2rem", fontWeight: 800, marginTop: "0.5rem" }}>{activeLesson.title}</h1>
             </div>
 
-            {/* Quiz Player view or Standard Player view */}
+            {/* QUIZ LESSON PLAYER */}
             {(activeLesson.content_type || activeLesson.type) === "quiz" ? (
               (() => {
                 let quizQuestions: any[] = [];
                 let parseError = false;
                 try {
-                  quizQuestions = JSON.parse(activeLesson.content_body || "[]");
-                } catch (e) {
+                  const raw = activeLesson.content_body || "[]";
+                  const parsed = JSON.parse(raw);
+                  if (Array.isArray(parsed)) {
+                    quizQuestions = parsed;
+                  } else if (parsed && parsed.questions && Array.isArray(parsed.questions)) {
+                    quizQuestions = parsed.questions;
+                  } else if (parsed && parsed.question) {
+                    quizQuestions = [parsed];
+                  }
+                } catch {
                   parseError = true;
                 }
 
@@ -351,14 +298,15 @@ export default function LearnPage() {
                   if (quizQuestions.length === 0) return;
                   let correctCount = 0;
                   quizQuestions.forEach((q: any, idx: number) => {
-                    if (quizAnswers[idx] === q.answer_index) {
+                    const targetAns = q.answer !== undefined ? q.answer : q.answer_index;
+                    if (quizAnswers[idx] === targetAns) {
                       correctCount++;
                     }
                   });
                   const score = Math.round((correctCount / quizQuestions.length) * 100);
                   setQuizScore(score);
                   setQuizSubmitted(true);
-                  const passed = score >= 80;
+                  const passed = score >= 70;
                   setQuizPassed(passed);
 
                   if (passed) {
@@ -371,11 +319,11 @@ export default function LearnPage() {
                 return (
                   <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2.5rem", boxShadow: "var(--shadow-sm)", marginBottom: "2rem" }}>
                     <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "1rem", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <h3 style={{ fontWeight: 800, fontSize: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <Award style={{ color: "var(--accent-violet)" }} size={22} /> Certification Examination
+                      <h3 style={{ fontWeight: 800, fontSize: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem", margin: 0 }}>
+                        <Award style={{ color: "var(--accent-violet)" }} size={22} /> Certification Knowledge Check
                       </h3>
-                      <span style={{ fontSize: "0.8rem", background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", padding: "0.25rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>
-                        Passing Score: 80%
+                      <span style={{ fontSize: "0.8rem", background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", padding: "0.25rem 0.6rem", borderRadius: "9999px", fontWeight: 700 }}>
+                        Passing Grade: 70%
                       </span>
                     </div>
 
@@ -383,7 +331,6 @@ export default function LearnPage() {
                       <div style={{ textAlign: "center", padding: "2rem 0", color: "var(--text-secondary)" }}>
                         <HelpCircle size={40} style={{ margin: "0 auto 1rem auto", color: "var(--text-muted)", opacity: 0.5 }} />
                         <p style={{ fontWeight: 600 }}>Practice exam questions are not configured yet.</p>
-                        <p style={{ fontSize: "0.85rem", marginTop: "0.25rem" }}>Please contact the course instructor to publish the quiz content body.</p>
                       </div>
                     ) : (
                       <div>
@@ -410,8 +357,7 @@ export default function LearnPage() {
                                           borderRadius: "8px",
                                           cursor: "pointer",
                                           fontSize: "0.9rem",
-                                          fontWeight: isChecked ? 600 : 500,
-                                          transition: "all 0.1s ease"
+                                          fontWeight: isChecked ? 600 : 500
                                         }}
                                       >
                                         <input
@@ -448,7 +394,7 @@ export default function LearnPage() {
                             <div style={{
                               width: "5rem", height: "5rem", borderRadius: "50%",
                               background: quizPassed ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-                              color: quizPassed ? "var(--accent-emerald)" : "var(--accent-rose)",
+                              color: quizPassed ? "var(--accent-emerald)" : "#ef4444",
                               display: "flex", alignItems: "center", justifyContent: "center",
                               margin: "0 auto 1.5rem auto"
                             }}>
@@ -458,18 +404,19 @@ export default function LearnPage() {
                               {quizPassed ? "Exam Passed! 🎉" : "Exam Failed"}
                             </h3>
                             <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem" }}>
-                              You scored **{quizScore}%** on this certification exam.
+                              You scored <strong>{quizScore}%</strong> on this examination.
                             </p>
+
                             {quizPassed ? (
                               <div style={{ marginTop: "1.5rem" }}>
                                 <p style={{ fontSize: "0.9rem", color: "var(--accent-emerald)", fontWeight: 600 }}>
-                                  This quiz lesson has been marked as completed successfully!
+                                  Lesson marked as completed! Continue to the next syllabus module.
                                 </p>
                               </div>
                             ) : (
                               <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
                                 <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                                  A minimum score of **80%** is required to pass.
+                                  A minimum score of <strong>70%</strong> is required to pass.
                                 </p>
                                 <button
                                   onClick={() => {
@@ -497,16 +444,16 @@ export default function LearnPage() {
               })()
             ) : (
               <>
-                {/* Video Player Placeholder or Document view */}
+                {/* VIDEO OR MATERIAL PLAYER */}
                 {(activeLesson.content_type || activeLesson.type) === "video" ? (
                   <div style={{ width: "100%", height: "24rem", borderRadius: "var(--radius-md)", background: "#0f172a", color: "white", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2.5rem", boxShadow: "var(--shadow-md)" }}>
                     <PlayCircle size={64} style={{ color: "var(--accent-blue)", opacity: 0.9 }} />
-                    <span style={{ fontSize: "0.9rem", color: "#94a3b8" }}>Render Secure Video Player</span>
+                    <span style={{ fontSize: "0.9rem", color: "#94a3b8" }}>{activeLesson.content_url || "Secure Video Lecture"}</span>
                   </div>
                 ) : (
                   <div style={{ width: "100%", height: "8rem", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-md)", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: "white", marginBottom: "2.5rem" }}>
                     <FileText size={32} style={{ color: "var(--accent-teal)" }} />
-                    <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-secondary)" }}>Interactive Practice Lab Document</span>
+                    <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-secondary)" }}>Downloadable Resource & Lab Document</span>
                   </div>
                 )}
 
