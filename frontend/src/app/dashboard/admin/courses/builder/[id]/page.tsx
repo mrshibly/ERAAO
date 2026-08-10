@@ -165,7 +165,7 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
           title: defaultTitle,
           order,
           content_type: type,
-          content_body: type === "quiz" ? "{\"question\":\"What is the main objective of penetration testing?\",\"options\":[\"Find vulnerabilities\",\"Fix server code\",\"Install antivirus\",\"Buy hardware\"],\"answer\":0}" : "",
+          content_body: "",
           content_url: "",
           is_free_preview: false
         })

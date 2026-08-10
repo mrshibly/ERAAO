@@ -41,18 +41,13 @@ export default function QuizBuilderEditor({ initialContent, onChange }: QuizBuil
       // If parsing fails, fall back to a default question
     }
 
-    // Default starting template if empty or invalid
+    // Default starting blank form if empty or new
     setQuestions([
       {
-        question: "What is the primary objective of penetration testing?",
-        options: [
-          "Identifying and safely exploiting vulnerabilities to assess risk",
-          "Designing front-end user interface layouts",
-          "Backing up database servers weekly",
-          "Purchasing SSL certificates for web domains"
-        ],
+        question: "",
+        options: ["", "", "", ""],
         answer: 0,
-        explanation: "Penetration testing simulates real-world attacks to identify security weaknesses before malicious hackers can exploit them."
+        explanation: ""
       }
     ]);
   }, [initialContent]);
