@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, Clock, Cpu, Loader, ShieldAlert } from "lucide-react";
+import { BookOpen, Clock, Loader, Eye, ArrowRight } from "lucide-react";
 
 export default function AcademyPage() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -24,6 +24,17 @@ export default function AcademyPage() {
     };
     fetchCourses();
   }, []);
+
+  const getCourseThumbnail = (title: string) => {
+    const t = (title || "").toLowerCase();
+    if (t.includes("cyber") || t.includes("hack") || t.includes("security") || t.includes("pentest") || t.includes("defense")) {
+      return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80&auto=format&fit=crop";
+    }
+    if (t.includes("ai") || t.includes("llm") || t.includes("gpt") || t.includes("machine") || t.includes("model") || t.includes("intelligence")) {
+      return "https://images.unsplash.com/photo-1677442136019-21780efad995?w=600&q=80&auto=format&fit=crop";
+    }
+    return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80&auto=format&fit=crop";
+  };
 
   return (
     <div style={{ padding: "4rem 0" }}>
@@ -62,82 +73,106 @@ export default function AcademyPage() {
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2.5rem" }}>
-            {courses.map((course) => {
-              const getCourseThumbnail = (title: string) => {
-                const t = title.toLowerCase();
-                if (t.includes("cyber") || t.includes("hack") || t.includes("security") || t.includes("pentest") || t.includes("defense")) {
-                  return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80&auto=format&fit=crop";
-                }
-                if (t.includes("ai") || t.includes("llm") || t.includes("gpt") || t.includes("machine") || t.includes("model") || t.includes("intelligence")) {
-                  return "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80&auto=format&fit=crop";
-                }
-                return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80&auto=format&fit=crop";
-              };
-
-              return (
-                <div key={course.id} className="premium-card" style={{ height: "100%", display: "flex", flexDirection: "column", padding: 0, overflow: "hidden" }}>
-                  <div style={{ height: "180px", overflow: "hidden", position: "relative" }}>
-                    <img
-                      src={getCourseThumbnail(course.title)}
-                      alt={course.title}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                    <div style={{
-                      position: "absolute",
-                      top: "0.75rem",
-                      right: "0.75rem",
-                      background: "var(--bg-primary)",
-                      border: "1px solid var(--border-color)",
-                      padding: "0.25rem 0.75rem",
-                      borderRadius: "9999px",
-                      fontSize: "0.7rem",
-                      fontWeight: 700,
-                      color: "var(--text-secondary)",
-                      textTransform: "capitalize",
-                      boxShadow: "var(--shadow-sm)"
-                    }}>
-                      {course.level}
-                    </div>
+            {courses.map((course) => (
+              <div key={course.id} className="premium-card hover-lift" style={{ height: "100%", display: "flex", flexDirection: "column", padding: 0, overflow: "hidden" }}>
+                <Link href={`/academy/courses/${course.slug}`} style={{ height: "180px", overflow: "hidden", position: "relative", display: "block" }}>
+                  <img
+                    src={getCourseThumbnail(course.title)}
+                    alt={course.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <div style={{
+                    position: "absolute",
+                    top: "0.75rem",
+                    right: "0.75rem",
+                    background: "rgba(15, 23, 42, 0.8)",
+                    backdropFilter: "blur(4px)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    padding: "0.25rem 0.75rem",
+                    borderRadius: "9999px",
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    color: "white",
+                    textTransform: "capitalize"
+                  }}>
+                    {course.level}
                   </div>
+                </Link>
 
-                  <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", flex: 1 }}>
-                    <span style={{ fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em", color: "var(--accent-blue)", marginBottom: "0.5rem" }}>
-                      Practitioner Track
-                    </span>
+                <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", flex: 1 }}>
+                  <span style={{ fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em", color: "var(--accent-blue)", marginBottom: "0.5rem" }}>
+                    Practitioner Track
+                  </span>
 
-                    <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)", lineHeight: 1.3 }}>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)", lineHeight: 1.3 }}>
+                    <Link href={`/academy/courses/${course.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
                       {course.title}
-                    </h3>
+                    </Link>
+                  </h3>
 
-                    <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.5, marginBottom: "1.5rem", flex: "1" }}>
-                      {course.short_description}
-                    </p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.5, marginBottom: "1.5rem", flex: "1" }}>
+                    {course.short_description}
+                  </p>
 
-                    <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div style={{ display: "flex", gap: "1rem", color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                          <Clock size={14} />
-                          {course.duration_hours} hours
-                        </span>
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                          <BookOpen size={14} />
-                          Practice Labs
-                        </span>
-                      </div>
-                      <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)" }}>
-                        ৳{course.price} BDT
+                  <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+                    <div style={{ display: "flex", gap: "1rem", color: "var(--text-secondary)", fontSize: "0.85rem" }}>
+                      <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                        <Clock size={14} />
+                        {course.duration_hours || 10} hours
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                        <BookOpen size={14} />
+                        Practice Labs
                       </span>
                     </div>
+                    <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)" }}>
+                      ৳{course.price} BDT
+                    </span>
+                  </div>
 
-                    <div style={{ marginTop: "1.5rem", display: "grid", gridTemplateColumns: "1fr", gap: "0.75rem" }}>
-                      <Link href={`/checkout?course=${course.id}`} className="btn btn-accent" style={{ fontSize: "0.85rem", padding: "0.6rem" }}>
-                        Buy Course Track
-                      </Link>
-                    </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                    <Link
+                      href={`/academy/courses/${course.slug}`}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.35rem",
+                        padding: "0.6rem",
+                        borderRadius: "var(--radius-md)",
+                        border: "1px solid var(--border-color)",
+                        background: "var(--bg-primary)",
+                        color: "var(--text-primary)",
+                        fontWeight: 700,
+                        fontSize: "0.85rem",
+                        textDecoration: "none"
+                      }}
+                    >
+                      <Eye size={15} /> View Details
+                    </Link>
+
+                    <Link
+                      href={`/checkout?course=${course.id}`}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.35rem",
+                        padding: "0.6rem",
+                        borderRadius: "var(--radius-md)",
+                        background: "var(--accent-blue)",
+                        color: "white",
+                        fontWeight: 700,
+                        fontSize: "0.85rem",
+                        textDecoration: "none"
+                      }}
+                    >
+                      Buy Track <ArrowRight size={14} />
+                    </Link>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         )}
 
