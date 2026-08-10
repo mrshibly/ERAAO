@@ -19,6 +19,7 @@ class LessonRead(BaseModel):
     order: int
     content_type: str
     content_url: str | None = None
+    content_body: str | None = None
     duration_minutes: int | None = None
     is_free_preview: bool
     model_config = {"from_attributes": True}

@@ -198,9 +198,9 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
         body: JSON.stringify({
           title: lessonForm.title,
           content_type: lessonForm.content_type,
-          content_url: lessonForm.content_url || null,
-          content_body: lessonForm.content_body || null,
-          duration_minutes: lessonForm.duration_minutes,
+          content_url: lessonForm.content_url !== undefined ? lessonForm.content_url : "",
+          content_body: lessonForm.content_body !== undefined ? lessonForm.content_body : "",
+          duration_minutes: lessonForm.duration_minutes || 0,
           is_free_preview: lessonForm.is_free_preview
         })
       });
