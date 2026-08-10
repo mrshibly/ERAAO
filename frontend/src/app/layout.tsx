@@ -23,10 +23,10 @@ import JsonLd from "@/components/JsonLd";
 export const metadata: Metadata = {
   metadataBase: new URL("https://eraao.com"),
   title: {
-    default: "Eraao — Lighting the future.",
-    template: "%s | Eraao — Lighting the future."
+    default: "ERAAO — Applied AI & Cybersecurity Academy",
+    template: "%s | ERAAO"
   },
-  description: "Eraao — Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy in Bangladesh.",
+  description: "ERAAO — Applied AI & Offensive Cybersecurity Academy & Enterprise Engineering Services in Bangladesh.",
   keywords: [
     "Cybersecurity Bangladesh",
     "AI Development Dhaka",

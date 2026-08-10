@@ -38,6 +38,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         if (res.ok) {
           const data = await res.json();
           setCourse(data);
+          if (data?.title) {
+            document.title = `${data.title} | ERAAO Academy`;
+          }
         } else {
           setError("Course not found.");
         }
