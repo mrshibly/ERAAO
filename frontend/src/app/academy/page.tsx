@@ -54,11 +54,11 @@ export default function AcademyPage() {
             letterSpacing: "0.05em",
             marginBottom: "1rem"
           }}>
-            Academy Tracks
+            Academy Bootcamps
           </span>
-          <h1 style={{ fontSize: "2.75rem", fontWeight: 800, letterSpacing: "-0.03em" }}>Academy Catalog</h1>
+          <h1 style={{ fontSize: "2.75rem", fontWeight: 800, letterSpacing: "-0.03em" }}>Course Catalog</h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", marginTop: "0.5rem", maxWidth: "35rem", margin: "0.5rem auto 0 auto" }}>
-            Curated tracks designed to build qualified practitioners in artificial intelligence and offensive security.
+            Explore our hands-on cybersecurity and applied AI courses. Click any course to view full syllabus details, modules, and labs.
           </p>
         </div>
 
@@ -75,7 +75,9 @@ export default function AcademyPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2.5rem" }}>
             {courses.map((course) => (
               <div key={course.id} className="premium-card hover-lift" style={{ height: "100%", display: "flex", flexDirection: "column", padding: 0, overflow: "hidden" }}>
-                <Link href={`/academy/courses/${course.slug}`} style={{ height: "180px", overflow: "hidden", position: "relative", display: "block" }}>
+                
+                {/* Cover Image -> Links to Course Details Page */}
+                <Link href={`/academy/courses/${course.slug}`} style={{ height: "185px", overflow: "hidden", position: "relative", display: "block" }}>
                   <img
                     src={getCourseThumbnail(course.title)}
                     alt={course.title}
@@ -130,46 +132,26 @@ export default function AcademyPage() {
                     </span>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-                    <Link
-                      href={`/academy/courses/${course.slug}`}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "0.35rem",
-                        padding: "0.6rem",
-                        borderRadius: "var(--radius-md)",
-                        border: "1px solid var(--border-color)",
-                        background: "var(--bg-primary)",
-                        color: "var(--text-primary)",
-                        fontWeight: 700,
-                        fontSize: "0.85rem",
-                        textDecoration: "none"
-                      }}
-                    >
-                      <Eye size={15} /> View Details
-                    </Link>
-
-                    <Link
-                      href={`/checkout?course=${course.id}`}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "0.35rem",
-                        padding: "0.6rem",
-                        borderRadius: "var(--radius-md)",
-                        background: "var(--accent-blue)",
-                        color: "white",
-                        fontWeight: 700,
-                        fontSize: "0.85rem",
-                        textDecoration: "none"
-                      }}
-                    >
-                      Buy Track <ArrowRight size={14} />
-                    </Link>
-                  </div>
+                  {/* Primary Button ALWAYS routes to Course Details Page */}
+                  <Link
+                    href={`/academy/courses/${course.slug}`}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.5rem",
+                      padding: "0.75rem 1.25rem",
+                      borderRadius: "var(--radius-md)",
+                      background: "var(--accent-blue)",
+                      color: "white",
+                      fontWeight: 800,
+                      fontSize: "0.9rem",
+                      textDecoration: "none",
+                      boxShadow: "0 4px 12px rgba(14, 165, 233, 0.25)"
+                    }}
+                  >
+                    <span>View Course Details</span> <ArrowRight size={16} />
+                  </Link>
                 </div>
               </div>
             ))}
