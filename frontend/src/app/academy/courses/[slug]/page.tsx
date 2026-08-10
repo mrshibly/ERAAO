@@ -10,6 +10,7 @@ import {
   CheckSquare, ArrowRight, Lock
 } from "lucide-react";
 import BrandLoader from "@/components/BrandLoader";
+import CustomModal from "@/components/CustomModal";
 
 export default function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -23,6 +24,12 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   const [error, setError] = useState<string | null>(null);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: ""
+  });
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -69,10 +76,20 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         }, 1200);
       } else {
         const err = await res.json().catch(() => ({}));
-        alert(err.detail || err.error?.message || "Enrollment failed. You might already be enrolled.");
+        setModalConfig({
+          isOpen: true,
+          type: "info",
+          title: "Enrollment Notice",
+          message: err.detail || err.error?.message || "Enrollment failed. You might already be enrolled."
+        });
       }
     } catch {
-      alert("Error connecting to server.");
+      setModalConfig({
+        isOpen: true,
+        type: "danger",
+        title: "Connection Error",
+        message: "Error connecting to server. Please try again."
+      });
     } finally {
       setEnrolling(false);
     }
@@ -369,6 +386,14 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         </div>
 
       </div>
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }

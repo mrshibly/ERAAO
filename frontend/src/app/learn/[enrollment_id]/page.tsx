@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import CustomModal from "@/components/CustomModal";
 import { BookOpen, CheckSquare, Square, ChevronRight, ArrowLeft, PlayCircle, FileText, Award, HelpCircle } from "lucide-react";
 
 export default function LearnPage() {
@@ -23,6 +24,12 @@ export default function LearnPage() {
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: ""
+  });
 
   const totalLessons = modules.reduce((acc, m) => acc + (m.lessons?.length || 0), 0);
 
@@ -96,14 +103,24 @@ export default function LearnPage() {
       });
 
       if (res.status === 401) {
-        alert("Your session has expired. Please log in again.");
+        setModalConfig({
+          isOpen: true,
+          type: "danger",
+          title: "Session Expired",
+          message: "Your session has expired. Please log in again."
+        });
         router.push("/login");
         return;
       }
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        alert(body.detail || "Failed to update progress.");
+        setModalConfig({
+          isOpen: true,
+          type: "info",
+          title: "Progress Update",
+          message: body.detail || "Failed to update progress."
+        });
         return;
       }
 
@@ -271,7 +288,12 @@ export default function LearnPage() {
                         if (data.certificate) {
                           setCertificate(data.certificate);
                         } else {
-                          alert("Generating your certificate... please wait a few seconds and try again.");
+                          setModalConfig({
+                            isOpen: true,
+                            type: "info",
+                            title: "Generating Certificate",
+                            message: "Generating your official certificate... please wait a few seconds and try again."
+                          });
                         }
                       }
                     }}
@@ -523,6 +545,13 @@ export default function LearnPage() {
         )}
       </div>
 
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }

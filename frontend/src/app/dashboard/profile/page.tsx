@@ -115,7 +115,7 @@ export default function ProfileSettingsPage() {
     blank.width = canvas.width;
     blank.height = canvas.height;
     if (canvas.toDataURL() === blank.toDataURL()) {
-      alert("Please draw your signature first.");
+      setMessage("Please draw your signature on the canvas pad first.");
       return;
     }
 
