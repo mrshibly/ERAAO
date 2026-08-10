@@ -345,8 +345,8 @@ export default function StudentCatalogPage() {
 
                   {/* Actions & Details Button */}
                   <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.75rem" }}>
-                    <button
-                      onClick={() => setSelectedCourse(course)}
+                    <Link
+                      href={`/academy/courses/${course.slug}`}
                       style={{
                         padding: "0.6rem 0.85rem",
                         borderRadius: "var(--radius-md)",
@@ -355,11 +355,14 @@ export default function StudentCatalogPage() {
                         color: "var(--text-primary)",
                         fontWeight: 700,
                         fontSize: "0.825rem",
-                        cursor: "pointer"
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.3rem"
                       }}
                     >
-                      Syllabus
-                    </button>
+                      View Details
+                    </Link>
 
                     {isEnrolled ? (
                       <Link
