@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { BookOpen, Play, CheckCircle2, Clock, Search, Filter, Sparkles, ArrowRight, Shield, Cpu } from "lucide-react";
+import { BookOpen, Play, CheckCircle2, Clock, Search, ArrowRight, Compass } from "lucide-react";
 
 export default function StudentCoursesPage() {
   const { token, user } = useAuth();
@@ -33,7 +33,7 @@ export default function StudentCoursesPage() {
   }, [token]);
 
   const filteredEnrollments = enrollments.filter((item) => {
-    const titleMatches = item.course?.title?.toLowerCase().includes(searchQuery.toLowerCase());
+    const titleMatches = (item.course?.title || "").toLowerCase().includes(searchQuery.toLowerCase());
     if (filter === "completed") return titleMatches && item.progress >= 100;
     if (filter === "in_progress") return titleMatches && item.progress < 100;
     return titleMatches;
@@ -52,7 +52,7 @@ export default function StudentCoursesPage() {
 
   return (
     <div style={{ paddingBottom: "3rem" }}>
-      {/* Page Header */}
+      {/* Page Header Card */}
       <div style={{
         background: "var(--card-bg)",
         border: "1px solid var(--border-color)",
@@ -61,24 +61,37 @@ export default function StudentCoursesPage() {
         marginBottom: "2rem",
         boxShadow: "var(--shadow-sm)"
       }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1.25rem" }}>
           <div>
             <div style={{ fontSize: "0.75rem", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
-              Student Portal • Course Vault
+              Student Portal • My Learning
             </div>
             <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
-              My Enrolled Courses & Labs
+              My Courses
             </h1>
             <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.25rem" }}>
-              Track your syllabus progress, access hands-on virtual labs, and earn credentials.
+              View your active courses and track your learning progress.
             </p>
           </div>
+
           <Link
-            href="/academy"
-            className="btn-academic-primary"
-            style={{ textDecoration: "none", background: "var(--accent-blue)", color: "white" }}
+            href="/dashboard/student/catalog"
+            style={{
+              background: "var(--accent-blue)",
+              color: "white",
+              padding: "0.65rem 1.25rem",
+              borderRadius: "var(--radius-md)",
+              fontWeight: 700,
+              fontSize: "0.875rem",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              whiteSpace: "nowrap",
+              boxShadow: "0 4px 12px rgba(14, 165, 233, 0.25)"
+            }}
           >
-            <BookOpen size={16} /> Explore New Bootcamps
+            <Compass size={16} /> <span>Find Courses</span>
           </Link>
         </div>
 
@@ -96,7 +109,7 @@ export default function StudentCoursesPage() {
                 background: "var(--bg-primary)",
                 border: "1px solid var(--border-color)",
                 borderRadius: "var(--radius-md)",
-                padding: "0.6rem 1rem 0.6rem 2.5rem",
+                padding: "0.65rem 1rem 0.65rem 2.5rem",
                 color: "var(--text-primary)",
                 fontSize: "0.875rem",
                 outline: "none"
@@ -106,7 +119,7 @@ export default function StudentCoursesPage() {
 
           <div style={{ display: "flex", gap: "0.5rem", background: "var(--bg-primary)", padding: "0.25rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)" }}>
             {[
-              { id: "all", label: "All Syllabi" },
+              { id: "all", label: "All Courses" },
               { id: "in_progress", label: "In Progress" },
               { id: "completed", label: "Completed" }
             ].map((t) => (
@@ -136,7 +149,7 @@ export default function StudentCoursesPage() {
       {/* Courses List */}
       {loading ? (
         <div style={{ textAlign: "center", padding: "4rem 0", color: "var(--text-secondary)" }}>
-          Loading your learning tracks...
+          Loading your courses...
         </div>
       ) : filteredEnrollments.length === 0 ? (
         <div style={{
@@ -149,11 +162,11 @@ export default function StudentCoursesPage() {
           <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem auto" }}>
             <BookOpen size={28} />
           </div>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text-primary)" }}>No enrolled courses found</h3>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.4rem", maxWidth: "400px", margin: "0.4rem auto 1.5rem auto" }}>
-            You haven't enrolled in any courses matching your filter criteria yet. Explore our catalog to get started.
+          <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--text-primary)" }}>No enrolled courses found</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.35rem", maxWidth: "400px", margin: "0.35rem auto 1.5rem auto" }}>
+            You haven't enrolled in any courses yet. Explore our course catalog to get started.
           </p>
-          <Link href="/academy" style={{
+          <Link href="/dashboard/student/catalog" style={{
             display: "inline-flex",
             alignItems: "center",
             gap: "0.5rem",
@@ -164,7 +177,7 @@ export default function StudentCoursesPage() {
             fontWeight: 700,
             textDecoration: "none"
           }}>
-            Browse Academy Courses <ArrowRight size={16} />
+            <Compass size={16} /> <span>Find Courses</span> <ArrowRight size={16} />
           </Link>
         </div>
       ) : (
@@ -211,7 +224,7 @@ export default function StudentCoursesPage() {
                     gap: "0.3rem"
                   }}>
                     {progress >= 100 ? <CheckCircle2 size={12} /> : <Clock size={12} />}
-                    <span>{progress >= 100 ? "Completed" : `${progress}% Done`}</span>
+                    <span>{progress >= 100 ? "Completed" : `${progress}%`}</span>
                   </div>
                 </div>
 
@@ -222,14 +235,14 @@ export default function StudentCoursesPage() {
                       {course.title || "Cybersecurity Course"}
                     </h3>
                     <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", lineHeight: "1.5" }}>
-                      {course.description || "Master industry-standard security tools and practical lab exercises."}
+                      {course.description || "Practical syllabus with hands-on exercises."}
                     </p>
                   </div>
 
                   {/* Progress Bar & Actions */}
                   <div style={{ marginTop: "1.5rem" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.78rem", color: "var(--text-secondary)", marginBottom: "0.4rem" }}>
-                      <span>Syllabus Completion</span>
+                      <span>Course Progress</span>
                       <span style={{ fontWeight: 700, color: "var(--text-primary)" }}>{progress}%</span>
                     </div>
                     <div style={{ height: "6px", background: "var(--border-color)", borderRadius: "4px", overflow: "hidden", marginBottom: "1.25rem" }}>
@@ -256,7 +269,7 @@ export default function StudentCoursesPage() {
                       }}
                     >
                       <Play size={16} />
-                      <span>{progress >= 100 ? "Review Course Syllabi" : "Continue Learning"}</span>
+                      <span>{progress >= 100 ? "Review Course" : "Continue Learning"}</span>
                     </Link>
                   </div>
                 </div>
