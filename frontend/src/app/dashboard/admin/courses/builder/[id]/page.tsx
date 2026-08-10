@@ -3,6 +3,9 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import BrandLoader from "@/components/BrandLoader";
+import CustomModal from "@/components/CustomModal";
+import QuizBuilderEditor from "@/components/QuizBuilderEditor";
 import { useAuth } from "@/context/AuthContext";
 import {
   ArrowLeft, Plus, Trash2, Edit3, Save, Video, FileText, CheckSquare,
@@ -880,34 +883,10 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
 
               {/* 4. KNOWLEDGE CHECK QUIZ EDITOR */}
               {lessonForm.content_type === "quiz" && (
-                <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                  <div style={{ background: "rgba(139, 92, 246, 0.08)", border: "1px solid rgba(139, 92, 246, 0.2)", borderRadius: "var(--radius-md)", padding: "1rem", color: "var(--text-primary)", fontSize: "0.85rem" }}>
-                    <strong>❓ Quiz Check:</strong> Interactive multiple choice evaluation for students before advancing.
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.4rem" }}>
-                      Quiz Data / JSON Prompt
-                    </label>
-                    <textarea
-                      rows={8}
-                      placeholder='{"question": "What is penetration testing?", "options": ["Vulnerability audit", "Web design", "Installing OS"], "answer": 0}'
-                      value={lessonForm.content_body}
-                      onChange={(e) => setLessonForm({ ...lessonForm, content_body: e.target.value })}
-                      style={{
-                        width: "100%",
-                        padding: "0.75rem",
-                        borderRadius: "var(--radius-md)",
-                        border: "1px solid var(--border-color)",
-                        background: "var(--bg-primary)",
-                        color: "var(--text-primary)",
-                        fontSize: "0.875rem",
-                        fontFamily: "monospace",
-                        resize: "vertical"
-                      }}
-                    />
-                  </div>
-                </div>
+                <QuizBuilderEditor
+                  initialContent={lessonForm.content_body}
+                  onChange={(jsonString) => setLessonForm({ ...lessonForm, content_body: jsonString })}
+                />
               )}
             </div>
           )}
