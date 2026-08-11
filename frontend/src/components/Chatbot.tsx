@@ -168,7 +168,7 @@ export default function Chatbot() {
           maxHeight: "600px",
           height: "calc(100vh - 110px)",
           backgroundColor: "#ffffff",
-          borderRadius: "24px",
+          borderRadius: "var(--radius-lg)",
           boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(14, 165, 233, 0.15)",
           display: "flex",
           flexDirection: "column",
@@ -191,7 +191,7 @@ export default function Chatbot() {
               <div style={{
                 width: "38px",
                 height: "38px",
-                borderRadius: "12px",
+                borderRadius: "var(--radius-md)",
                 background: "rgba(14, 165, 233, 0.15)",
                 border: "1px solid rgba(56, 189, 248, 0.3)",
                 display: "flex",
@@ -231,7 +231,7 @@ export default function Chatbot() {
                   cursor: "pointer",
                   width: "32px",
                   height: "32px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-sm)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -252,7 +252,7 @@ export default function Chatbot() {
                   cursor: "pointer",
                   width: "32px",
                   height: "32px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-sm)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -291,7 +291,7 @@ export default function Chatbot() {
                   <div style={{
                     width: "28px",
                     height: "28px",
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-sm)",
                     background: "linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%)",
                     display: "flex",
                     alignItems: "center",
@@ -306,14 +306,14 @@ export default function Chatbot() {
                   style={{
                     backgroundColor: msg.role === "user" ? "#0ea5e9" : "#ffffff",
                     color: msg.role === "user" ? "#ffffff" : "#0f172a",
-                    padding: "0.85rem 1.15rem",
-                    borderRadius: msg.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
+                    padding: "0.75rem 1rem",
+                    borderRadius: "var(--radius-md)",
                     boxShadow: msg.role === "user" 
-                      ? "0 4px 14px rgba(14, 165, 233, 0.25)" 
-                      : "0 2px 10px rgba(15, 23, 42, 0.05)",
+                      ? "0 4px 14px rgba(14, 165, 233, 0.2)" 
+                      : "0 2px 8px rgba(15, 23, 42, 0.04)",
                     border: msg.role === "user" ? "none" : "1px solid #e2e8f0",
-                    fontSize: "0.9rem",
-                    lineHeight: 1.6,
+                    fontSize: "0.875rem",
+                    lineHeight: 1.5,
                     whiteSpace: "pre-wrap",
                     wordBreak: "break-word"
                   }}
@@ -334,7 +334,7 @@ export default function Chatbot() {
                 <div style={{
                   width: "28px",
                   height: "28px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-sm)",
                   background: "linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%)",
                   display: "flex",
                   alignItems: "center",
@@ -345,8 +345,8 @@ export default function Chatbot() {
                 </div>
                 <div style={{
                   backgroundColor: "#ffffff",
-                  padding: "0.7rem 1rem",
-                  borderRadius: "18px 18px 18px 4px",
+                  padding: "0.6rem 0.85rem",
+                  borderRadius: "var(--radius-md)",
                   border: "1px solid #e2e8f0",
                   display: "flex",
                   alignItems: "center",
@@ -389,7 +389,7 @@ export default function Chatbot() {
                   background: "#f8fafc",
                   border: "1px solid #e2e8f0",
                   padding: "0.35rem 0.75rem",
-                  borderRadius: "9999px",
+                  borderRadius: "var(--radius-sm)",
                   cursor: "pointer",
                   display: "inline-flex",
                   alignItems: "center",
@@ -434,10 +434,10 @@ export default function Chatbot() {
                 disabled={isLoading}
                 style={{
                   flex: 1,
-                  padding: "0.75rem 1.1rem",
+                  padding: "0.65rem 0.9rem",
                   fontSize: "0.88rem",
                   border: "1px solid #cbd5e1",
-                  borderRadius: "14px",
+                  borderRadius: "var(--radius-md)",
                   outline: "none",
                   background: "#f8fafc",
                   color: "#0f172a"
@@ -447,9 +447,9 @@ export default function Chatbot() {
                 type="submit"
                 disabled={!inputValue.trim() || isLoading}
                 style={{
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "14px",
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "var(--radius-md)",
                   background: inputValue.trim() ? "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)" : "#e2e8f0",
                   color: "white",
                   border: "none",
@@ -457,11 +457,11 @@ export default function Chatbot() {
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: inputValue.trim() ? "pointer" : "not-allowed",
-                  boxShadow: inputValue.trim() ? "0 4px 14px rgba(14, 165, 233, 0.35)" : "none",
+                  boxShadow: inputValue.trim() ? "0 4px 14px rgba(14, 165, 233, 0.25)" : "none",
                   transition: "all 0.2s ease"
                 }}
               >
-                <Send size={18} />
+                <Send size={16} />
               </button>
             </form>
           </div>
@@ -473,14 +473,14 @@ export default function Chatbot() {
         {!isOpen && (
           <div className="anim-fade-in" style={{
             position: "absolute",
-            right: "72px",
+            right: "60px",
             top: "50%",
             transform: "translateY(-50%)",
             background: "#0f172a",
             color: "#ffffff",
-            padding: "0.45rem 0.9rem",
-            borderRadius: "12px",
-            fontSize: "0.82rem",
+            padding: "0.4rem 0.75rem",
+            borderRadius: "var(--radius-sm)",
+            fontSize: "0.8rem",
             fontWeight: 700,
             whiteSpace: "nowrap",
             boxShadow: "0 10px 25px rgba(15, 23, 42, 0.2)",
@@ -499,45 +499,45 @@ export default function Chatbot() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle AI Assistant Chat"
           style={{
-            width: "60px",
-            height: "60px",
-            borderRadius: "50%",
+            width: "48px",
+            height: "48px",
+            borderRadius: "var(--radius-md)",
             background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-            border: "2px solid #38bdf8",
+            border: "1px solid #38bdf8",
             color: "white",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            boxShadow: "0 12px 32px rgba(14, 165, 233, 0.4), 0 0 0 4px rgba(14, 165, 233, 0.15)",
+            boxShadow: "0 8px 24px rgba(14, 165, 233, 0.3)",
             position: "relative",
-            transition: "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), boxShadow 0.3s ease"
+            transition: "transform 0.2s ease, boxShadow 0.2s ease"
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.08)";
-            e.currentTarget.style.boxShadow = "0 16px 40px rgba(14, 165, 233, 0.5), 0 0 0 6px rgba(14, 165, 233, 0.2)";
+            e.currentTarget.style.transform = "translateY(-2px)";
+            e.currentTarget.style.boxShadow = "0 12px 28px rgba(14, 165, 233, 0.4)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "0 12px 32px rgba(14, 165, 233, 0.4), 0 0 0 4px rgba(14, 165, 233, 0.15)";
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "0 8px 24px rgba(14, 165, 233, 0.3)";
           }}
         >
           {isOpen ? (
-            <X size={26} />
+            <X size={22} />
           ) : (
             <>
-              <Sparkles size={26} style={{ color: "#38bdf8" }} />
+              <Sparkles size={22} style={{ color: "#38bdf8" }} />
               {/* Pulse Indicator */}
               <span style={{
                 position: "absolute",
-                top: "3px",
-                right: "3px",
-                width: "12px",
-                height: "12px",
+                top: "2px",
+                right: "2px",
+                width: "10px",
+                height: "10px",
                 borderRadius: "50%",
                 backgroundColor: "#10b981",
                 border: "2px solid #0f172a",
-                boxShadow: "0 0 8px #10b981"
+                boxShadow: "0 0 6px #10b981"
               }} />
             </>
           )}
