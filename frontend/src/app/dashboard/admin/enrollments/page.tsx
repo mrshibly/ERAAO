@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { GraduationCap, Trash2, Search } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function AdminEnrollmentsPage() {
   const { token } = useAuth();
@@ -10,6 +11,14 @@ export default function AdminEnrollmentsPage() {
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
 
   const headers = { "Authorization": `Bearer ${token}` };
 
@@ -144,6 +153,16 @@ export default function AdminEnrollmentsPage() {
           </div>
         )}
       </div>
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }
