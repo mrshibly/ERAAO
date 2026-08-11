@@ -74,8 +74,8 @@ export default function StudentDashboard() {
   };
 
   const currentActiveCourse = activeCourses[0];
-  const activeProgress = currentActiveCourse ? Math.round(currentActiveCourse.progress || 0) : 0;
-  const completedLessonsTotal = activeCourses.reduce((acc, c) => acc + Math.round(((c.progress || 0) / 100) * 10), 0);
+  const activeProgress = currentActiveCourse ? Math.round(currentActiveCourse.progress ?? currentActiveCourse.completion_pct ?? 0) : 0;
+  const completedLessonsTotal = activeCourses.reduce((acc, c) => acc + Math.round((((c.progress ?? c.completion_pct ?? 0)) / 100) * 10), 0);
 
   return (
     <div style={{ paddingBottom: "3rem" }}>

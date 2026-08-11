@@ -21,7 +21,15 @@ class EnrollmentService:
         return enrollment
 
     async def get_my_enrollments(self, user_id: UUID):
-        return await self.enroll_repo.list_by_user(user_id)
+        from sqlalchemy import select, func
+        from app.models.course import Lesson, Module
+        enrollments = await self.enroll_repo.list_by_user(user_id)
+        for e in enrollments:
+            lesson_count_stmt = select(func.count(Lesson.id)).join(Module).where(Module.course_id == e.course_id)
+            total_lessons = (await self.db.execute(lesson_count_stmt)).scalar() or 0
+            e.completion_pct = await self.enroll_repo.get_completion_pct(e.id, total_lessons)
+            setattr(e, "progress", e.completion_pct)
+        return enrollments
 
     async def update_progress(self, enrollment_id: UUID, lesson_id: UUID, status: str):
         from sqlalchemy import select, func

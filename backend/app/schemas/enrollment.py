@@ -22,5 +22,6 @@ class EnrollmentRead(BaseModel):
     enrolled_at: datetime
     completed_at: datetime | None = None
     completion_pct: float = 0.0
+    progress: float = 0.0
     course: CourseRead | None = None
     model_config = {"from_attributes": True}
