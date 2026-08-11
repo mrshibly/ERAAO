@@ -77,7 +77,7 @@ export default function CareersPage() {
             background: "rgba(16, 185, 129, 0.08)",
             color: "var(--accent-emerald)",
             padding: "0.35rem 1rem",
-            borderRadius: "9999px",
+            borderRadius: "4px",
             fontSize: "0.8rem",
             fontWeight: 700,
             textTransform: "uppercase",

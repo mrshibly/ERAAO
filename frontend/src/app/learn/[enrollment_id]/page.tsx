@@ -322,7 +322,7 @@ export default function LearnPage() {
                       <h3 style={{ fontWeight: 800, fontSize: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem", margin: 0 }}>
                         <Award style={{ color: "var(--accent-violet)" }} size={22} /> Certification Knowledge Check
                       </h3>
-                      <span style={{ fontSize: "0.8rem", background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", padding: "0.25rem 0.6rem", borderRadius: "9999px", fontWeight: 700 }}>
+                      <span style={{ fontSize: "0.8rem", background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", padding: "0.25rem 0.6rem", borderRadius: "4px", fontWeight: 700 }}>
                         Passing Grade: 70%
                       </span>
                     </div>

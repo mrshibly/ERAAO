@@ -25,7 +25,7 @@ export default function AboutPage() {
             background: "rgba(14, 165, 233, 0.08)",
             color: "var(--accent-blue)",
             padding: "0.35rem 1rem",
-            borderRadius: "9999px",
+            borderRadius: "4px",
             fontSize: "0.8rem",
             fontWeight: 700,
             textTransform: "uppercase",

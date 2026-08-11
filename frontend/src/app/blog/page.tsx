@@ -36,7 +36,7 @@ export default function BlogListingPage() {
             background: "rgba(139, 92, 246, 0.08)",
             color: "var(--accent-violet)",
             padding: "0.35rem 1rem",
-            borderRadius: "9999px",
+            borderRadius: "4px",
             fontSize: "0.8rem",
             fontWeight: 700,
             textTransform: "uppercase",

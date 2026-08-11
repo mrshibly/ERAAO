@@ -24,6 +24,14 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
   const [fetching, setFetching] = useState(true);
   const [savingStatus, setSavingStatus] = useState<string | null>(null);
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
 
   // Active selection state
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
@@ -909,6 +917,16 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
         </div>
 
       </div>
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }

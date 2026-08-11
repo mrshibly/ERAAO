@@ -51,7 +51,7 @@ export default function ContactPage() {
             background: "rgba(13, 148, 136, 0.08)",
             color: "var(--accent-teal)",
             padding: "0.35rem 1rem",
-            borderRadius: "9999px",
+            borderRadius: "4px",
             fontSize: "0.8rem",
             fontWeight: 700,
             textTransform: "uppercase",
