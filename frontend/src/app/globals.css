@@ -51,15 +51,18 @@
   padding: 0;
 }
 
-html, body, button, input, select, textarea {
+html, body {
+  min-height: 100vh;
   background-color: var(--bg-secondary);
   color: var(--text-primary);
+}
+
+html, body, button, input, select, textarea {
   font-family: var(--font-main);
   line-height: 1.5;
   letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
