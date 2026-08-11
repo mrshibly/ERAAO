@@ -232,10 +232,10 @@ export default function StudentCoursesPage() {
                 <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
                     <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem", lineHeight: "1.35" }}>
-                      {course.title || "Cybersecurity Course"}
+                      {course.title || "Untitled Course"}
                     </h3>
                     <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", lineHeight: "1.5" }}>
-                      {course.description || "Practical syllabus with hands-on exercises."}
+                      {course.description || "Interactive bootcamp syllabus with hands-on labs."}
                     </p>
                   </div>
 

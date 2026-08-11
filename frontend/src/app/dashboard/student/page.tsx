@@ -328,7 +328,7 @@ export default function StudentDashboard() {
                       <div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                           <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: "1.3" }}>
-                            {course.title || "Cybersecurity Course"}
+                            {course.title || "Untitled Course"}
                           </h3>
                           <span style={{
                             fontSize: "0.72rem",
@@ -342,7 +342,7 @@ export default function StudentDashboard() {
                           </span>
                         </div>
                         <p style={{ fontSize: "0.825rem", color: "var(--text-secondary)", marginTop: "0.3rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                          {course.description || "Practical syllabus with hands-on exercises."}
+                          {course.description || "Interactive bootcamp syllabus with hands-on labs."}
                         </p>
                       </div>
 

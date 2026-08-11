@@ -4,6 +4,8 @@ from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel
 
+from app.schemas.course import CourseRead
+
 class EnrollmentCreate(BaseModel):
     course_id: UUID
     cohort_id: UUID | None = None
@@ -20,4 +22,5 @@ class EnrollmentRead(BaseModel):
     enrolled_at: datetime
     completed_at: datetime | None = None
     completion_pct: float = 0.0
+    course: CourseRead | None = None
     model_config = {"from_attributes": True}

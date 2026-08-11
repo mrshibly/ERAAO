@@ -23,7 +23,7 @@ class EnrollmentRepository:
         return enrollment
 
     async def list_by_user(self, user_id: UUID) -> list[Enrollment]:
-        stmt = select(Enrollment).where(Enrollment.user_id == user_id).options(selectinload(Enrollment.lesson_progress)).order_by(Enrollment.enrolled_at.desc())
+        stmt = select(Enrollment).where(Enrollment.user_id == user_id).options(selectinload(Enrollment.lesson_progress), selectinload(Enrollment.course)).order_by(Enrollment.enrolled_at.desc())
         result = await self.db.execute(stmt)
         return list(result.scalars().all())
 
