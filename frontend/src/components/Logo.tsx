@@ -79,7 +79,7 @@ export default function Logo({
             color: textColor,
             lineHeight: 1,
             textTransform: "uppercase",
-            fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif"
+            fontFamily: "var(--font-main)"
           }}
         >
           ERAAO

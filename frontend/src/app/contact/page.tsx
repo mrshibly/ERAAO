@@ -102,7 +102,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Message Body *</label>
-                  <textarea required value={message} rows={5} onChange={(e) => setMessage(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none", fontFamily: "sans-serif" }} />
+                  <textarea required value={message} rows={5} onChange={(e) => setMessage(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none", fontFamily: "inherit" }} />
                 </div>
                 <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: "100%", marginTop: "0.5rem" }}>
                   <Send size={16} />

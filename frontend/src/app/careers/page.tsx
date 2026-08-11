@@ -134,7 +134,7 @@ export default function CareersPage() {
                 </div>
                 <div>
                   <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Cover Letter & Resume Summary *</label>
-                  <textarea required value={coverLetter} rows={6} placeholder="Provide details of your experience, certifications (OSCP, OSCE, etc.), and link to your online resume/portfolio." onChange={(e) => setCoverLetter(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none", fontFamily: "sans-serif" }} />
+                  <textarea required value={coverLetter} rows={6} placeholder="Provide details of your experience, certifications (OSCP, OSCE, etc.), and link to your online resume/portfolio." onChange={(e) => setCoverLetter(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none", fontFamily: "inherit" }} />
                 </div>
                 <button type="submit" disabled={submitting} className="btn btn-primary" style={{ width: "100%", marginTop: "0.5rem" }}>
                   <Send size={16} />

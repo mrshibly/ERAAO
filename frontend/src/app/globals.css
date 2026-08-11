@@ -1,6 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-
 :root {
+  /* Global Typography System */
+  --font-main: var(--font-plus-jakarta), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-code: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+
   /* 60% DOMINANT: Canvas & Main backgrounds (Light Theme as Default) */
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
@@ -49,13 +51,24 @@
   padding: 0;
 }
 
-html, body {
+html, body, button, input, select, textarea {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-main);
   line-height: 1.5;
+  letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-main);
+  letter-spacing: -0.022em;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-code);
 }
 
 a {
