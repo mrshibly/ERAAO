@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Users, Trash2, CheckCircle, XCircle, Search } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function AdminUsersPage() {
   const { token, user: currentUser } = useAuth();
@@ -10,6 +11,14 @@ export default function AdminUsersPage() {
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
   
   const [newUserForm, setNewUserForm] = useState({
     email: "", password: "", full_name: "", role: "instructor"
@@ -299,6 +308,16 @@ export default function AdminUsersPage() {
           </form>
         </div>
       </div>
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </div>
   );
 }
