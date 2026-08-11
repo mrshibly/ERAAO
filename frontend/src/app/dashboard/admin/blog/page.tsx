@@ -116,15 +116,17 @@ export default function AdminBlogPage() {
             headers,
             body: JSON.stringify({ status: "published" })
           });
-      if (res.ok) {
-        showMessage("Blog post published successfully!");
-        fetchBlogs();
-      } else {
-        showMessage("Failed to publish blog post.", "error");
+          if (res.ok) {
+            showMessage("Blog post published successfully!");
+            fetchBlogs();
+          } else {
+            showMessage("Failed to publish blog post.", "error");
+          }
+        } catch {
+          showMessage("Error connecting to server.", "error");
+        }
       }
-    } catch {
-      showMessage("Error connecting to server.", "error");
-    }
+    });
   };
 
   const pendingCount = blogs.filter(b => b.status === "draft").length;

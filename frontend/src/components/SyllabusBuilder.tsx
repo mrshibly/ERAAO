@@ -224,14 +224,6 @@ export default function SyllabusBuilder({ courseId, courseSlug, token, onClose }
         }
       }
     });
-  };
-    } catch {
-      setActionError("Network error deleting lecture.");
-    } finally {
-      setSavingStatus(null);
-    }
-  };
-
   return (
     <>
       <div 
