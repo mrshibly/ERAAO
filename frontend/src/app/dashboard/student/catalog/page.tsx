@@ -61,6 +61,12 @@ export default function StudentCatalogPage() {
       return;
     }
 
+    const existing = getEnrollmentForCourse(courseId);
+    if (existing) {
+      router.push(`/learn/${existing.id}`);
+      return;
+    }
+
     setEnrollingId(courseId);
     setEnrollSuccessMsg(null);
 
@@ -80,14 +86,25 @@ export default function StudentCatalogPage() {
         setMyEnrollments((prev) => [...prev, newEnrollment]);
         setTimeout(() => {
           router.push(`/learn/${newEnrollment.id}`);
-        }, 1200);
+        }, 1000);
       } else {
-        const errData = await res.json();
-        alert(errData.detail || "Enrollment failed. Please try again.");
+        const enrollRes = await fetch("/api/v1/enrollments/me", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (enrollRes.ok) {
+          const fresh = await enrollRes.json();
+          setMyEnrollments(fresh);
+          const matched = fresh.find((e: any) => e.course_id === courseId || e.course?.id === courseId);
+          if (matched) {
+            router.push(`/learn/${matched.id}`);
+            return;
+          }
+        }
+        const errData = await res.json().catch(() => ({}));
+        alert(errData.detail || "Enrollment notice.");
       }
     } catch (err) {
       console.error("Enrollment error:", err);
-      alert("Network error during enrollment.");
     } finally {
       setEnrollingId(null);
     }

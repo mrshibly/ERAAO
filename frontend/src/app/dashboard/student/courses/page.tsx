@@ -6,15 +6,22 @@ import { useAuth } from "@/context/AuthContext";
 import { BookOpen, Play, CheckCircle2, Clock, Search, ArrowRight, Compass } from "lucide-react";
 
 export default function StudentCoursesPage() {
-  const { token, user } = useAuth();
+  const { token, user, loading: authLoading } = useAuth();
   const [enrollments, setEnrollments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "in_progress" | "completed">("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if (authLoading) return;
+
     const fetchEnrollments = async () => {
+      setLoading(true);
       try {
+        if (!token) {
+          setLoading(false);
+          return;
+        }
         const res = await fetch("/api/v1/enrollments/me", {
           headers: { "Authorization": `Bearer ${token}` }
         });
@@ -29,13 +36,15 @@ export default function StudentCoursesPage() {
       }
     };
 
-    if (token) fetchEnrollments();
-  }, [token]);
+    fetchEnrollments();
+  }, [token, authLoading]);
 
   const filteredEnrollments = enrollments.filter((item) => {
-    const titleMatches = (item.course?.title || "").toLowerCase().includes(searchQuery.toLowerCase());
-    if (filter === "completed") return titleMatches && item.progress >= 100;
-    if (filter === "in_progress") return titleMatches && item.progress < 100;
+    const courseTitle = item.course?.title || "";
+    const titleMatches = courseTitle.toLowerCase().includes(searchQuery.toLowerCase());
+    const pct = item.progress ?? item.completion_pct ?? 0;
+    if (filter === "completed") return titleMatches && pct >= 100;
+    if (filter === "in_progress") return titleMatches && pct < 100;
     return titleMatches;
   });
 
@@ -184,7 +193,7 @@ export default function StudentCoursesPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.75rem" }}>
           {filteredEnrollments.map((item) => {
             const course = item.course || {};
-            const progress = Math.round(item.progress || 0);
+            const progress = Math.round(item.progress ?? item.completion_pct ?? 0);
 
             return (
               <div
