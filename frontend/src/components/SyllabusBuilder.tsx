@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Plus, X, List, Layers, PlusCircle, Check, Loader, Video, FileText, AlertCircle, Edit2, Trash, Save } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 interface SyllabusBuilderProps {
   courseId: string;
@@ -15,6 +16,14 @@ export default function SyllabusBuilder({ courseId, courseSlug, token, onClose }
   const [loading, setLoading] = useState(true);
   const [actionError, setActionError] = useState<string | null>(null);
   const [savingStatus, setSavingStatus] = useState<string | null>(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "info" as "info" | "danger" | "confirm" | "success",
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: undefined as (() => void) | undefined
+  });
 
   // Forms states
   const [newModuleTitle, setNewModuleTitle] = useState("");
@@ -545,6 +554,16 @@ export default function SyllabusBuilder({ courseId, courseSlug, token, onClose }
         }
       `}</style>
     </div>
+
+    <CustomModal
+      isOpen={modalConfig.isOpen}
+      type={modalConfig.type}
+      title={modalConfig.title}
+      message={modalConfig.message}
+      confirmText={modalConfig.confirmText}
+      onConfirm={modalConfig.onConfirm}
+      onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+    />
     </>
   );
 }
