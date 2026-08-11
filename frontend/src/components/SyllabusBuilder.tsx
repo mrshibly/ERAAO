@@ -224,6 +224,8 @@ export default function SyllabusBuilder({ courseId, courseSlug, token, onClose }
         }
       }
     });
+  };
+
   return (
     <>
       <div 

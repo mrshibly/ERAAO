@@ -114,6 +114,8 @@ export default function AdminCoursesPage() {
         } catch { showMessage("Error connecting to server.", "error"); }
       }
     });
+  };
+
   const pendingCount = courses.filter(c => c.status === "draft").length;
 
   const filtered = courses.filter(c => {
