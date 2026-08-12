@@ -19,8 +19,9 @@ class DashboardService:
         self.audit_repo = AuditRepository(db)
 
     async def get_student_overview(self, user_id: UUID) -> dict:
+        from app.models.enrollment import Enrollment, EnrollmentStatus
         enrolled_count = (await self.db.execute(select(func.count()).select_from(Enrollment).where(Enrollment.user_id == user_id))).scalar() or 0
-        completed_count = (await self.db.execute(select(func.count()).select_from(Enrollment).where(Enrollment.user_id == user_id, Enrollment.status == "completed"))).scalar() or 0
+        completed_count = (await self.db.execute(select(func.count()).select_from(Enrollment).where(Enrollment.user_id == user_id, Enrollment.status == EnrollmentStatus.COMPLETED))).scalar() or 0
         cert_count = (await self.db.execute(select(func.count()).select_from(Certificate).where(Certificate.user_id == user_id))).scalar() or 0
         return {"enrolled_courses": enrolled_count, "completed_courses": completed_count, "certificates_earned": cert_count}
 

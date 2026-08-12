@@ -128,9 +128,9 @@ export default function StudentCoursesPage() {
 
           <div style={{ display: "flex", gap: "0.5rem", background: "var(--bg-primary)", padding: "0.25rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)" }}>
             {[
-              { id: "all", label: "All Courses" },
-              { id: "in_progress", label: "In Progress" },
-              { id: "completed", label: "Completed" }
+              { id: "all", label: `All Courses (${enrollments.length})` },
+              { id: "in_progress", label: `In Progress (${enrollments.filter(e => (e.progress ?? e.completion_pct ?? 0) < 100).length})` },
+              { id: "completed", label: `Completed (${enrollments.filter(e => (e.progress ?? e.completion_pct ?? 0) >= 100).length})` }
             ].map((t) => (
               <button
                 key={t.id}
@@ -160,7 +160,7 @@ export default function StudentCoursesPage() {
         <div style={{ textAlign: "center", padding: "4rem 0", color: "var(--text-secondary)" }}>
           Loading your courses...
         </div>
-      ) : filteredEnrollments.length === 0 ? (
+      ) : enrollments.length === 0 ? (
         <div style={{
           background: "var(--card-bg)",
           border: "1px dashed var(--border-color)",
@@ -188,6 +188,34 @@ export default function StudentCoursesPage() {
           }}>
             <Compass size={16} /> <span>Find Courses</span> <ArrowRight size={16} />
           </Link>
+        </div>
+      ) : filteredEnrollments.length === 0 ? (
+        <div style={{
+          background: "var(--card-bg)",
+          border: "1px dashed var(--border-color)",
+          borderRadius: "var(--radius-lg)",
+          padding: "3rem 2rem",
+          textAlign: "center"
+        }}>
+          <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)" }}>No courses match your filter</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", marginTop: "0.35rem", marginBottom: "1.25rem" }}>
+            No courses found under the "{filter.replace('_', ' ')}" tab or matching "{searchQuery}".
+          </p>
+          <button
+            onClick={() => { setFilter("all"); setSearchQuery(""); }}
+            style={{
+              background: "var(--bg-primary)",
+              border: "1px solid var(--border-color)",
+              color: "var(--text-primary)",
+              padding: "0.5rem 1.25rem",
+              borderRadius: "var(--radius-md)",
+              fontWeight: 600,
+              fontSize: "0.85rem",
+              cursor: "pointer"
+            }}
+          >
+            Reset Filters
+          </button>
         </div>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.75rem" }}>
