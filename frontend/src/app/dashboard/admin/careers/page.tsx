@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Layers, Plus, Trash2, Search } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function AdminCareersPage() {
   const { token } = useAuth();
@@ -12,6 +13,7 @@ export default function AdminCareersPage() {
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [applications, setApplications] = useState<any[]>([]);
   const [careerForm, setCareerForm] = useState({ title: "", slug: "", department: "", location: "", type: "Full-Time", description: "", requirements: "", status: "draft" });
 
@@ -56,8 +58,7 @@ export default function AdminCareersPage() {
     }
   };
 
-  const handleDeleteJob = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this job posting?")) return;
+  const confirmDeleteJob = async (id: string) => {
     try {
       const res = await fetch(`/api/v1/careers/${id}`, { method: "DELETE", headers });
       if (res.ok) {
@@ -70,6 +71,8 @@ export default function AdminCareersPage() {
       }
     } catch {
       showMessage("Error connecting to server.", "error");
+    } finally {
+      setDeleteTargetId(null);
     }
   };
 
@@ -151,7 +154,7 @@ export default function AdminCareersPage() {
                       <button onClick={() => handleViewApplications(job.id)} style={{ fontSize: "0.8rem", color: "var(--accent-blue)", padding: "0.35rem 0.75rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontWeight: 600, cursor: "pointer" }}>
                         Applicants
                       </button>
-                      <button onClick={() => handleDeleteJob(job.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }}>
+                      <button onClick={() => setDeleteTargetId(job.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }}>
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -241,6 +244,17 @@ export default function AdminCareersPage() {
           )}
         </div>
       </div>
+
+      <CustomModal
+        isOpen={Boolean(deleteTargetId)}
+        type="danger"
+        title="Delete Job Posting"
+        message="Are you sure you want to delete this job posting? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => deleteTargetId && confirmDeleteJob(deleteTargetId)}
+        onClose={() => setDeleteTargetId(null)}
+      />
     </div>
   );
 }

@@ -70,7 +70,9 @@ async def google_login(
             expires_in=tokens["expires_in"]
         )
 
-    except ValueError as e:
-        raise HTTPException(status_code=401, detail=f"Invalid Google ID token: {str(e)}")
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Invalid Google ID token. Please try again.")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Authentication failed: {str(e)}")
+        import structlog
+        structlog.get_logger().error("google_oauth_failed", error=str(e))
+        raise HTTPException(status_code=500, detail="Authentication failed. Please try again later.")

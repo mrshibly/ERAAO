@@ -92,8 +92,15 @@ class Settings(BaseSettings):
         if self.ENVIRONMENT in ("production", "staging"):
             if "sqlite" in self.DATABASE_URL.lower():
                 raise ValueError("In staging or production environment, DATABASE_URL cannot be a local SQLite database.")
-            if self.JWT_SECRET_KEY == "CHANGE_ME_GENERATE_A_SECURE_RANDOM_KEY":
-                raise ValueError("In staging or production environment, JWT_SECRET_KEY must be changed from the default value.")
+            # Reject any known insecure JWT secret defaults
+            insecure_secrets = {
+                "CHANGE_ME_GENERATE_A_SECURE_RANDOM_KEY",
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",  # SHA-256 of empty string
+            }
+            if self.JWT_SECRET_KEY in insecure_secrets or len(self.JWT_SECRET_KEY) < 32:
+                raise ValueError(
+                    "JWT_SECRET_KEY is insecure. Generate a strong key with: openssl rand -hex 32"
+                )
         return self
 
 

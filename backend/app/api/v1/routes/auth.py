@@ -60,7 +60,8 @@ async def verify_email(data: EmailVerificationRequest, db: AsyncSession = Depend
     return MessageResponse(message="Email verified successfully.")
 
 @router.post("/forgot-password", response_model=MessageResponse, status_code=200)
-async def forgot_password(data: PasswordResetRequest, db: AsyncSession = Depends(get_db)) -> MessageResponse:
+@limiter.limit("3/minute")
+async def forgot_password(request: Request, data: PasswordResetRequest, db: AsyncSession = Depends(get_db)) -> MessageResponse:
     """Request a password reset email."""
     svc = AuthService(db)
     await svc.request_password_reset(data.email)

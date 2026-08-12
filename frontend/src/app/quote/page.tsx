@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2, Building, Mail, FileText, ChevronDown } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function QuotePage() {
   const [name, setName] = useState("");
@@ -12,6 +13,12 @@ export default function QuotePage() {
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; title: string; message: string; type: "danger" | "info" }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info"
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +45,12 @@ export default function QuotePage() {
       setSuccess(true);
     } catch (err) {
       console.error(err);
-      alert("Error submitting request. Please try again later.");
+      setModalConfig({
+        isOpen: true,
+        type: "danger",
+        title: "Submission Error",
+        message: "Error submitting quote request. Please check your network and try again."
+      });
     } finally {
       setLoading(false);
     }
@@ -133,6 +145,14 @@ export default function QuotePage() {
         </div>
 
       </div>
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

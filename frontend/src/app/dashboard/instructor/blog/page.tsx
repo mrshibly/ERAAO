@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { FileText, Plus, Trash2, Edit3, Search, AlertCircle } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function InstructorBlogPage() {
   const { token } = useAuth();
@@ -13,6 +14,7 @@ export default function InstructorBlogPage() {
   
   const [blogForm, setBlogForm] = useState({ title: "", slug: "", content: "", excerpt: "", status: "draft" });
   const [editId, setEditId] = useState<string | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   const headers = { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" };
 
@@ -77,8 +79,7 @@ export default function InstructorBlogPage() {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this blog draft?")) return;
+  const confirmDelete = async (id: string) => {
     try {
       const res = await fetch(`/api/v1/blog/${id}`, { method: "DELETE", headers });
       if (res.ok) {
@@ -89,6 +90,8 @@ export default function InstructorBlogPage() {
       }
     } catch {
       showMessage("Error connecting to server.", "error");
+    } finally {
+      setDeleteTargetId(null);
     }
   };
 
@@ -160,7 +163,7 @@ export default function InstructorBlogPage() {
                       <button onClick={() => handleEdit(post)} style={{ color: "var(--accent-violet)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Edit">
                         <Edit3 size={16} />
                       </button>
-                      <button onClick={() => handleDelete(post.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Delete">
+                      <button onClick={() => setDeleteTargetId(post.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Delete">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -212,6 +215,17 @@ export default function InstructorBlogPage() {
           </form>
         </div>
       </div>
+
+      <CustomModal
+        isOpen={Boolean(deleteTargetId)}
+        type="danger"
+        title="Delete Blog Draft"
+        message="Are you sure you want to delete this blog post draft? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => deleteTargetId && confirmDelete(deleteTargetId)}
+        onClose={() => setDeleteTargetId(null)}
+      />
     </div>
   );
 }

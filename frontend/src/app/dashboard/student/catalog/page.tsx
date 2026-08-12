@@ -9,6 +9,8 @@ import {
   Award, Shield, Cpu, ChevronRight, X, ArrowRight, User, Layers
 } from "lucide-react";
 
+import CustomModal from "@/components/CustomModal";
+
 export default function StudentCatalogPage() {
   const router = useRouter();
   const { token, user } = useAuth();
@@ -20,6 +22,12 @@ export default function StudentCatalogPage() {
   const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
   const [enrollingId, setEnrollingId] = useState<string | null>(null);
   const [enrollSuccessMsg, setEnrollSuccessMsg] = useState<string | null>(null);
+  const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; title: string; message: string; type: "info" | "danger" }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info"
+  });
 
   const fetchData = async () => {
     try {
@@ -101,7 +109,12 @@ export default function StudentCatalogPage() {
           }
         }
         const errData = await res.json().catch(() => ({}));
-        alert(errData.detail || "Enrollment notice.");
+        setModalConfig({
+          isOpen: true,
+          type: "info",
+          title: "Enrollment Notice",
+          message: errData.detail || "Enrollment notice."
+        });
       }
     } catch (err) {
       console.error("Enrollment error:", err);
@@ -575,6 +588,14 @@ export default function StudentCatalogPage() {
           </div>
         </div>
       )}
+
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

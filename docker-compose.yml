@@ -56,7 +56,7 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://eraao:${POSTGRES_PASSWORD:-eraao_secure_pw_change_me}@postgres:5432/eraao
       REDIS_URL: redis://redis:6379/0
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855}
+      JWT_SECRET_KEY: "${JWT_SECRET_KEY:-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855}"
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
       OPENROUTER_MODEL: ${OPENROUTER_MODEL:-meta-llama/llama-3.3-70b-instruct:free}
       ALLOWED_ORIGINS: https://eraao.com,https://www.eraao.com

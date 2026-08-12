@@ -244,7 +244,7 @@ class AuthService:
         # Trigger reset email background task
         try:
             from app.workers.tasks.email_tasks import send_email_task
-            reset_url = f"{get_settings().ALLOWED_ORIGINS}/reset-password?token={token}"
+            reset_url = f"{get_settings().allowed_origins_list[0]}/reset-password?token={token}"
             send_email_task.delay(
                 to_email=user.email,
                 subject="Reset Your Password — Academy",

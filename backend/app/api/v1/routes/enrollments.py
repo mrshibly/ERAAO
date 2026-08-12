@@ -29,6 +29,19 @@ async def my_enrollments(user: User = Depends(get_current_active_user), db: Asyn
 @router.patch("/{enrollment_id}/progress", status_code=200)
 async def update_progress(enrollment_id: str, data: LessonProgressUpdate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     """Update lesson progress for an enrollment."""
+    from app.core.exceptions import ForbiddenError
+    from sqlalchemy import select
+    from app.models.enrollment import Enrollment as EnrollmentModel
+
+    # Ownership check — prevent IDOR
+    stmt = select(EnrollmentModel.user_id).where(EnrollmentModel.id == UUID(enrollment_id))
+    owner_id = (await db.execute(stmt)).scalar_one_or_none()
+    if owner_id is None:
+        from app.core.exceptions import NotFoundError
+        raise NotFoundError(resource="Enrollment")
+    if owner_id != user.id:
+        raise ForbiddenError(message="You do not have permission to update this enrollment.")
+
     svc = EnrollmentService(db)
     progress = await svc.update_progress(UUID(enrollment_id), data.lesson_id, data.status)
     return {"lesson_id": str(progress.lesson_id), "status": progress.status.value}

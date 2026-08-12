@@ -32,8 +32,20 @@ async def list_tickets(db: AsyncSession = Depends(get_db)):
 
 @router.post("/{ticket_id}/replies", response_model=MessageResponse, status_code=201)
 async def add_reply(ticket_id: UUID, data: TicketReplyCreate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
-    svc = TicketService(db)
+    from app.core.exceptions import ForbiddenError, NotFoundError
+    from sqlalchemy import select
+    from app.models.ticket import Ticket as TicketModel
+
     is_staff = any(ur.role.name == "admin" for ur in user.user_roles)
+    stmt = select(TicketModel.user_id).where(TicketModel.id == ticket_id)
+    owner_id = (await db.execute(stmt)).scalar_one_or_none()
+
+    if owner_id is None:
+        raise NotFoundError(resource="Ticket")
+    if owner_id != user.id and not is_staff:
+        raise ForbiddenError(message="You do not have permission to reply to this ticket.")
+
+    svc = TicketService(db)
     await svc.add_reply(ticket_id=ticket_id, user_id=user.id, body=data.body, is_staff=is_staff)
     return MessageResponse(message="Reply added.")
 

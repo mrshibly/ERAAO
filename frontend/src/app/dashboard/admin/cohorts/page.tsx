@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Database, Plus, Trash2, Search } from "lucide-react";
+import CustomModal from "@/components/CustomModal";
 
 export default function AdminCohortsPage() {
   const { token } = useAuth();
@@ -12,6 +13,7 @@ export default function AdminCohortsPage() {
   const [fetching, setFetching] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   const [cohortForm, setCohortForm] = useState({ course_id: "", title: "", start_date: "", end_date: "", capacity: 30, instructor_id: "" });
 
@@ -66,8 +68,7 @@ export default function AdminCohortsPage() {
     }
   };
 
-  const handleDeleteCohort = async (cohortId: string) => {
-    if (!confirm("Are you sure you want to delete this cohort?")) return;
+  const confirmDeleteCohort = async (cohortId: string) => {
     try {
       const res = await fetch(`/api/v1/cohorts/${cohortId}`, { method: "DELETE", headers });
       if (res.ok) {
@@ -78,6 +79,8 @@ export default function AdminCohortsPage() {
       }
     } catch {
       showMessage("Error connecting to server.", "error");
+    } finally {
+      setDeleteTargetId(null);
     }
   };
 
@@ -145,7 +148,7 @@ export default function AdminCohortsPage() {
                         <span>End: {new Date(cohort.end_date).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <button onClick={() => handleDeleteCohort(cohort.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", marginLeft: "1rem" }}>
+                    <button onClick={() => setDeleteTargetId(cohort.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", marginLeft: "1rem" }}>
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -213,6 +216,17 @@ export default function AdminCohortsPage() {
           </form>
         </div>
       </div>
+
+      <CustomModal
+        isOpen={Boolean(deleteTargetId)}
+        type="danger"
+        title="Delete Cohort"
+        message="Are you sure you want to delete this cohort? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => deleteTargetId && confirmDeleteCohort(deleteTargetId)}
+        onClose={() => setDeleteTargetId(null)}
+      />
     </div>
   );
 }

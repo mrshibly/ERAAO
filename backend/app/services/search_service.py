@@ -41,17 +41,12 @@ class SearchService:
             rows = (await self.db.execute(stmt)).all()
             return [{"type": "service", "id": str(r.id), "title": r.title, "slug": r.slug, "excerpt": (r.description or "")[:200]} for r in rows]
 
-        tasks = []
+        # Run queries sequentially — AsyncSession is NOT safe for concurrent use
         if entity_type is None or entity_type == "course":
-            tasks.append(search_courses())
+            results.extend(await search_courses())
         if entity_type is None or entity_type == "blog":
-            tasks.append(search_blog())
+            results.extend(await search_blog())
         if entity_type is None or entity_type == "service":
-            tasks.append(search_services())
-
-        # Run queries concurrently to achieve maximum speed under concurrent request loads
-        outputs = await asyncio.gather(*tasks)
-        for out in outputs:
-            results.extend(out)
+            results.extend(await search_services())
 
         return {"query": query, "results": results, "total": len(results)}

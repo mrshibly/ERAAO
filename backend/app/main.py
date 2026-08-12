@@ -55,9 +55,9 @@ def create_app() -> FastAPI:
         title=settings.APP_NAME,
         description="AI Development + Cybersecurity Academy & Services Platform API",
         version="0.1.0",
-        docs_url="/docs",
-        redoc_url="/redoc",
-        openapi_url="/openapi.json",
+        docs_url="/docs" if settings.DEBUG else None,
+        redoc_url="/redoc" if settings.DEBUG else None,
+        openapi_url="/openapi.json" if settings.DEBUG else None,
         lifespan=lifespan,
     )
 
@@ -81,18 +81,25 @@ def create_app() -> FastAPI:
     )
 
     # ---- Security headers middleware ----
+    # Note: X-Frame-Options is set in nginx (SAMEORIGIN). Do not duplicate here.
     @application.middleware("http")
     async def add_security_headers(request: Request, call_next) -> Response:  # type: ignore[no-untyped-def]
         response: Response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        response.headers["X-XSS-Protection"] = "1; mode=block"
         if settings.ENVIRONMENT == "production":
             response.headers["Strict-Transport-Security"] = (
                 "max-age=31536000; includeSubDomains"
             )
-            response.headers["Content-Security-Policy"] = "default-src 'self'"
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com; "
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+                "font-src 'self' https://fonts.gstatic.com; "
+                "img-src 'self' data: https://images.unsplash.com https://*.googleusercontent.com blob:; "
+                "connect-src 'self' https://accounts.google.com https://openrouter.ai; "
+                "frame-src https://accounts.google.com;"
+            )
         return response
 
     # ---- Exception handlers ----
