@@ -131,7 +131,7 @@ export default function StudentDashboard() {
               <Sparkles size={14} /> Student Dashboard
             </div>
             <h1 style={{ fontSize: "1.85rem", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: "1.25" }}>
-              Welcome back, {user?.full_name?.split(" ")[0] || "Student"}! 👋
+              Welcome back, {user?.full_name?.split(" ")[0] || "Student"}!
             </h1>
             <p style={{ color: "#94a3b8", fontSize: "0.925rem", marginTop: "0.4rem", lineHeight: "1.5" }}>
               {currentActiveCourse

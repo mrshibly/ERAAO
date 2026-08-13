@@ -18,3 +18,6 @@ class CertificateVerifyResponse(BaseModel):
     holder_name: str | None = None
     course_title: str | None = None
     issued_at: datetime | None = None
+    instructor_name: str | None = None
+    instructor_title: str | None = None
+    signature_url: str | None = None

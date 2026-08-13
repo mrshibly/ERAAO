@@ -11,9 +11,10 @@ class CertificateRepository:
         self.db = db
 
     async def get_by_verification_id(self, verification_id: UUID) -> Certificate | None:
+        from app.models.course import Course
         stmt = select(Certificate).where(Certificate.verification_id == verification_id).options(
             selectinload(Certificate.user),
-            selectinload(Certificate.course)
+            selectinload(Certificate.course).selectinload(Course.instructor)
         )
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()

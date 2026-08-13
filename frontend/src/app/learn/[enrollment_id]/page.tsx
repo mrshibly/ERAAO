@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import CustomModal from "@/components/CustomModal";
-import { BookOpen, CheckSquare, Square, ChevronRight, ArrowLeft, PlayCircle, FileText, Award, HelpCircle } from "lucide-react";
+import { BookOpen, CheckSquare, Square, ChevronRight, ArrowLeft, PlayCircle, FileText, Award, HelpCircle, Download } from "lucide-react";
 
 export default function LearnPage() {
   const params = useParams();
@@ -18,6 +19,7 @@ export default function LearnPage() {
   const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
   const [certificate, setCertificate] = useState<any>(null);
   const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Quiz state
   const [quizAnswers, setQuizAnswers] = useState<{ [qIdx: number]: number }>({});
@@ -68,15 +70,23 @@ export default function LearnPage() {
             setActiveLesson(mods[0].lessons[0]);
           }
 
-          // Load completed lesson IDs
+          // Load completed lesson IDs from backend response
           const doneSet = new Set<string>();
-          (data.progress || []).forEach((p: any) => {
-            if (p.is_completed) doneSet.add(p.lesson_id);
-          });
+          if (Array.isArray(data.completed_lessons)) {
+            data.completed_lessons.forEach((id: string) => doneSet.add(String(id)));
+          } else if (Array.isArray(data.progress)) {
+            data.progress.forEach((p: any) => {
+              if (p.is_completed || p.status === "completed") doneSet.add(String(p.lesson_id || p));
+            });
+          }
           setCompletedLessonIds(doneSet);
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          setError(errData.detail || errData.message || "Enrollment not found or unauthorized.");
         }
       } catch (err) {
         console.error("Error loading enrollment:", err);
+        setError("Error connecting to course server.");
       } finally {
         setFetching(false);
       }
@@ -155,6 +165,24 @@ export default function LearnPage() {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
         <p>Loading course environment...</p>
+      </div>
+    );
+  }
+
+  if (error || (!fetching && !course)) {
+    return (
+      <div style={{ maxWidth: "550px", margin: "5rem auto", padding: "3rem 2rem", textAlign: "center", background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)" }}>
+        <BookOpen size={42} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
+        <h2 style={{ fontSize: "1.35rem", fontWeight: 800, color: "var(--text-primary)" }}>Enrollment Not Found</h2>
+        <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem", marginBottom: "1.5rem" }}>
+          {error || "The requested enrollment could not be found or you do not have permission to access it."}
+        </p>
+        <button
+          onClick={() => router.push("/dashboard/student/courses")}
+          style={{ background: "var(--accent-blue)", color: "white", padding: "0.65rem 1.35rem", borderRadius: "var(--radius-md)", fontWeight: 700, border: "none", cursor: "pointer" }}
+        >
+          Back to My Courses
+        </button>
       </div>
     );
   }
@@ -256,10 +284,18 @@ export default function LearnPage() {
             <p style={{ opacity: 0.9, fontSize: "0.95rem", marginTop: "0.35rem" }}>
               You have completed all syllabus requirements and earned your official certificate!
             </p>
-            <div style={{ display: "flex", gap: "1rem", marginTop: "1.25rem" }}>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
+              {certificate?.verification_id && (
+                <Link
+                  href={`/verify/${certificate.verification_id}`}
+                  style={{ background: "white", color: "#0f172a", padding: "0.6rem 1.25rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}
+                >
+                  <Award size={18} style={{ color: "#0ea5e9" }} /> View & Verify Official Certificate
+                </Link>
+              )}
               {certificate?.pdf_url && (
-                <a href={certificate.pdf_url} download target="_blank" rel="noreferrer" style={{ background: "white", color: "var(--accent-violet)", padding: "0.6rem 1.25rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-                  <Award size={18} /> Download Certificate PDF
+                <a href={certificate.pdf_url} download target="_blank" rel="noreferrer" style={{ background: "rgba(255,255,255,0.2)", color: "white", padding: "0.6rem 1.25rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem", border: "1px solid rgba(255,255,255,0.3)" }}>
+                  <Download size={18} /> Download PDF
                 </a>
               )}
             </div>

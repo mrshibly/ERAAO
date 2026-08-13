@@ -1,20 +1,59 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, Clock, Loader, Eye, ArrowRight } from "lucide-react";
+import { BookOpen, Clock, Loader, Search, ArrowRight, ChevronLeft, ChevronRight, X, Filter } from "lucide-react";
 
 export default function AcademyPage() {
   const [courses, setCourses] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Search & Filter state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(9);
+  const [total, setTotal] = useState(0);
+
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/v1/categories");
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(data);
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Fetch courses with pagination, search, and filters
   useEffect(() => {
     const fetchCourses = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/api/v1/courses?page=1&page_size=50");
+        const queryParams = new URLSearchParams();
+        queryParams.set("page", page.toString());
+        queryParams.set("page_size", pageSize.toString());
+        if (searchQuery.trim()) queryParams.set("search", searchQuery.trim());
+        if (selectedLevel !== "all") queryParams.set("level", selectedLevel);
+        if (selectedCategory !== "all") queryParams.set("category_id", selectedCategory);
+
+        const res = await fetch(`/api/v1/courses?${queryParams.toString()}`);
         if (res.ok) {
           const body = await res.json();
           setCourses(body.items || []);
+          setTotal(body.total || 0);
         }
       } catch (err) {
         console.error("Error loading courses:", err);
@@ -22,8 +61,22 @@ export default function AcademyPage() {
         setLoading(false);
       }
     };
-    fetchCourses();
-  }, []);
+
+    const timer = setTimeout(() => {
+      fetchCourses();
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [page, pageSize, searchQuery, selectedLevel, selectedCategory]);
+
+  const totalPages = Math.ceil(total / pageSize) || 1;
+
+  const handleResetFilters = () => {
+    setSearchQuery("");
+    setSelectedLevel("all");
+    setSelectedCategory("all");
+    setPage(1);
+  };
 
   const getCourseThumbnail = (title: string) => {
     const t = (title || "").toLowerCase();
@@ -37,11 +90,11 @@ export default function AcademyPage() {
   };
 
   return (
-    <div style={{ padding: "4rem 0" }}>
+    <div style={{ padding: "4rem 0", background: "var(--bg-secondary)", minHeight: "100vh" }}>
       <div className="container">
         
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <span style={{
             display: "inline-block",
             background: "rgba(14, 165, 233, 0.08)",
@@ -57,19 +110,179 @@ export default function AcademyPage() {
             Academy Bootcamps
           </span>
           <h1 style={{ fontSize: "2.75rem", fontWeight: 800, letterSpacing: "-0.03em" }}>Course Catalog</h1>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", marginTop: "0.5rem", maxWidth: "35rem", margin: "0.5rem auto 0 auto" }}>
-            Explore our hands-on cybersecurity and applied AI courses. Click any course to view full syllabus details, modules, and labs.
+          <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", marginTop: "0.5rem", maxWidth: "38rem", margin: "0.5rem auto 0 auto" }}>
+            Explore our hands-on cybersecurity and applied AI courses. Filter by topic or level to begin your learning path.
           </p>
+        </div>
+
+        {/* Controls Bar: Search & Filters */}
+        <div style={{
+          background: "var(--card-bg)",
+          border: "1px solid var(--border-color)",
+          borderRadius: "var(--radius-lg)",
+          padding: "1.25rem 1.5rem",
+          marginBottom: "2.5rem",
+          boxShadow: "var(--shadow-sm)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem"
+        }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", alignItems: "center" }}>
+            
+            {/* Live Search Input */}
+            <div style={{ flex: "1 1 280px", position: "relative" }}>
+              <Search size={18} style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+              <input
+                type="text"
+                placeholder="Search bootcamps, topics, or skills..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setPage(1);
+                }}
+                style={{
+                  width: "100%",
+                  padding: "0.7rem 2.5rem 0.7rem 2.75rem",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--border-color)",
+                  background: "var(--bg-primary)",
+                  color: "var(--text-primary)",
+                  fontSize: "0.9rem",
+                  outline: "none"
+                }}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setPage(1);
+                  }}
+                  style={{ position: "absolute", right: "0.75rem", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+
+            {/* Category Filter Dropdown */}
+            <div style={{ flex: "0 1 200px" }}>
+              <select
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setPage(1);
+                }}
+                style={{
+                  width: "100%",
+                  padding: "0.7rem 1rem",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--border-color)",
+                  background: "var(--bg-primary)",
+                  color: "var(--text-primary)",
+                  fontSize: "0.9rem",
+                  outline: "none",
+                  cursor: "pointer"
+                }}
+              >
+                <option value="all">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Reset Filters Button */}
+            {(searchQuery || selectedLevel !== "all" || selectedCategory !== "all") && (
+              <button
+                onClick={handleResetFilters}
+                style={{
+                  padding: "0.65rem 1rem",
+                  background: "none",
+                  border: "1px solid var(--border-color)",
+                  borderRadius: "var(--radius-md)",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.4rem"
+                }}
+              >
+                <X size={14} /> Clear Filters
+              </button>
+            )}
+
+          </div>
+
+          {/* Level Filter Pills */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", paddingTop: "0.5rem", borderTop: "1px solid var(--border-color)" }}>
+            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginRight: "0.5rem", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              <Filter size={12} /> Level:
+            </span>
+            {["all", "beginner", "intermediate", "advanced"].map((lvl) => {
+              const active = selectedLevel === lvl;
+              return (
+                <button
+                  key={lvl}
+                  onClick={() => {
+                    setSelectedLevel(lvl);
+                    setPage(1);
+                  }}
+                  style={{
+                    padding: "0.35rem 0.85rem",
+                    borderRadius: "20px",
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    textTransform: "capitalize",
+                    transition: "all 0.2s ease",
+                    border: active ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                    background: active ? "var(--accent-blue)" : "var(--bg-primary)",
+                    color: active ? "white" : "var(--text-secondary)"
+                  }}
+                >
+                  {lvl === "all" ? "All Levels" : lvl}
+                </button>
+              );
+            })}
+
+            {/* Total Results Counter */}
+            <span style={{ marginLeft: "auto", fontSize: "0.825rem", color: "var(--text-muted)", fontWeight: 600 }}>
+              Showing {courses.length > 0 ? (page - 1) * pageSize + 1 : 0}-{Math.min(page * pageSize, total)} of {total} courses
+            </span>
+          </div>
         </div>
 
         {/* Course Cards Grid */}
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", padding: "4rem 0" }}>
-            <Loader className="animate-spin text-accent" style={{ color: "var(--accent-blue)" }} size={32} />
+          <div style={{ display: "flex", justifyContent: "center", padding: "5rem 0" }}>
+            <Loader className="animate-spin text-accent" style={{ color: "var(--accent-blue)" }} size={36} />
           </div>
         ) : courses.length === 0 ? (
-          <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "4rem 2rem", textAlign: "center" }}>
-            <p style={{ color: "var(--text-muted)", fontSize: "1rem" }}>No active courses currently listed in the catalog.</p>
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)", padding: "4rem 2rem", textAlign: "center" }}>
+            <BookOpen size={42} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
+            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.5rem" }}>No Matching Bootcamps Found</h3>
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem" }}>
+              Try adjusting your search query, selecting another level, or clearing active filters.
+            </p>
+            <button
+              onClick={handleResetFilters}
+              style={{
+                background: "var(--accent-blue)",
+                color: "white",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "var(--radius-md)",
+                fontWeight: 700,
+                fontSize: "0.875rem",
+                border: "none",
+                cursor: "pointer"
+              }}
+            >
+              Reset All Filters
+            </button>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2.5rem" }}>
@@ -87,7 +300,7 @@ export default function AcademyPage() {
                     position: "absolute",
                     top: "0.75rem",
                     right: "0.75rem",
-                    background: "rgba(15, 23, 42, 0.8)",
+                    background: "rgba(15, 23, 42, 0.85)",
                     backdropFilter: "blur(4px)",
                     border: "1px solid rgba(255, 255, 255, 0.2)",
                     padding: "0.25rem 0.75rem",
@@ -155,6 +368,84 @@ export default function AcademyPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination Bar */}
+        {totalPages > 1 && (
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "0.5rem",
+            marginTop: "3.5rem"
+          }}>
+            {/* Previous Page Button */}
+            <button
+              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem",
+                padding: "0.65rem 1rem",
+                borderRadius: "var(--radius-md)",
+                border: "1px solid var(--border-color)",
+                background: page === 1 ? "var(--bg-primary)" : "var(--card-bg)",
+                color: page === 1 ? "var(--text-muted)" : "var(--text-primary)",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: page === 1 ? "not-allowed" : "pointer"
+              }}
+            >
+              <ChevronLeft size={16} /> Previous
+            </button>
+
+            {/* Page Number Buttons */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+              const isActive = pageNum === page;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setPage(pageNum)}
+                  style={{
+                    width: "38px",
+                    height: "38px",
+                    borderRadius: "var(--radius-md)",
+                    border: isActive ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                    background: isActive ? "var(--accent-blue)" : "var(--card-bg)",
+                    color: isActive ? "white" : "var(--text-primary)",
+                    fontWeight: 800,
+                    fontSize: "0.875rem",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+
+            {/* Next Page Button */}
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem",
+                padding: "0.65rem 1rem",
+                borderRadius: "var(--radius-md)",
+                border: "1px solid var(--border-color)",
+                background: page === totalPages ? "var(--bg-primary)" : "var(--card-bg)",
+                color: page === totalPages ? "var(--text-muted)" : "var(--text-primary)",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: page === totalPages ? "not-allowed" : "pointer"
+              }}
+            >
+              Next <ChevronRight size={16} />
+            </button>
           </div>
         )}
 

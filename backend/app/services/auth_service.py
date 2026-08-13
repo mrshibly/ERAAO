@@ -185,18 +185,36 @@ class AuthService:
     async def refresh_token(self, refresh_token_str: str) -> dict:
         """
         Validate a refresh token and issue a new access/refresh pair.
+        The old refresh token is added to a Redis denylist to prevent reuse.
 
         Raises:
-            UnauthorizedError: If the refresh token is invalid or expired.
+            UnauthorizedError: If the refresh token is invalid, expired, or revoked.
         """
         payload = decode_token(refresh_token_str)
         if payload.get("type") != "refresh":
             raise UnauthorizedError(message="Invalid token type.")
 
+        # B1: Check if this refresh token has been revoked (used before)
+        from app.core.redis_cache import get_redis_client
+        import hashlib
+        token_hash = hashlib.sha256(refresh_token_str.encode()).hexdigest()
+        redis_client = get_redis_client()
+        if redis_client:
+            is_denied = await redis_client.get(f"rt_deny:{token_hash}")
+            if is_denied:
+                raise UnauthorizedError(message="Token has been revoked. Please log in again.")
+
         user_id = payload.get("sub")
         user = await self.user_repo.get_by_id(UUID(user_id))
         if user is None or not user.is_active:
             raise UnauthorizedError(message="User not found or inactive.")
+
+        # B1: Denylist the old refresh token before issuing a new one
+        if redis_client:
+            import time
+            exp = payload.get("exp", 0)
+            remaining_ttl = max(int(exp - time.time()), 60)  # at least 60s
+            await redis_client.set(f"rt_deny:{token_hash}", "1", ex=remaining_ttl)
 
         roles = [ur.role.name for ur in user.user_roles]
         settings = get_settings()

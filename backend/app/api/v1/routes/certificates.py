@@ -19,7 +19,20 @@ async def verify_certificate(verification_id: UUID, db: AsyncSession = Depends(g
     cert = await svc.get_by_verification_id(verification_id)
     if cert is None:
         return CertificateVerifyResponse(is_valid=False)
-    return CertificateVerifyResponse(is_valid=True, holder_name=cert.user.full_name, course_title=cert.course.title, issued_at=cert.issued_at)
+
+    instructor = cert.course.instructor if cert.course else None
+    instructor_name = instructor.full_name if instructor and instructor.full_name else "Harishankaran K"
+    signature_url = instructor.signature_url if instructor else None
+
+    return CertificateVerifyResponse(
+        is_valid=True,
+        holder_name=cert.user.full_name,
+        course_title=cert.course.title if cert.course else "Certified Course",
+        issued_at=cert.issued_at,
+        instructor_name=instructor_name,
+        instructor_title="Chief Technology Officer, ERAAO",
+        signature_url=signature_url
+    )
 
 @router.get("/me", response_model=list[CertificateRead], status_code=200)
 async def my_certificates(user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):

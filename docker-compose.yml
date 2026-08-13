@@ -78,9 +78,12 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
     restart: unless-stopped
+    ports:
+      - "3000:3000"
     environment:
       NODE_ENV: production
       HOSTNAME: "0.0.0.0"
+      BACKEND_URL: http://backend:8000
     deploy:
       resources:
         limits:
@@ -92,6 +95,8 @@ services:
   nginx:
     image: nginx:alpine
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "80:80"
       - "443:443"

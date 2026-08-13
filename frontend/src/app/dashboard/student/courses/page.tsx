@@ -286,28 +286,30 @@ export default function StudentCoursesPage() {
                       <div style={{ height: "100%", width: `${progress}%`, background: progress >= 100 ? "#10b981" : "var(--accent-blue)", borderRadius: "4px", transition: "width 0.4s ease" }} />
                     </div>
 
-                    <Link
-                      href={`/learn/${item.id}`}
-                      style={{
-                        width: "100%",
-                        padding: "0.65rem",
-                        borderRadius: "var(--radius-md)",
-                        background: progress >= 100 ? "var(--bg-primary)" : "var(--accent-blue)",
-                        color: progress >= 100 ? "var(--text-primary)" : "white",
-                        border: progress >= 100 ? "1px solid var(--border-color)" : "none",
-                        fontWeight: 700,
-                        fontSize: "0.875rem",
-                        textDecoration: "none",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "0.4rem",
-                        boxSizing: "border-box"
-                      }}
-                    >
-                      <Play size={16} />
-                      <span>{progress >= 100 ? "Review Course" : "Continue Learning"}</span>
-                    </Link>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      <Link
+                        href={`/learn/${item.id}`}
+                        style={{
+                          flex: 1,
+                          padding: "0.65rem",
+                          borderRadius: "var(--radius-md)",
+                          background: progress >= 100 ? "var(--bg-primary)" : "var(--accent-blue)",
+                          color: progress >= 100 ? "var(--text-primary)" : "white",
+                          border: progress >= 100 ? "1px solid var(--border-color)" : "none",
+                          fontWeight: 700,
+                          fontSize: "0.875rem",
+                          textDecoration: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.4rem",
+                          boxSizing: "border-box"
+                        }}
+                      >
+                        <Play size={16} />
+                        <span>{progress >= 100 ? "Review Course" : "Continue Learning"}</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

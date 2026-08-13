@@ -15,10 +15,18 @@ router = APIRouter()
 
 @router.get("", response_model=PaginatedResponse[CourseRead], status_code=200)
 async def list_courses(page: int = Query(1, ge=1), page_size: int = Query(20, ge=1, le=100), category_id: UUID | None = None, level: str | None = None, search: str | None = None, db: AsyncSession = Depends(get_db)):
-    """Public: list published courses with filters."""
+    """Public: list published courses with filters (cached via Redis)."""
+    from app.core.redis_cache import cache_get, cache_set
+    cache_key = f"courses:list:p{page}_ps{page_size}_cat{category_id}_lvl{level}_s{search}"
+    cached_data = await cache_get(cache_key)
+    if cached_data:
+        return cached_data
+
     svc = CourseService(db)
     courses, total = await svc.list_published(page, page_size, category_id, level, search)
-    return PaginatedResponse(items=[CourseRead.model_validate(c) for c in courses], total=total, page=page, page_size=page_size)
+    response = PaginatedResponse(items=[CourseRead.model_validate(c) for c in courses], total=total, page=page, page_size=page_size)
+    await cache_set(cache_key, response.model_dump(), ttl=180)
+    return response
 
 @router.get("/managed", response_model=PaginatedResponse[CourseRead], status_code=200)
 async def list_managed_courses(
@@ -45,74 +53,100 @@ async def list_managed_courses(
 
 @router.get("/{slug}", response_model=CourseRead, status_code=200)
 async def get_course(slug: str, db: AsyncSession = Depends(get_db)):
-    """Public: get course detail by slug."""
+    """Public: get course detail by slug (cached via Redis)."""
+    from app.core.redis_cache import cache_get, cache_set
+    cache_key = f"courses:detail:{slug}"
+    cached_data = await cache_get(cache_key)
+    if cached_data:
+        return cached_data
+
     svc = CourseService(db)
-    return CourseRead.model_validate(await svc.get_course_detail(slug))
+    course_detail = CourseRead.model_validate(await svc.get_course_detail(slug))
+    await cache_set(cache_key, course_detail.model_dump(), ttl=300)
+    return course_detail
 
 @router.post("", response_model=CourseRead, status_code=201, dependencies=[Depends(require_role("instructor", "admin"))])
 async def create_course(data: CourseCreate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     """Create a new course (instructor/admin)."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     course = await svc.create_course(user.id, **data.model_dump())
+    await cache_invalidate("courses:*")
     return CourseRead.model_validate(course)
 
 @router.patch("/{course_id}", response_model=CourseRead, status_code=200, dependencies=[Depends(require_role("instructor", "admin"))])
 async def update_course(course_id: UUID, data: CourseUpdate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     """Update a course (owner instructor or admin)."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     is_admin = any(ur.role.name == "admin" for ur in user.user_roles)
     course = await svc.update_course(course_id, user.id, is_admin, **data.model_dump(exclude_unset=True))
+    await cache_invalidate("courses:*")
     return CourseRead.model_validate(course)
 
 @router.delete("/{course_id}", response_model=MessageResponse, status_code=200, dependencies=[Depends(require_role("admin"))])
 async def delete_course(course_id: UUID, db: AsyncSession = Depends(get_db)):
     """Soft-delete a course (admin only)."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     await svc.delete_course(course_id)
+    await cache_invalidate("courses:*")
     return MessageResponse(message="Course deleted.")
 
 @router.post("/{course_id}/modules", status_code=201, dependencies=[Depends(require_role("instructor", "admin"))])
 async def create_module(course_id: UUID, data: ModuleCreate, db: AsyncSession = Depends(get_db)):
     """Add a module to a course."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     module = await svc.create_module(course_id, **data.model_dump())
+    await cache_invalidate("courses:*")
     return {"id": str(module.id), "title": module.title, "order": module.order}
 
 @router.post("/modules/{module_id}/lessons", status_code=201, dependencies=[Depends(require_role("instructor", "admin"))])
 async def create_lesson(module_id: UUID, data: LessonCreate, db: AsyncSession = Depends(get_db)):
     """Add a lesson to a module."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     lesson = await svc.create_lesson(module_id=module_id, **data.model_dump())
+    await cache_invalidate("courses:*")
     return {"id": str(lesson.id), "title": lesson.title, "order": lesson.order}
 
 
 @router.patch("/modules/{module_id}", status_code=200, dependencies=[Depends(require_role("instructor", "admin"))])
 async def update_module(module_id: UUID, data: ModuleUpdate, db: AsyncSession = Depends(get_db)):
     """Update a module's details."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     module = await svc.update_module(module_id=module_id, **data.model_dump(exclude_unset=True))
+    await cache_invalidate("courses:*")
     return {"id": str(module.id), "title": module.title, "order": module.order}
 
 
 @router.delete("/modules/{module_id}", response_model=MessageResponse, status_code=200, dependencies=[Depends(require_role("instructor", "admin"))])
 async def delete_module(module_id: UUID, db: AsyncSession = Depends(get_db)):
     """Delete a module."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     await svc.delete_module(module_id)
+    await cache_invalidate("courses:*")
     return MessageResponse(message="Module deleted.")
 
 
 @router.patch("/lessons/{lesson_id}", status_code=200, dependencies=[Depends(require_role("instructor", "admin"))])
 async def update_lesson(lesson_id: UUID, data: LessonUpdate, db: AsyncSession = Depends(get_db)):
     """Update a lesson's details."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     lesson = await svc.update_lesson(lesson_id=lesson_id, **data.model_dump(exclude_unset=True))
+    await cache_invalidate("courses:*")
     return {"id": str(lesson.id), "title": lesson.title, "order": lesson.order}
 
 
 @router.delete("/lessons/{lesson_id}", response_model=MessageResponse, status_code=200, dependencies=[Depends(require_role("instructor", "admin"))])
 async def delete_lesson(lesson_id: UUID, db: AsyncSession = Depends(get_db)):
     """Delete a lesson."""
+    from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
     await svc.delete_lesson(lesson_id)
+    await cache_invalidate("courses:*")
     return MessageResponse(message="Lesson deleted.")

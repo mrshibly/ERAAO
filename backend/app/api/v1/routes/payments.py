@@ -39,26 +39,71 @@ async def sslcommerz_success(
     amount: float = Form(...),
     db: AsyncSession = Depends(get_db)
 ):
-    """Callback for successful SSLCommerz transactions."""
-    if status == "VALID" or status == "VALIDATED":
-        stmt = select(Order).where(Order.id == order_id).options(selectinload(Order.items))
-        order = (await db.execute(stmt)).scalar_one_or_none()
-        if order and order.status != OrderStatus.PAID:
-            order.status = OrderStatus.PAID
-            order.gateway_event_id = val_id
-            
-            from app.services.enrollment_service import EnrollmentService
-            enroll_svc = EnrollmentService(db)
-            for item in order.items:
-                if item.item_type == ItemType.COURSE:
-                    try:
-                        await enroll_svc.enroll(order.user_id, item.item_id)
-                    except Exception:
-                        pass
-            await db.commit()
-            
+    """Callback for successful SSLCommerz transactions.
+
+    Security: Verifies the transaction server-side via SSLCommerz validation API
+    instead of trusting the form POST data (which can be forged).
+    """
+    import httpx
+    import structlog
+
+    log = structlog.get_logger()
     settings = get_settings()
     base_url = settings.allowed_origins_list[0]
+
+    if status not in ("VALID", "VALIDATED"):
+        return RedirectResponse(url=f"{base_url}/dashboard/student?payment=failed", status_code=303)
+
+    # --- Server-side verification via SSLCommerz Validation API ---
+    validation_url = (
+        "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+        if settings.SSLCOMMERZ_IS_SANDBOX
+        else "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+    )
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.get(validation_url, params={
+                "val_id": val_id,
+                "store_id": settings.SSLCOMMERZ_STORE_ID,
+                "store_passwd": settings.SSLCOMMERZ_STORE_PASSWD,
+                "format": "json",
+            })
+            resp.raise_for_status()
+            vdata = resp.json()
+    except Exception as exc:
+        log.error("sslcommerz_validation_failed", val_id=val_id, error=str(exc))
+        return RedirectResponse(url=f"{base_url}/dashboard/student?payment=failed", status_code=303)
+
+    if vdata.get("status") not in ("VALID", "VALIDATED"):
+        log.warning("sslcommerz_invalid_status", val_id=val_id, api_status=vdata.get("status"))
+        return RedirectResponse(url=f"{base_url}/dashboard/student?payment=failed", status_code=303)
+
+    # --- Amount match check ---
+    stmt = select(Order).where(Order.id == order_id).options(selectinload(Order.items))
+    order = (await db.execute(stmt)).scalar_one_or_none()
+    if not order:
+        log.warning("sslcommerz_order_not_found", order_id=str(order_id))
+        return RedirectResponse(url=f"{base_url}/dashboard/student?payment=failed", status_code=303)
+
+    verified_amount = float(vdata.get("amount", 0))
+    if abs(verified_amount - float(order.total_amount)) > 0.01:
+        log.warning("sslcommerz_amount_mismatch", expected=float(order.total_amount), got=verified_amount)
+        return RedirectResponse(url=f"{base_url}/dashboard/student?payment=failed", status_code=303)
+
+    if order.status != OrderStatus.PAID:
+        order.status = OrderStatus.PAID
+        order.gateway_event_id = val_id
+
+        from app.services.enrollment_service import EnrollmentService
+        enroll_svc = EnrollmentService(db)
+        for item in order.items:
+            if item.item_type == ItemType.COURSE:
+                try:
+                    await enroll_svc.enroll(order.user_id, item.item_id)
+                except Exception:
+                    pass
+        await db.commit()
+
     return RedirectResponse(url=f"{base_url}/dashboard/student?payment=success", status_code=303)
 
 @router.post("/sslcommerz/fail")
