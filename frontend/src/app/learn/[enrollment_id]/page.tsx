@@ -91,14 +91,14 @@ export default function LearnPage() {
 
     try {
       const res = await fetch(`/api/v1/enrollments/${enrollmentId}/progress`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           lesson_id: lessonId,
-          is_completed: newDoneState
+          status: newDoneState ? "completed" : "not_started"
         })
       });
 
