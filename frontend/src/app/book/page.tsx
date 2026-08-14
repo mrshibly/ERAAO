@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Clock, Video, User, Mail, Phone, ChevronRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { Calendar, Clock, Video, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface SlotData {
   id: string;
@@ -142,25 +142,25 @@ export default function BookPage() {
   };
 
   return (
-    <div style={{ padding: "4rem 0" }}>
+    <div style={{ padding: "var(--spacing-section) 0" }}>
       <div className="container" style={{ maxWidth: "55rem" }}>
         
-        <div style={{ display: "flex", flexWrap: "wrap", background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
           
           {/* Left panel: Info */}
           <div style={{ flex: "1 1 300px", background: "var(--bg-secondary)", padding: "2.5rem", borderRight: "1px solid var(--border-color)" }}>
-            <span style={{ fontSize: "0.8rem", textTransform: "uppercase", fontWeight: 700, color: "var(--accent-blue)", letterSpacing: "0.05em" }}>Discovery</span>
-            <h2 style={{ fontSize: "1.75rem", fontWeight: 800, margin: "0.5rem 0 1rem 0" }}>Security & AI Consultation</h2>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.5 }}>
+            <span className="badge badge-blue" style={{ marginBottom: "0.5rem" }}>Discovery</span>
+            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, margin: "0.5rem 0 1rem 0", color: "var(--text-primary)" }}>Security &amp; AI Consultation</h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "2rem", lineHeight: 1.5 }}>
               Meet with a senior solution engineer to discuss custom LLM application design, secure code integration, or corporate ethical hacking courses.
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "0.95rem", color: "var(--text-secondary)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
                 <Clock size={16} style={{ color: "var(--accent-blue)" }} />
                 <span>30 Minutes</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "0.95rem", color: "var(--text-secondary)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
                 <Video size={16} style={{ color: "var(--accent-blue)" }} />
                 <span>Secure Google Meet link provided</span>
               </div>
@@ -172,9 +172,9 @@ export default function BookPage() {
             
             {success ? (
               <div style={{ textAlign: "center", padding: "3rem 0" }}>
-                <CheckCircle2 size={64} style={{ color: "var(--accent-emerald)", margin: "0 auto 1.5rem auto" }} />
-                <h3 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Consultation Scheduled!</h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem" }}>
+                <CheckCircle2 size={64} style={{ color: "var(--color-success)", margin: "0 auto 1.5rem auto" }} />
+                <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Consultation Scheduled!</h3>
+                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "1.5rem" }}>
                   A calendar invite and Google Meet link have been sent to <strong>{email}</strong>.
                 </p>
                 <button className="btn btn-outline" onClick={() => { setSuccess(false); setError(null); }}>
@@ -188,8 +188,8 @@ export default function BookPage() {
                   <div style={{
                     display: "flex", alignItems: "center", gap: "0.5rem",
                     padding: "0.75rem 1rem", marginBottom: "1.5rem",
-                    background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.2)",
-                    borderRadius: "8px", color: "#ef4444", fontSize: "0.85rem", fontWeight: 500
+                    background: "var(--color-error-bg)", border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "var(--radius-md)", color: "var(--color-error)", fontSize: "var(--text-sm)", fontWeight: 500
                   }}>
                     <AlertCircle size={16} />
                     <span>{error}</span>
@@ -197,7 +197,7 @@ export default function BookPage() {
                 )}
 
                 {/* 1. Date Picker */}
-                <h4 style={{ fontWeight: 600, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <h4 style={{ fontWeight: 600, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                   <Calendar size={18} /> Select Date
                 </h4>
                 <div style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingBottom: "0.5rem", marginBottom: "2rem" }}>
@@ -208,16 +208,16 @@ export default function BookPage() {
                       onClick={() => { setSelectedDate(date.value); setSelectedSlot(null); setSelectedSlotId(null); }}
                       style={{
                         padding: "0.6rem 0.8rem",
-                        borderRadius: "8px",
+                        borderRadius: "var(--radius-md)",
                         border: "1px solid",
                         borderColor: selectedDate === date.value ? "var(--text-primary)" : "var(--border-color)",
-                        background: selectedDate === date.value ? "var(--text-primary)" : "white",
-                        color: selectedDate === date.value ? "white" : "var(--text-secondary)",
+                        background: selectedDate === date.value ? "var(--text-primary)" : "var(--card-bg)",
+                        color: selectedDate === date.value ? "var(--bg-primary)" : "var(--text-secondary)",
                         cursor: "pointer",
                         whiteSpace: "nowrap",
                         fontWeight: selectedDate === date.value ? 600 : 500,
-                        fontSize: "0.85rem",
-                        transition: "all 0.15s ease"
+                        fontSize: "var(--text-sm)",
+                        transition: "var(--transition-fast)"
                       }}
                     >
                       {date.label}
@@ -226,12 +226,12 @@ export default function BookPage() {
                 </div>
 
                 {/* 2. Slot Picker */}
-                <h4 style={{ fontWeight: 600, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <h4 style={{ fontWeight: 600, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                   <Clock size={18} /> Select Time
                 </h4>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "0.75rem", marginBottom: "2rem" }}>
                   {displaySlots.length === 0 ? (
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", gridColumn: "1 / -1" }}>No available slots for this date.</p>
+                    <p style={{ color: "var(--text-muted)", fontSize: "var(--text-sm)", gridColumn: "1 / -1" }}>No available slots for this date.</p>
                   ) : displaySlots.map((slot) => (
                     <button
                       key={slot.label}
@@ -239,15 +239,15 @@ export default function BookPage() {
                       onClick={() => { setSelectedSlot(slot.label); setSelectedSlotId(slot.id); }}
                       style={{
                         padding: "0.6rem 0.5rem",
-                        borderRadius: "8px",
+                        borderRadius: "var(--radius-md)",
                         border: "1px solid",
                         borderColor: selectedSlot === slot.label ? "var(--accent-blue)" : "var(--border-color)",
-                        background: selectedSlot === slot.label ? "rgba(14, 165, 233, 0.05)" : "white",
+                        background: selectedSlot === slot.label ? "var(--accent-blue-bg)" : "var(--card-bg)",
                         color: selectedSlot === slot.label ? "var(--accent-blue)" : "var(--text-secondary)",
                         cursor: "pointer",
                         fontWeight: selectedSlot === slot.label ? 600 : 500,
-                        fontSize: "0.85rem",
-                        transition: "all 0.15s ease"
+                        fontSize: "var(--text-sm)",
+                        transition: "var(--transition-fast)"
                       }}
                     >
                       {slot.label}
@@ -258,36 +258,36 @@ export default function BookPage() {
                 {/* 3. Form */}
                 {selectedSlot && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "2rem" }}>
-                    <h4 style={{ fontWeight: 600 }}>Your Details</h4>
+                    <h4 style={{ fontWeight: 600, color: "var(--text-primary)" }}>Your Details</h4>
                     
-                    <div style={{ display: "flex", gap: "1rem" }}>
-                      <div style={{ flex: 1 }}>
-                        <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Name</label>
-                        <input required type="text" value={name} onChange={(e) => setName(e.target.value)} style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label className="form-label">Name</label>
+                        <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="input-field" />
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Phone (Optional)</label>
-                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                      <div className="form-group">
+                        <label className="form-label">Phone (Optional)</label>
+                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field" />
                       </div>
                     </div>
 
-                    <div>
-                      <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Email Address</label>
-                      <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                    <div className="form-group">
+                      <label className="form-label">Email Address</label>
+                      <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" />
                     </div>
 
-                    <div>
-                      <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Service Type</label>
-                      <select value={serviceType} onChange={(e) => setServiceType(e.target.value)} style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none", background: "white", fontFamily: "inherit", fontSize: "0.9rem" }}>
+                    <div className="form-group">
+                      <label className="form-label">Service Type</label>
+                      <select value={serviceType} onChange={(e) => setServiceType(e.target.value)} className="input-field">
                         {SERVICE_TYPES.map(st => (
                           <option key={st} value={st}>{st}</option>
                         ))}
                       </select>
                     </div>
 
-                    <div>
-                      <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Consultation Details</label>
-                      <textarea placeholder="Briefly describe your project or training needs..." value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none", resize: "none", fontFamily: "inherit" }} />
+                    <div className="form-group">
+                      <label className="form-label">Consultation Details</label>
+                      <textarea placeholder="Briefly describe your project or training needs..." value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} className="input-field" style={{ resize: "vertical" }} />
                     </div>
 
                     <button disabled={loading} type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "1rem" }}>

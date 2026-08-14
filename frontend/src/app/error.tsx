@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { ShieldX, RotateCcw } from "lucide-react";
 
 export default function ErrorBoundary({
@@ -16,10 +17,10 @@ export default function ErrorBoundary({
 
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "80vh", padding: "2rem" }}>
-      <div style={{ maxWidth: "32rem", textAlign: "center", background: "white", border: "1px solid var(--border-color)", padding: "3rem", borderRadius: "16px", boxShadow: "var(--shadow-md)" }}>
-        <ShieldX size={56} style={{ color: "#ef4444", margin: "0 auto 1.5rem auto" }} />
-        <h1 style={{ fontSize: "2rem", fontWeight: 800, marginBottom: "0.5rem" }}>System Override Failed</h1>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.5, marginBottom: "2rem" }}>
+      <div className="card" style={{ maxWidth: "32rem", textAlign: "center", padding: "3rem", boxShadow: "var(--shadow-md)" }}>
+        <ShieldX size={56} style={{ color: "var(--color-error)", margin: "0 auto 1.5rem auto" }} />
+        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "0.5rem", color: "var(--text-primary)" }}>System Override Failed</h1>
+        <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.5, marginBottom: "2rem" }}>
           An unhandled error occurred in the execution engine loop. Please reload the current stack parameters or return to home.
         </p>
 
@@ -28,9 +29,9 @@ export default function ErrorBoundary({
             <RotateCcw size={16} />
             <span>Reset Stack</span>
           </button>
-          <a href="/" className="btn btn-outline">
+          <Link href="/" className="btn btn-outline">
             <span>Return Home</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

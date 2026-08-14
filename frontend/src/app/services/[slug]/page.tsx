@@ -27,7 +27,7 @@ export default function ServiceDetailPage() {
       title: "Offensive Penetration Testing",
       icon: ShieldAlert,
       color: "var(--accent-teal)",
-      subtitle: " Rigorous security testing targeting applications, directory hierarchies, and cloud configs.",
+      subtitle: "Rigorous security testing targeting applications, directory hierarchies, and cloud configs.",
       bullets: [
         "Web, Mobile (iOS & Android), and API penetration testing",
         "Active Directory hacking and internal compromise audits",
@@ -53,7 +53,7 @@ export default function ServiceDetailPage() {
   const Icon = currentService.icon;
 
   return (
-    <div style={{ padding: "4rem 0" }}>
+    <div style={{ padding: "var(--spacing-section) 0" }}>
       <div className="container" style={{ maxWidth: "42rem" }}>
         
         <button onClick={() => router.push("/services")} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontWeight: 600, marginBottom: "2rem" }}>
@@ -61,13 +61,13 @@ export default function ServiceDetailPage() {
           <span>Back to Services</span>
         </button>
 
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "3rem", boxShadow: "var(--shadow-md)" }}>
+        <div className="card" style={{ padding: "3rem", boxShadow: "var(--shadow-md)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
             <div style={{
               width: "3.5rem",
               height: "3.5rem",
-              borderRadius: "var(--radius-sm)",
-              background: "rgba(15, 23, 42, 0.05)",
+              borderRadius: "var(--radius-md)",
+              background: "var(--bg-secondary)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -75,17 +75,17 @@ export default function ServiceDetailPage() {
             }}>
               <Icon size={28} />
             </div>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 800 }}>{currentService.title}</h1>
+            <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>{currentService.title}</h1>
           </div>
 
-          <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", lineHeight: 1.6, marginBottom: "2.5rem" }}>
+          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-lg)", lineHeight: 1.6, marginBottom: "2.5rem" }}>
             {currentService.subtitle}
           </p>
 
-          <h3 style={{ fontWeight: 700, marginBottom: "1.25rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem" }}>Deliverables & Scope</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: "1.25rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem", color: "var(--text-primary)" }}>Deliverables &amp; Scope</h3>
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "3rem" }}>
             {currentService.bullets.map((b: string, i: number) => (
-              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", fontSize: "0.975rem", color: "var(--text-secondary)" }}>
+              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
                 <Check size={18} style={{ color: "var(--accent-emerald)", marginTop: "0.2rem", flexShrink: 0 }} />
                 <span>{b}</span>
               </li>

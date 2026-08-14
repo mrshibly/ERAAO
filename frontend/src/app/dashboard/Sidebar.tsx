@@ -8,7 +8,7 @@ import {
   Home, BookOpen, User, Users, FolderKanban,
   Award, ShieldAlert, LogOut, ChevronDown,
   X, Briefcase, Calendar, ChevronLeft, ChevronRight, PhoneCall,
-  Sparkles, Compass, HelpCircle, FileText, Settings
+  Settings, FileText, HelpCircle, Compass
 } from "lucide-react";
 
 import Logo from "@/components/Logo";
@@ -153,19 +153,7 @@ export default function DashboardSidebar({
             <Logo size={28} withText={false} href={null} />
             <button
               onClick={() => setCollapsed(false)}
-              style={{
-                background: "rgba(14, 165, 233, 0.1)",
-                border: "1px solid rgba(14, 165, 233, 0.2)",
-                borderRadius: "6px",
-                padding: "4px",
-                cursor: "pointer",
-                color: "var(--accent-blue)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginLeft: "4px"
-              }}
-              className="desktop-only-table"
+              className="sidebar-expand-btn desktop-only-table"
               title="Expand Sidebar"
             >
               <ChevronRight size={16} />
@@ -176,17 +164,7 @@ export default function DashboardSidebar({
             <Logo size={32} withText={true} textColor="var(--text-primary)" href={null} />
             <button
               onClick={() => setCollapsed(true)}
-              style={{
-                background: "var(--bg-primary)",
-                border: "1px solid var(--border-color)",
-                borderRadius: "6px",
-                cursor: "pointer",
-                color: "var(--text-secondary)",
-                display: "flex",
-                alignItems: "center",
-                padding: "4px"
-              }}
-              className="desktop-only-table"
+              className="sidebar-toggle-btn desktop-only-table"
               title="Collapse Sidebar"
             >
               <ChevronLeft size={18} />
@@ -196,7 +174,7 @@ export default function DashboardSidebar({
         {mobileOpen && (
           <button
             onClick={() => setMobileOpen(false)}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-primary)", display: "flex", alignItems: "center" }}
+            className="nav-mobile-btn"
             title="Close Drawer"
           >
             <X size={20} />
@@ -231,22 +209,11 @@ export default function DashboardSidebar({
       {/* Sidebar Footer — User Profile Card */}
       <div className="dashboard-sidebar-footer">
         {user && user.roles.length > 1 && !collapsed && (
-          <div style={{ position: "relative", width: "100%", marginBottom: "0.75rem" }}>
+          <div className="sidebar-workspace-select-wrapper">
             <select
               value={activeWorkspace}
               onChange={(e) => handleWorkspaceChange(e.target.value)}
-              style={{
-                background: "var(--bg-primary)",
-                color: "var(--text-primary)",
-                border: "1px solid var(--border-color)",
-                padding: "0.45rem 1.75rem 0.45rem 0.75rem",
-                borderRadius: "8px",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                cursor: "pointer",
-                appearance: "none",
-                width: "100%"
-              }}
+              className="sidebar-workspace-select"
             >
               {user.roles.includes("admin") && <option value="admin">Admin Mode</option>}
               {(user.roles.includes("instructor") || user.roles.includes("admin")) && (
@@ -254,46 +221,24 @@ export default function DashboardSidebar({
               )}
               <option value="student">Student Mode</option>
             </select>
-            <ChevronDown size={12} style={{ position: "absolute", right: "0.5rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "var(--text-secondary)" }} />
+            <ChevronDown size={12} className="sidebar-workspace-chevron" />
           </div>
         )}
 
         <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: collapsed ? "center" : "flex-start" }}>
           <button
             onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              padding: "0.35rem",
-              width: collapsed ? "auto" : "100%",
-              borderRadius: "8px"
-            }}
+            className="sidebar-user-btn"
           >
-            <div style={{
-              width: "2.25rem",
-              height: "2.25rem",
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #0ea5e9, #10b981)",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "0.85rem",
-              fontWeight: 800,
-              flexShrink: 0
-            }}>
+            <div className="sidebar-user-avatar">
               {getInitials()}
             </div>
             {!collapsed && (
               <div style={{ textAlign: "left", overflow: "hidden", width: "100%" }}>
-                <div style={{ fontWeight: 700, fontSize: "0.85rem", color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div className="nav-dropdown-name">
                   {user?.full_name}
                 </div>
-                <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div className="nav-dropdown-email">
                   {user?.email}
                 </div>
               </div>
@@ -301,57 +246,19 @@ export default function DashboardSidebar({
           </button>
 
           {userDropdownOpen && (
-            <div style={{
-              position: "absolute",
-              left: collapsed ? "3.5rem" : "0",
-              bottom: collapsed ? "0" : "3.25rem",
-              width: "12rem",
-              background: "var(--card-bg)",
-              border: "1px solid var(--border-color)",
-              borderRadius: "10px",
-              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
-              padding: "0.5rem",
-              zIndex: 120,
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.25rem"
-            }}>
+            <div className={`sidebar-user-dropdown ${collapsed ? "collapsed-pos" : ""}`}>
               <Link
                 href="/dashboard/profile"
                 onClick={() => setUserDropdownOpen(false)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.5rem",
-                  fontSize: "0.85rem",
-                  color: "var(--text-secondary)",
-                  textDecoration: "none",
-                  borderRadius: "6px"
-                }}
-                className="dashboard-sidebar-item"
+                className="dropdown-item"
               >
-                <User size={14} /> Profile Settings
+                <User size={14} /> <span>Profile Settings</span>
               </Link>
               <button
                 onClick={() => { logout(); setUserDropdownOpen(false); }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.5rem",
-                  width: "100%",
-                  fontSize: "0.85rem",
-                  color: "#ef4444",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  borderRadius: "6px"
-                }}
-                className="dashboard-sidebar-item"
+                className="dropdown-item dropdown-item-danger"
               >
-                <LogOut size={14} /> Log out
+                <LogOut size={14} /> <span>Log out</span>
               </button>
             </div>
           )}

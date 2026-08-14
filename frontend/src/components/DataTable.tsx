@@ -78,7 +78,7 @@ export default function DataTable<T extends { id: string | number }>({
   };
 
   return (
-    <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", overflow: "hidden" }}>
+    <div className="table-container">
       {/* Top Search & Filter Bar */}
       {searchKeys.length > 0 && (
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem", borderBottom: "1px solid var(--border-color)", flexWrap: "wrap", gap: "1rem" }}>
@@ -89,15 +89,16 @@ export default function DataTable<T extends { id: string | number }>({
               placeholder={searchPlaceholder}
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-              style={{ width: "100%", padding: "0.55rem 0.55rem 0.55rem 2.25rem", border: "1px solid var(--border-color)", borderRadius: "8px", fontSize: "0.85rem", outline: "none" }}
+              className="input-field"
+              style={{ paddingLeft: "2.25rem" }}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
             <span>Show</span>
             <select 
               value={pageSize}
               onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
-              style={{ padding: "0.3rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontWeight: 600 }}
+              style={{ padding: "0.35rem 0.5rem", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", background: "var(--card-bg)", color: "var(--text-primary)", fontWeight: 600 }}
             >
               <option value={5}>5</option>
               <option value={10}>10</option>
@@ -111,15 +112,14 @@ export default function DataTable<T extends { id: string | number }>({
 
       {/* Table Element */}
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
+        <table>
           <thead>
-            <tr style={{ background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)", color: "var(--text-secondary)", fontWeight: 600 }}>
+            <tr>
               {columns.map((col, idx) => (
                 <th 
                   key={idx} 
                   onClick={() => col.sortable && handleSort(String(col.sortKey || col.accessor))}
                   style={{ 
-                    padding: "1rem", 
                     cursor: col.sortable ? "pointer" : "default",
                     userSelect: "none"
                   }}
@@ -139,15 +139,15 @@ export default function DataTable<T extends { id: string | number }>({
           <tbody>
             {paginatedData.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                <td colSpan={columns.length} style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)", fontSize: "var(--text-sm)" }}>
                   No matching records found.
                 </td>
               </tr>
             ) : (
               paginatedData.map((row) => (
-                <tr key={row.id} style={{ borderBottom: "1px solid var(--border-color)" }}>
+                <tr key={row.id}>
                   {columns.map((col, idx) => (
-                    <td key={idx} style={{ padding: "1rem" }}>
+                    <td key={idx}>
                       {typeof col.accessor === "function" 
                         ? col.accessor(row) 
                         : (row[col.accessor] as React.ReactNode)}
@@ -163,15 +163,14 @@ export default function DataTable<T extends { id: string | number }>({
       {/* Pagination Footer */}
       {totalPages > 1 && (
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 1.25rem", borderTop: "1px solid var(--border-color)", background: "var(--bg-secondary)", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+          <div style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
             Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, sortedData.length)} of {sortedData.length} entries
           </div>
           <div style={{ display: "flex", gap: "0.25rem" }}>
             <button 
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              className="btn btn-outline"
-              style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem" }}
+              className="pagination-btn"
             >
               Previous
             </button>
@@ -179,8 +178,7 @@ export default function DataTable<T extends { id: string | number }>({
               <button 
                 key={idx}
                 onClick={() => setCurrentPage(idx + 1)}
-                className={currentPage === idx + 1 ? "btn btn-primary" : "btn btn-outline"}
-                style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem" }}
+                className={`pagination-btn ${currentPage === idx + 1 ? "active" : ""}`}
               >
                 {idx + 1}
               </button>
@@ -188,8 +186,7 @@ export default function DataTable<T extends { id: string | number }>({
             <button 
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              className="btn btn-outline"
-              style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem" }}
+              className="pagination-btn"
             >
               Next
             </button>

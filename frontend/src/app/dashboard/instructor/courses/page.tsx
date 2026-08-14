@@ -114,95 +114,89 @@ export default function InstructorCoursesPage() {
   };
 
   const filtered = courses.filter(c =>
-    c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.slug.toLowerCase().includes(searchQuery.toLowerCase())
+    (c.title || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (c.slug || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div>
       <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
           <BookOpen size={24} style={{ color: "var(--accent-violet)" }} /> Course Workspace
         </h1>
-        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem" }}>Submit courses and curriculum designs. Content will be saved as draft pending administrator approval.</p>
+        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "var(--text-sm)" }}>Submit courses and curriculum designs. Content will be saved as draft pending administrator approval.</p>
       </div>
 
       {message && (
         <div style={{
-          background: message.type === "success" ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-          color: message.type === "success" ? "var(--accent-emerald)" : "#ef4444",
-          padding: "0.85rem 1rem", borderRadius: "8px",
+          background: message.type === "success" ? "var(--color-success-bg)" : "var(--color-error-bg)",
+          color: message.type === "success" ? "var(--color-success)" : "var(--color-error)",
+          padding: "0.85rem 1rem", borderRadius: "var(--radius-md)",
           border: `1px solid ${message.type === "success" ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
-          marginBottom: "1.5rem", fontWeight: 600, fontSize: "0.9rem"
+          marginBottom: "1.5rem", fontWeight: 600, fontSize: "var(--text-sm)"
         }}>
           {message.text}
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "2.5rem" }} className="responsive-grid-split">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
         {/* Course List */}
-        <div>
+        <div style={{ gridColumn: "span 2" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-            <h2 style={{ fontSize: "1.15rem", fontWeight: 700 }}>My Direct Courses ({filtered.length})</h2>
+            <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--text-primary)" }}>My Direct Courses ({filtered.length})</h2>
             <div style={{ position: "relative" }}>
               <Search size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
               <input
                 type="text" placeholder="Search courses..."
                 value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: "0.5rem 0.5rem 0.5rem 2.25rem", border: "1px solid var(--border-color)", borderRadius: "8px", fontSize: "0.85rem", width: "220px" }}
+                className="input-field"
+                style={{ paddingLeft: "2.25rem", width: "220px" }}
               />
             </div>
           </div>
 
           {fetching ? (
-            <p style={{ color: "var(--text-muted)", padding: "3rem 0", textAlign: "center" }}>Loading courses...</p>
+            <div className="loading-container" style={{ padding: "3rem 0" }}>Loading courses...</div>
           ) : filtered.length === 0 ? (
-            <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "4rem 2rem", textAlign: "center" }}>
+            <div className="empty-state card" style={{ padding: "4rem 2rem" }}>
               <BookOpen size={40} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
-              <p style={{ color: "var(--text-secondary)" }}>No courses created yet.</p>
+              <p className="empty-text">No courses created yet.</p>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {filtered.map((course) => (
-                <div key={course.id} style={{
-                  background: "white", border: editId === course.id ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
-                  borderRadius: "12px", padding: "1.25rem", transition: "all 0.15s"
+                <div key={course.id} className="card" style={{
+                  border: editId === course.id ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
+                  padding: "1.25rem"
                 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.4rem" }}>
-                        <span style={{ fontSize: "0.7rem", background: "rgba(139, 92, 246, 0.1)", color: "var(--accent-violet)", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{course.level}</span>
-                        <span style={{ fontSize: "0.7rem", background: course.status === "published" ? "rgba(16, 185, 129, 0.1)" : "rgba(234, 179, 8, 0.1)", color: course.status === "published" ? "var(--accent-emerald)" : "#ca8a04", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{course.status.toUpperCase()}</span>
+                        <span className="badge badge-violet">{course.level}</span>
+                        <span className={`badge ${course.status === "published" ? "badge-green" : "badge-amber"}`}>{course.status.toUpperCase()}</span>
                       </div>
-                      <h4 style={{ fontWeight: 700, fontSize: "1rem" }}>{course.title}</h4>
-                      <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{course.short_description || "No description"}</p>
-                      <p style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--text-primary)", marginTop: "0.4rem" }}>
+                      <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>{course.title}</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", marginTop: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{course.short_description || "No description"}</p>
+                      <p style={{ fontWeight: 600, fontSize: "var(--text-sm)", color: "var(--text-primary)", marginTop: "0.4rem" }}>
                         ৳{course.price} BDT &bull; {course.duration_hours || 0}h
                       </p>
                     </div>
                     <div style={{ display: "flex", gap: "0.25rem", flexShrink: 0, marginLeft: "1rem" }}>
                       <Link
                         href={`/dashboard/instructor/courses/builder/${course.id}`}
+                        className="btn btn-outline"
                         style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.3rem",
-                          background: "rgba(139, 92, 246, 0.1)",
-                          color: "var(--accent-violet)",
                           padding: "0.35rem 0.75rem",
-                          borderRadius: "6px",
-                          textDecoration: "none",
-                          fontWeight: 700,
-                          fontSize: "0.8rem"
+                          fontSize: "var(--text-xs)"
                         }}
                         title="Open Syllabus Studio"
                       >
                         <List size={14} /> <span>Syllabus Studio</span>
                       </Link>
-                      <button onClick={() => handleEdit(course)} style={{ color: "var(--accent-violet)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Edit">
+                      <button onClick={() => handleEdit(course)} style={{ color: "var(--accent-violet)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }} title="Edit">
                         <Edit3 size={16} />
                       </button>
-                      <button onClick={() => handleDelete(course.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Delete">
+                      <button onClick={() => handleDelete(course.id)} style={{ color: "var(--color-error)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }} title="Delete">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -214,53 +208,53 @@ export default function InstructorCoursesPage() {
         </div>
 
         {/* Create/Edit Form */}
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "1.75rem", height: "fit-content", position: "sticky", top: "2rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "rgba(139, 92, 246, 0.05)", border: "1px solid rgba(139, 92, 246, 0.15)", borderRadius: "8px", padding: "0.75rem", marginBottom: "1.5rem", fontSize: "0.8rem", color: "var(--accent-violet)" }}>
+        <div className="card" style={{ padding: "1.75rem", height: "fit-content" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "rgba(139, 92, 246, 0.05)", border: "1px solid rgba(139, 92, 246, 0.15)", borderRadius: "var(--radius-md)", padding: "0.75rem", marginBottom: "1.5rem", fontSize: "var(--text-xs)", color: "var(--accent-violet)" }}>
             <AlertCircle size={16} />
             <span>Note: New and edited courses require administrative approval before going live.</span>
           </div>
 
-          <h2 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
             <Plus size={18} /> {editId ? "Edit Course Draft" : "Create New Course Draft"}
           </h2>
           
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Course Title *</label>
-              <input type="text" required value={courseForm.title} onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Course Title *</label>
+              <input type="text" required value={courseForm.title} onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })} className="input-field" />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>URL Slug *</label>
-              <input type="text" required value={courseForm.slug} placeholder="e.g. offensive-security-basics" onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">URL Slug *</label>
+              <input type="text" required value={courseForm.slug} placeholder="e.g. offensive-security-basics" onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })} className="input-field" />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Short Summary *</label>
-              <input type="text" required value={courseForm.short_description} onChange={(e) => setCourseForm({ ...courseForm, short_description: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Short Summary *</label>
+              <input type="text" required value={courseForm.short_description} onChange={(e) => setCourseForm({ ...courseForm, short_description: e.target.value })} className="input-field" />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Description</label>
-              <textarea value={courseForm.description} rows={3} onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontFamily: "inherit", fontSize: "0.9rem", resize: "vertical" }} />
+            <div className="form-group">
+              <label className="form-label">Description</label>
+              <textarea value={courseForm.description} rows={3} onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })} className="input-field" style={{ resize: "vertical" }} />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Price (BDT) *</label>
-                <input type="number" required value={courseForm.price} onChange={(e) => setCourseForm({ ...courseForm, price: parseFloat(e.target.value) })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Price (BDT) *</label>
+                <input type="number" required value={courseForm.price} onChange={(e) => setCourseForm({ ...courseForm, price: parseFloat(e.target.value) })} className="input-field" />
               </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Duration (Hrs) *</label>
-                <input type="number" required value={courseForm.duration_hours} onChange={(e) => setCourseForm({ ...courseForm, duration_hours: parseFloat(e.target.value) })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+              <div className="form-group">
+                <label className="form-label">Duration (Hrs) *</label>
+                <input type="number" required value={courseForm.duration_hours} onChange={(e) => setCourseForm({ ...courseForm, duration_hours: parseFloat(e.target.value) })} className="input-field" />
               </div>
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Level</label>
-              <select value={courseForm.level} onChange={(e) => setCourseForm({ ...courseForm, level: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontSize: "0.9rem" }}>
+            <div className="form-group">
+              <label className="form-label">Level</label>
+              <select value={courseForm.level} onChange={(e) => setCourseForm({ ...courseForm, level: e.target.value })} className="input-field">
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
               </select>
             </div>
             <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-              <button type="submit" className="btn btn-accent" style={{ flex: 1, background: "var(--accent-violet)", borderColor: "var(--accent-violet)" }}>
+              <button type="submit" className="btn btn-accent" style={{ flex: 1 }}>
                 {editId ? "Save Changes" : "Submit Draft"}
               </button>
               {editId && (

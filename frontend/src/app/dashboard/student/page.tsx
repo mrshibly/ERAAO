@@ -79,61 +79,27 @@ export default function StudentDashboard() {
 
   return (
     <div style={{ paddingBottom: "3rem" }}>
-      <style>{`
-        .hero-banner-simple {
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-          border-radius: var(--radius-lg);
-          padding: 2.5rem 2rem;
-          color: white;
-          position: relative;
-          overflow: hidden;
-          box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.25);
-          margin-bottom: 2rem;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .metrics-bar-simple {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1.25rem;
-          margin-bottom: 2.25rem;
-        }
-        @media (max-width: 1024px) {
-          .metrics-bar-simple { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 480px) {
-          .metrics-bar-simple { grid-template-columns: 1fr; }
-        }
-        .metric-card-simple {
-          background: var(--card-bg);
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-md);
-          padding: 1.25rem 1.5rem;
-          display: flex;
-          align-items: center;
-          gap: 1.25rem;
-          box-shadow: var(--shadow-sm);
-        }
-        .dashboard-main-grid {
-          display: grid;
-          grid-template-columns: 2.4fr 1fr;
-          gap: 2.25rem;
-        }
-        @media (max-width: 1024px) {
-          .dashboard-main-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
       {/* Hero Welcome Banner */}
-      <div className="hero-banner-simple anim-fade-up">
+      <div className="hero-banner anim-fade-up" style={{
+        background: "linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-secondary) 100%)",
+        borderRadius: "var(--radius-lg)",
+        padding: "2.5rem 2rem",
+        color: "white",
+        position: "relative",
+        overflow: "hidden",
+        boxShadow: "var(--shadow-lg)",
+        marginBottom: "2rem",
+        border: "1px solid rgba(255, 255, 255, 0.08)"
+      }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "2rem", position: "relative", zIndex: 2 }}>
           <div style={{ maxWidth: "600px" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: "rgba(14, 165, 233, 0.2)", border: "1px solid rgba(14, 165, 233, 0.4)", color: "#38bdf8", padding: "0.25rem 0.75rem", borderRadius: "20px", fontSize: "0.75rem", fontWeight: 700, marginBottom: "0.85rem" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", background: "var(--accent-blue-bg)", border: "1px solid rgba(14, 165, 233, 0.4)", color: "var(--accent-blue)", padding: "0.25rem 0.75rem", borderRadius: "20px", fontSize: "var(--text-xs)", fontWeight: 700, marginBottom: "0.85rem" }}>
               <Sparkles size={14} /> Student Dashboard
             </div>
-            <h1 style={{ fontSize: "1.85rem", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: "1.25" }}>
+            <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, color: "var(--text-on-dark)", letterSpacing: "-0.01em", lineHeight: "1.25" }}>
               Welcome back, {user?.full_name?.split(" ")[0] || "Student"}!
             </h1>
-            <p style={{ color: "#94a3b8", fontSize: "0.925rem", marginTop: "0.4rem", lineHeight: "1.5" }}>
+            <p style={{ color: "var(--text-on-dark-muted)", fontSize: "var(--text-sm)", marginTop: "0.4rem", lineHeight: "1.5" }}>
               {currentActiveCourse
                 ? `You are currently learning ${currentActiveCourse.course?.title || "your active course"}. Click below to resume!`
                 : "You aren't enrolled in any courses yet. Explore our catalog to start your learning journey."}
@@ -143,18 +109,11 @@ export default function StudentDashboard() {
               <div style={{ marginTop: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }}>
                 <Link
                   href={`/learn/${currentActiveCourse.id}`}
+                  className="btn btn-accent"
                   style={{
-                    background: "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)",
-                    color: "white",
                     padding: "0.7rem 1.5rem",
-                    borderRadius: "12px",
                     fontWeight: 800,
-                    fontSize: "0.9rem",
-                    textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    boxShadow: "0 8px 20px rgba(14, 165, 233, 0.35)"
+                    fontSize: "var(--text-sm)"
                   }}
                 >
                   <Play size={16} fill="white" />
@@ -162,7 +121,7 @@ export default function StudentDashboard() {
                 </Link>
                 <Link
                   href="/dashboard/student/courses"
-                  style={{ color: "#94a3b8", fontSize: "0.85rem", textDecoration: "none", fontWeight: 600 }}
+                  style={{ color: "var(--text-on-dark-muted)", fontSize: "var(--text-xs)", textDecoration: "none", fontWeight: 600 }}
                 >
                   See All ({activeCourses.length}) →
                 </Link>
@@ -171,17 +130,11 @@ export default function StudentDashboard() {
               <div style={{ marginTop: "1.5rem" }}>
                 <Link
                   href="/dashboard/student/catalog"
+                  className="btn btn-primary"
                   style={{
-                    background: "var(--accent-blue)",
-                    color: "white",
                     padding: "0.7rem 1.5rem",
-                    borderRadius: "12px",
                     fontWeight: 800,
-                    fontSize: "0.9rem",
-                    textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.5rem"
+                    fontSize: "var(--text-sm)"
                   }}
                 >
                   <Compass size={16} /> Explore Courses <ArrowRight size={16} />
@@ -195,18 +148,18 @@ export default function StudentDashboard() {
             background: "rgba(255, 255, 255, 0.05)",
             backdropFilter: "blur(12px)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
-            borderRadius: "16px",
+            borderRadius: "var(--radius-lg)",
             padding: "1.25rem 1.75rem",
             textAlign: "center",
             minWidth: "180px"
           }}>
-            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "42px", height: "42px", borderRadius: "50%", background: "rgba(16, 185, 129, 0.2)", color: "#10b981", marginBottom: "0.5rem" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "42px", height: "42px", borderRadius: "50%", background: "var(--color-success-bg)", color: "var(--color-success)", marginBottom: "0.5rem" }}>
               <Activity size={22} />
             </div>
-            <div style={{ fontSize: "1.65rem", fontWeight: 800, color: "#ffffff" }}>
+            <div style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-on-dark)" }}>
               {activeCourses.length}
             </div>
-            <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" }}>
+            <div style={{ fontSize: "var(--text-xs)", color: "var(--text-on-dark-muted)", fontWeight: 700, textTransform: "uppercase" }}>
               Enrolled Courses
             </div>
           </div>
@@ -214,89 +167,72 @@ export default function StudentDashboard() {
       </div>
 
       {/* Dynamic Metrics */}
-      <div className="metrics-bar-simple anim-fade-up">
-        <div className="metric-card-simple">
-          <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="card-grid-4 anim-fade-up" style={{ marginBottom: "2.25rem" }}>
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: "var(--accent-blue-bg)", color: "var(--accent-blue)" }}>
             <BookOpen size={20} />
           </div>
           <div>
-            <div style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>{stats.enrolled_courses || activeCourses.length}</div>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Enrolled Courses</div>
+            <div className="stat-value">{stats.enrolled_courses || activeCourses.length}</div>
+            <div className="stat-label">Enrolled Courses</div>
           </div>
         </div>
 
-        <div className="metric-card-simple">
-          <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(16, 185, 129, 0.1)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: "var(--color-success-bg)", color: "var(--color-success)" }}>
             <CheckCircle2 size={20} />
           </div>
           <div>
-            <div style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>{stats.completed_courses}</div>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Completed Courses</div>
+            <div className="stat-value">{stats.completed_courses}</div>
+            <div className="stat-label">Completed Courses</div>
           </div>
         </div>
 
-        <div className="metric-card-simple">
-          <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: "var(--color-warning-bg)", color: "var(--color-warning)" }}>
             <Award size={20} />
           </div>
           <div>
-            <div style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>{stats.certificates_earned || certificates.length}</div>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Certificates Earned</div>
+            <div className="stat-value">{stats.certificates_earned || certificates.length}</div>
+            <div className="stat-label">Certificates Earned</div>
           </div>
         </div>
 
-        <div className="metric-card-simple">
-          <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(139, 92, 246, 0.1)", color: "#8b5cf6", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: "rgba(139, 92, 246, 0.1)", color: "var(--accent-violet)" }}>
             <Clock size={20} />
           </div>
           <div>
-            <div style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--text-primary)" }}>{completedLessonsTotal}</div>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Completed Lessons</div>
+            <div className="stat-value">{completedLessonsTotal}</div>
+            <div className="stat-label">Completed Lessons</div>
           </div>
         </div>
       </div>
 
       {/* Main Content Layout */}
-      <div className="dashboard-main-grid">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.25rem" }}>
 
         {/* Left Column — My Enrolled Courses */}
-        <div>
+        <div style={{ gridColumn: "span 2" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-            <h2 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--text-primary)" }}>
+            <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)" }}>
               My Courses
             </h2>
             {activeCourses.length > 0 && (
-              <Link href="/dashboard/student/courses" style={{ color: "var(--accent-blue)", fontSize: "0.85rem", fontWeight: 700, textDecoration: "none" }}>
+              <Link href="/dashboard/student/courses" style={{ color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 700, textDecoration: "none" }}>
                 See All ({activeCourses.length}) →
               </Link>
             )}
           </div>
 
           {activeCourses.length === 0 ? (
-            <div style={{
-              background: "var(--card-bg)",
-              border: "1px dashed var(--border-color)",
-              borderRadius: "var(--radius-lg)",
-              padding: "3rem 1.5rem",
-              textAlign: "center"
-            }}>
+            <div className="empty-state card" style={{ padding: "3rem 1.5rem" }}>
               <BookOpen size={36} style={{ color: "var(--text-muted)", marginBottom: "0.75rem" }} />
-              <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)" }}>No active courses</h3>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginTop: "0.3rem", marginBottom: "1.25rem" }}>
+              <h3 className="empty-title">No active courses</h3>
+              <p className="empty-text">
                 Enroll in a course to start learning and tracking your progress.
               </p>
-              <Link href="/dashboard/student/catalog" style={{
-                background: "var(--accent-blue)",
-                color: "white",
-                padding: "0.6rem 1.25rem",
-                borderRadius: "var(--radius-md)",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.4rem"
-              }}>
+              <Link href="/dashboard/student/catalog" className="btn btn-primary" style={{ marginTop: "1rem" }}>
                 Find Courses <ArrowRight size={16} />
               </Link>
             </div>
@@ -309,65 +245,47 @@ export default function StudentDashboard() {
                 return (
                   <div
                     key={item.id}
+                    className="card hover-lift"
                     style={{
-                      background: "var(--card-bg)",
-                      border: "1px solid var(--border-color)",
-                      borderRadius: "var(--radius-md)",
                       overflow: "hidden",
                       display: "flex",
-                      boxShadow: "var(--shadow-sm)",
-                      transition: "all 0.2s ease"
+                      padding: 0
                     }}
-                    className="hover-lift"
                   >
-                    <div style={{ width: "160px", position: "relative", overflow: "hidden", background: "#0f172a", flexShrink: 0 }}>
+                    <div style={{ width: "160px", position: "relative", overflow: "hidden", background: "var(--bg-dark)", flexShrink: 0 }}>
                       <img src={getCourseImage(course.title)} alt={course.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
 
                     <div style={{ padding: "1.25rem", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                       <div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                          <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: "1.3" }}>
+                          <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", lineHeight: "1.3" }}>
                             {course.title || "Untitled Course"}
                           </h3>
-                          <span style={{
-                            fontSize: "0.72rem",
-                            fontWeight: 700,
-                            padding: "0.2rem 0.55rem",
-                            borderRadius: "12px",
-                            background: progress >= 100 ? "rgba(16, 185, 129, 0.1)" : "rgba(14, 165, 233, 0.1)",
-                            color: progress >= 100 ? "#10b981" : "var(--accent-blue)"
-                          }}>
+                          <span className={`badge ${progress >= 100 ? "badge-green" : "badge-blue"}`}>
                             {progress >= 100 ? "Completed" : `${progress}%`}
                           </span>
                         </div>
-                        <p style={{ fontSize: "0.825rem", color: "var(--text-secondary)", marginTop: "0.3rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                        <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.3rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                           {course.description || "Interactive bootcamp syllabus with hands-on labs."}
                         </p>
                       </div>
 
                       <div style={{ marginTop: "1rem" }}>
-                        <div style={{ height: "5px", background: "var(--border-color)", borderRadius: "4px", overflow: "hidden", marginBottom: "0.75rem" }}>
-                          <div style={{ height: "100%", width: `${progress}%`, background: progress >= 100 ? "#10b981" : "var(--accent-blue)", borderRadius: "4px" }} />
+                        <div className="progress-bar" style={{ marginBottom: "0.75rem" }}>
+                          <div className="progress-bar-fill" style={{ width: `${progress}%`, background: progress >= 100 ? "var(--color-success)" : "var(--accent-blue)" }} />
                         </div>
 
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+                          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
                             Progress: {progress}%
                           </span>
                           <Link
                             href={`/learn/${item.id}`}
+                            className="btn btn-primary"
                             style={{
-                              background: "var(--accent-blue)",
-                              color: "white",
                               padding: "0.4rem 0.85rem",
-                              borderRadius: "var(--radius-sm)",
-                              fontWeight: 700,
-                              fontSize: "0.8rem",
-                              textDecoration: "none",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              gap: "0.3rem"
+                              fontSize: "var(--text-xs)"
                             }}
                           >
                             <Play size={13} /> Continue
@@ -386,17 +304,12 @@ export default function StudentDashboard() {
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
 
           {/* Certificates Widget */}
-          <div style={{
-            background: "var(--card-bg)",
-            border: "1px solid var(--border-color)",
-            borderRadius: "var(--radius-md)",
-            padding: "1.25rem"
-          }}>
-            <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <Award size={18} style={{ color: "#f59e0b" }} /> My Certificates
+          <div className="card" style={{ padding: "1.25rem" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Award size={18} style={{ color: "var(--color-warning)" }} /> My Certificates
             </h3>
             {certificates.length === 0 ? (
-              <p style={{ fontSize: "0.825rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>
+              <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: "1.5" }}>
                 Complete any course syllabus to 100% to earn your verified completion certificate.
               </p>
             ) : (
@@ -406,23 +319,21 @@ export default function StudentDashboard() {
                     key={cert.id}
                     href={`/verify/${cert.verification_id || cert.id}`}
                     target="_blank"
+                    className="card"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "0.65rem",
                       padding: "0.65rem",
-                      borderRadius: "var(--radius-sm)",
-                      background: "var(--bg-primary)",
-                      border: "1px solid var(--border-color)",
                       textDecoration: "none"
                     }}
                   >
-                    <ShieldCheck size={18} style={{ color: "#10b981", flexShrink: 0 }} />
+                    <ShieldCheck size={18} style={{ color: "var(--color-success)", flexShrink: 0 }} />
                     <div style={{ overflow: "hidden" }}>
-                      <div style={{ fontSize: "0.825rem", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {cert.course_title}
                       </div>
-                      <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Verified Badge</div>
+                      <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>Verified Badge</div>
                     </div>
                   </Link>
                 ))}
@@ -431,35 +342,21 @@ export default function StudentDashboard() {
           </div>
 
           {/* Help Widget */}
-          <div style={{
-            background: "var(--card-bg)",
-            border: "1px solid var(--border-color)",
-            borderRadius: "var(--radius-md)",
-            padding: "1.25rem"
-          }}>
-            <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div className="card" style={{ padding: "1.25rem" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <HelpCircle size={18} style={{ color: "var(--accent-blue)" }} /> Need Help?
             </h3>
-            <p style={{ fontSize: "0.825rem", color: "var(--text-secondary)", marginBottom: "1rem", lineHeight: "1.4" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "1rem", lineHeight: "1.4" }}>
               Have questions about your courses or virtual labs? Ask our team anytime.
             </p>
             <Link
               href="/dashboard/student/tickets"
+              className="btn btn-outline"
               style={{
                 width: "100%",
                 padding: "0.55rem",
-                borderRadius: "var(--radius-md)",
-                background: "var(--bg-primary)",
-                border: "1px solid var(--border-color)",
-                color: "var(--text-primary)",
-                fontWeight: 700,
-                fontSize: "0.825rem",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.4rem",
-                boxSizing: "border-box"
+                fontSize: "var(--text-xs)",
+                justifyContent: "center"
               }}
             >
               Get Help

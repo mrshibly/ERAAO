@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { Sparkles, Phone, Award, Building, ArrowRight, CheckCircle2, X, Target } from "lucide-react";
+import { Phone, Building, ArrowRight, CheckCircle2, Target } from "lucide-react";
 import Logo from "@/components/Logo";
 
 interface StudentOnboardingModalProps {
@@ -62,20 +62,18 @@ export default function StudentOnboardingModal({ onComplete }: StudentOnboarding
       justifyContent: "center",
       padding: "1.5rem"
     }}>
-      <div style={{
+      <div className="card" style={{
         width: "100%",
         maxWidth: "480px",
-        backgroundColor: "#ffffff",
-        borderRadius: "24px",
-        boxShadow: "0 25px 60px -15px rgba(15, 23, 42, 0.3)",
+        boxShadow: "var(--shadow-xl)",
         overflow: "hidden",
-        border: "1px solid #e2e8f0",
-        position: "relative"
-      }} className="anim-fade-up">
+        position: "relative",
+        padding: 0
+      }}>
 
         {/* Header */}
         <div style={{
-          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+          background: "linear-gradient(135deg, var(--bg-dark) 0%, #1e293b 100%)",
           color: "#ffffff",
           padding: "1.75rem 2rem",
           position: "relative"
@@ -91,8 +89,8 @@ export default function StudentOnboardingModal({ onComplete }: StudentOnboarding
                 color: "#94a3b8",
                 cursor: "pointer",
                 padding: "0.35rem 0.75rem",
-                borderRadius: "8px",
-                fontSize: "0.8rem",
+                borderRadius: "var(--radius-sm)",
+                fontSize: "var(--text-xs)",
                 fontWeight: 600
               }}
             >
@@ -101,182 +99,137 @@ export default function StudentOnboardingModal({ onComplete }: StudentOnboarding
           </div>
 
           <div style={{ marginTop: "1.25rem" }}>
-            <h2 style={{ fontSize: "1.35rem", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em" }}>
-              Welcome! Let's set up your profile
+            <span className="badge" style={{ background: "rgba(255, 255, 255, 0.15)", color: "white", marginBottom: "0.4rem" }}>
+              Step {step} of 2
+            </span>
+            <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "#ffffff" }}>
+              {step === 1 ? "Personalize Your Learning Path" : "Experience Level & Goal"}
             </h2>
-            <p style={{ color: "#94a3b8", fontSize: "0.875rem", marginTop: "0.25rem" }}>
-              Step {step} of 2 — Personalize your learning experience
+            <p style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: "var(--text-xs)", marginTop: "0.25rem" }}>
+              {step === 1
+                ? "Help our instructors adapt hands-on virtual labs to your career focus."
+                : "Let us match you with tailored syllabus modules and exercises."}
             </p>
-          </div>
-
-          {/* Progress Bar */}
-          <div style={{
-            height: "4px",
-            background: "rgba(255, 255, 255, 0.1)",
-            borderRadius: "2px",
-            marginTop: "1.25rem",
-            overflow: "hidden"
-          }}>
-            <div style={{
-              height: "100%",
-              width: step === 1 ? "50%" : "100%",
-              background: "linear-gradient(90deg, #0ea5e9, #10b981)",
-              transition: "width 0.3s ease"
-            }} />
           </div>
         </div>
 
-        {/* Modal Body */}
+        {/* Form Body */}
         <div style={{ padding: "2rem" }}>
           {step === 1 ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "0.4rem" }}>
-                  Phone / WhatsApp Number
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              <div className="form-group">
+                <label className="form-label">
+                  WhatsApp / Contact Number
                 </label>
-                <p style={{ fontSize: "0.78rem", color: "#64748b", marginBottom: "0.5rem" }}>
-                  Used for batch start date announcements and lab access alerts.
-                </p>
                 <div style={{ position: "relative" }}>
-                  <Phone size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+                  <Phone size={16} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                   <input
                     type="tel"
                     placeholder="+880 1700-000000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    style={{
-                      width: "100%",
-                      background: "#f8fafc",
-                      border: "1px solid #cbd5e1",
-                      borderRadius: "12px",
-                      padding: "0.75rem 1rem 0.75rem 2.5rem",
-                      fontSize: "0.9rem",
-                      color: "#0f172a",
-                      outline: "none",
-                      boxSizing: "border-box"
-                    }}
+                    className="input-field"
+                    style={{ paddingLeft: "2.5rem" }}
                   />
                 </div>
               </div>
 
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "0.5rem" }}>
-                  Current Technical Experience Level
+              <div className="form-group">
+                <label className="form-label">
+                  University / Organization (Optional)
                 </label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.75rem" }}>
-                  {[
-                    { id: "beginner", label: "Beginner", desc: "New to tech" },
-                    { id: "intermediate", label: "Intermediate", desc: "Some coding/IT" },
-                    { id: "advanced", label: "Advanced", desc: "Pro engineer" }
-                  ].map((level) => (
-                    <button
-                      key={level.id}
-                      type="button"
-                      onClick={() => setSkillLevel(level.id)}
-                      style={{
-                        padding: "0.75rem 0.5rem",
-                        borderRadius: "12px",
-                        border: skillLevel === level.id ? "2px solid #0ea5e9" : "1px solid #cbd5e1",
-                        background: skillLevel === level.id ? "rgba(14, 165, 233, 0.08)" : "#f8fafc",
-                        color: skillLevel === level.id ? "#0ea5e9" : "#334155",
-                        cursor: "pointer",
-                        textAlign: "center",
-                        transition: "all 0.2s ease"
-                      }}
-                    >
-                      <div style={{ fontWeight: 800, fontSize: "0.85rem" }}>{level.label}</div>
-                      <div style={{ fontSize: "0.7rem", color: "#64748b", marginTop: "2px" }}>{level.desc}</div>
-                    </button>
-                  ))}
+                <div style={{ position: "relative" }}>
+                  <Building size={16} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+                  <input
+                    type="text"
+                    placeholder="e.g. Dhaka University / Tech Corp"
+                    value={organization}
+                    onChange={(e) => setOrganization(e.target.value)}
+                    className="input-field"
+                    style={{ paddingLeft: "2.5rem" }}
+                  />
                 </div>
               </div>
 
               <button
                 type="button"
                 onClick={() => setStep(2)}
+                className="btn btn-primary"
                 style={{
                   width: "100%",
-                  padding: "0.85rem",
-                  borderRadius: "12px",
-                  background: "#0ea5e9",
-                  color: "white",
-                  border: "none",
-                  fontWeight: 700,
-                  fontSize: "0.95rem",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem",
                   marginTop: "0.5rem"
                 }}
               >
-                <span>Continue to Step 2</span>
-                <ArrowRight size={18} />
+                <span>Continue to Goals</span>
+                <ArrowRight size={16} />
               </button>
             </div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
               <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "0.5rem" }}>
-                  Primary Learning Goal
+                <label className="form-label" style={{ marginBottom: "0.5rem" }}>
+                  Technical Background
                 </label>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem" }}>
                   {[
-                    { id: "career_switch", label: "Career Change into Cyber / AI" },
-                    { id: "skill_upgrade", label: "Upgrade Skills for Current Job" },
-                    { id: "certification", label: "Earn Industry Certifications" },
-                    { id: "university", label: "University Project & Studies" }
-                  ].map((goal) => (
+                    { id: "beginner", label: "Beginner", desc: "Starting out" },
+                    { id: "intermediate", label: "Intermediate", desc: "Some coding" },
+                    { id: "advanced", label: "Advanced", desc: "Practitioner" }
+                  ].map((lvl) => (
                     <button
-                      key={goal.id}
+                      key={lvl.id}
                       type="button"
-                      onClick={() => setPrimaryGoal(goal.id)}
+                      onClick={() => setSkillLevel(lvl.id)}
                       style={{
-                        padding: "0.75rem 1rem",
-                        borderRadius: "12px",
-                        border: primaryGoal === goal.id ? "2px solid #0ea5e9" : "1px solid #cbd5e1",
-                        background: primaryGoal === goal.id ? "rgba(14, 165, 233, 0.08)" : "#f8fafc",
-                        color: primaryGoal === goal.id ? "#0ea5e9" : "#334155",
+                        padding: "0.65rem 0.5rem",
+                        borderRadius: "var(--radius-md)",
+                        border: skillLevel === lvl.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                        background: skillLevel === lvl.id ? "var(--accent-blue-bg)" : "var(--bg-primary)",
+                        color: skillLevel === lvl.id ? "var(--accent-blue)" : "var(--text-primary)",
                         cursor: "pointer",
-                        textAlign: "left",
-                        fontWeight: 700,
-                        fontSize: "0.875rem",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center"
+                        textAlign: "center"
                       }}
                     >
-                      <span>{goal.label}</span>
-                      {primaryGoal === goal.id && <CheckCircle2 size={16} style={{ color: "#0ea5e9" }} />}
+                      <div style={{ fontWeight: 800, fontSize: "var(--text-xs)" }}>{lvl.label}</div>
+                      <div style={{ fontSize: "10px", color: "var(--text-secondary)", marginTop: "2px" }}>{lvl.desc}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "#334155", display: "block", marginBottom: "0.4rem" }}>
-                  University or Company Name (Optional)
+                <label className="form-label" style={{ marginBottom: "0.5rem" }}>
+                  Primary Objective
                 </label>
-                <div style={{ position: "relative" }}>
-                  <Building size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
-                  <input
-                    type="text"
-                    placeholder="e.g. Dhaka University / Tech Corp"
-                    value={organization}
-                    onChange={(e) => setOrganization(e.target.value)}
-                    style={{
-                      width: "100%",
-                      background: "#f8fafc",
-                      border: "1px solid #cbd5e1",
-                      borderRadius: "12px",
-                      padding: "0.75rem 1rem 0.75rem 2.5rem",
-                      fontSize: "0.9rem",
-                      color: "#0f172a",
-                      outline: "none",
-                      boxSizing: "border-box"
-                    }}
-                  />
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {[
+                    { id: "career_switch", label: "Career Switch into Cyber / AI" },
+                    { id: "skill_upgrade", label: "Upgrade Skills for Current Role" },
+                    { id: "certification", label: "Achieve Industry Certifications" }
+                  ].map((g) => (
+                    <button
+                      key={g.id}
+                      type="button"
+                      onClick={() => setPrimaryGoal(g.id)}
+                      style={{
+                        padding: "0.65rem 0.85rem",
+                        borderRadius: "var(--radius-md)",
+                        border: primaryGoal === g.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                        background: primaryGoal === g.id ? "var(--accent-blue-bg)" : "var(--bg-primary)",
+                        color: primaryGoal === g.id ? "var(--accent-blue)" : "var(--text-primary)",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        fontWeight: 700,
+                        fontSize: "var(--text-xs)",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                      }}
+                    >
+                      <span>{g.label}</span>
+                      {primaryGoal === g.id && <CheckCircle2 size={16} style={{ color: "var(--accent-blue)" }} />}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -284,16 +237,7 @@ export default function StudentOnboardingModal({ onComplete }: StudentOnboarding
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  style={{
-                    padding: "0.85rem 1.25rem",
-                    borderRadius: "12px",
-                    background: "#f1f5f9",
-                    color: "#475569",
-                    border: "1px solid #cbd5e1",
-                    fontWeight: 700,
-                    fontSize: "0.9rem",
-                    cursor: "pointer"
-                  }}
+                  className="btn btn-outline"
                 >
                   Back
                 </button>
@@ -301,31 +245,15 @@ export default function StudentOnboardingModal({ onComplete }: StudentOnboarding
                   type="button"
                   disabled={loading}
                   onClick={() => handleSave(true)}
-                  style={{
-                    flex: 1,
-                    padding: "0.85rem",
-                    borderRadius: "12px",
-                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-                    color: "white",
-                    border: "none",
-                    fontWeight: 700,
-                    fontSize: "0.95rem",
-                    cursor: loading ? "not-allowed" : "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
-                    boxShadow: "0 10px 20px rgba(16, 185, 129, 0.3)"
-                  }}
+                  className="btn btn-primary"
+                  style={{ flex: 1 }}
                 >
-                  <CheckCircle2 size={18} />
-                  <span>{loading ? "Saving Profile..." : "Complete Setup"}</span>
+                  <span>{loading ? "Configuring..." : "Launch Learning Dashboard"}</span>
                 </button>
               </div>
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

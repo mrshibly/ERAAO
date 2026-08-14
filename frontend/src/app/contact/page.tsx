@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2, Building, Mail, Phone, MapPin, AlertCircle } from "lucide-react";
+import { Send, CheckCircle2, Building, Mail, Phone, AlertCircle } from "lucide-react";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -41,39 +41,28 @@ export default function ContactPage() {
   };
 
   return (
-    <div style={{ padding: "4rem 0" }}>
+    <div style={{ padding: "var(--spacing-section) 0" }}>
       <div className="container" style={{ maxWidth: "56rem" }}>
         
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <span style={{
-            display: "inline-block",
-            background: "rgba(13, 148, 136, 0.08)",
-            color: "var(--accent-teal)",
-            padding: "0.35rem 1rem",
-            borderRadius: "4px",
-            fontSize: "0.8rem",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            marginBottom: "1rem"
-          }}>
+        <div className="section-header">
+          <span className="section-badge" style={{ background: "rgba(13, 148, 136, 0.08)", color: "var(--accent-teal)" }}>
             Get In Touch
           </span>
-          <h1 style={{ fontSize: "2.75rem", fontWeight: 800, letterSpacing: "-0.03em" }}>Contact Our Office</h1>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", marginTop: "0.5rem" }}>
+          <h1 className="section-title">Contact Our Office</h1>
+          <p className="section-subtitle">
             Reach out to our solution engineers, security consultants, or support desk.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "4rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "3rem" }}>
           {/* Left Column — Form */}
-          <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2.5rem", boxShadow: "var(--shadow-sm)" }}>
+          <div className="card" style={{ padding: "2.5rem", boxShadow: "var(--shadow-sm)" }}>
             {success ? (
               <div style={{ textAlign: "center", padding: "2rem 0" }}>
-                <CheckCircle2 size={56} style={{ color: "var(--accent-emerald)", margin: "0 auto 1.5rem auto" }} />
-                <h3 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Message Transmitted</h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem", lineHeight: 1.5 }}>
+                <CheckCircle2 size={56} style={{ color: "var(--color-success)", margin: "0 auto 1.5rem auto" }} />
+                <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Message Transmitted</h3>
+                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "1.5rem", lineHeight: 1.5 }}>
                   Thank you for reaching out. A representative from our security or AI operations team will contact you shortly.
                 </p>
                 <button className="btn btn-outline" onClick={() => setSuccess(false)}>
@@ -83,26 +72,26 @@ export default function ContactPage() {
             ) : (
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                 {error && (
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#fef2f2", border: "1px solid #fecaca", color: "#b91c1c", padding: "0.75rem", borderRadius: "6px", fontSize: "0.85rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "var(--color-error-bg)", border: "1px solid rgba(239, 68, 68, 0.3)", color: "var(--color-error)", padding: "0.75rem", borderRadius: "var(--radius-md)", fontSize: "var(--text-sm)" }}>
                     <AlertCircle size={16} />
                     <span>{error}</span>
                   </div>
                 )}
-                <div>
-                  <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Full Name *</label>
-                  <input required type="text" value={name} onChange={(e) => setName(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none" }} />
+                <div className="form-group">
+                  <label className="form-label">Full Name *</label>
+                  <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Email Address *</label>
-                  <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none" }} />
+                <div className="form-group">
+                  <label className="form-label">Email Address *</label>
+                  <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Subject *</label>
-                  <input required type="text" value={subject} onChange={(e) => setSubject(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none" }} />
+                <div className="form-group">
+                  <label className="form-label">Subject *</label>
+                  <input required type="text" value={subject} onChange={(e) => setSubject(e.target.value)} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Message Body *</label>
-                  <textarea required value={message} rows={5} onChange={(e) => setMessage(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", outline: "none", fontFamily: "inherit" }} />
+                <div className="form-group">
+                  <label className="form-label">Message Body *</label>
+                  <textarea required value={message} rows={5} onChange={(e) => setMessage(e.target.value)} className="input-field" style={{ resize: "vertical" }} />
                 </div>
                 <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: "100%", marginTop: "0.5rem" }}>
                   <Send size={16} />
@@ -115,37 +104,36 @@ export default function ContactPage() {
           {/* Right Column — Info */}
           <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem", justifyContent: "center" }}>
             <div>
-              <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                 <Building size={20} style={{ color: "var(--accent-teal)" }} />
                 Corporate HQ
               </h3>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                Silicon Valley Office Plaza<br />
-                Suite 400, Palo Alto, CA 94301<br />
-                United States
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6 }}>
+                ERAAO Headquarters<br />
+                Dhaka, Bangladesh
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                 <Mail size={20} style={{ color: "var(--accent-blue)" }} />
                 Direct Channels
               </h3>
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.95rem", color: "var(--text-secondary)" }}>
-                <li>General: <strong style={{ color: "var(--text-primary)" }}>info@academy.dev</strong></li>
-                <li>Support Desk: <strong style={{ color: "var(--text-primary)" }}>support@academy.dev</strong></li>
-                <li>Corporate L&D: <strong style={{ color: "var(--text-primary)" }}>training@academy.dev</strong></li>
+              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
+                <li>General: <strong style={{ color: "var(--text-primary)" }}>info@eraao.com</strong></li>
+                <li>Support Desk: <strong style={{ color: "var(--text-primary)" }}>support@eraao.com</strong></li>
+                <li>Corporate L&amp;D: <strong style={{ color: "var(--text-primary)" }}>training@eraao.com</strong></li>
               </ul>
             </div>
 
             <div>
-              <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                 <Phone size={20} style={{ color: "var(--accent-violet)" }} />
                 Phone Support
               </h3>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                +1 (555) 019-2831<br />
-                Mon – Fri, 9:00 AM – 5:00 PM PST
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6 }}>
+                +880 1700-000000<br />
+                Sun – Thu, 9:00 AM – 6:00 PM BST
               </p>
             </div>
           </div>

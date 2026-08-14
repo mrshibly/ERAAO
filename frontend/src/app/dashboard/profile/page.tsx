@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import {
-  User, Shield, Check, AlertCircle, Save, Trash2, Phone, Building,
-  Award, Target, Sparkles, CheckCircle2, Lock, Bell, Mail, Camera
+  User, AlertCircle, Save, Trash2, Phone, Building,
+  Award, Target, CheckCircle2, Camera
 } from "lucide-react";
 
 export default function ProfileSettingsPage() {
-  const router = useRouter();
   const { user, token, login } = useAuth();
 
   const [fullName, setFullName] = useState("");
@@ -19,7 +17,6 @@ export default function ProfileSettingsPage() {
   const [skillLevel, setSkillLevel] = useState("beginner");
   const [primaryGoal, setPrimaryGoal] = useState("career_switch");
   const [organization, setOrganization] = useState("");
-  const [emailNotifications, setEmailNotifications] = useState(true);
 
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -173,42 +170,38 @@ export default function ProfileSettingsPage() {
     <div style={{ paddingBottom: "3rem", maxWidth: "56rem", margin: "0 auto", width: "100%" }}>
       {/* Page Header */}
       <div style={{ marginBottom: "2rem" }}>
-        <div style={{ fontSize: "0.75rem", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
-          Account & Learning Preferences
+        <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+          Account &amp; Learning Preferences
         </div>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
+        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
           Student Profile Settings
         </h1>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.25rem" }}>
+        <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
           Manage your personal details, contact preferences, technical skill goals, and graduation signatures.
         </p>
       </div>
 
       {/* User Overview Banner */}
-      <div style={{
-        background: "var(--card-bg)",
-        border: "1px solid var(--border-color)",
-        borderRadius: "var(--radius-lg)",
+      <div className="card" style={{
         padding: "1.75rem 2rem",
         marginBottom: "2rem",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         flexWrap: "wrap",
-        gap: "1.5rem",
-        boxShadow: "var(--shadow-sm)"
+        gap: "1.5rem"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
           <div style={{
             width: "64px",
             height: "64px",
             borderRadius: "50%",
-            background: "linear-gradient(135deg, #0ea5e9, #10b981)",
+            background: "linear-gradient(135deg, var(--accent-blue), var(--color-success))",
             color: "white",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "1.5rem",
+            fontSize: "var(--text-xl)",
             fontWeight: 800,
             flexShrink: 0,
             overflow: "hidden"
@@ -222,23 +215,23 @@ export default function ProfileSettingsPage() {
 
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)" }}>
+              <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)" }}>
                 {fullName || "Student User"}
               </h2>
               {user?.is_verified && (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", background: "rgba(16, 185, 129, 0.1)", color: "#10b981", fontSize: "0.72rem", fontWeight: 700, padding: "0.2rem 0.5rem", borderRadius: "12px" }}>
+                <span className="badge badge-green">
                   <CheckCircle2 size={12} /> Verified Student
                 </span>
               )}
             </div>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
               {user?.email}
             </p>
           </div>
         </div>
 
         <div style={{ display: "flex", gap: "0.75rem" }}>
-          <span style={{ fontSize: "0.8rem", fontWeight: 700, background: "var(--bg-primary)", border: "1px solid var(--border-color)", color: "var(--text-primary)", padding: "0.4rem 0.85rem", borderRadius: "8px" }}>
+          <span className="badge badge-blue">
             Role: {user?.roles?.join(", ") || "Student"}
           </span>
         </div>
@@ -246,14 +239,14 @@ export default function ProfileSettingsPage() {
 
       {/* Alert Messages */}
       {message && (
-        <div style={{ padding: "1rem 1.25rem", background: "rgba(16, 185, 129, 0.08)", border: "1px solid #10b981", borderRadius: "12px", color: "#10b981", display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.9rem", marginBottom: "1.75rem", fontWeight: 600 }}>
+        <div style={{ padding: "1rem 1.25rem", background: "var(--color-success-bg)", border: "1px solid var(--color-success)", borderRadius: "var(--radius-md)", color: "var(--color-success)", display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "var(--text-sm)", marginBottom: "1.75rem", fontWeight: 600 }}>
           <CheckCircle2 size={18} />
           <span>{message}</span>
         </div>
       )}
 
       {error && (
-        <div style={{ padding: "1rem 1.25rem", background: "rgba(239, 68, 68, 0.08)", border: "1px solid #ef4444", borderRadius: "12px", color: "#ef4444", display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.9rem", marginBottom: "1.75rem", fontWeight: 600 }}>
+        <div style={{ padding: "1rem 1.25rem", background: "var(--color-error-bg)", border: "1px solid var(--color-error)", borderRadius: "var(--radius-md)", color: "var(--color-error)", display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "var(--text-sm)", marginBottom: "1.75rem", fontWeight: 600 }}>
           <AlertCircle size={18} />
           <span>{error}</span>
         </div>
@@ -262,20 +255,14 @@ export default function ProfileSettingsPage() {
       <form onSubmit={handleSaveProfile} style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
 
         {/* Section 1: Personal & Contact Information */}
-        <div style={{
-          background: "var(--card-bg)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-lg)",
-          padding: "2rem",
-          boxShadow: "var(--shadow-sm)"
-        }}>
-          <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <User size={18} style={{ color: "var(--accent-blue)" }} /> Personal & Contact Details
+        <div className="card" style={{ padding: "2rem" }}>
+          <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <User size={18} style={{ color: "var(--accent-blue)" }} /> Personal &amp; Contact Details
           </h3>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
-            <div>
-              <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
+            <div className="form-group">
+              <label className="form-label">
                 Full Name
               </label>
               <input
@@ -283,22 +270,12 @@ export default function ProfileSettingsPage() {
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "0.75rem",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "var(--radius-md)",
-                  background: "var(--bg-primary)",
-                  color: "var(--text-primary)",
-                  fontSize: "0.9rem",
-                  outline: "none",
-                  boxSizing: "border-box"
-                }}
+                className="input-field"
               />
             </div>
 
-            <div>
-              <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+            <div className="form-group">
+              <label className="form-label">
                 Phone / WhatsApp Number
               </label>
               <div style={{ position: "relative" }}>
@@ -308,23 +285,14 @@ export default function ProfileSettingsPage() {
                   placeholder="+880 1700-000000"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem 1rem 0.75rem 2.5rem",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "var(--radius-md)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-primary)",
-                    fontSize: "0.9rem",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
+                  style={{ paddingLeft: "2.5rem" }}
                 />
               </div>
             </div>
 
-            <div style={{ gridColumn: "1 / -1" }}>
-              <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+            <div className="form-group" style={{ gridColumn: "1 / -1" }}>
+              <label className="form-label">
                 Avatar Image URL
               </label>
               <div style={{ position: "relative" }}>
@@ -334,17 +302,8 @@ export default function ProfileSettingsPage() {
                   placeholder="https://images.unsplash.com/photo-..."
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem 1rem 0.75rem 2.5rem",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "var(--radius-md)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-primary)",
-                    fontSize: "0.9rem",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
+                  style={{ paddingLeft: "2.5rem" }}
                 />
               </div>
             </div>
@@ -352,23 +311,17 @@ export default function ProfileSettingsPage() {
         </div>
 
         {/* Section 2: Technical Skill Level & Primary Goal */}
-        <div style={{
-          background: "var(--card-bg)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-lg)",
-          padding: "2rem",
-          boxShadow: "var(--shadow-sm)"
-        }}>
-          <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Target size={18} style={{ color: "var(--accent-blue)" }} /> Academic & Career Goals
+        <div className="card" style={{ padding: "2rem" }}>
+          <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Target size={18} style={{ color: "var(--accent-blue)" }} /> Academic &amp; Career Goals
           </h3>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             <div>
-              <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.5rem" }}>
+              <label className="form-label" style={{ marginBottom: "0.5rem" }}>
                 Technical Experience Level
               </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1rem" }}>
                 {[
                   { id: "beginner", label: "Beginner", desc: "Starting cyber/AI journey" },
                   { id: "intermediate", label: "Intermediate", desc: "Some coding & IT labs" },
@@ -382,25 +335,25 @@ export default function ProfileSettingsPage() {
                       padding: "0.85rem",
                       borderRadius: "var(--radius-md)",
                       border: skillLevel === lvl.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                      background: skillLevel === lvl.id ? "rgba(14, 165, 233, 0.08)" : "var(--bg-primary)",
+                      background: skillLevel === lvl.id ? "var(--accent-blue-bg)" : "var(--bg-primary)",
                       color: skillLevel === lvl.id ? "var(--accent-blue)" : "var(--text-primary)",
                       cursor: "pointer",
                       textAlign: "left",
-                      transition: "all 0.2s ease"
+                      transition: "var(--transition-fast)"
                     }}
                   >
-                    <div style={{ fontWeight: 800, fontSize: "0.875rem" }}>{lvl.label}</div>
-                    <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)", marginTop: "2px" }}>{lvl.desc}</div>
+                    <div style={{ fontWeight: 800, fontSize: "var(--text-sm)" }}>{lvl.label}</div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "2px" }}>{lvl.desc}</div>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.5rem" }}>
+              <label className="form-label" style={{ marginBottom: "0.5rem" }}>
                 Primary Learning Goal
               </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem" }}>
                 {[
                   { id: "career_switch", label: "Career Switch into Cyber / AI" },
                   { id: "skill_upgrade", label: "Upgrade Skills for Current Role" },
@@ -415,12 +368,12 @@ export default function ProfileSettingsPage() {
                       padding: "0.75rem 1rem",
                       borderRadius: "var(--radius-md)",
                       border: primaryGoal === g.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                      background: primaryGoal === g.id ? "rgba(14, 165, 233, 0.08)" : "var(--bg-primary)",
+                      background: primaryGoal === g.id ? "var(--accent-blue-bg)" : "var(--bg-primary)",
                       color: primaryGoal === g.id ? "var(--accent-blue)" : "var(--text-primary)",
                       cursor: "pointer",
                       textAlign: "left",
                       fontWeight: 700,
-                      fontSize: "0.85rem",
+                      fontSize: "var(--text-xs)",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center"
@@ -433,8 +386,8 @@ export default function ProfileSettingsPage() {
               </div>
             </div>
 
-            <div>
-              <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+            <div className="form-group">
+              <label className="form-label">
                 University or Organization Name (Optional)
               </label>
               <div style={{ position: "relative" }}>
@@ -444,17 +397,8 @@ export default function ProfileSettingsPage() {
                   placeholder="e.g. Dhaka University / Tech Solutions Inc"
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem 1rem 0.75rem 2.5rem",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "var(--radius-md)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-primary)",
-                    fontSize: "0.9rem",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
+                  style={{ paddingLeft: "2.5rem" }}
                 />
               </div>
             </div>
@@ -462,24 +406,18 @@ export default function ProfileSettingsPage() {
         </div>
 
         {/* Section 3: Graduation & Certificate Signature Canvas */}
-        <div style={{
-          background: "var(--card-bg)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-lg)",
-          padding: "2rem",
-          boxShadow: "var(--shadow-sm)"
-        }}>
-          <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Award size={18} style={{ color: "#f59e0b" }} /> Official Certificate Signature
+        <div className="card" style={{ padding: "2rem" }}>
+          <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Award size={18} style={{ color: "var(--color-warning)" }} /> Official Certificate Signature
           </h3>
-          <p style={{ fontSize: "0.825rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+          <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
             Draw or upload your digital signature. This signature is embedded on your official ERAAO course completion credentials.
           </p>
 
           <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
             {/* Draw Signature Canvas */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>Draw Signature Pad</div>
+              <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--text-primary)" }}>Draw Signature Pad</div>
               <canvas
                 ref={canvasRef}
                 width={360}
@@ -505,35 +443,16 @@ export default function ProfileSettingsPage() {
                 <button
                   type="button"
                   onClick={clearCanvas}
-                  style={{
-                    padding: "0.45rem 0.85rem",
-                    fontSize: "0.8rem",
-                    background: "var(--bg-primary)",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.25rem",
-                    color: "var(--text-secondary)",
-                    fontWeight: 600
-                  }}
+                  className="btn btn-outline"
+                  style={{ fontSize: "var(--text-xs)", padding: "0.45rem 0.85rem" }}
                 >
                   <Trash2 size={14} /> Clear Pad
                 </button>
                 <button
                   type="button"
                   onClick={saveCanvasSignature}
-                  style={{
-                    padding: "0.45rem 0.85rem",
-                    fontSize: "0.8rem",
-                    background: "var(--accent-blue)",
-                    border: "none",
-                    color: "white",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontWeight: 700
-                  }}
+                  className="btn btn-primary"
+                  style={{ fontSize: "var(--text-xs)", padding: "0.45rem 0.85rem" }}
                 >
                   Capture Drawing
                 </button>
@@ -542,7 +461,7 @@ export default function ProfileSettingsPage() {
 
             {/* Signature Preview */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", flex: 1, minWidth: "15rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>Active Signature Preview</div>
+              <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--text-primary)" }}>Active Signature Preview</div>
               <div style={{
                 width: "100%",
                 height: "150px",
@@ -557,7 +476,7 @@ export default function ProfileSettingsPage() {
                 {signatureUrl ? (
                   <img src={signatureUrl} alt="Active Signature" style={{ maxHeight: "110px", maxWidth: "90%", objectFit: "contain" }} />
                 ) : (
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>No signature captured yet</span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>No signature captured yet</span>
                 )}
               </div>
             </div>
@@ -569,19 +488,10 @@ export default function ProfileSettingsPage() {
           <button
             type="submit"
             disabled={saving}
+            className="btn btn-accent"
             style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)",
-              color: "white",
-              border: "none",
               padding: "0.85rem 2rem",
-              borderRadius: "var(--radius-md)",
-              fontSize: "0.95rem",
-              fontWeight: 800,
-              cursor: saving ? "not-allowed" : "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              boxShadow: "0 8px 20px rgba(14, 165, 233, 0.3)"
+              fontSize: "var(--text-sm)"
             }}
           >
             <Save size={18} /> {saving ? "Saving Changes..." : "Save Profile Settings"}

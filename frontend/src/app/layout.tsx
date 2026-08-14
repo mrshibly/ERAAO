@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display, Great_Vibes, Cinzel } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
 import ConditionalWrapper from "./ConditionalWrapper";
 import Navbar from "./Navbar";
-import Logo from "@/components/Logo";
+import Footer from "./Footer";
 import JsonLd from "@/components/JsonLd";
 import "./globals.css";
 
@@ -95,63 +94,7 @@ export default function RootLayout({
         <AuthProvider>
           <ConditionalWrapper
             navbar={<Navbar />}
-            footer={
-              <footer style={{ backgroundColor: "#0f172a", color: "#f8fafc", padding: "4rem 0 2rem 0" }}>
-                <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "3rem" }}>
-                  <div>
-                    <div className="logo" style={{ marginBottom: "0.75rem" }}>
-                      <Logo size={28} textColor="#ffffff" />
-                    </div>
-                    <div style={{
-                      fontSize: "0.85rem",
-                      fontWeight: 700,
-                      color: "#38bdf8",
-                      letterSpacing: "0.05em",
-                      textTransform: "uppercase",
-                      marginBottom: "0.75rem"
-                    }}>
-                      Lighting the future.
-                    </div>
-                    <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
-                      Leading security and artificial intelligence service provider & practitioner development training institute.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 style={{ color: "#ffffff", fontSize: "1.05rem", fontWeight: 600, marginBottom: "1.25rem" }}>Services</h4>
-                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.9rem", color: "#cbd5e1" }}>
-                      <li><Link href="/services">AI Agent Architectures</Link></li>
-                      <li><Link href="/services">Offensive Penetration Testing</Link></li>
-                      <li><Link href="/services">Cloud Security</Link></li>
-                      <li><Link href="/services">Web & Mobile Pentesting</Link></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 style={{ color: "#ffffff", fontSize: "1.05rem", fontWeight: 600, marginBottom: "1.25rem" }}>Academy</h4>
-                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.9rem", color: "#cbd5e1" }}>
-                      <li><Link href="/academy">Cybersecurity Track</Link></li>
-                      <li><Link href="/academy">AI & LLM Training</Link></li>
-                      <li><Link href="/academy">Live bootcamps</Link></li>
-                      <li><Link href="/academy">Certifications</Link></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 style={{ color: "#ffffff", fontSize: "1.05rem", fontWeight: 600, marginBottom: "1.25rem" }}>Contact</h4>
-                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.9rem", color: "#cbd5e1" }}>
-                      <li>Email: info@eraao.com</li>
-                      <li>Phone: +880 1700-000000</li>
-                      <li>Address: Dhaka, Bangladesh</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="container" style={{ borderTop: "1px solid #1e293b", marginTop: "3rem", paddingTop: "1.5rem", display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "#94a3b8" }}>
-                  <span>&copy; {new Date().getFullYear()} Eraao Platform. All rights reserved.</span>
-                  <div style={{ display: "flex", gap: "1.5rem" }}>
-                    <Link href="/privacy">Privacy Policy</Link>
-                    <Link href="/terms">Terms of Service</Link>
-                  </div>
-                </div>
-              </footer>
-            }
+            footer={<Footer />}
           >
             {children}
           </ConditionalWrapper>

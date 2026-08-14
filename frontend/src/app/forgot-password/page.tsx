@@ -39,12 +39,12 @@ export default function ForgotPasswordPage() {
     <div style={{ padding: "6rem 0", display: "flex", justifyContent: "center" }}>
       <div className="container" style={{ maxWidth: "26rem" }}>
         
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2.5rem", boxShadow: "var(--shadow-md)" }}>
+        <div className="card" style={{ padding: "2.5rem", boxShadow: "var(--shadow-md)" }}>
           {success ? (
             <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
-              <CheckCircle2 size={64} style={{ color: "var(--accent-emerald)", margin: "0 auto 1.5rem auto" }} />
-              <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Reset Link Dispatched</h2>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "1.5rem", lineHeight: 1.5 }}>
+              <CheckCircle2 size={64} style={{ color: "var(--color-success)", margin: "0 auto 1.5rem auto" }} />
+              <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Reset Link Dispatched</h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "1.5rem", lineHeight: 1.5 }}>
                 An instructions link has been sent to <strong>{email}</strong> if an account exists under that address.
               </p>
               <Link href="/login" className="btn btn-primary" style={{ width: "100%" }}>
@@ -54,25 +54,25 @@ export default function ForgotPasswordPage() {
           ) : (
             <>
               <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-                <h1 style={{ fontSize: "1.75rem", fontWeight: 800 }}>Reset Password</h1>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.25rem" }}>
+                <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>Reset Password</h1>
+                <p style={{ color: "var(--text-muted)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
                   Provide your email to receive recovery instructions
                 </p>
               </div>
 
               {error && (
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#fef2f2", border: "1px solid #fecaca", color: "#b91c1c", padding: "0.75rem", borderRadius: "6px", fontSize: "0.85rem", marginBottom: "1.5rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "var(--color-error-bg)", border: "1px solid rgba(239, 68, 68, 0.3)", color: "var(--color-error)", padding: "0.75rem", borderRadius: "var(--radius-md)", fontSize: "var(--text-sm)", marginBottom: "1.5rem" }}>
                   <AlertCircle size={16} />
                   <span>{error}</span>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                <div>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Email Address</label>
+                <div className="form-group">
+                  <label className="form-label">Email Address</label>
                   <div style={{ position: "relative" }}>
                     <Mail size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
-                    <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: "100%", padding: "0.65rem 0.65rem 0.65rem 2.25rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                    <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" style={{ paddingLeft: "2.25rem" }} />
                   </div>
                 </div>
 
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
                 </button>
               </form>
 
-              <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+              <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
                 Remember password? <Link href="/login" style={{ color: "var(--accent-blue)", fontWeight: 600 }}>Log in</Link>
               </p>
             </>

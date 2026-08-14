@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { BookOpen, Plus, Trash2, Edit3, Search, List } from "lucide-react";
-import SyllabusBuilder from "@/components/SyllabusBuilder";
+import { BookOpen, Trash2, Edit3, Search, List } from "lucide-react";
 import CustomModal from "@/components/CustomModal";
 
 export default function AdminCoursesPage() {
@@ -25,7 +24,6 @@ export default function AdminCoursesPage() {
     title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft"
   });
   const [editId, setEditId] = useState<string | null>(null);
-  const [selectedCourseForSyllabus, setSelectedCourseForSyllabus] = useState<{ id: string; slug: string } | null>(null);
   const [activeTab, setActiveTab] = useState("all");
 
   const headers = { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" };
@@ -130,26 +128,26 @@ export default function AdminCoursesPage() {
   return (
     <div>
       <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
           <BookOpen size={24} style={{ color: "var(--accent-blue)" }} /> Course Manager
         </h1>
-        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem" }}>Create, edit, and approve courses submitted by instructors</p>
+        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "var(--text-sm)" }}>Create, edit, and approve courses submitted by instructors</p>
       </div>
 
       {message && (
         <div style={{
-          background: message.type === "success" ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-          color: message.type === "success" ? "var(--accent-emerald)" : "#ef4444",
-          padding: "0.85rem 1rem", borderRadius: "8px",
+          background: message.type === "success" ? "var(--color-success-bg)" : "var(--color-error-bg)",
+          color: message.type === "success" ? "var(--color-success)" : "var(--color-error)",
+          padding: "0.85rem 1rem", borderRadius: "var(--radius-md)",
           border: `1px solid ${message.type === "success" ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
-          marginBottom: "1.5rem", fontWeight: 600, fontSize: "0.9rem"
+          marginBottom: "1.5rem", fontWeight: 600, fontSize: "var(--text-sm)"
         }}>
           {message.text}
         </div>
       )}
 
       {/* Tab Selector */}
-      <div className="tab-bar-scrollable">
+      <div className="filter-pills" style={{ marginBottom: "1.5rem" }}>
         {[
           { id: "all", label: "All Courses", count: courses.length },
           { id: "pending", label: "Pending Approval", count: pendingCount },
@@ -158,26 +156,13 @@ export default function AdminCoursesPage() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            style={{
-              background: "none",
-              border: "none",
-              padding: "0.5rem 0.25rem",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              color: activeTab === tab.id ? "var(--accent-blue)" : "var(--text-secondary)",
-              borderBottom: activeTab === tab.id ? "2px solid var(--accent-blue)" : "2px solid transparent",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              marginBottom: "-5px",
-              transition: "all 0.15s"
-            }}
+            className={`filter-pill ${activeTab === tab.id ? "active" : ""}`}
+            style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
           >
             <span>{tab.label}</span>
             <span style={{
-              fontSize: "0.75rem",
-              background: tab.id === "pending" && tab.count > 0 ? "#ef4444" : "var(--bg-secondary)",
+              fontSize: "10px",
+              background: tab.id === "pending" && tab.count > 0 ? "var(--color-error)" : "var(--bg-secondary)",
               color: tab.id === "pending" && tab.count > 0 ? "white" : "var(--text-secondary)",
               padding: "0.1rem 0.4rem",
               borderRadius: "10px",
@@ -189,75 +174,69 @@ export default function AdminCoursesPage() {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "2.5rem" }} className="responsive-grid-split">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
         {/* Course List */}
-        <div>
+        <div style={{ gridColumn: "span 2" }}>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem", marginBottom: "1.25rem" }}>
-            <h2 style={{ fontSize: "1.15rem", fontWeight: 700 }}>Course Directory ({filtered.length})</h2>
+            <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--text-primary)" }}>Course Directory ({filtered.length})</h2>
             <div style={{ position: "relative", width: "100%", maxWidth: "220px" }}>
               <Search size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
               <input
                 type="text" placeholder="Search courses..."
                 value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: "0.5rem 0.5rem 0.5rem 2.25rem", border: "1px solid var(--border-color)", borderRadius: "8px", fontSize: "0.85rem", width: "100%" }}
+                className="input-field"
+                style={{ paddingLeft: "2.25rem" }}
               />
             </div>
           </div>
 
           {fetching ? (
-            <p style={{ color: "var(--text-muted)", padding: "3rem 0", textAlign: "center" }}>Loading courses...</p>
+            <div className="loading-container" style={{ padding: "3rem 0" }}>Loading courses...</div>
           ) : filtered.length === 0 ? (
-            <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "4rem 2rem", textAlign: "center" }}>
+            <div className="empty-state card" style={{ padding: "4rem 2rem" }}>
               <BookOpen size={40} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
-              <p style={{ color: "var(--text-secondary)" }}>No courses found.</p>
+              <p className="empty-text">No courses found.</p>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {filtered.map((course) => (
-                <div key={course.id} style={{
-                  background: "white", border: editId === course.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                  borderRadius: "12px", padding: "1.25rem", transition: "all 0.15s"
+                <div key={course.id} className="card" style={{
+                  border: editId === course.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                  padding: "1.25rem"
                 }}>
                   <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem" }}>
                     <div style={{ flex: 1, minWidth: "200px" }}>
                       <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.4rem" }}>
-                        <span style={{ fontSize: "0.7rem", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{course.level}</span>
-                        <span style={{ fontSize: "0.7rem", background: course.status === "published" ? "rgba(16, 185, 129, 0.1)" : "rgba(234, 179, 8, 0.1)", color: course.status === "published" ? "var(--accent-emerald)" : "#ca8a04", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{course.status.toUpperCase()}</span>
+                        <span className="badge badge-blue">{course.level}</span>
+                        <span className={`badge ${course.status === "published" ? "badge-green" : "badge-amber"}`}>{course.status.toUpperCase()}</span>
                       </div>
-                      <h4 style={{ fontWeight: 700, fontSize: "1rem" }}>{course.title}</h4>
-                      <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{course.short_description || "No description"}</p>
-                      <p style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--text-primary)", marginTop: "0.4rem" }}>
+                      <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>{course.title}</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", marginTop: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{course.short_description || "No description"}</p>
+                      <p style={{ fontWeight: 600, fontSize: "var(--text-sm)", color: "var(--text-primary)", marginTop: "0.4rem" }}>
                         ৳{course.price} BDT &bull; {course.duration_hours || 0}h
                       </p>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
                       {course.status === "draft" && (
-                        <button onClick={() => handleApprove(course.id)} style={{ padding: "0.3rem 0.6rem", fontSize: "0.75rem", background: "var(--accent-emerald)", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: 600 }}>
+                        <button onClick={() => handleApprove(course.id)} className="btn btn-primary" style={{ padding: "0.3rem 0.6rem", fontSize: "var(--text-xs)", background: "var(--color-success)" }}>
                           Approve
                         </button>
                       )}
                       <Link
                         href={`/dashboard/admin/courses/builder/${course.id}`}
+                        className="btn btn-outline"
                         style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.3rem",
-                          background: "rgba(14, 165, 233, 0.1)",
-                          color: "var(--accent-blue)",
                           padding: "0.35rem 0.75rem",
-                          borderRadius: "6px",
-                          textDecoration: "none",
-                          fontWeight: 700,
-                          fontSize: "0.8rem"
+                          fontSize: "var(--text-xs)"
                         }}
                         title="Open Syllabus Studio"
                       >
                         <List size={14} /> <span>Syllabus Studio</span>
                       </Link>
-                      <button onClick={() => handleEdit(course)} style={{ color: "var(--accent-blue)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Edit">
+                      <button onClick={() => handleEdit(course)} style={{ color: "var(--accent-blue)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }} title="Edit">
                         <Edit3 size={16} />
                       </button>
-                      <button onClick={() => handleDelete(course.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Delete">
+                      <button onClick={() => handleDelete(course.id)} style={{ color: "var(--color-error)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }} title="Delete">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -268,78 +247,94 @@ export default function AdminCoursesPage() {
           )}
         </div>
 
-        {/* Create/Edit Form */}
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "1.75rem", height: "fit-content", position: "sticky", top: "2rem" }}>
-          <h2 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Plus size={18} /> {editId ? "Edit Course" : "Create New Course"}
-          </h2>
+        {/* Create/Edit Course Form */}
+        <div className="card" style={{ padding: "1.5rem", height: "fit-content" }}>
+          <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, marginBottom: "1rem", color: "var(--text-primary)" }}>{editId ? "Edit Course" : "Add New Course"}</h2>
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Course Title *</label>
-              <input type="text" required value={courseForm.title} onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Course Title</label>
+              <input
+                type="text" required
+                value={courseForm.title}
+                onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })}
+                className="input-field"
+              />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>URL Slug *</label>
-              <input type="text" required value={courseForm.slug} placeholder="e.g. offensive-security-basics" onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">URL Slug</label>
+              <input
+                type="text" required
+                value={courseForm.slug}
+                onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })}
+                className="input-field"
+              />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Short Summary *</label>
-              <input type="text" required value={courseForm.short_description} onChange={(e) => setCourseForm({ ...courseForm, short_description: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Short Tagline</label>
+              <input
+                type="text"
+                value={courseForm.short_description}
+                onChange={(e) => setCourseForm({ ...courseForm, short_description: e.target.value })}
+                className="input-field"
+              />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Description</label>
-              <textarea value={courseForm.description} rows={3} onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontFamily: "inherit", fontSize: "0.9rem", resize: "vertical" }} />
+            <div className="form-group">
+              <label className="form-label">Full Description</label>
+              <textarea
+                rows={3}
+                value={courseForm.description}
+                onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })}
+                className="input-field"
+                style={{ resize: "vertical" }}
+              />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Price (BDT) *</label>
-                <input type="number" required value={courseForm.price} onChange={(e) => setCourseForm({ ...courseForm, price: parseFloat(e.target.value) })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Price (BDT)</label>
+                <input
+                  type="number" required
+                  value={courseForm.price}
+                  onChange={(e) => setCourseForm({ ...courseForm, price: parseFloat(e.target.value) || 0 })}
+                  className="input-field"
+                />
               </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Duration (Hrs) *</label>
-                <input type="number" required value={courseForm.duration_hours} onChange={(e) => setCourseForm({ ...courseForm, duration_hours: parseFloat(e.target.value) })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
-              </div>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Level</label>
-                <select value={courseForm.level} onChange={(e) => setCourseForm({ ...courseForm, level: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontSize: "0.9rem" }}>
+              <div className="form-group">
+                <label className="form-label">Difficulty Level</label>
+                <select
+                  value={courseForm.level}
+                  onChange={(e) => setCourseForm({ ...courseForm, level: e.target.value })}
+                  className="input-field"
+                >
                   <option value="beginner">Beginner</option>
                   <option value="intermediate">Intermediate</option>
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Status</label>
-                <select value={courseForm.status} onChange={(e) => setCourseForm({ ...courseForm, status: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontSize: "0.9rem" }}>
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                  <option value="archived">Archived</option>
-                </select>
-              </div>
             </div>
-            <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-              <button type="submit" className="btn btn-accent" style={{ flex: 1 }}>
-                {editId ? "Update Course" : "Create Course"}
-              </button>
+            <div className="form-group">
+              <label className="form-label">Publishing Status</label>
+              <select
+                value={courseForm.status}
+                onChange={(e) => setCourseForm({ ...courseForm, status: e.target.value })}
+                className="input-field"
+              >
+                <option value="draft">Draft (Private)</option>
+                <option value="published">Published (Live)</option>
+              </select>
+            </div>
+            <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
               {editId && (
-                <button type="button" className="btn btn-outline" onClick={() => { setEditId(null); setCourseForm({ title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft" }); }}>
+                <button type="button" onClick={() => { setEditId(null); setCourseForm({ title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft" }); }} className="btn btn-outline">
                   Cancel
                 </button>
               )}
+              <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>
+                {editId ? "Update Course" : "Create Course"}
+              </button>
             </div>
           </form>
         </div>
       </div>
-
-      {selectedCourseForSyllabus && (
-        <SyllabusBuilder
-          courseId={selectedCourseForSyllabus.id}
-          courseSlug={selectedCourseForSyllabus.slug}
-          token={token || ""}
-          onClose={() => setSelectedCourseForSyllabus(null)}
-        />
-      )}
 
       <CustomModal
         isOpen={modalConfig.isOpen}
@@ -348,7 +343,7 @@ export default function AdminCoursesPage() {
         message={modalConfig.message}
         confirmText={modalConfig.confirmText}
         onConfirm={modalConfig.onConfirm}
-        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+        onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
       />
     </div>
   );

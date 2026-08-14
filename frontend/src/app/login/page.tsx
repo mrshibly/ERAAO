@@ -130,7 +130,7 @@ export default function LoginPage() {
       minHeight: "85vh",
       display: "flex",
       width: "100%",
-      backgroundColor: "#ffffff"
+      backgroundColor: "var(--bg-primary)"
     }} className="responsive-flex-column">
       
       {/* Left Column — Simple, Clean Form */}
@@ -141,21 +141,21 @@ export default function LoginPage() {
         justifyContent: "center",
         alignItems: "center",
         padding: "3rem 2rem",
-        backgroundColor: "#ffffff"
+        backgroundColor: "var(--bg-primary)"
       }}>
         <div style={{ width: "100%", maxWidth: "24rem" }}>
           
           <div style={{ marginBottom: "2rem" }}>
             <h1 style={{
-              fontSize: "2rem",
+              fontSize: "var(--text-3xl)",
               fontWeight: 800,
-              color: "#0f172a",
+              color: "var(--text-primary)",
               letterSpacing: "-0.02em",
               marginBottom: "0.5rem"
             }}>
               Sign In
             </h1>
-            <p style={{ color: "#64748b", fontSize: "0.95rem" }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "var(--text-sm)" }}>
               Enter your email and password to access your ERAAO account.
             </p>
           </div>
@@ -165,12 +165,12 @@ export default function LoginPage() {
               display: "flex",
               alignItems: "center",
               gap: "0.6rem",
-              background: "#fef2f2",
-              border: "1px solid #fecaca",
-              color: "#991b1b",
+              background: "var(--color-error-bg)",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+              color: "var(--color-error)",
               padding: "0.8rem 1rem",
-              borderRadius: "10px",
-              fontSize: "0.875rem",
+              borderRadius: "var(--radius-md)",
+              fontSize: "var(--text-sm)",
               marginBottom: "1.5rem"
             }}>
               <AlertCircle size={18} style={{ flexShrink: 0 }} />
@@ -187,83 +187,55 @@ export default function LoginPage() {
               alignItems: "center",
               width: "100%",
               margin: "1.25rem 0 0.5rem 0",
-              color: "#94a3b8",
-              fontSize: "0.75rem",
+              color: "var(--text-muted)",
+              fontSize: "var(--text-xs)",
               fontWeight: 600
             }}>
-              <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
+              <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
               <span style={{ padding: "0 0.75rem" }}>or sign in with email</span>
-              <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
+              <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
             </div>
           </div>
 
           {/* Form */}
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-            <div>
-              <label style={{
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: "#334155",
-                display: "block",
-                marginBottom: "0.4rem"
-              }}>
+            <div className="form-group">
+              <label className="form-label">
                 Email address
               </label>
               <div style={{ position: "relative" }}>
-                <Mail size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+                <Mail size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                 <input
                   required
                   type="email"
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  style={{
-                    width: "100%",
-                    background: "#ffffff",
-                    border: "1px solid #cbd5e1",
-                    borderRadius: "10px",
-                    padding: "0.75rem 1rem 0.75rem 2.5rem",
-                    fontSize: "0.925rem",
-                    color: "#0f172a",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
+                  style={{ paddingLeft: "2.5rem" }}
                 />
               </div>
             </div>
 
-            <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
-                <label style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "#334155"
-                }}>
+            <div className="form-group">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.2rem" }}>
+                <label className="form-label">
                   Password
                 </label>
-                <Link href="/forgot-password" style={{ fontSize: "0.825rem", color: "#0ea5e9", fontWeight: 600, textDecoration: "none" }}>
+                <Link href="/forgot-password" style={{ fontSize: "var(--text-xs)", color: "var(--accent-blue)", fontWeight: 600, textDecoration: "none" }}>
                   Forgot password?
                 </Link>
               </div>
               <div style={{ position: "relative" }}>
-                <Lock size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+                <Lock size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                 <input
                   required
                   type="password"
                   placeholder="Your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  style={{
-                    width: "100%",
-                    background: "#ffffff",
-                    border: "1px solid #cbd5e1",
-                    borderRadius: "10px",
-                    padding: "0.75rem 1rem 0.75rem 2.5rem",
-                    fontSize: "0.925rem",
-                    color: "#0f172a",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
+                  style={{ paddingLeft: "2.5rem" }}
                 />
               </div>
             </div>
@@ -271,21 +243,12 @@ export default function LoginPage() {
             <button
               disabled={loading}
               type="submit"
+              className="btn btn-accent"
               style={{
-                background: "#0ea5e9",
-                color: "#ffffff",
+                width: "100%",
                 padding: "0.8rem",
-                borderRadius: "10px",
-                fontSize: "0.95rem",
-                fontWeight: 700,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                border: "none",
-                cursor: loading ? "not-allowed" : "pointer",
-                marginTop: "0.5rem",
-                transition: "background 0.2s ease"
+                fontSize: "var(--text-sm)",
+                marginTop: "0.5rem"
               }}
             >
               <LogIn size={18} />
@@ -293,8 +256,8 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.9rem", color: "#64748b" }}>
-            Don't have an account? <Link href="/register" style={{ color: "#0ea5e9", fontWeight: 700, textDecoration: "none" }}>Create one here</Link>
+          <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+            Don't have an account? <Link href="/register" style={{ color: "var(--accent-blue)", fontWeight: 700, textDecoration: "none" }}>Create one here</Link>
           </p>
 
         </div>
@@ -315,9 +278,9 @@ export default function LoginPage() {
           width: "100%",
           height: "100%",
           minHeight: "480px",
-          borderRadius: "24px",
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
-          boxShadow: "0 20px 40px rgba(15, 23, 42, 0.12)"
+          boxShadow: "var(--shadow-lg)"
         }}>
           <img
             src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1000&auto=format&fit=crop&q=80"
@@ -333,10 +296,10 @@ export default function LoginPage() {
             justifyContent: "flex-end",
             padding: "3rem"
           }}>
-            <h2 style={{ fontSize: "1.85rem", fontWeight: 800, color: "#ffffff", marginBottom: "0.75rem", lineHeight: 1.3 }}>
+            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-on-dark)", marginBottom: "0.75rem", lineHeight: 1.3 }}>
               Build Skills. Protect Assets.
             </h2>
-            <p style={{ color: "#cbd5e1", fontSize: "1rem", lineHeight: 1.6, maxWidth: "28rem" }}>
+            <p style={{ color: "var(--text-on-dark-subtle)", fontSize: "var(--text-base)", lineHeight: 1.6, maxWidth: "28rem" }}>
               Access your training courses, cloud labs, and security tools all in one simple dashboard.
             </p>
           </div>

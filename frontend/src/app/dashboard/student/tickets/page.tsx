@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { ShieldAlert, Plus, MessageSquare, CheckCircle2, Clock, Send, AlertCircle, X } from "lucide-react";
+import { ShieldAlert, Plus, X } from "lucide-react";
 
 export default function StudentTicketsPage() {
-  const { token, user } = useAuth();
+  const { token } = useAuth();
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -68,42 +68,26 @@ export default function StudentTicketsPage() {
   return (
     <div style={{ paddingBottom: "3rem" }}>
       {/* Header */}
-      <div style={{
-        background: "var(--card-bg)",
-        border: "1px solid var(--border-color)",
-        borderRadius: "var(--radius-lg)",
-        padding: "2rem",
-        marginBottom: "2rem",
-        boxShadow: "var(--shadow-sm)"
-      }}>
+      <div className="card" style={{ padding: "2rem", marginBottom: "2rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
           <div>
-            <div style={{ fontSize: "0.75rem", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+            <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
               Academic Helpdesk
             </div>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
-              Support Desk & Lab Help
+            <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
+              Support Desk &amp; Lab Help
             </h1>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.25rem" }}>
+            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
               Ask syllabus questions, request lab assistance, or get technical advice from ERAAO instructors.
             </p>
           </div>
 
           <button
             onClick={() => setShowCreateModal(true)}
+            className="btn btn-accent"
             style={{
-              background: "var(--accent-blue)",
-              color: "white",
-              border: "none",
               padding: "0.65rem 1.25rem",
-              borderRadius: "var(--radius-md)",
-              fontWeight: 700,
-              fontSize: "0.875rem",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              boxShadow: "0 4px 12px rgba(14, 165, 233, 0.25)"
+              fontSize: "var(--text-sm)"
             }}
           >
             <Plus size={18} /> Submit Support Request
@@ -113,39 +97,22 @@ export default function StudentTicketsPage() {
 
       {/* Tickets List */}
       {loading ? (
-        <div style={{ textAlign: "center", padding: "4rem 0", color: "var(--text-secondary)" }}>
+        <div className="loading-container" style={{ padding: "4rem 0" }}>
           Loading support tickets...
         </div>
       ) : tickets.length === 0 ? (
-        <div style={{
-          background: "var(--card-bg)",
-          border: "1px dashed var(--border-color)",
-          borderRadius: "var(--radius-lg)",
-          padding: "4rem 2rem",
-          textAlign: "center"
-        }}>
-          <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem auto" }}>
+        <div className="empty-state card" style={{ padding: "4rem 2rem" }}>
+          <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "var(--accent-blue-bg)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem auto" }}>
             <ShieldAlert size={28} />
           </div>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text-primary)" }}>No open support tickets</h3>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "0.4rem", maxWidth: "400px", margin: "0.4rem auto 1.5rem auto" }}>
+          <h3 className="empty-title">No open support tickets</h3>
+          <p className="empty-text">
             Need help with a practical lab environment or course module? Submit a ticket to get direct assistance.
           </p>
           <button
             onClick={() => setShowCreateModal(true)}
-            style={{
-              background: "var(--accent-blue)",
-              color: "white",
-              border: "none",
-              padding: "0.65rem 1.5rem",
-              borderRadius: "var(--radius-md)",
-              fontWeight: 700,
-              fontSize: "0.875rem",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn btn-primary"
+            style={{ marginTop: "1rem" }}
           >
             <Plus size={18} /> Open Ticket Now
           </button>
@@ -155,10 +122,8 @@ export default function StudentTicketsPage() {
           {tickets.map((t) => (
             <div
               key={t.id}
+              className="card"
               style={{
-                background: "var(--card-bg)",
-                border: "1px solid var(--border-color)",
-                borderRadius: "var(--radius-md)",
                 padding: "1.5rem",
                 display: "flex",
                 justifyContent: "space-between",
@@ -168,24 +133,17 @@ export default function StudentTicketsPage() {
             >
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.4rem" }}>
-                  <span style={{
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    padding: "0.2rem 0.6rem",
-                    borderRadius: "20px",
-                    background: t.status === "closed" ? "rgba(16, 185, 129, 0.1)" : "rgba(14, 165, 233, 0.1)",
-                    color: t.status === "closed" ? "#10b981" : "var(--accent-blue)"
-                  }}>
+                  <span className={`badge ${t.status === "closed" ? "badge-green" : "badge-blue"}`}>
                     {t.status === "closed" ? "Resolved" : "Active"}
                   </span>
-                  <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
                     Ticket #{t.id.slice(0, 8)} • {new Date(t.created_at).toLocaleDateString()}
                   </span>
                 </div>
-                <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                <h3 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--text-primary)" }}>
                   {t.subject}
                 </h3>
-                <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+                <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
                   {t.description}
                 </p>
               </div>
@@ -207,16 +165,14 @@ export default function StudentTicketsPage() {
           justifyContent: "center",
           padding: "1.5rem"
         }}>
-          <div style={{
-            background: "var(--card-bg)",
-            border: "1px solid var(--border-color)",
-            borderRadius: "var(--radius-lg)",
+          <div className="card" style={{
             width: "100%",
             maxWidth: "520px",
-            padding: "2rem"
+            padding: "2rem",
+            boxShadow: "var(--shadow-xl)"
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)" }}>
+              <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)" }}>
                 Submit Support Ticket
               </h2>
               <button
@@ -228,8 +184,8 @@ export default function StudentTicketsPage() {
             </div>
 
             <form onSubmit={handleCreateTicket} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+              <div className="form-group">
+                <label className="form-label">
                   Ticket Subject
                 </label>
                 <input
@@ -238,46 +194,28 @@ export default function StudentTicketsPage() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   required
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--border-color)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-primary)",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
                 />
               </div>
 
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+              <div className="form-group">
+                <label className="form-label">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--border-color)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-primary)",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
                 >
-                  <option value="lab_help">Virtual Lab & Terminal Issues</option>
-                  <option value="syllabus_question">Syllabus & Lecture Content Question</option>
-                  <option value="certificate">Certificate & Credential Request</option>
-                  <option value="billing">Enrollment & Billing Support</option>
+                  <option value="lab_help">Virtual Lab &amp; Terminal Issues</option>
+                  <option value="syllabus_question">Syllabus &amp; Lecture Content Question</option>
+                  <option value="certificate">Certificate &amp; Credential Request</option>
+                  <option value="billing">Enrollment &amp; Billing Support</option>
                 </select>
               </div>
 
-              <div>
-                <label style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", display: "block", marginBottom: "0.4rem" }}>
+              <div className="form-group">
+                <label className="form-label">
                   Detailed Description
                 </label>
                 <textarea
@@ -286,16 +224,8 @@ export default function StudentTicketsPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
-                  style={{
-                    width: "100%",
-                    padding: "0.75rem",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--border-color)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-primary)",
-                    outline: "none",
-                    boxSizing: "border-box"
-                  }}
+                  className="input-field"
+                  style={{ resize: "vertical" }}
                 />
               </div>
 
@@ -303,31 +233,15 @@ export default function StudentTicketsPage() {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  style={{
-                    padding: "0.75rem 1.25rem",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--border-color)",
-                    background: "var(--bg-primary)",
-                    color: "var(--text-secondary)",
-                    fontWeight: 700,
-                    cursor: "pointer"
-                  }}
+                  className="btn btn-outline"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{
-                    flex: 1,
-                    padding: "0.75rem",
-                    borderRadius: "var(--radius-md)",
-                    border: "none",
-                    background: "var(--accent-blue)",
-                    color: "white",
-                    fontWeight: 700,
-                    cursor: submitting ? "not-allowed" : "pointer"
-                  }}
+                  className="btn btn-primary"
+                  style={{ flex: 1 }}
                 >
                   {submitting ? "Submitting..." : "Submit Ticket"}
                 </button>

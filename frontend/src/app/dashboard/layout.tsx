@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { usePathname } from "next/navigation";
-import { Menu, Shield } from "lucide-react";
+import { Menu } from "lucide-react";
 import DashboardSidebar from "./Sidebar";
 
 import Logo from "@/components/Logo";
@@ -61,7 +60,8 @@ export default function DashboardLayout({
         <Logo size={26} />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-primary)" }}
+          className="nav-mobile-btn"
+          aria-label="Open navigation menu"
         >
           <Menu size={24} />
         </button>
@@ -84,7 +84,7 @@ export default function DashboardLayout({
 
       {/* Main Content Wrapper */}
       <div className={`dashboard-content-wrapper ${collapsed ? "collapsed" : ""}`}>
-        <main style={{ flex: 1, padding: "2rem 2.5rem" }}>
+        <main className="dashboard-main-content">
           {children}
         </main>
       </div>

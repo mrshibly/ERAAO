@@ -96,74 +96,75 @@ export default function InstructorBlogPage() {
   };
 
   const filtered = blogs.filter(b =>
-    b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    b.slug.toLowerCase().includes(searchQuery.toLowerCase())
+    (b.title || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (b.slug || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div>
       <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
           <FileText size={24} style={{ color: "var(--accent-violet)" }} /> Blog Workspace
         </h1>
-        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem" }}>Author articles, news, and technical guidelines. Submission defaults to draft, awaiting admin approval.</p>
+        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "var(--text-sm)" }}>Author articles, news, and technical guidelines. Submission defaults to draft, awaiting admin approval.</p>
       </div>
 
       {message && (
         <div style={{
-          background: message.type === "success" ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-          color: message.type === "success" ? "var(--accent-emerald)" : "#ef4444",
-          padding: "0.85rem 1rem", borderRadius: "8px",
+          background: message.type === "success" ? "var(--color-success-bg)" : "var(--color-error-bg)",
+          color: message.type === "success" ? "var(--color-success)" : "var(--color-error)",
+          padding: "0.85rem 1rem", borderRadius: "var(--radius-md)",
           border: `1px solid ${message.type === "success" ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
-          marginBottom: "1.5rem", fontWeight: 600, fontSize: "0.9rem"
+          marginBottom: "1.5rem", fontWeight: 600, fontSize: "var(--text-sm)"
         }}>
           {message.text}
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "2.5rem" }} className="responsive-grid-split">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
         {/* Listing */}
-        <div>
+        <div style={{ gridColumn: "span 2" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-            <h2 style={{ fontSize: "1.15rem", fontWeight: 700 }}>My Articles ({filtered.length})</h2>
+            <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--text-primary)" }}>My Articles ({filtered.length})</h2>
             <div style={{ position: "relative" }}>
               <Search size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
               <input
                 type="text" placeholder="Search articles..."
                 value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: "0.5rem 0.5rem 0.5rem 2.25rem", border: "1px solid var(--border-color)", borderRadius: "8px", fontSize: "0.85rem", width: "220px" }}
+                className="input-field"
+                style={{ paddingLeft: "2.25rem", width: "220px" }}
               />
             </div>
           </div>
 
           {fetching ? (
-            <p style={{ color: "var(--text-muted)", padding: "3rem 0", textAlign: "center" }}>Loading articles...</p>
+            <div className="loading-container" style={{ padding: "3rem 0" }}>Loading articles...</div>
           ) : filtered.length === 0 ? (
-            <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "4rem 2rem", textAlign: "center" }}>
+            <div className="empty-state card" style={{ padding: "4rem 2rem" }}>
               <FileText size={40} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
-              <p style={{ color: "var(--text-secondary)" }}>No articles authored yet.</p>
+              <p className="empty-text">No articles authored yet.</p>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {filtered.map((post) => (
-                <div key={post.id} style={{
-                  background: "white", border: editId === post.id ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
-                  borderRadius: "12px", padding: "1.25rem"
+                <div key={post.id} className="card" style={{
+                  border: editId === post.id ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
+                  padding: "1.25rem"
                 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.4rem" }}>
-                        <span style={{ fontSize: "0.7rem", background: post.status === "published" ? "rgba(16, 185, 129, 0.1)" : "rgba(148, 163, 184, 0.1)", color: post.status === "published" ? "var(--accent-emerald)" : "var(--text-muted)", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{post.status.toUpperCase()}</span>
+                        <span className={`badge ${post.status === "published" ? "badge-green" : "badge-amber"}`}>{post.status?.toUpperCase()}</span>
                       </div>
-                      <h4 style={{ fontWeight: 700, fontSize: "1rem" }}>{post.title}</h4>
-                      <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{post.excerpt || "No summary provided."}</p>
-                      <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.4rem", fontFamily: "monospace" }}>Slug: {post.slug}</p>
+                      <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>{post.title}</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", marginTop: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{post.excerpt || "No summary provided."}</p>
+                      <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", marginTop: "0.4rem", fontFamily: "monospace" }}>Slug: {post.slug}</p>
                     </div>
                     <div style={{ display: "flex", gap: "0.25rem", flexShrink: 0, marginLeft: "1rem" }}>
-                      <button onClick={() => handleEdit(post)} style={{ color: "var(--accent-violet)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Edit">
+                      <button onClick={() => handleEdit(post)} style={{ color: "var(--accent-violet)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }} title="Edit">
                         <Edit3 size={16} />
                       </button>
-                      <button onClick={() => setDeleteTargetId(post.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer", borderRadius: "6px" }} title="Delete">
+                      <button onClick={() => setDeleteTargetId(post.id)} style={{ color: "var(--color-error)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }} title="Delete">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -175,35 +176,35 @@ export default function InstructorBlogPage() {
         </div>
 
         {/* Form */}
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "1.75rem", height: "fit-content", position: "sticky", top: "2rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "rgba(139, 92, 246, 0.05)", border: "1px solid rgba(139, 92, 246, 0.15)", borderRadius: "8px", padding: "0.75rem", marginBottom: "1.5rem", fontSize: "0.8rem", color: "var(--accent-violet)" }}>
+        <div className="card" style={{ padding: "1.75rem", height: "fit-content" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "rgba(139, 92, 246, 0.05)", border: "1px solid rgba(139, 92, 246, 0.15)", borderRadius: "var(--radius-md)", padding: "0.75rem", marginBottom: "1.5rem", fontSize: "var(--text-xs)", color: "var(--accent-violet)" }}>
             <AlertCircle size={16} />
             <span>Note: Submitted articles will be reviewed by platform administrators before going public.</span>
           </div>
 
-          <h2 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
             <Plus size={18} /> {editId ? "Edit Blog Article" : "Write Blog Article"}
           </h2>
           
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Title *</label>
-              <input type="text" required value={blogForm.title} onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Title *</label>
+              <input type="text" required value={blogForm.title} onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })} className="input-field" />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Slug *</label>
-              <input type="text" required value={blogForm.slug} placeholder="e.g. secure-agent-architectures" onChange={(e) => setBlogForm({ ...blogForm, slug: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Slug *</label>
+              <input type="text" required value={blogForm.slug} placeholder="e.g. secure-agent-architectures" onChange={(e) => setBlogForm({ ...blogForm, slug: e.target.value })} className="input-field" />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Excerpt *</label>
-              <input type="text" required value={blogForm.excerpt} onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+            <div className="form-group">
+              <label className="form-label">Excerpt *</label>
+              <input type="text" required value={blogForm.excerpt} onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })} className="input-field" />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Content (Markdown) *</label>
-              <textarea required value={blogForm.content} rows={6} onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontFamily: "monospace", fontSize: "0.9rem", resize: "vertical" }} />
+            <div className="form-group">
+              <label className="form-label">Content (Markdown) *</label>
+              <textarea required value={blogForm.content} rows={6} onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })} className="input-field" style={{ resize: "vertical" }} />
             </div>
             <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-              <button type="submit" className="btn btn-accent" style={{ flex: 1, background: "var(--accent-violet)", borderColor: "var(--accent-violet)" }}>
+              <button type="submit" className="btn btn-accent" style={{ flex: 1 }}>
                 {editId ? "Save Changes" : "Submit Draft"}
               </button>
               {editId && (

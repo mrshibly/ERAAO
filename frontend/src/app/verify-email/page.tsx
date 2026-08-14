@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ShieldCheck, AlertCircle, Loader } from "lucide-react";
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const token = searchParams?.get("token");
   
   const [verifying, setVerifying] = useState(true);
@@ -45,10 +44,10 @@ function VerifyEmailContent() {
 
   if (verifying) {
     return (
-      <div style={{ textAlign: "center", padding: "4rem 0" }}>
-        <Loader size={48} style={{ color: "var(--accent-blue)", margin: "0 auto 1.5rem auto", animation: "spin 2s linear infinite" }} />
-        <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Verifying Registration</h2>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem" }}>
+      <div className="loading-container" style={{ padding: "4rem 0" }}>
+        <Loader size={48} className="animate-spin text-accent" style={{ color: "var(--accent-blue)", margin: "0 auto 1.5rem auto" }} />
+        <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Verifying Registration</h2>
+        <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)" }}>
           We are confirming your credentials with the core security directories...
         </p>
       </div>
@@ -56,12 +55,12 @@ function VerifyEmailContent() {
   }
 
   return (
-    <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2.5rem", textAlign: "center" }}>
+    <div className="card" style={{ padding: "2.5rem", textAlign: "center" }}>
       {success ? (
         <>
-          <ShieldCheck size={56} style={{ color: "var(--accent-emerald)", margin: "0 auto 1.25rem auto" }} />
-          <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Account Verified</h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.5 }}>
+          <ShieldCheck size={56} style={{ color: "var(--color-success)", margin: "0 auto 1.25rem auto" }} />
+          <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Account Verified</h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "2rem", lineHeight: 1.5 }}>
             Thank you! Your registration email context has been successfully verified. You can now log in.
           </p>
           <Link href="/login" className="btn btn-primary" style={{ width: "100%" }}>
@@ -70,9 +69,9 @@ function VerifyEmailContent() {
         </>
       ) : (
         <>
-          <AlertCircle size={56} style={{ color: "#ef4444", margin: "0 auto 1.25rem auto" }} />
-          <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem" }}>Verification Failed</h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.5 }}>
+          <AlertCircle size={56} style={{ color: "var(--color-error)", margin: "0 auto 1.25rem auto" }} />
+          <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Verification Failed</h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "2rem", lineHeight: 1.5 }}>
             {error || "We could not verify your email address. The token may be invalid or expired."}
           </p>
           <Link href="/register" className="btn btn-primary" style={{ width: "100%" }}>

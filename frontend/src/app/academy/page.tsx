@@ -84,49 +84,28 @@ export default function AcademyPage() {
       return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80&auto=format&fit=crop";
     }
     if (t.includes("ai") || t.includes("llm") || t.includes("gpt") || t.includes("machine") || t.includes("model") || t.includes("intelligence")) {
-      return "https://images.unsplash.com/photo-1677442136019-21780efad995?w=600&q=80&auto=format&fit=crop";
+      return "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80&auto=format&fit=crop";
     }
     return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80&auto=format&fit=crop";
   };
 
   return (
-    <div style={{ padding: "4rem 0", background: "var(--bg-secondary)", minHeight: "100vh" }}>
+    <div style={{ padding: "var(--spacing-section) 0", background: "var(--bg-secondary)", minHeight: "100vh" }}>
       <div className="container">
         
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <span style={{
-            display: "inline-block",
-            background: "rgba(14, 165, 233, 0.08)",
-            color: "var(--accent-blue)",
-            padding: "0.35rem 1rem",
-            borderRadius: "4px",
-            fontSize: "0.8rem",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            marginBottom: "1rem"
-          }}>
+        <div className="section-header">
+          <span className="section-badge">
             Academy Bootcamps
           </span>
-          <h1 style={{ fontSize: "2.75rem", fontWeight: 800, letterSpacing: "-0.03em" }}>Course Catalog</h1>
-          <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", marginTop: "0.5rem", maxWidth: "38rem", margin: "0.5rem auto 0 auto" }}>
+          <h1 className="section-title">Course Catalog</h1>
+          <p className="section-subtitle">
             Explore our hands-on cybersecurity and applied AI courses. Filter by topic or level to begin your learning path.
           </p>
         </div>
 
         {/* Controls Bar: Search & Filters */}
-        <div style={{
-          background: "var(--card-bg)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-lg)",
-          padding: "1.25rem 1.5rem",
-          marginBottom: "2.5rem",
-          boxShadow: "var(--shadow-sm)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem"
-        }}>
+        <div className="controls-bar">
           <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", alignItems: "center" }}>
             
             {/* Live Search Input */}
@@ -140,16 +119,8 @@ export default function AcademyPage() {
                   setSearchQuery(e.target.value);
                   setPage(1);
                 }}
-                style={{
-                  width: "100%",
-                  padding: "0.7rem 2.5rem 0.7rem 2.75rem",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--border-color)",
-                  background: "var(--bg-primary)",
-                  color: "var(--text-primary)",
-                  fontSize: "0.9rem",
-                  outline: "none"
-                }}
+                className="input-field"
+                style={{ paddingLeft: "2.75rem", paddingRight: "2.5rem" }}
               />
               {searchQuery && (
                 <button
@@ -158,6 +129,7 @@ export default function AcademyPage() {
                     setPage(1);
                   }}
                   style={{ position: "absolute", right: "0.75rem", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                  aria-label="Clear search"
                 >
                   <X size={16} />
                 </button>
@@ -172,17 +144,8 @@ export default function AcademyPage() {
                   setSelectedCategory(e.target.value);
                   setPage(1);
                 }}
-                style={{
-                  width: "100%",
-                  padding: "0.7rem 1rem",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--border-color)",
-                  background: "var(--bg-primary)",
-                  color: "var(--text-primary)",
-                  fontSize: "0.9rem",
-                  outline: "none",
-                  cursor: "pointer"
-                }}
+                className="input-field"
+                style={{ cursor: "pointer" }}
               >
                 <option value="all">All Categories</option>
                 {categories.map((cat) => (
@@ -197,29 +160,18 @@ export default function AcademyPage() {
             {(searchQuery || selectedLevel !== "all" || selectedCategory !== "all") && (
               <button
                 onClick={handleResetFilters}
-                style={{
-                  padding: "0.65rem 1rem",
-                  background: "none",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "var(--radius-md)",
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "var(--text-secondary)",
-                  cursor: "pointer",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.4rem"
-                }}
+                className="btn btn-outline"
+                style={{ padding: "0.6rem 1rem", fontSize: "var(--text-sm)" }}
               >
-                <X size={14} /> Clear Filters
+                <X size={14} /> <span>Clear Filters</span>
               </button>
             )}
 
           </div>
 
           {/* Level Filter Pills */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", paddingTop: "0.5rem", borderTop: "1px solid var(--border-color)" }}>
-            <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginRight: "0.5rem", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+          <div className="filter-pills" style={{ paddingTop: "0.75rem", marginTop: "0.75rem", borderTop: "1px solid var(--border-color)" }}>
+            <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginRight: "0.5rem", display: "flex", alignItems: "center", gap: "0.3rem" }}>
               <Filter size={12} /> Level:
             </span>
             {["all", "beginner", "intermediate", "advanced"].map((lvl) => {
@@ -231,18 +183,7 @@ export default function AcademyPage() {
                     setSelectedLevel(lvl);
                     setPage(1);
                   }}
-                  style={{
-                    padding: "0.35rem 0.85rem",
-                    borderRadius: "20px",
-                    fontSize: "0.8rem",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    textTransform: "capitalize",
-                    transition: "all 0.2s ease",
-                    border: active ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                    background: active ? "var(--accent-blue)" : "var(--bg-primary)",
-                    color: active ? "white" : "var(--text-secondary)"
-                  }}
+                  className={`filter-pill ${active ? "active" : ""}`}
                 >
                   {lvl === "all" ? "All Levels" : lvl}
                 </button>
@@ -250,7 +191,7 @@ export default function AcademyPage() {
             })}
 
             {/* Total Results Counter */}
-            <span style={{ marginLeft: "auto", fontSize: "0.825rem", color: "var(--text-muted)", fontWeight: 600 }}>
+            <span className="results-counter" style={{ marginLeft: "auto" }}>
               Showing {courses.length > 0 ? (page - 1) * pageSize + 1 : 0}-{Math.min(page * pageSize, total)} of {total} courses
             </span>
           </div>
@@ -258,34 +199,28 @@ export default function AcademyPage() {
 
         {/* Course Cards Grid */}
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", padding: "5rem 0" }}>
+          <div className="loading-container">
             <Loader className="animate-spin text-accent" style={{ color: "var(--accent-blue)" }} size={36} />
+            <p>Loading course catalog...</p>
           </div>
         ) : courses.length === 0 ? (
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)", padding: "4rem 2rem", textAlign: "center" }}>
-            <BookOpen size={42} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
-            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.5rem" }}>No Matching Bootcamps Found</h3>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem" }}>
+          <div className="empty-state card">
+            <div className="empty-icon">
+              <BookOpen size={28} />
+            </div>
+            <h3 className="empty-title">No Matching Bootcamps Found</h3>
+            <p className="empty-text">
               Try adjusting your search query, selecting another level, or clearing active filters.
             </p>
             <button
               onClick={handleResetFilters}
-              style={{
-                background: "var(--accent-blue)",
-                color: "white",
-                padding: "0.6rem 1.25rem",
-                borderRadius: "var(--radius-md)",
-                fontWeight: 700,
-                fontSize: "0.875rem",
-                border: "none",
-                cursor: "pointer"
-              }}
+              className="btn btn-accent"
             >
               Reset All Filters
             </button>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2.5rem" }}>
+          <div className="card-grid">
             {courses.map((course) => (
               <div key={course.id} className="premium-card hover-lift" style={{ height: "100%", display: "flex", flexDirection: "column", padding: 0, overflow: "hidden" }}>
                 
@@ -304,8 +239,8 @@ export default function AcademyPage() {
                     backdropFilter: "blur(4px)",
                     border: "1px solid rgba(255, 255, 255, 0.2)",
                     padding: "0.25rem 0.75rem",
-                    borderRadius: "4px",
-                    fontSize: "0.7rem",
+                    borderRadius: "var(--radius-sm)",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 700,
                     color: "white",
                     textTransform: "capitalize"
@@ -315,22 +250,22 @@ export default function AcademyPage() {
                 </Link>
 
                 <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", flex: 1 }}>
-                  <span style={{ fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em", color: "var(--accent-blue)", marginBottom: "0.5rem" }}>
+                  <span className="badge badge-blue" style={{ alignSelf: "flex-start", marginBottom: "0.5rem" }}>
                     Practitioner Track
                   </span>
 
-                  <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)", lineHeight: 1.3 }}>
+                  <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)", lineHeight: 1.3 }}>
                     <Link href={`/academy/courses/${course.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
                       {course.title}
                     </Link>
                   </h3>
 
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.5, marginBottom: "1.5rem", flex: "1" }}>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.5, marginBottom: "1.5rem", flex: "1" }}>
                     {course.short_description}
                   </p>
 
                   <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-                    <div style={{ display: "flex", gap: "1rem", color: "var(--text-secondary)", fontSize: "0.85rem" }}>
+                    <div style={{ display: "flex", gap: "1rem", color: "var(--text-secondary)", fontSize: "var(--text-xs)" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
                         <Clock size={14} />
                         {course.duration_hours || 10} hours
@@ -340,7 +275,7 @@ export default function AcademyPage() {
                         Practice Labs
                       </span>
                     </div>
-                    <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)" }}>
+                    <span style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)" }}>
                       ৳{course.price} BDT
                     </span>
                   </div>
@@ -348,20 +283,8 @@ export default function AcademyPage() {
                   {/* Primary Button ALWAYS routes to Course Details Page */}
                   <Link
                     href={`/academy/courses/${course.slug}`}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "0.5rem",
-                      padding: "0.75rem 1.25rem",
-                      borderRadius: "var(--radius-md)",
-                      background: "var(--accent-blue)",
-                      color: "white",
-                      fontWeight: 800,
-                      fontSize: "0.9rem",
-                      textDecoration: "none",
-                      boxShadow: "0 4px 12px rgba(14, 165, 233, 0.25)"
-                    }}
+                    className="btn btn-accent"
+                    style={{ width: "100%" }}
                   >
                     <span>View Course Details</span> <ArrowRight size={16} />
                   </Link>
@@ -373,76 +296,32 @@ export default function AcademyPage() {
 
         {/* Pagination Bar */}
         {totalPages > 1 && (
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5rem",
-            marginTop: "3.5rem"
-          }}>
-            {/* Previous Page Button */}
+          <div className="pagination">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.3rem",
-                padding: "0.65rem 1rem",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid var(--border-color)",
-                background: page === 1 ? "var(--bg-primary)" : "var(--card-bg)",
-                color: page === 1 ? "var(--text-muted)" : "var(--text-primary)",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                cursor: page === 1 ? "not-allowed" : "pointer"
-              }}
+              className="pagination-btn"
             >
               <ChevronLeft size={16} /> Previous
             </button>
 
-            {/* Page Number Buttons */}
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
               const isActive = pageNum === page;
               return (
                 <button
                   key={pageNum}
                   onClick={() => setPage(pageNum)}
-                  style={{
-                    width: "38px",
-                    height: "38px",
-                    borderRadius: "var(--radius-md)",
-                    border: isActive ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                    background: isActive ? "var(--accent-blue)" : "var(--card-bg)",
-                    color: isActive ? "white" : "var(--text-primary)",
-                    fontWeight: 800,
-                    fontSize: "0.875rem",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease"
-                  }}
+                  className={`pagination-btn ${isActive ? "active" : ""}`}
                 >
                   {pageNum}
                 </button>
               );
             })}
 
-            {/* Next Page Button */}
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.3rem",
-                padding: "0.65rem 1rem",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid var(--border-color)",
-                background: page === totalPages ? "var(--bg-primary)" : "var(--card-bg)",
-                color: page === totalPages ? "var(--text-muted)" : "var(--text-primary)",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                cursor: page === totalPages ? "not-allowed" : "pointer"
-              }}
+              className="pagination-btn"
             >
               Next <ChevronRight size={16} />
             </button>

@@ -53,43 +53,50 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         width: "100%"
       }}>
         {toasts.map((toast) => {
-          let bgColor = "white";
+          let bgColor = "var(--card-bg)";
           let borderColor = "var(--border-color)";
           let textColor = "var(--text-primary)";
+          let iconColor = "var(--accent-blue)";
           let Icon = Info;
 
           if (toast.type === "success") {
-            bgColor = "#ecfdf5";
-            borderColor = "#a7f3d0";
-            textColor = "#065f46";
+            bgColor = "var(--color-success-bg)";
+            borderColor = "rgba(34, 197, 94, 0.3)";
+            textColor = "#15803d";
+            iconColor = "var(--color-success)";
             Icon = CheckCircle;
           } else if (toast.type === "error") {
-            bgColor = "#fef2f2";
-            borderColor = "#fecaca";
-            textColor = "#991b1b";
+            bgColor = "var(--color-error-bg)";
+            borderColor = "rgba(239, 68, 68, 0.3)";
+            textColor = "#b91c1c";
+            iconColor = "var(--color-error)";
             Icon = AlertCircle;
           } else if (toast.type === "warning") {
-            bgColor = "#fffbpb";
-            borderColor = "#fde68a";
-            textColor = "#92400e";
+            bgColor = "var(--color-warning-bg)";
+            borderColor = "rgba(245, 158, 11, 0.3)";
+            textColor = "#b45309";
+            iconColor = "var(--color-warning)";
             Icon = AlertCircle;
           }
 
           return (
-            <div key={toast.id} style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "0.75rem",
-              background: bgColor,
-              border: `1px solid ${borderColor}`,
-              color: textColor,
-              padding: "1rem",
-              borderRadius: "8px",
-              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.05)",
-              animation: "slideIn 0.2s ease-out"
-            }}>
-              <Icon size={18} style={{ flexShrink: 0, marginTop: "0.1rem" }} />
-              <div style={{ flex: 1, fontSize: "0.85rem", fontWeight: 500, lineHeight: 1.4 }}>
+            <div 
+              key={toast.id} 
+              className="anim-fade-up"
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "0.75rem",
+                background: bgColor,
+                border: `1px solid ${borderColor}`,
+                color: textColor,
+                padding: "1rem",
+                borderRadius: "var(--radius-md)",
+                boxShadow: "var(--shadow-md)"
+              }}
+            >
+              <Icon size={18} style={{ flexShrink: 0, marginTop: "0.1rem", color: iconColor }} />
+              <div style={{ flex: 1, fontSize: "var(--text-sm)", fontWeight: 500, lineHeight: 1.4 }}>
                 {toast.text}
               </div>
               <button 
@@ -102,10 +109,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                   opacity: 0.7,
                   display: "flex",
                   padding: "0.1rem",
-                  borderRadius: "4px"
+                  borderRadius: "var(--radius-sm)"
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = "0.7"}
+                aria-label="Dismiss toast"
               >
                 <X size={15} />
               </button>
@@ -113,12 +119,6 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           );
         })}
       </div>
-      <style>{`
-        @keyframes slideIn {
-          from { transform: translateY(1rem); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-      `}</style>
     </ToastContext.Provider>
   );
 }

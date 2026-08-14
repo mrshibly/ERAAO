@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import CustomModal from "@/components/CustomModal";
-import { BookOpen, CheckSquare, Square, ChevronRight, ArrowLeft, PlayCircle, FileText, Award, HelpCircle, Download } from "lucide-react";
+import { BookOpen, CheckSquare, Square, ArrowLeft, PlayCircle, FileText, Award, HelpCircle, Download } from "lucide-react";
 
 export default function LearnPage() {
   const params = useParams();
@@ -163,7 +163,7 @@ export default function LearnPage() {
 
   if (fetching) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+      <div className="loading-container" style={{ minHeight: "80vh" }}>
         <p>Loading course environment...</p>
       </div>
     );
@@ -171,15 +171,16 @@ export default function LearnPage() {
 
   if (error || (!fetching && !course)) {
     return (
-      <div style={{ maxWidth: "550px", margin: "5rem auto", padding: "3rem 2rem", textAlign: "center", background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)" }}>
+      <div className="empty-state card" style={{ maxWidth: "550px", margin: "5rem auto", padding: "3rem 2rem" }}>
         <BookOpen size={42} style={{ color: "var(--text-muted)", marginBottom: "1rem" }} />
-        <h2 style={{ fontSize: "1.35rem", fontWeight: 800, color: "var(--text-primary)" }}>Enrollment Not Found</h2>
-        <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem", marginBottom: "1.5rem" }}>
+        <h2 className="empty-title">Enrollment Not Found</h2>
+        <p className="empty-text">
           {error || "The requested enrollment could not be found or you do not have permission to access it."}
         </p>
         <button
           onClick={() => router.push("/dashboard/student/courses")}
-          style={{ background: "var(--accent-blue)", color: "white", padding: "0.65rem 1.35rem", borderRadius: "var(--radius-md)", fontWeight: 700, border: "none", cursor: "pointer" }}
+          className="btn btn-primary"
+          style={{ marginTop: "1rem" }}
         >
           Back to My Courses
         </button>
@@ -191,19 +192,19 @@ export default function LearnPage() {
     <div style={{ display: "flex", height: "calc(100vh - 64px)", overflow: "hidden", background: "var(--bg-secondary)" }}>
       
       {/* Left Sidebar: Modules & Lessons Navigation */}
-      <div style={{ width: "320px", borderRight: "1px solid var(--border-color)", background: "white", display: "flex", flexDirection: "column" }}>
+      <div style={{ width: "320px", borderRight: "1px solid var(--border-color)", background: "var(--card-bg)", display: "flex", flexDirection: "column" }}>
         <div style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
-          <button onClick={() => router.push("/dashboard/student/courses")} style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", fontWeight: 600, marginBottom: "0.5rem" }}>
+          <button onClick={() => router.push("/dashboard/student/courses")} style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "var(--text-xs)", fontWeight: 600, marginBottom: "0.5rem" }}>
             <ArrowLeft size={14} /> Back to Courses
           </button>
-          <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <h2 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
             {course?.title || "Course Player"}
           </h2>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.75rem" }}>
-            <div style={{ flex: 1, height: "6px", background: "#e2e8f0", borderRadius: "3px", overflow: "hidden" }}>
-              <div style={{ height: "100%", background: "var(--accent-emerald)", width: `${totalLessons ? Math.round((completedLessonIds.size / totalLessons) * 100) : 0}%`, transition: "width 0.3s ease" }} />
+            <div className="progress-bar" style={{ flex: 1 }}>
+              <div className="progress-bar-fill" style={{ background: "var(--color-success)", width: `${totalLessons ? Math.round((completedLessonIds.size / totalLessons) * 100) : 0}%` }} />
             </div>
-            <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-secondary)" }}>
+            <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--text-secondary)" }}>
               {totalLessons ? Math.round((completedLessonIds.size / totalLessons) * 100) : 0}%
             </span>
           </div>
@@ -212,7 +213,7 @@ export default function LearnPage() {
         <div style={{ flex: 1, overflowY: "auto", padding: "1rem 0" }}>
           {modules.map((mod: any, mIdx: number) => (
             <div key={mod.id || mIdx} style={{ marginBottom: "1rem" }}>
-              <div style={{ padding: "0.5rem 1.5rem", fontSize: "0.75rem", fontWeight: 800, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div style={{ padding: "0.5rem 1.5rem", fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 Module {mIdx + 1}: {mod.title}
               </div>
               <div>
@@ -230,12 +231,12 @@ export default function LearnPage() {
                         padding: "0.75rem 1.25rem",
                         width: "100%",
                         border: "none",
-                        background: isActive ? "rgba(14, 165, 233, 0.05)" : "transparent",
+                        background: isActive ? "var(--accent-blue-bg)" : "transparent",
                         borderLeft: isActive ? "3px solid var(--accent-blue)" : "3px solid transparent",
                         cursor: "pointer",
                         textAlign: "left",
                         color: isActive ? "var(--accent-blue)" : "var(--text-primary)",
-                        transition: "all 0.15s ease"
+                        transition: "var(--transition-fast)"
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", width: "85%" }}>
@@ -246,11 +247,11 @@ export default function LearnPage() {
                         ) : (
                           <FileText size={16} />
                         )}
-                        <span style={{ fontSize: "0.875rem", fontWeight: isActive ? 600 : 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <span style={{ fontSize: "var(--text-sm)", fontWeight: isActive ? 600 : 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {les.title}
                         </span>
                       </div>
-                      <span onClick={(e) => { e.stopPropagation(); handleToggleComplete(les.id); }} style={{ color: isDone ? "var(--accent-emerald)" : "var(--text-muted)" }}>
+                      <span onClick={(e) => { e.stopPropagation(); handleToggleComplete(les.id); }} style={{ color: isDone ? "var(--color-success)" : "var(--text-muted)" }}>
                         {isDone ? <CheckSquare size={16} /> : <Square size={16} />}
                       </span>
                     </button>
@@ -274,27 +275,28 @@ export default function LearnPage() {
             margin: "2rem auto 0 auto",
             maxWidth: "45rem",
             width: "calc(100% - 6rem)",
-            borderRadius: "12px",
+            borderRadius: "var(--radius-lg)",
             boxShadow: "var(--shadow-md)"
           }}>
-            <span style={{ fontSize: "0.7rem", background: "rgba(255,255,255,0.25)", color: "white", padding: "0.25rem 0.6rem", borderRadius: "20px", fontWeight: 700, textTransform: "uppercase" }}>
+            <span className="badge" style={{ background: "rgba(255,255,255,0.25)", color: "white", marginBottom: "0.5rem" }}>
               Course Completed!
             </span>
-            <h2 style={{ fontSize: "1.75rem", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations, Graduate! 🎓</h2>
-            <p style={{ opacity: 0.9, fontSize: "0.95rem", marginTop: "0.35rem" }}>
+            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations, Graduate! 🎓</h2>
+            <p style={{ opacity: 0.9, fontSize: "var(--text-sm)", marginTop: "0.35rem" }}>
               You have completed all syllabus requirements and earned your official certificate!
             </p>
             <div style={{ display: "flex", gap: "1rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
               {certificate?.verification_id && (
                 <Link
                   href={`/verify/${certificate.verification_id}`}
-                  style={{ background: "white", color: "#0f172a", padding: "0.6rem 1.25rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}
+                  className="btn btn-outline"
+                  style={{ background: "white", color: "#0f172a", fontSize: "var(--text-sm)" }}
                 >
-                  <Award size={18} style={{ color: "#0ea5e9" }} /> View & Verify Official Certificate
+                  <Award size={18} style={{ color: "var(--accent-blue)" }} /> View &amp; Verify Official Certificate
                 </Link>
               )}
               {certificate?.pdf_url && (
-                <a href={certificate.pdf_url} download target="_blank" rel="noreferrer" style={{ background: "rgba(255,255,255,0.2)", color: "white", padding: "0.6rem 1.25rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem", border: "1px solid rgba(255,255,255,0.3)" }}>
+                <a href={certificate.pdf_url} download target="_blank" rel="noreferrer" className="btn btn-outline" style={{ background: "rgba(255,255,255,0.2)", color: "white", fontSize: "var(--text-sm)" }}>
                   <Download size={18} /> Download PDF
                 </a>
               )}
@@ -305,10 +307,10 @@ export default function LearnPage() {
         {activeLesson ? (
           <div style={{ padding: "3rem", maxWidth: "45rem", margin: "0 auto", width: "100%" }}>
             <div style={{ marginBottom: "2rem" }}>
-              <span style={{ fontSize: "0.75rem", background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", padding: "0.25rem 0.5rem", borderRadius: "4px", fontWeight: 700, textTransform: "uppercase" }}>
+              <span className="badge badge-blue">
                 Active Lesson
               </span>
-              <h1 style={{ fontSize: "2rem", fontWeight: 800, marginTop: "0.5rem" }}>{activeLesson.title}</h1>
+              <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, marginTop: "0.5rem", color: "var(--text-primary)" }}>{activeLesson.title}</h1>
             </div>
 
             {/* QUIZ LESSON PLAYER */}
@@ -353,18 +355,18 @@ export default function LearnPage() {
                 };
 
                 return (
-                  <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2.5rem", boxShadow: "var(--shadow-sm)", marginBottom: "2rem" }}>
+                  <div className="card" style={{ padding: "2.5rem", boxShadow: "var(--shadow-sm)", marginBottom: "2rem" }}>
                     <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "1rem", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <h3 style={{ fontWeight: 800, fontSize: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem", margin: 0 }}>
+                      <h3 style={{ fontWeight: 800, fontSize: "var(--text-lg)", display: "flex", alignItems: "center", gap: "0.5rem", margin: 0, color: "var(--text-primary)" }}>
                         <Award style={{ color: "var(--accent-violet)" }} size={22} /> Certification Knowledge Check
                       </h3>
-                      <span style={{ fontSize: "0.8rem", background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", padding: "0.25rem 0.6rem", borderRadius: "4px", fontWeight: 700 }}>
+                      <span className="badge badge-violet">
                         Passing Grade: 70%
                       </span>
                     </div>
 
                     {parseError || quizQuestions.length === 0 ? (
-                      <div style={{ textAlign: "center", padding: "2rem 0", color: "var(--text-secondary)" }}>
+                      <div className="empty-state">
                         <HelpCircle size={40} style={{ margin: "0 auto 1rem auto", color: "var(--text-muted)", opacity: 0.5 }} />
                         <p style={{ fontWeight: 600 }}>Practice exam questions are not configured yet.</p>
                       </div>
@@ -374,7 +376,7 @@ export default function LearnPage() {
                           <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
                             {quizQuestions.map((q: any, qIdx: number) => (
                               <div key={qIdx} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                                <h4 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text-primary)" }}>
+                                <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>
                                   {qIdx + 1}. {q.question}
                                 </h4>
                                 <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
@@ -389,11 +391,12 @@ export default function LearnPage() {
                                           gap: "0.75rem",
                                           padding: "0.75rem 1rem",
                                           border: isChecked ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
-                                          background: isChecked ? "rgba(124, 58, 237, 0.02)" : "transparent",
-                                          borderRadius: "8px",
+                                          background: isChecked ? "rgba(124, 58, 237, 0.04)" : "transparent",
+                                          borderRadius: "var(--radius-md)",
                                           cursor: "pointer",
-                                          fontSize: "0.9rem",
-                                          fontWeight: isChecked ? 600 : 500
+                                          fontSize: "var(--text-sm)",
+                                          fontWeight: isChecked ? 600 : 500,
+                                          color: "var(--text-primary)"
                                         }}
                                       >
                                         <input
@@ -415,10 +418,10 @@ export default function LearnPage() {
                               <button
                                 onClick={handleSubmitQuiz}
                                 disabled={Object.keys(quizAnswers).length < quizQuestions.length}
+                                className="btn btn-accent"
                                 style={{
-                                  background: Object.keys(quizAnswers).length < quizQuestions.length ? "var(--text-muted)" : "var(--accent-violet)",
-                                  color: "white", border: "none", padding: "0.6rem 1.5rem", borderRadius: "6px",
-                                  fontWeight: 700, cursor: Object.keys(quizAnswers).length < quizQuestions.length ? "not-allowed" : "pointer"
+                                  backgroundColor: Object.keys(quizAnswers).length < quizQuestions.length ? "var(--text-muted)" : "var(--accent-violet)",
+                                  cursor: Object.keys(quizAnswers).length < quizQuestions.length ? "not-allowed" : "pointer"
                                 }}
                               >
                                 Submit Examination
@@ -429,29 +432,29 @@ export default function LearnPage() {
                           <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
                             <div style={{
                               width: "5rem", height: "5rem", borderRadius: "50%",
-                              background: quizPassed ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-                              color: quizPassed ? "var(--accent-emerald)" : "#ef4444",
+                              background: quizPassed ? "var(--color-success-bg)" : "var(--color-error-bg)",
+                              color: quizPassed ? "var(--color-success)" : "var(--color-error)",
                               display: "flex", alignItems: "center", justifyContent: "center",
                               margin: "0 auto 1.5rem auto"
                             }}>
                               <Award size={36} />
                             </div>
-                            <h3 style={{ fontSize: "1.5rem", fontWeight: 800 }}>
+                            <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>
                               {quizPassed ? "Exam Passed! 🎉" : "Exam Failed"}
                             </h3>
-                            <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem" }}>
+                            <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem", fontSize: "var(--text-sm)" }}>
                               You scored <strong>{quizScore}%</strong> on this examination.
                             </p>
 
                             {quizPassed ? (
                               <div style={{ marginTop: "1.5rem" }}>
-                                <p style={{ fontSize: "0.9rem", color: "var(--accent-emerald)", fontWeight: 600 }}>
+                                <p style={{ fontSize: "var(--text-sm)", color: "var(--color-success)", fontWeight: 600 }}>
                                   Lesson marked as completed! Continue to the next syllabus module.
                                 </p>
                               </div>
                             ) : (
                               <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
-                                <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                                <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
                                   A minimum score of <strong>70%</strong> is required to pass.
                                 </p>
                                 <button
@@ -461,11 +464,7 @@ export default function LearnPage() {
                                     setQuizPassed(false);
                                     setQuizScore(0);
                                   }}
-                                  style={{
-                                    background: "none", border: "1px solid var(--border-color)",
-                                    padding: "0.5rem 1.25rem", borderRadius: "6px",
-                                    fontWeight: 600, cursor: "pointer", color: "var(--text-primary)"
-                                  }}
+                                  className="btn btn-outline"
                                 >
                                   Retake Examination
                                 </button>
@@ -482,20 +481,20 @@ export default function LearnPage() {
               <>
                 {/* VIDEO OR MATERIAL PLAYER */}
                 {(activeLesson.content_type || activeLesson.type) === "video" ? (
-                  <div style={{ width: "100%", height: "24rem", borderRadius: "var(--radius-md)", background: "#0f172a", color: "white", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2.5rem", boxShadow: "var(--shadow-md)" }}>
+                  <div style={{ width: "100%", height: "24rem", borderRadius: "var(--radius-lg)", background: "var(--bg-dark)", color: "white", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2.5rem", boxShadow: "var(--shadow-md)" }}>
                     <PlayCircle size={64} style={{ color: "var(--accent-blue)", opacity: 0.9 }} />
-                    <span style={{ fontSize: "0.9rem", color: "#94a3b8" }}>{activeLesson.content_url || "Secure Video Lecture"}</span>
+                    <span style={{ fontSize: "var(--text-sm)", color: "var(--text-on-dark-muted)" }}>{activeLesson.content_url || "Secure Video Lecture"}</span>
                   </div>
                 ) : (
-                  <div style={{ width: "100%", height: "8rem", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-md)", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: "white", marginBottom: "2.5rem" }}>
+                  <div style={{ width: "100%", height: "8rem", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-lg)", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: "var(--card-bg)", marginBottom: "2.5rem" }}>
                     <FileText size={32} style={{ color: "var(--accent-teal)" }} />
-                    <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-secondary)" }}>Downloadable Resource & Lab Document</span>
+                    <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--text-secondary)" }}>Downloadable Resource &amp; Lab Document</span>
                   </div>
                 )}
 
-                <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2rem", boxShadow: "var(--shadow-sm)" }}>
-                  <h3 style={{ fontWeight: 700, marginBottom: "0.75rem" }}>Lesson Overview</h3>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.975rem", lineHeight: 1.6 }}>
+                <div className="card" style={{ padding: "2rem", boxShadow: "var(--shadow-sm)" }}>
+                  <h3 style={{ fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)" }}>Lesson Overview</h3>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6 }}>
                     {activeLesson.content_body || activeLesson.content || "Welcome to this syllabus lecture. Please proceed with the curriculum outline and resources."}
                   </p>
                 </div>
@@ -505,7 +504,7 @@ export default function LearnPage() {
                     onClick={() => handleToggleComplete(activeLesson.id)}
                     className="btn btn-primary"
                     style={{
-                      backgroundColor: completedLessonIds.has(activeLesson.id) ? "var(--accent-emerald)" : "var(--text-primary)",
+                      backgroundColor: completedLessonIds.has(activeLesson.id) ? "var(--color-success)" : "var(--accent-blue)",
                       display: "flex",
                       alignItems: "center",
                       gap: "0.5rem"
@@ -522,7 +521,7 @@ export default function LearnPage() {
 
           </div>
         ) : (
-          <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center", color: "var(--text-secondary)" }}>
+          <div className="empty-state" style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
             <p>Select a lesson from the menu sidebar to begin learning.</p>
           </div>
         )}

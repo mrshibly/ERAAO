@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Calendar, ArrowLeft, Loader, ShieldAlert } from "lucide-react";
@@ -34,8 +34,9 @@ export default function BlogPostDetailPage() {
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", padding: "8rem 0" }}>
+      <div className="loading-container">
         <Loader className="animate-spin text-accent" style={{ color: "var(--accent-blue)" }} size={32} />
+        <p>Loading publication...</p>
       </div>
     );
   }
@@ -44,8 +45,8 @@ export default function BlogPostDetailPage() {
     return (
       <div style={{ padding: "6rem 0", textAlign: "center" }}>
         <div className="container" style={{ maxWidth: "32rem" }}>
-          <ShieldAlert size={48} style={{ color: "#ef4444", margin: "0 auto 1.5rem auto" }} />
-          <h2 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.5rem" }}>Article Not Found</h2>
+          <ShieldAlert size={48} style={{ color: "var(--color-error)", margin: "0 auto 1.5rem auto" }} />
+          <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Article Not Found</h2>
           <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
             The requested publication does not exist or has been archived.
           </p>
@@ -59,48 +60,45 @@ export default function BlogPostDetailPage() {
   }
 
   return (
-    <div style={{ padding: "4rem 0 6rem 0" }}>
+    <div style={{ padding: "var(--spacing-section) 0" }}>
       <div className="container" style={{ maxWidth: "46rem" }}>
         
         {/* Back Link */}
-        <Link href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", fontSize: "0.95rem", fontWeight: 600, marginBottom: "3rem" }}>
+        <Link href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "3rem" }}>
           <ArrowLeft size={16} />
           <span>Back to Articles</span>
         </Link>
 
         {/* Article Header */}
         <header style={{ marginBottom: "3rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "0.75rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--text-muted)", fontSize: "var(--text-xs)", marginBottom: "0.75rem" }}>
             <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
               <Calendar size={14} />
               {new Date(post.published_at || post.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </span>
             <span>&bull;</span>
-            <span style={{ textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em", color: "var(--accent-violet)" }}>
+            <span className="badge badge-violet">
               Analysis
             </span>
           </div>
 
-          <h1 style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: "1.5rem" }}>
+          <h1 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: "1.5rem" }}>
             {post.title}
           </h1>
 
           {post.excerpt && (
-            <p style={{ fontSize: "1.15rem", color: "var(--text-secondary)", lineHeight: 1.5, borderLeft: "4px solid var(--accent-blue)", paddingLeft: "1rem", fontStyle: "italic" }}>
+            <p style={{ fontSize: "var(--text-lg)", color: "var(--text-secondary)", lineHeight: 1.5, borderLeft: "4px solid var(--accent-blue)", paddingLeft: "1rem", fontStyle: "italic" }}>
               {post.excerpt}
             </p>
           )}
         </header>
 
         {/* Content Body */}
-        <div style={{
-          background: "white",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-md)",
+        <div className="card" style={{
           padding: "3rem",
           boxShadow: "var(--shadow-sm)",
           lineHeight: 1.8,
-          fontSize: "1.05rem",
+          fontSize: "var(--text-base)",
           color: "var(--text-primary)"
         }}>
           {/* Output content paragraphs */}

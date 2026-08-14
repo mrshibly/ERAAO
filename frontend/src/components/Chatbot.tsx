@@ -2,8 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { MessageSquareCode, X, Send, Sparkles, RefreshCw, Zap, ShieldCheck, BrainCircuit, Award, Phone, Bot, CornerDownLeft } from "lucide-react";
-import Logo from "@/components/Logo";
+import { MessageSquareCode, X, Send, Sparkles, RefreshCw, ShieldCheck, Award, Phone, Bot } from "lucide-react";
 
 interface Message {
   id: string;
@@ -115,7 +114,7 @@ export default function Chatbot() {
                   href={linkUrl}
                   onClick={() => setIsOpen(false)}
                   style={{
-                    color: "#0284c7",
+                    color: "var(--accent-blue)",
                     fontWeight: 700,
                     textDecoration: "underline",
                     textUnderlineOffset: "3px"
@@ -132,7 +131,7 @@ export default function Chatbot() {
                 target="_blank"
                 rel="noreferrer"
                 style={{
-                  color: "#0284c7",
+                  color: "var(--accent-blue)",
                   fontWeight: 700,
                   textDecoration: "underline",
                   textUnderlineOffset: "3px"
@@ -167,19 +166,20 @@ export default function Chatbot() {
           width: "390px",
           maxHeight: "600px",
           height: "calc(100vh - 110px)",
-          backgroundColor: "#ffffff",
+          backgroundColor: "var(--card-bg)",
           borderRadius: "var(--radius-lg)",
-          boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(14, 165, 233, 0.15)",
+          boxShadow: "var(--shadow-xl)",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
           marginBottom: "1rem",
           animation: "fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-          transformOrigin: "bottom right"
+          transformOrigin: "bottom right",
+          border: "1px solid var(--border-color)"
         }}>
           {/* Header */}
           <div style={{
-            background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+            background: "linear-gradient(135deg, var(--bg-dark) 0%, #1e293b 100%)",
             color: "#ffffff",
             padding: "1rem 1.25rem",
             display: "flex",
@@ -192,29 +192,27 @@ export default function Chatbot() {
                 width: "38px",
                 height: "38px",
                 borderRadius: "var(--radius-md)",
-                background: "rgba(14, 165, 233, 0.15)",
+                background: "var(--accent-blue-bg)",
                 border: "1px solid rgba(56, 189, 248, 0.3)",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 0 15px rgba(14, 165, 233, 0.2)"
+                justifyContent: "center"
               }}>
-                <Sparkles size={20} style={{ color: "#38bdf8" }} />
+                <Sparkles size={20} style={{ color: "var(--accent-blue-light)" }} />
               </div>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <span style={{ fontSize: "0.95rem", fontWeight: 800, letterSpacing: "-0.01em", color: "#ffffff" }}>
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 800, letterSpacing: "-0.01em", color: "#ffffff" }}>
                     ERAAO AI Assistant
                   </span>
                   <span style={{
                     width: "7px",
                     height: "7px",
                     borderRadius: "50%",
-                    backgroundColor: "#10b981",
-                    boxShadow: "0 0 8px #10b981"
+                    backgroundColor: "var(--color-success)"
                   }} />
                 </div>
-                <div style={{ fontSize: "0.72rem", color: "#94a3b8", fontWeight: 600 }}>
+                <div style={{ fontSize: "var(--text-xs)", color: "#94a3b8", fontWeight: 600 }}>
                   Online • Fast Response
                 </div>
               </div>
@@ -235,10 +233,8 @@ export default function Chatbot() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "background 0.2s ease"
+                  transition: "var(--transition-fast)"
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.18)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)")}
               >
                 <RefreshCw size={15} />
               </button>
@@ -256,10 +252,8 @@ export default function Chatbot() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "background 0.2s ease"
+                  transition: "var(--transition-fast)"
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.18)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)")}
               >
                 <X size={17} />
               </button>
@@ -274,7 +268,7 @@ export default function Chatbot() {
             display: "flex",
             flexDirection: "column",
             gap: "1.1rem",
-            background: "linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)"
+            background: "var(--bg-secondary)"
           }}>
             {messages.map(msg => (
               <div
@@ -292,7 +286,7 @@ export default function Chatbot() {
                     width: "28px",
                     height: "28px",
                     borderRadius: "var(--radius-sm)",
-                    background: "linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%)",
+                    background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 100%)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -304,15 +298,13 @@ export default function Chatbot() {
                 )}
                 <div
                   style={{
-                    backgroundColor: msg.role === "user" ? "#0ea5e9" : "#ffffff",
-                    color: msg.role === "user" ? "#ffffff" : "#0f172a",
+                    backgroundColor: msg.role === "user" ? "var(--accent-blue)" : "var(--card-bg)",
+                    color: msg.role === "user" ? "#ffffff" : "var(--text-primary)",
                     padding: "0.75rem 1rem",
                     borderRadius: "var(--radius-md)",
-                    boxShadow: msg.role === "user" 
-                      ? "0 4px 14px rgba(14, 165, 233, 0.2)" 
-                      : "0 2px 8px rgba(15, 23, 42, 0.04)",
-                    border: msg.role === "user" ? "none" : "1px solid #e2e8f0",
-                    fontSize: "0.875rem",
+                    boxShadow: "var(--shadow-sm)",
+                    border: msg.role === "user" ? "none" : "1px solid var(--border-color)",
+                    fontSize: "var(--text-sm)",
                     lineHeight: 1.5,
                     whiteSpace: "pre-wrap",
                     wordBreak: "break-word"
@@ -335,7 +327,7 @@ export default function Chatbot() {
                   width: "28px",
                   height: "28px",
                   borderRadius: "var(--radius-sm)",
-                  background: "linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%)",
+                  background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 100%)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -344,19 +336,19 @@ export default function Chatbot() {
                   <Bot size={16} style={{ color: "#ffffff" }} />
                 </div>
                 <div style={{
-                  backgroundColor: "#ffffff",
+                  backgroundColor: "var(--card-bg)",
                   padding: "0.6rem 0.85rem",
                   borderRadius: "var(--radius-md)",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid var(--border-color)",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem"
                 }}>
-                  <span style={{ fontSize: "0.82rem", color: "#64748b", fontWeight: 600 }}>ERAAO AI is writing</span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", fontWeight: 600 }}>ERAAO AI is writing</span>
                   <span style={{ display: "inline-flex", gap: "4px" }}>
-                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0ea5e9", animation: "float 0.8s infinite alternate" }} />
-                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#7c3aed", animation: "float 0.8s infinite 0.25s alternate" }} />
-                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0d9488", animation: "float 0.8s infinite 0.5s alternate" }} />
+                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent-blue)" }} />
+                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent-violet)" }} />
+                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent-teal)" }} />
                   </span>
                 </div>
               </div>
@@ -367,8 +359,8 @@ export default function Chatbot() {
           {/* Quick Action Suggestion Pills */}
           <div style={{
             padding: "0.65rem 1rem",
-            background: "#ffffff",
-            borderTop: "1px solid #f1f5f9",
+            background: "var(--card-bg)",
+            borderTop: "1px solid var(--border-color)",
             display: "flex",
             flexWrap: "wrap",
             gap: "0.4rem 0.5rem",
@@ -382,32 +374,15 @@ export default function Chatbot() {
               <button
                 key={idx}
                 onClick={() => handleSendMessage(pill.text)}
+                className="filter-pill"
                 style={{
-                  fontSize: "0.75rem",
-                  fontWeight: 600,
-                  color: "#0f172a",
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
-                  padding: "0.35rem 0.75rem",
-                  borderRadius: "var(--radius-sm)",
-                  cursor: "pointer",
+                  fontSize: "var(--text-xs)",
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "0.35rem",
-                  transition: "all 0.2s ease"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#0ea5e9";
-                  e.currentTarget.style.color = "#0ea5e9";
-                  e.currentTarget.style.background = "rgba(14, 165, 233, 0.06)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "#e2e8f0";
-                  e.currentTarget.style.color = "#0f172a";
-                  e.currentTarget.style.background = "#f8fafc";
+                  gap: "0.35rem"
                 }}
               >
-                <pill.icon size={13} style={{ color: "#0ea5e9" }} />
+                <pill.icon size={13} style={{ color: "var(--accent-blue)" }} />
                 <span>{pill.text}</span>
               </button>
             ))}
@@ -416,8 +391,8 @@ export default function Chatbot() {
           {/* Input Box */}
           <div style={{
             padding: "0.85rem 1rem 1rem",
-            background: "#ffffff",
-            borderTop: "1px solid #e2e8f0"
+            background: "var(--card-bg)",
+            borderTop: "1px solid var(--border-color)"
           }}>
             <form
               onSubmit={(e) => {
@@ -432,33 +407,21 @@ export default function Chatbot() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 disabled={isLoading}
-                style={{
-                  flex: 1,
-                  padding: "0.65rem 0.9rem",
-                  fontSize: "0.88rem",
-                  border: "1px solid #cbd5e1",
-                  borderRadius: "var(--radius-md)",
-                  outline: "none",
-                  background: "#f8fafc",
-                  color: "#0f172a"
-                }}
+                className="input-field"
+                style={{ flex: 1 }}
               />
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isLoading}
+                className="btn btn-primary"
                 style={{
                   width: "38px",
                   height: "38px",
-                  borderRadius: "var(--radius-md)",
-                  background: inputValue.trim() ? "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)" : "#e2e8f0",
-                  color: "white",
-                  border: "none",
+                  padding: 0,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  cursor: inputValue.trim() ? "pointer" : "not-allowed",
-                  boxShadow: inputValue.trim() ? "0 4px 14px rgba(14, 165, 233, 0.25)" : "none",
-                  transition: "all 0.2s ease"
+                  borderRadius: "var(--radius-md)"
                 }}
               >
                 <Send size={16} />
@@ -468,81 +431,27 @@ export default function Chatbot() {
         </div>
       )}
 
-      {/* Floating Toggle Button with Hover Tooltip */}
-      <div style={{ position: "relative", display: "inline-block" }}>
-        {!isOpen && (
-          <div className="anim-fade-in" style={{
-            position: "absolute",
-            right: "60px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            background: "#0f172a",
-            color: "#ffffff",
-            padding: "0.4rem 0.75rem",
-            borderRadius: "var(--radius-sm)",
-            fontSize: "0.8rem",
-            fontWeight: 700,
-            whiteSpace: "nowrap",
-            boxShadow: "0 10px 25px rgba(15, 23, 42, 0.2)",
-            border: "1px solid rgba(56, 189, 248, 0.3)",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            pointerEvents: "none"
-          }}>
-            <Sparkles size={14} style={{ color: "#38bdf8" }} />
-            <span>AI Assistant</span>
-          </div>
-        )}
-
+      {/* Launcher Button */}
+      {!isOpen && (
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle AI Assistant Chat"
+          onClick={() => setIsOpen(true)}
+          className="btn btn-primary"
           style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "var(--radius-md)",
-            background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-            border: "1px solid #38bdf8",
-            color: "white",
+            height: "56px",
+            padding: "0 1.5rem",
+            borderRadius: "var(--radius-full)",
+            boxShadow: "var(--shadow-xl)",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            boxShadow: "0 8px 24px rgba(14, 165, 233, 0.3)",
-            position: "relative",
-            transition: "transform 0.2s ease, boxShadow 0.2s ease"
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 12px 28px rgba(14, 165, 233, 0.4)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 8px 24px rgba(14, 165, 233, 0.3)";
+            gap: "0.6rem",
+            fontSize: "var(--text-sm)",
+            fontWeight: 800
           }}
         >
-          {isOpen ? (
-            <X size={22} />
-          ) : (
-            <>
-              <Sparkles size={22} style={{ color: "#38bdf8" }} />
-              {/* Pulse Indicator */}
-              <span style={{
-                position: "absolute",
-                top: "2px",
-                right: "2px",
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: "#10b981",
-                border: "2px solid #0f172a",
-                boxShadow: "0 0 6px #10b981"
-              }} />
-            </>
-          )}
+          <MessageSquareCode size={22} />
+          <span>Ask ERAAO AI</span>
         </button>
-      </div>
+      )}
     </div>
   );
 }

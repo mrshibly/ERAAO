@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { Layers, Plus, Trash2, Search } from "lucide-react";
+import { Layers, Trash2, Search } from "lucide-react";
 import CustomModal from "@/components/CustomModal";
 
 export default function AdminCareersPage() {
@@ -91,70 +91,71 @@ export default function AdminCareersPage() {
   };
 
   const filtered = careers.filter(job =>
-    job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    job.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    job.location.toLowerCase().includes(searchQuery.toLowerCase())
+    (job.title || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (job.department || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (job.location || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div>
       <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
           <Layers size={24} style={{ color: "var(--accent-blue)" }} /> Careers CMS
         </h1>
-        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem" }}>Review open roles, post new positions, and view applicant details</p>
+        <p style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "var(--text-sm)" }}>Review open roles, post new positions, and view applicant details</p>
       </div>
 
       {message && (
         <div style={{
-          background: message.type === "success" ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)",
-          color: message.type === "success" ? "var(--accent-emerald)" : "#ef4444",
-          padding: "0.85rem 1rem", borderRadius: "8px",
+          background: message.type === "success" ? "var(--color-success-bg)" : "var(--color-error-bg)",
+          color: message.type === "success" ? "var(--color-success)" : "var(--color-error)",
+          padding: "0.85rem 1rem", borderRadius: "var(--radius-md)",
           border: `1px solid ${message.type === "success" ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
-          marginBottom: "1.5rem", fontWeight: 600, fontSize: "0.9rem"
+          marginBottom: "1.5rem", fontWeight: 600, fontSize: "var(--text-sm)"
         }}>
           {message.text}
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: "2.5rem" }} className="responsive-grid-split">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
         {/* Listing */}
-        <div>
+        <div style={{ gridColumn: "span 2" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-            <h2 style={{ fontSize: "1.15rem", fontWeight: 700 }}>Careers Openings ({filtered.length})</h2>
+            <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--text-primary)" }}>Careers Openings ({filtered.length})</h2>
             <div style={{ position: "relative" }}>
               <Search size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
               <input
                 type="text" placeholder="Search positions..."
                 value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: "0.5rem 0.5rem 0.5rem 2.25rem", border: "1px solid var(--border-color)", borderRadius: "8px", fontSize: "0.85rem", width: "220px" }}
+                className="input-field"
+                style={{ paddingLeft: "2.25rem", width: "220px" }}
               />
             </div>
           </div>
 
           {fetching ? (
-            <p style={{ color: "var(--text-muted)", padding: "3rem 0", textAlign: "center" }}>Loading jobs...</p>
+            <div className="loading-container" style={{ padding: "3rem 0" }}>Loading jobs...</div>
           ) : filtered.length === 0 ? (
-            <p style={{ color: "var(--text-secondary)", textAlign: "center", padding: "3rem 0" }}>No jobs listed.</p>
+            <div className="empty-state card" style={{ padding: "3rem 0" }}>No jobs listed.</div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {filtered.map((job) => (
-                <div key={job.id} style={{ background: "white", border: selectedJobId === job.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)", borderRadius: "12px", padding: "1.25rem" }}>
+                <div key={job.id} className="card" style={{ border: selectedJobId === job.id ? "2px solid var(--accent-blue)" : "1px solid var(--border-color)", padding: "1.25rem" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div>
                       <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.4rem" }}>
-                        <span style={{ fontSize: "0.7rem", background: "rgba(13, 148, 136, 0.1)", color: "var(--accent-teal)", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{job.department}</span>
-                        <span style={{ fontSize: "0.7rem", background: "var(--bg-secondary)", color: "var(--text-secondary)", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{job.type}</span>
-                        <span style={{ fontSize: "0.7rem", background: job.status === "open" ? "rgba(16, 185, 129, 0.1)" : "rgba(148, 163, 184, 0.1)", color: job.status === "open" ? "var(--accent-emerald)" : "var(--text-muted)", padding: "0.15rem 0.5rem", borderRadius: "4px", fontWeight: 600 }}>{job.status.toUpperCase()}</span>
+                        <span className="badge badge-teal">{job.department}</span>
+                        <span className="badge">{job.type}</span>
+                        <span className={`badge ${job.status === "open" ? "badge-green" : "badge-amber"}`}>{job.status.toUpperCase()}</span>
                       </div>
-                      <h4 style={{ fontWeight: 700, fontSize: "1.05rem" }}>{job.title}</h4>
-                      <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginTop: "0.15rem" }}>{job.location}</p>
+                      <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>{job.title}</h4>
+                      <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", marginTop: "0.15rem" }}>{job.location}</p>
                     </div>
                     <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0, marginLeft: "1rem" }}>
-                      <button onClick={() => handleViewApplications(job.id)} style={{ fontSize: "0.8rem", color: "var(--accent-blue)", padding: "0.35rem 0.75rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontWeight: 600, cursor: "pointer" }}>
+                      <button onClick={() => handleViewApplications(job.id)} className="btn btn-outline" style={{ fontSize: "var(--text-xs)", padding: "0.35rem 0.75rem" }}>
                         Applicants
                       </button>
-                      <button onClick={() => setDeleteTargetId(job.id)} style={{ color: "#ef4444", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }}>
+                      <button onClick={() => setDeleteTargetId(job.id)} style={{ color: "var(--color-error)", padding: "0.4rem", background: "transparent", border: "none", cursor: "pointer" }}>
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -166,24 +167,24 @@ export default function AdminCareersPage() {
         </div>
 
         {/* Create/Applicants Panel */}
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "12px", padding: "1.75rem", height: "fit-content" }}>
+        <div className="card" style={{ padding: "1.75rem", height: "fit-content" }}>
           {selectedJobId ? (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-                <h2 style={{ fontSize: "1.1rem", fontWeight: 700 }}>Applicants list</h2>
-                <button onClick={() => setSelectedJobId(null)} className="btn btn-outline" style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem" }}>
+                <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, color: "var(--text-primary)" }}>Applicants list</h2>
+                <button onClick={() => setSelectedJobId(null)} className="btn btn-outline" style={{ padding: "0.35rem 0.75rem", fontSize: "var(--text-xs)" }}>
                   Back to Form
                 </button>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {applications.length === 0 ? (
-                  <p style={{ color: "var(--text-secondary)", textAlign: "center", padding: "2rem 0", fontSize: "0.85rem" }}>No applications received yet.</p>
+                  <div className="empty-state" style={{ padding: "2rem 0", fontSize: "var(--text-xs)" }}>No applications received yet.</div>
                 ) : (
                   applications.map((app) => (
-                    <div key={app.id} style={{ border: "1px solid var(--border-color)", borderRadius: "8px", padding: "1rem" }}>
-                      <div style={{ fontWeight: 700, fontSize: "0.9rem" }}>{app.name}</div>
-                      <div style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}>{app.email}</div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.5rem", fontSize: "0.75rem" }}>
+                    <div key={app.id} className="card" style={{ padding: "1rem" }}>
+                      <div style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>{app.name}</div>
+                      <div style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)" }}>{app.email}</div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.5rem", fontSize: "var(--text-xs)" }}>
                         <span style={{ fontWeight: 600, color: "var(--accent-blue)" }}>Status: {app.status}</span>
                         {app.resume_url && (
                           <a href={app.resume_url} target="_blank" rel="noreferrer" style={{ color: "var(--accent-teal)", textDecoration: "underline", fontWeight: 600 }}>
@@ -198,39 +199,39 @@ export default function AdminCareersPage() {
             </div>
           ) : (
             <div>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "1.25rem" }}>Create Job Posting</h2>
+              <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, marginBottom: "1.25rem", color: "var(--text-primary)" }}>Create Job Posting</h2>
               <form onSubmit={handleCreateJob} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Job Title *</label>
-                  <input type="text" required value={careerForm.title} onChange={(e) => setCareerForm({ ...careerForm, title: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+                <div className="form-group">
+                  <label className="form-label">Job Title *</label>
+                  <input type="text" required value={careerForm.title} onChange={(e) => setCareerForm({ ...careerForm, title: e.target.value })} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Slug *</label>
-                  <input type="text" required value={careerForm.slug} placeholder="e.g. senior-security-consultant" onChange={(e) => setCareerForm({ ...careerForm, slug: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+                <div className="form-group">
+                  <label className="form-label">Slug *</label>
+                  <input type="text" required value={careerForm.slug} placeholder="e.g. senior-security-consultant" onChange={(e) => setCareerForm({ ...careerForm, slug: e.target.value })} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Department *</label>
-                  <input type="text" required value={careerForm.department} placeholder="e.g. Academy Operations" onChange={(e) => setCareerForm({ ...careerForm, department: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+                <div className="form-group">
+                  <label className="form-label">Department *</label>
+                  <input type="text" required value={careerForm.department} placeholder="e.g. Academy Operations" onChange={(e) => setCareerForm({ ...careerForm, department: e.target.value })} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Location *</label>
-                  <input type="text" required value={careerForm.location} placeholder="e.g. San Francisco, CA / Remote" onChange={(e) => setCareerForm({ ...careerForm, location: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontSize: "0.9rem" }} />
+                <div className="form-group">
+                  <label className="form-label">Location *</label>
+                  <input type="text" required value={careerForm.location} placeholder="e.g. Dhaka, Bangladesh / Remote" onChange={(e) => setCareerForm({ ...careerForm, location: e.target.value })} className="input-field" />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Job Type</label>
-                  <select value={careerForm.type} onChange={(e) => setCareerForm({ ...careerForm, type: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontSize: "0.9rem" }}>
+                <div className="form-group">
+                  <label className="form-label">Job Type</label>
+                  <select value={careerForm.type} onChange={(e) => setCareerForm({ ...careerForm, type: e.target.value })} className="input-field">
                     <option value="Full-Time">Full-Time</option>
                     <option value="Part-Time">Part-Time</option>
                     <option value="Contract">Contract</option>
                   </select>
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Description *</label>
-                  <textarea required value={careerForm.description} rows={4} onChange={(e) => setCareerForm({ ...careerForm, description: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", fontFamily: "inherit", fontSize: "0.9rem", resize: "vertical" }} />
+                <div className="form-group">
+                  <label className="form-label">Description *</label>
+                  <textarea required value={careerForm.description} rows={4} onChange={(e) => setCareerForm({ ...careerForm, description: e.target.value })} className="input-field" style={{ resize: "vertical" }} />
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, marginBottom: "0.3rem", color: "var(--text-secondary)" }}>Status</label>
-                  <select value={careerForm.status} onChange={(e) => setCareerForm({ ...careerForm, status: e.target.value })} style={{ width: "100%", padding: "0.55rem", border: "1px solid var(--border-color)", borderRadius: "6px", background: "white", fontSize: "0.9rem" }}>
+                <div className="form-group">
+                  <label className="form-label">Status</label>
+                  <select value={careerForm.status} onChange={(e) => setCareerForm({ ...careerForm, status: e.target.value })} className="input-field">
                     <option value="draft">Draft</option>
                     <option value="open">Open</option>
                     <option value="closed">Closed</option>

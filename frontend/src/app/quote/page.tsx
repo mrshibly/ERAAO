@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2, Building, Mail, FileText, ChevronDown } from "lucide-react";
+import { Send, CheckCircle2, Building } from "lucide-react";
 import CustomModal from "@/components/CustomModal";
 
 export default function QuotePage() {
@@ -9,7 +9,7 @@ export default function QuotePage() {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [serviceType, setServiceType] = useState("ai");
-  const [budgetRange, setBudgetRange] = useState("$5,000 - $10,000");
+  const [budgetRange, setBudgetRange] = useState("৳1,00,000 - ৳5,00,000");
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -57,16 +57,16 @@ export default function QuotePage() {
   };
 
   return (
-    <div style={{ padding: "4rem 0" }}>
+    <div style={{ padding: "var(--spacing-section) 0" }}>
       <div className="container" style={{ maxWidth: "38rem" }}>
         
-        <div style={{ background: "white", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "2.5rem", boxShadow: "var(--shadow-md)" }}>
+        <div className="card" style={{ padding: "2.5rem", boxShadow: "var(--shadow-md)" }}>
           
           {success ? (
             <div style={{ textAlign: "center", padding: "2rem 0" }}>
-              <CheckCircle2 size={64} style={{ color: "var(--accent-emerald)", margin: "0 auto 1.5rem auto" }} />
-              <h2 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.5rem" }}>Request Submitted</h2>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem", lineHeight: 1.5 }}>
+              <CheckCircle2 size={64} style={{ color: "var(--color-success)", margin: "0 auto 1.5rem auto" }} />
+              <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Request Submitted</h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "1.5rem", lineHeight: 1.5 }}>
                 Thank you, <strong>{name}</strong>. Our solution engineers will review your request details and follow up within 24 hours.
               </p>
               <button className="btn btn-outline" onClick={() => setSuccess(false)}>
@@ -76,8 +76,8 @@ export default function QuotePage() {
           ) : (
             <form onSubmit={handleSubmit}>
               <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-                <h1 style={{ fontSize: "2rem", fontWeight: 800 }}>Request a Custom Quote</h1>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
+                <h1 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>Request a Custom Quote</h1>
+                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
                   Provide project requirements to discuss development frameworks or security audits.
                 </p>
               </div>
@@ -85,40 +85,40 @@ export default function QuotePage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                 
                 {/* 1. Name & Email */}
-                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                  <div style={{ flex: "1 1 200px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Your Name</label>
-                    <input required type="text" value={name} onChange={(e) => setName(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Your Name</label>
+                    <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="input-field" />
                   </div>
-                  <div style={{ flex: "1 1 200px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Email Address</label>
-                    <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                  <div className="form-group">
+                    <label className="form-label">Email Address</label>
+                    <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" />
                   </div>
                 </div>
 
                 {/* 2. Company */}
-                <div>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Company / Organization (Optional)</label>
+                <div className="form-group">
+                  <label className="form-label">Company / Organization (Optional)</label>
                   <div style={{ position: "relative" }}>
                     <Building size={16} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
-                    <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} style={{ width: "100%", padding: "0.65rem 0.65rem 0.65rem 2.25rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none" }} />
+                    <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} className="input-field" style={{ paddingLeft: "2.25rem" }} />
                   </div>
                 </div>
 
                 {/* 3. Service Category & Budget */}
-                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                  <div style={{ flex: "1 1 200px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Service Focus</label>
-                    <select value={serviceType} onChange={(e) => setServiceType(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none", background: "white", fontFamily: "inherit" }}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Service Focus</label>
+                    <select value={serviceType} onChange={(e) => setServiceType(e.target.value)} className="input-field">
                       <option value="ai">AI Application Development</option>
                       <option value="cyber">Cybersecurity Pentesting</option>
                       <option value="dev">Custom Web / Mobile Systems</option>
                       <option value="corp">Corporate Cohort Bootcamps</option>
                     </select>
                   </div>
-                  <div style={{ flex: "1 1 200px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Est. Budget Range</label>
-                    <select value={budgetRange} onChange={(e) => setBudgetRange(e.target.value)} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none", background: "white", fontFamily: "inherit" }}>
+                  <div className="form-group">
+                    <label className="form-label">Est. Budget Range</label>
+                    <select value={budgetRange} onChange={(e) => setBudgetRange(e.target.value)} className="input-field">
                       <option value="৳1,00,000 - ৳5,00,000">৳1,00,000 - ৳5,00,000 BDT</option>
                       <option value="৳5,00,000 - ৳10,00,000">৳5,00,000 - ৳10,00,000 BDT</option>
                       <option value="৳10,00,000 - ৳25,00,000">৳10,00,000 - ৳25,00,000 BDT</option>
@@ -128,9 +128,9 @@ export default function QuotePage() {
                 </div>
 
                 {/* 4. Details */}
-                <div>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>Project Requirements / Scope</label>
-                  <textarea required placeholder="Outline key targets, deliverables, tech stack requirements..." value={details} onChange={(e) => setDetails(e.target.value)} rows={5} style={{ width: "100%", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border-color)", marginTop: "0.25rem", outline: "none", resize: "none", fontFamily: "inherit" }} />
+                <div className="form-group">
+                  <label className="form-label">Project Requirements / Scope</label>
+                  <textarea required placeholder="Outline key targets, deliverables, tech stack requirements..." value={details} onChange={(e) => setDetails(e.target.value)} rows={5} className="input-field" style={{ resize: "vertical" }} />
                 </div>
 
                 <button disabled={loading} type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "1rem" }}>

@@ -9,10 +9,10 @@ export default function NotFound() {
 
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "80vh", padding: "2rem" }}>
-      <div style={{ maxWidth: "30rem", textAlign: "center", background: "white", border: "1px solid var(--border-color)", padding: "3rem", borderRadius: "16px", boxShadow: "var(--shadow-md)" }}>
+      <div className="card" style={{ maxWidth: "30rem", textAlign: "center", padding: "3rem", boxShadow: "var(--shadow-md)" }}>
         <ShieldAlert size={56} style={{ color: "var(--accent-blue)", margin: "0 auto 1.5rem auto" }} />
-        <h1 style={{ fontSize: "2.25rem", fontWeight: 800, marginBottom: "0.5rem" }}>Page Not Found</h1>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.5, marginBottom: "2rem" }}>
+        <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Page Not Found</h1>
+        <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.5, marginBottom: "2rem" }}>
           The requested system parameter or endpoint route is invalid. The address could have changed or been deprecatorily revoked.
         </p>
 

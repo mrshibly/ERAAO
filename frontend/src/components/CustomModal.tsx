@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { AlertTriangle, CheckCircle2, Info, X, ShieldAlert, AlertCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Info, X, ShieldAlert } from "lucide-react";
 
 export interface CustomModalProps {
   isOpen: boolean;
@@ -40,25 +40,25 @@ export default function CustomModal({
     switch (type) {
       case "danger":
         return (
-          <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(239, 68, 68, 0.12)", color: "#ef4444", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "44px", height: "44px", borderRadius: "var(--radius-full)", background: "var(--color-error-bg)", color: "var(--color-error)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <AlertTriangle size={22} />
           </div>
         );
       case "confirm":
         return (
-          <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(14, 165, 233, 0.12)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "44px", height: "44px", borderRadius: "var(--radius-full)", background: "var(--accent-blue-bg)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <ShieldAlert size={22} />
           </div>
         );
       case "success":
         return (
-          <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(16, 185, 129, 0.12)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "44px", height: "44px", borderRadius: "var(--radius-full)", background: "var(--color-success-bg)", color: "var(--color-success)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <CheckCircle2 size={22} />
           </div>
         );
       default:
         return (
-          <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(139, 92, 246, 0.12)", color: "var(--accent-violet)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "44px", height: "44px", borderRadius: "var(--radius-full)", background: "rgba(139, 92, 246, 0.12)", color: "var(--accent-violet)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <Info size={22} />
           </div>
         );
@@ -87,9 +87,9 @@ export default function CustomModal({
           inset: 0,
           background: "rgba(15, 23, 42, 0.55)",
           backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          animation: "eraaoFadeIn 0.2s ease forwards"
+          WebkitBackdropFilter: "blur(8px)"
         }}
+        className="anim-fade-in"
       />
 
       {/* Modal Dialog Card */}
@@ -102,10 +102,10 @@ export default function CustomModal({
           background: "var(--card-bg)",
           border: "1px solid var(--border-color)",
           borderRadius: "var(--radius-lg)",
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-          padding: "1.75rem",
-          animation: "eraaoModalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards"
+          boxShadow: "var(--shadow-xl)",
+          padding: "1.75rem"
         }}
+        className="anim-fade-up"
       >
         <button
           onClick={onClose}
@@ -118,8 +118,9 @@ export default function CustomModal({
             color: "var(--text-muted)",
             cursor: "pointer",
             padding: "0.25rem",
-            borderRadius: "6px"
+            borderRadius: "var(--radius-sm)"
           }}
+          aria-label="Close modal"
         >
           <X size={18} />
         </button>
@@ -127,10 +128,10 @@ export default function CustomModal({
         <div style={{ display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
           {getHeaderIcon()}
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem" }}>
+            <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem" }}>
               {title}
             </h3>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: "1.5" }}>
+            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: "1.5" }}>
               {message}
             </p>
           </div>
@@ -141,16 +142,8 @@ export default function CustomModal({
           {!isAlertOnly && (
             <button
               onClick={onClose}
-              style={{
-                padding: "0.6rem 1.25rem",
-                borderRadius: "var(--radius-md)",
-                background: "var(--bg-primary)",
-                border: "1px solid var(--border-color)",
-                color: "var(--text-primary)",
-                fontWeight: 700,
-                fontSize: "0.875rem",
-                cursor: "pointer"
-              }}
+              className="btn btn-outline"
+              style={{ padding: "0.55rem 1.25rem", fontSize: "var(--text-sm)" }}
             >
               {cancelText}
             </button>
@@ -161,33 +154,19 @@ export default function CustomModal({
               if (onConfirm) onConfirm();
               onClose();
             }}
+            className={type === "danger" ? "btn" : "btn btn-accent"}
             style={{
-              padding: "0.6rem 1.25rem",
-              borderRadius: "var(--radius-md)",
-              background: type === "danger" ? "#ef4444" : "var(--accent-blue)",
-              color: "white",
-              border: "none",
-              fontWeight: 800,
-              fontSize: "0.875rem",
-              cursor: "pointer",
-              boxShadow: type === "danger" ? "0 4px 12px rgba(239, 68, 68, 0.3)" : "0 4px 12px rgba(14, 165, 233, 0.3)"
+              padding: "0.55rem 1.25rem",
+              fontSize: "var(--text-sm)",
+              fontWeight: 700,
+              backgroundColor: type === "danger" ? "var(--color-error)" : undefined,
+              color: "white"
             }}
           >
             {confirmText || (isAlertOnly ? "Got it" : "Confirm")}
           </button>
         </div>
       </div>
-
-      <style>{`
-        @keyframes eraaoFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes eraaoModalPop {
-          from { opacity: 0; transform: scale(0.92) translateY(10px); }
-          to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }

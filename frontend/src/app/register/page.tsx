@@ -115,7 +115,7 @@ export default function RegisterPage() {
       minHeight: "85vh",
       display: "flex",
       width: "100%",
-      backgroundColor: "#ffffff"
+      backgroundColor: "var(--bg-primary)"
     }} className="responsive-flex-column">
       
       {/* Left Column — Simple, Clean Form */}
@@ -126,28 +126,18 @@ export default function RegisterPage() {
         justifyContent: "center",
         alignItems: "center",
         padding: "3rem 2rem",
-        backgroundColor: "#ffffff"
+        backgroundColor: "var(--bg-primary)"
       }}>
         <div style={{ width: "100%", maxWidth: "24rem" }}>
           
           {success ? (
             <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
-              <CheckCircle2 size={56} style={{ color: "#10b981", margin: "0 auto 1.25rem auto" }} />
-              <h2 style={{ fontSize: "1.65rem", fontWeight: 800, marginBottom: "0.5rem", color: "#0f172a" }}>Account Created</h2>
-              <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "1.75rem", lineHeight: 1.6 }}>
+              <CheckCircle2 size={56} style={{ color: "var(--color-success)", margin: "0 auto 1.25rem auto" }} />
+              <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Account Created</h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "1.75rem", lineHeight: 1.6 }}>
                 We sent a verification link to <strong>{email}</strong>. Please check your inbox to activate your account.
               </p>
-              <Link href="/login" style={{
-                display: "block",
-                width: "100%",
-                padding: "0.8rem",
-                borderRadius: "10px",
-                fontWeight: 700,
-                background: "#0ea5e9",
-                color: "white",
-                textDecoration: "none",
-                textAlign: "center"
-              }}>
+              <Link href="/login" className="btn btn-accent" style={{ display: "block", width: "100%", textAlign: "center" }}>
                 Sign In Now
               </Link>
             </div>
@@ -155,15 +145,15 @@ export default function RegisterPage() {
             <>
               <div style={{ marginBottom: "2rem" }}>
                 <h1 style={{
-                  fontSize: "2rem",
+                  fontSize: "var(--text-3xl)",
                   fontWeight: 800,
-                  color: "#0f172a",
+                  color: "var(--text-primary)",
                   letterSpacing: "-0.02em",
                   marginBottom: "0.5rem"
                 }}>
                   Create Account
                 </h1>
-                <p style={{ color: "#64748b", fontSize: "0.95rem" }}>
+                <p style={{ color: "var(--text-muted)", fontSize: "var(--text-sm)" }}>
                   Join ERAAO to start learning and accessing security tools.
                 </p>
               </div>
@@ -173,12 +163,12 @@ export default function RegisterPage() {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.6rem",
-                  background: "#fef2f2",
-                  border: "1px solid #fecaca",
-                  color: "#991b1b",
+                  background: "var(--color-error-bg)",
+                  border: "1px solid rgba(239, 68, 68, 0.3)",
+                  color: "var(--color-error)",
                   padding: "0.8rem 1rem",
-                  borderRadius: "10px",
-                  fontSize: "0.875rem",
+                  borderRadius: "var(--radius-md)",
+                  fontSize: "var(--text-sm)",
                   marginBottom: "1.5rem"
                 }}>
                   <AlertCircle size={18} style={{ flexShrink: 0 }} />
@@ -195,113 +185,68 @@ export default function RegisterPage() {
                   alignItems: "center",
                   width: "100%",
                   margin: "1.25rem 0 0.5rem 0",
-                  color: "#94a3b8",
-                  fontSize: "0.75rem",
+                  color: "var(--text-muted)",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 600
                 }}>
-                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
+                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
                   <span style={{ padding: "0 0.75rem" }}>or sign up with email</span>
-                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid #e2e8f0" }} />
+                  <hr style={{ flex: 1, border: "0", borderTop: "1px solid var(--border-color)" }} />
                 </div>
               </div>
 
               {/* Form */}
               <form onSubmit={handleRegister} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                <div>
-                  <label style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    color: "#334155",
-                    display: "block",
-                    marginBottom: "0.4rem"
-                  }}>
+                <div className="form-group">
+                  <label className="form-label">
                     Full name
                   </label>
                   <div style={{ position: "relative" }}>
-                    <User size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+                    <User size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                     <input
                       required
                       type="text"
                       placeholder="Jane Doe"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      style={{
-                        width: "100%",
-                        background: "#ffffff",
-                        border: "1px solid #cbd5e1",
-                        borderRadius: "10px",
-                        padding: "0.75rem 1rem 0.75rem 2.5rem",
-                        fontSize: "0.925rem",
-                        color: "#0f172a",
-                        outline: "none",
-                        boxSizing: "border-box"
-                      }}
+                      className="input-field"
+                      style={{ paddingLeft: "2.5rem" }}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    color: "#334155",
-                    display: "block",
-                    marginBottom: "0.4rem"
-                  }}>
+                <div className="form-group">
+                  <label className="form-label">
                     Email address
                   </label>
                   <div style={{ position: "relative" }}>
-                    <Mail size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+                    <Mail size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                     <input
                       required
                       type="email"
                       placeholder="name@company.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      style={{
-                        width: "100%",
-                        background: "#ffffff",
-                        border: "1px solid #cbd5e1",
-                        borderRadius: "10px",
-                        padding: "0.75rem 1rem 0.75rem 2.5rem",
-                        fontSize: "0.925rem",
-                        color: "#0f172a",
-                        outline: "none",
-                        boxSizing: "border-box"
-                      }}
+                      className="input-field"
+                      style={{ paddingLeft: "2.5rem" }}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    color: "#334155",
-                    display: "block",
-                    marginBottom: "0.4rem"
-                  }}>
+                <div className="form-group">
+                  <label className="form-label">
                     Password
                   </label>
                   <div style={{ position: "relative" }}>
-                    <Lock size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
+                    <Lock size={18} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                     <input
                       required
                       type="password"
                       placeholder="Choose a password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      style={{
-                        width: "100%",
-                        background: "#ffffff",
-                        border: "1px solid #cbd5e1",
-                        borderRadius: "10px",
-                        padding: "0.75rem 1rem 0.75rem 2.5rem",
-                        fontSize: "0.925rem",
-                        color: "#0f172a",
-                        outline: "none",
-                        boxSizing: "border-box"
-                      }}
+                      className="input-field"
+                      style={{ paddingLeft: "2.5rem" }}
                     />
                   </div>
                 </div>
@@ -309,21 +254,13 @@ export default function RegisterPage() {
                 <button
                   disabled={loading}
                   type="submit"
+                  className="btn btn-accent"
                   style={{
-                    background: "#10b981",
-                    color: "#ffffff",
+                    width: "100%",
                     padding: "0.8rem",
-                    borderRadius: "10px",
-                    fontSize: "0.95rem",
-                    fontWeight: 700,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
-                    border: "none",
-                    cursor: loading ? "not-allowed" : "pointer",
-                    marginTop: "0.5rem",
-                    transition: "background 0.2s ease"
+                    fontSize: "var(--text-sm)",
+                    backgroundColor: "var(--color-success)",
+                    marginTop: "0.5rem"
                   }}
                 >
                   <UserPlus size={18} />
@@ -331,8 +268,8 @@ export default function RegisterPage() {
                 </button>
               </form>
 
-              <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.9rem", color: "#64748b" }}>
-                Already have an account? <Link href="/login" style={{ color: "#0ea5e9", fontWeight: 700, textDecoration: "none" }}>Sign in</Link>
+              <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+                Already have an account? <Link href="/login" style={{ color: "var(--accent-blue)", fontWeight: 700, textDecoration: "none" }}>Sign in</Link>
               </p>
             </>
           )}
@@ -355,9 +292,9 @@ export default function RegisterPage() {
           width: "100%",
           height: "100%",
           minHeight: "480px",
-          borderRadius: "24px",
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
-          boxShadow: "0 20px 40px rgba(15, 23, 42, 0.12)"
+          boxShadow: "var(--shadow-lg)"
         }}>
           <img
             src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000&auto=format&fit=crop&q=80"
@@ -373,10 +310,10 @@ export default function RegisterPage() {
             justifyContent: "flex-end",
             padding: "3rem"
           }}>
-            <h2 style={{ fontSize: "1.85rem", fontWeight: 800, color: "#ffffff", marginBottom: "0.75rem", lineHeight: 1.3 }}>
+            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-on-dark)", marginBottom: "0.75rem", lineHeight: 1.3 }}>
               Practical Hands-On Learning
             </h2>
-            <p style={{ color: "#cbd5e1", fontSize: "1rem", lineHeight: 1.6, maxWidth: "28rem" }}>
+            <p style={{ color: "var(--text-on-dark-subtle)", fontSize: "var(--text-base)", lineHeight: 1.6, maxWidth: "28rem" }}>
               Join thousands of students and security professionals mastering cybersecurity and artificial intelligence.
             </p>
           </div>
