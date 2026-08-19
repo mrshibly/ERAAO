@@ -63,3 +63,6 @@ landing-page/
 # Local Tunnel Tools
 cloudflared.exe
 
+# Documentation & Spec Plans
+docs/
+
