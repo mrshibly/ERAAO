@@ -16,7 +16,7 @@ export default function Chatbot() {
     {
       id: "init",
       role: "assistant",
-      content: "Welcome to the ERAAO AI Assistant.\n\nHow may I help you today? Ask about our Practical Training Bootcamps, Enterprise Security Audits, or Custom AI Software."
+      content: "Hello! I am your ERAAO Solutions Advisor.\n\nWhether you are looking for hands-on cybersecurity courses, custom AI software builds, or penetration testing for your business, feel free to ask me anything. How can I help you today?"
     }
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -367,9 +367,10 @@ export default function Chatbot() {
             maxWidth: "100%"
           }}>
             {[
-              { text: "Courses", icon: Award },
-              { text: "Security Audit", icon: ShieldCheck },
-              { text: "Book Consultation", icon: Phone }
+              { text: "Which course is right for me?", label: "Course Recommendations", icon: Award },
+              { text: "How does penetration testing work?", label: "Security Testing", icon: ShieldCheck },
+              { text: "Can I get a custom quote?", label: "Instant Quote", icon: MessageSquareCode },
+              { text: "Schedule a consultation call", label: "Discovery Call", icon: Phone }
             ].map((pill, idx) => (
               <button
                 key={idx}
@@ -383,7 +384,7 @@ export default function Chatbot() {
                 }}
               >
                 <pill.icon size={13} style={{ color: "var(--accent-blue)" }} />
-                <span>{pill.text}</span>
+                <span>{pill.label}</span>
               </button>
             ))}
           </div>

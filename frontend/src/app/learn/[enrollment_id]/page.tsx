@@ -281,7 +281,7 @@ export default function LearnPage() {
             <span className="badge" style={{ background: "rgba(255,255,255,0.25)", color: "white", marginBottom: "0.5rem" }}>
               Course Completed!
             </span>
-            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations, Graduate! 🎓</h2>
+            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations on Completing the Course!</h2>
             <p style={{ opacity: 0.9, fontSize: "var(--text-sm)", marginTop: "0.35rem" }}>
               You have completed all syllabus requirements and earned your official certificate!
             </p>
@@ -440,7 +440,7 @@ export default function LearnPage() {
                               <Award size={36} />
                             </div>
                             <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>
-                              {quizPassed ? "Exam Passed! 🎉" : "Exam Failed"}
+                              {quizPassed ? "Exam Passed Successfully" : "Exam Not Passed"}
                             </h3>
                             <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem", fontSize: "var(--text-sm)" }}>
                               You scored <strong>{quizScore}%</strong> on this examination.

@@ -696,10 +696,10 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
               {/* Type Switcher Tabs */}
               <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.75rem", flexWrap: "wrap" }}>
                 {[
-                  { id: "video", label: "📹 Video Lecture", icon: <Video size={14} /> },
-                  { id: "material", label: "📄 Course Material", icon: <FileText size={14} /> },
-                  { id: "assignment", label: "📝 Assignment / Task", icon: <CheckSquare size={14} /> },
-                  { id: "quiz", label: "❓ Quiz Check", icon: <HelpCircle size={14} /> }
+                  { id: "video", label: "Video Lecture", icon: <Video size={14} /> },
+                  { id: "material", label: "Course Material", icon: <FileText size={14} /> },
+                  { id: "assignment", label: "Assignment / Task", icon: <CheckSquare size={14} /> },
+                  { id: "quiz", label: "Quiz Check", icon: <HelpCircle size={14} /> }
                 ].map((t) => (
                   <button
                     key={t.id}
@@ -857,7 +857,7 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
               {lessonForm.content_type === "assignment" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                   <div style={{ background: "rgba(245, 158, 11, 0.08)", border: "1px solid rgba(245, 158, 11, 0.2)", borderRadius: "var(--radius-md)", padding: "1rem", color: "var(--text-primary)", fontSize: "0.85rem" }}>
-                    <strong>📝 Assignment Setup:</strong> Students will complete this task and submit their report or lab output link.
+                    <strong>Assignment Setup:</strong> Students will complete this task and submit their report or lab output link.
                   </div>
 
                   <div>

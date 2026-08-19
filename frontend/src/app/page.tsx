@@ -4,7 +4,7 @@ import Chatbot from "@/components/Chatbot";
 
 export default function Home() {
   return (
-    <div>
+    <div style={{ overflowX: "hidden" }}>
       {/* ═══════════════════════════════════════════════════════════════
           HERO SECTION — 60-30-10 Light Mode Ultra-Premium
           60% Light Canvas | 30% Dark Slate Structure | 10% Cyan/Violet Accent
@@ -114,9 +114,10 @@ export default function Home() {
             {/* 30% Structural Trust Bar */}
             <div className="anim-fade-up anim-delay-4" style={{
               display: "flex",
-              gap: "2.5rem",
-              marginTop: "3rem",
-              paddingTop: "2rem",
+              gap: "1.5rem",
+              flexWrap: "wrap",
+              marginTop: "2.5rem",
+              paddingTop: "1.75rem",
               borderTop: "1px solid var(--border-color)"
             }}>
               <div>

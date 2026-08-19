@@ -97,7 +97,8 @@ async def seed() -> None:
                 "short_description": "Master real-world offensive security, network exploitation, web app pentesting, and privilege escalation.",
                 "description": "Comprehensive hands-on training covering network reconnaissance, vulnerability assessment, web application security testing, Metasploit, Active Directory exploitation, and post-exploitation techniques.",
                 "level": CourseLevel.ADVANCED,
-                "price": 299.00,
+                "price": 25000.00,
+                "currency": "BDT",
                 "duration_hours": 36.0,
                 "thumbnail_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=600"
             },
@@ -107,9 +108,10 @@ async def seed() -> None:
                 "short_description": "Build autonomous AI agents, RAG pipelines, fine-tuned LLMs, and scalable machine learning microservices.",
                 "description": "Deep dive into production AI development: LangChain, LlamaIndex, vector databases (Qdrant/Pgvector), prompt security, local model deployment, and agent orchestration.",
                 "level": CourseLevel.INTERMEDIATE,
-                "price": 349.00,
+                "price": 28000.00,
+                "currency": "BDT",
                 "duration_hours": 42.0,
-                "thumbnail_url": "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&q=80&w=600"
+                "thumbnail_url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=600"
             },
             {
                 "title": "Cybersecurity Essentials & Threat Intelligence",
@@ -117,7 +119,8 @@ async def seed() -> None:
                 "short_description": "Foundational security concepts, SIEM monitoring, threat hunting, and SOC analyst workflows.",
                 "description": "Learn modern defensive security: threat intelligence frameworks (MITRE ATT&CK), log analysis, incident response, network traffic inspection, and malware analysis fundamentals.",
                 "level": CourseLevel.BEGINNER,
-                "price": 199.00,
+                "price": 18000.00,
+                "currency": "BDT",
                 "duration_hours": 24.0,
                 "thumbnail_url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600"
             }
@@ -135,6 +138,7 @@ async def seed() -> None:
                     description=cdata["description"],
                     level=cdata["level"],
                     price=cdata["price"],
+                    currency=cdata.get("currency", "BDT"),
                     duration_hours=cdata["duration_hours"],
                     status=CourseStatus.PUBLISHED,
                     thumbnail_url=cdata["thumbnail_url"],

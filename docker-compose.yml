@@ -111,5 +111,17 @@ services:
       - frontend
       - backend
 
+  # --- Free Cloudflare Public HTTPS Tunnel (~15MB) ---
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://nginx:80
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+    depends_on:
+      - nginx
+
 volumes:
   pgdata:

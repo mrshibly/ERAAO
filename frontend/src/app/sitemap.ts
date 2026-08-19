@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SERVICES_CATALOG } from "@/data/servicesData";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://eraao.com";
@@ -12,14 +13,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/about",
     "/blog",
     "/book",
+    "/quote",
     "/privacy",
     "/terms",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: route === "" ? "daily" : "weekly",
+    changeFrequency: route === "" ? ("daily" as const) : ("weekly" as const),
     priority: route === "" ? 1.0 : 0.8,
   }));
 
-  return staticRoutes;
+  // Dynamic service detail routes
+  const serviceRoutes: MetadataRoute.Sitemap = SERVICES_CATALOG.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes];
 }

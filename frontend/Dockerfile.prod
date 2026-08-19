@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-ARG CACHE_BUST=v6
+ARG CACHE_BUST=v7
 RUN echo "Cache bust: $CACHE_BUST"
 RUN npm run build
 

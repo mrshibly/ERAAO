@@ -558,11 +558,102 @@ a {
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem !important;
+  :root {
+    --spacing-section: 3.5rem;
+    --spacing-card: 1.5rem;
   }
-  .responsive-grid-3 {
+
+  .container {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 8vw, 3rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  .responsive-grid-split {
     grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  .responsive-grid-3,
+  .responsive-grid-4,
+  .responsive-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Prevent floating badges from overflowing viewport */
+  .anim-float.glass,
+  .anim-float-delayed.glass {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    margin-top: 1rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Adjust visual frames in hero on mobile */
+  .hero-visual-box {
+    min-height: auto !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .filter-pills {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 0.5rem !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing-section: 2.75rem;
+    --spacing-card: 1.25rem;
+  }
+
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .hero-title {
+    font-size: 2rem !important;
+  }
+
+  .card, .content-card {
+    padding: 1.25rem !important;
+  }
+
+  .btn {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .action-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .action-row .btn {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 
@@ -1684,4 +1775,47 @@ input:focus, select:focus, textarea:focus {
   font-weight: 500;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   MODERN MOTION & MARQUEE ANIMATIONS (Aura / Stripe Inspiration)
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes continuousMarquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
 
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: continuousMarquee 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.anim-float-gentle {
+  animation: gentleFloat 5s ease-in-out infinite;
+}
+
+.anim-float-gentle-delayed {
+  animation: gentleFloat 5s ease-in-out infinite;
+  animation-delay: -2.5s;
+}
+
+/* Smooth Accordion Item Transition */
+.accordion-content {
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease;
+}
