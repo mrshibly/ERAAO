@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     description: "Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy."
   },
   verification: {
-    google: "0KgnlJEXvcjNUrVF4Q4ni8_sfxzf0Hzxgu1ew5H1FNw"
+    google: "g0ynYG72e6ijY_9IRQvui0F4K5VFQU5PMTM_XXJeCQA"
   }
 };
 
