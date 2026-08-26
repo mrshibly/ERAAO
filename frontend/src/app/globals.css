@@ -2,7 +2,6 @@
   /* Global Typography System */
   --font-main: var(--font-plus-jakarta), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-code: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
-  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
   --font-calligraphy: var(--font-great-vibes), 'Great Vibes', 'Dancing Script', cursive;
   --font-cinzel: var(--font-cinzel), 'Cinzel', serif;
 

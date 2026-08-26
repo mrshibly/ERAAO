@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display, Great_Vibes, Cinzel } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono, Great_Vibes, Cinzel } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
 import ConditionalWrapper from "./ConditionalWrapper";
 import Navbar from "./Navbar";
@@ -21,13 +21,6 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800", "900"],
-  display: "swap",
-});
-
 const greatVibes = Great_Vibes({
   variable: "--font-great-vibes",
   subsets: ["latin"],
@@ -38,7 +31,7 @@ const greatVibes = Great_Vibes({
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800", "900"],
+  weight: ["700", "800"],
   display: "swap",
 });
 
@@ -98,7 +91,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} ${greatVibes.variable} ${cinzel.variable}`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${greatVibes.variable} ${cinzel.variable}`}>
       <body suppressHydrationWarning>
         <JsonLd />
         <AuthProvider>
