@@ -27,6 +27,7 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
+        {/* Column 1: Brand Info */}
         <div>
           <div className="logo" style={{ marginBottom: "0.75rem" }}>
             <Logo size={28} textColor="#ffffff" />
@@ -57,10 +58,12 @@ export default function Footer() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "#1877f2";
                 e.currentTarget.style.color = "#ffffff";
+                e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                 e.currentTarget.style.color = "#cbd5e1";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
               <FacebookIcon size={18} />
@@ -85,10 +88,12 @@ export default function Footer() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "#0a66c2";
                 e.currentTarget.style.color = "#ffffff";
+                e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                 e.currentTarget.style.color = "#cbd5e1";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
               <LinkedinIcon size={18} />
@@ -113,10 +118,12 @@ export default function Footer() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "#24292f";
                 e.currentTarget.style.color = "#ffffff";
+                e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                 e.currentTarget.style.color = "#cbd5e1";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
               <GithubIcon size={18} />
@@ -124,16 +131,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="footer-column">
-          <h4>Services</h4>
-          <ul>
-            <li><Link href="/services">AI Agent Architectures</Link></li>
-            <li><Link href="/services">Offensive Penetration Testing</Link></li>
-            <li><Link href="/services">Cloud Security &amp; Audits</Link></li>
-            <li><Link href="/services">Web &amp; Mobile Pentesting</Link></li>
-          </ul>
-        </div>
-
+        {/* Column 2: Academy */}
         <div className="footer-column">
           <h4>Academy</h4>
           <ul>
@@ -144,12 +142,24 @@ export default function Footer() {
           </ul>
         </div>
 
+        {/* Column 3: Services */}
+        <div className="footer-column">
+          <h4>Services</h4>
+          <ul>
+            <li><Link href="/services">AI Agent Architectures</Link></li>
+            <li><Link href="/services">Offensive Penetration Testing</Link></li>
+            <li><Link href="/services">Cloud Security &amp; Audits</Link></li>
+            <li><Link href="/services">Web &amp; Mobile Pentesting</Link></li>
+          </ul>
+        </div>
+
+        {/* Column 4: Contact & Info */}
         <div className="footer-column">
           <h4>Contact &amp; Social</h4>
           <ul>
             <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Mail size={14} style={{ color: "var(--accent-teal)" }} />
-              <span>info@eraao.com</span>
+              <a href="mailto:info@eraao.com" style={{ color: "inherit", textDecoration: "none" }}>info@eraao.com</a>
             </li>
             <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Phone size={14} style={{ color: "var(--accent-teal)" }} />
@@ -165,7 +175,7 @@ export default function Footer() {
                 href="https://www.facebook.com/eraao.academy"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "#93c5fd", textDecoration: "underline" }}
+                style={{ color: "var(--accent-cyan)" }}
               >
                 fb.com/eraao.academy
               </a>
@@ -177,6 +187,8 @@ export default function Footer() {
       <div className="container footer-bottom">
         <span>&copy; {new Date().getFullYear()} Eraao Platform. All rights reserved.</span>
         <div style={{ display: "flex", gap: "1.5rem" }}>
+          <Link href="/about">About Us</Link>
+          <Link href="/careers">Careers</Link>
           <Link href="/privacy">Privacy Policy</Link>
           <Link href="/terms">Terms of Service</Link>
         </div>
