@@ -164,9 +164,8 @@ def register_exception_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(Exception)
     async def unhandled_exception_handler(_request: Request, exc: Exception) -> JSONResponse:
-        # Log the full traceback internally; return a safe message externally
         import structlog
 
         logger = structlog.get_logger()
         logger.exception("Unhandled exception", exc_info=exc)
-        return _error_response(500, "INTERNAL_ERROR", "An internal server error occurred.")
+        return _error_response(500, "INTERNAL_ERROR", "An internal server error occurred.", details={"error_class": exc.__class__.__name__, "error_message": str(exc)})
