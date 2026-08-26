@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
 
 // Clean inline brand SVGs
 const FacebookIcon = ({ size = 18 }: { size?: number }) => (
@@ -25,175 +25,349 @@ const GithubIcon = ({ size = 18 }: { size?: number }) => (
 
 export default function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="container footer-grid">
-        {/* Column 1: Brand Info */}
-        <div>
-          <div className="logo" style={{ marginBottom: "0.75rem" }}>
-            <Logo size={28} textColor="#ffffff" />
+    <footer style={{
+      background: "linear-gradient(180deg, #090d16 0%, #030712 100%)",
+      color: "#94a3b8",
+      borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+      position: "relative",
+      overflow: "hidden",
+      paddingTop: "4rem",
+      paddingBottom: "2rem"
+    }}>
+
+      {/* Background Subtle Ambient Glow */}
+      <div style={{
+        position: "absolute",
+        top: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "600px",
+        height: "300px",
+        background: "radial-gradient(ellipse at top, rgba(14, 165, 233, 0.08) 0%, rgba(0, 0, 0, 0) 70%)",
+        pointerEvents: "none"
+      }} />
+
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+
+        {/* Top Callout Banner */}
+        <div style={{
+          background: "rgba(255, 255, 255, 0.03)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+          borderRadius: "var(--radius-xl)",
+          padding: "1.5rem 2rem",
+          marginBottom: "3.5rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1.25rem",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
+        }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+              <span className="badge" style={{ background: "rgba(14, 165, 233, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+                ⚡ Practical Mastery
+              </span>
+              <span style={{ fontSize: "var(--text-xs)", color: "#cbd5e1", fontWeight: 600 }}>
+                Next-Gen Cybersecurity &amp; AI Academy
+              </span>
+            </div>
+            <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em" }}>
+              Ready to elevate your engineering career or secure your enterprise?
+            </h3>
           </div>
-          <div className="footer-tagline">Lighting the future.</div>
-          <p className="footer-description">
-            Leading security and artificial intelligence service provider &amp; practitioner development training institute.
-          </p>
 
-          {/* Social Channels */}
-          <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.25rem" }}>
-            <a
-              href="https://www.facebook.com/eraao.academy"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="ERAAO Academy on Facebook"
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <Link
+              href="/academy"
+              className="btn btn-primary"
               style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "8px",
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                color: "#cbd5e1",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "var(--transition-fast)"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#1877f2";
-                e.currentTarget.style.color = "#ffffff";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-                e.currentTarget.style.color = "#cbd5e1";
-                e.currentTarget.style.transform = "translateY(0)";
+                fontSize: "var(--text-xs)",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "var(--radius-md)"
               }}
             >
-              <FacebookIcon size={18} />
-            </a>
-
-            <a
-              href="https://linkedin.com/company/eraao"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="ERAAO on LinkedIn"
+              <span>Explore Academy</span>
+              <ArrowRight size={14} />
+            </Link>
+            <Link
+              href="/book"
+              className="btn btn-outline"
               style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "8px",
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                color: "#cbd5e1",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "var(--transition-fast)"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#0a66c2";
-                e.currentTarget.style.color = "#ffffff";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-                e.currentTarget.style.color = "#cbd5e1";
-                e.currentTarget.style.transform = "translateY(0)";
+                fontSize: "var(--text-xs)",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "var(--radius-md)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                color: "#ffffff"
               }}
             >
-              <LinkedinIcon size={18} />
-            </a>
-
-            <a
-              href="https://github.com/mrshibly"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="ERAAO on GitHub"
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "8px",
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                color: "#cbd5e1",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "var(--transition-fast)"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#24292f";
-                e.currentTarget.style.color = "#ffffff";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-                e.currentTarget.style.color = "#cbd5e1";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              <GithubIcon size={18} />
-            </a>
+              Book Consultation
+            </Link>
           </div>
         </div>
 
-        {/* Column 2: Academy */}
-        <div className="footer-column">
-          <h4>Academy</h4>
-          <ul>
-            <li><Link href="/academy">Cybersecurity Track</Link></li>
-            <li><Link href="/academy">AI &amp; LLM Training</Link></li>
-            <li><Link href="/academy">Live Bootcamps</Link></li>
-            <li><Link href="/verify">Verify Credentials</Link></li>
-          </ul>
+        {/* Main 4-Column Footer Grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "3rem",
+          marginBottom: "3.5rem"
+        }}>
+
+          {/* Col 1: Brand & Bio */}
+          <div>
+            <div style={{ marginBottom: "1rem" }}>
+              <Logo size={30} textColor="#ffffff" />
+            </div>
+            <div style={{
+              fontSize: "var(--text-xs)",
+              fontWeight: 800,
+              color: "#38bdf8",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              marginBottom: "0.75rem"
+            }}>
+              Lighting The Future
+            </div>
+            <p style={{
+              fontSize: "var(--text-xs)",
+              color: "#94a3b8",
+              lineHeight: "1.7",
+              marginBottom: "1.5rem"
+            }}>
+              Leading cybersecurity &amp; artificial intelligence service provider and practitioner development institute headquartered in Dhaka, Bangladesh.
+            </p>
+
+            {/* Social Channels */}
+            <div style={{ display: "flex", gap: "0.65rem", alignItems: "center" }}>
+              {[
+                {
+                  href: "https://www.facebook.com/eraao.academy",
+                  label: "Facebook",
+                  icon: <FacebookIcon size={16} />,
+                  hoverBg: "#1877f2"
+                },
+                {
+                  href: "https://linkedin.com/company/eraao",
+                  label: "LinkedIn",
+                  icon: <LinkedinIcon size={16} />,
+                  hoverBg: "#0a66c2"
+                },
+                {
+                  href: "https://github.com/mrshibly",
+                  label: "GitHub",
+                  icon: <GithubIcon size={16} />,
+                  hoverBg: "#24292f"
+                }
+              ].map((s, idx) => (
+                <a
+                  key={idx}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    color: "#cbd5e1",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "all 0.25s ease"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = s.hoverBg;
+                    e.currentTarget.style.color = "#ffffff";
+                    e.currentTarget.style.transform = "translateY(-3px)";
+                    e.currentTarget.style.boxShadow = `0 4px 15px ${s.hoverBg}55`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                    e.currentTarget.style.color = "#cbd5e1";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Col 2: Academy */}
+          <div>
+            <h4 style={{
+              fontSize: "var(--text-sm)",
+              fontWeight: 800,
+              color: "#ffffff",
+              marginBottom: "1.25rem",
+              letterSpacing: "-0.01em"
+            }}>
+              Academy
+            </h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.85rem", fontSize: "var(--text-xs)" }}>
+              {[
+                { label: "Cybersecurity Track", href: "/academy" },
+                { label: "AI & LLM Engineering", href: "/academy" },
+                { label: "Hands-on Virtual Labs", href: "/academy" },
+                { label: "Live Bootcamps", href: "/academy" },
+                { label: "Verify Certificates", href: "/verify" }
+              ].map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    href={link.href}
+                    style={{
+                      color: "#94a3b8",
+                      textDecoration: "none",
+                      transition: "all 0.2s ease",
+                      display: "inline-block"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "#38bdf8";
+                      e.currentTarget.style.transform = "translateX(3px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "#94a3b8";
+                      e.currentTarget.style.transform = "translateX(0)";
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3: Services */}
+          <div>
+            <h4 style={{
+              fontSize: "var(--text-sm)",
+              fontWeight: 800,
+              color: "#ffffff",
+              marginBottom: "1.25rem",
+              letterSpacing: "-0.01em"
+            }}>
+              Services
+            </h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.85rem", fontSize: "var(--text-xs)" }}>
+              {[
+                { label: "AI Agent Architectures", href: "/services" },
+                { label: "Offensive Penetration Testing", href: "/services" },
+                { label: "Cloud Security & Audits", href: "/services" },
+                { label: "Web & Mobile Pentesting", href: "/services" },
+                { label: "Technical Consultation", href: "/book" }
+              ].map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    href={link.href}
+                    style={{
+                      color: "#94a3b8",
+                      textDecoration: "none",
+                      transition: "all 0.2s ease",
+                      display: "inline-block"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "#38bdf8";
+                      e.currentTarget.style.transform = "translateX(3px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "#94a3b8";
+                      e.currentTarget.style.transform = "translateX(0)";
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 4: Contact & Info */}
+          <div>
+            <h4 style={{
+              fontSize: "var(--text-sm)",
+              fontWeight: 800,
+              color: "#ffffff",
+              marginBottom: "1.25rem",
+              letterSpacing: "-0.01em"
+            }}>
+              Contact &amp; Location
+            </h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.85rem", fontSize: "var(--text-xs)" }}>
+              <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <Mail size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
+                <a href="mailto:info@eraao.com" style={{ color: "#cbd5e1", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"} onMouseLeave={(e) => e.currentTarget.style.color = "#cbd5e1"}>
+                  info@eraao.com
+                </a>
+              </li>
+              <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <Phone size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
+                <span style={{ color: "#cbd5e1" }}>+880 1700-000000</span>
+              </li>
+              <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <MapPin size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
+                <span style={{ color: "#cbd5e1" }}>Dhaka, Bangladesh</span>
+              </li>
+              <li style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.25rem" }}>
+                <FacebookIcon size={14} />
+                <a
+                  href="https://www.facebook.com/eraao.academy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}
+                >
+                  fb.com/eraao.academy
+                </a>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
-        {/* Column 3: Services */}
-        <div className="footer-column">
-          <h4>Services</h4>
-          <ul>
-            <li><Link href="/services">AI Agent Architectures</Link></li>
-            <li><Link href="/services">Offensive Penetration Testing</Link></li>
-            <li><Link href="/services">Cloud Security &amp; Audits</Link></li>
-            <li><Link href="/services">Web &amp; Mobile Pentesting</Link></li>
-          </ul>
+        {/* Bottom Bar — Copyright, Status & Legal */}
+        <div style={{
+          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+          paddingTop: "1.75rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
+          fontSize: "var(--text-xs)"
+        }}>
+          <div>
+            &copy; {new Date().getFullYear()} ERAAO Platform. All rights reserved.
+          </div>
+
+          {/* Operational Status Pill */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            background: "rgba(16, 185, 129, 0.1)",
+            border: "1px solid rgba(16, 185, 129, 0.25)",
+            padding: "0.25rem 0.65rem",
+            borderRadius: "var(--radius-full)",
+            color: "#34d399",
+            fontWeight: 700,
+            fontSize: "11px"
+          }}>
+            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981", display: "inline-block", boxShadow: "0 0 8px #10b981" }} />
+            <span>All Systems Operational</span>
+          </div>
+
+          <div style={{ display: "flex", gap: "1.25rem" }}>
+            <Link href="/about" style={{ color: "#94a3b8", textDecoration: "none" }}>About</Link>
+            <Link href="/careers" style={{ color: "#94a3b8", textDecoration: "none" }}>Careers</Link>
+            <Link href="/privacy" style={{ color: "#94a3b8", textDecoration: "none" }}>Privacy Policy</Link>
+            <Link href="/terms" style={{ color: "#94a3b8", textDecoration: "none" }}>Terms of Service</Link>
+          </div>
         </div>
 
-        {/* Column 4: Contact & Info */}
-        <div className="footer-column">
-          <h4>Contact &amp; Social</h4>
-          <ul>
-            <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Mail size={14} style={{ color: "var(--accent-teal)" }} />
-              <a href="mailto:info@eraao.com" style={{ color: "inherit", textDecoration: "none" }}>info@eraao.com</a>
-            </li>
-            <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Phone size={14} style={{ color: "var(--accent-teal)" }} />
-              <span>+880 1700-000000</span>
-            </li>
-            <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <MapPin size={14} style={{ color: "var(--accent-teal)" }} />
-              <span>Dhaka, Bangladesh</span>
-            </li>
-            <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <FacebookIcon size={14} />
-              <a
-                href="https://www.facebook.com/eraao.academy"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--accent-cyan)" }}
-              >
-                fb.com/eraao.academy
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="container footer-bottom">
-        <span>&copy; {new Date().getFullYear()} Eraao Platform. All rights reserved.</span>
-        <div style={{ display: "flex", gap: "1.5rem" }}>
-          <Link href="/about">About Us</Link>
-          <Link href="/careers">Careers</Link>
-          <Link href="/privacy">Privacy Policy</Link>
-          <Link href="/terms">Terms of Service</Link>
-        </div>
       </div>
     </footer>
   );
 }
-
