@@ -168,4 +168,5 @@ def register_exception_handlers(app: FastAPI) -> None:
 
         logger = structlog.get_logger()
         logger.exception("Unhandled exception", exc_info=exc)
-        return _error_response(500, "INTERNAL_ERROR", "An internal server error occurred.", details={"error_class": exc.__class__.__name__, "error_message": str(exc)})
+        err_str = f"{exc.__class__.__name__}: {str(exc)}"
+        return _error_response(500, "INTERNAL_ERROR", err_str, details={"error_msg": err_str})
