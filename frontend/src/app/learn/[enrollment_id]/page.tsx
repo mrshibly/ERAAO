@@ -189,10 +189,10 @@ export default function LearnPage() {
   }
 
   return (
-    <div style={{ display: "flex", height: "calc(100vh - 64px)", overflow: "hidden", background: "var(--bg-secondary)" }}>
+    <div className="learn-layout-container">
       
       {/* Left Sidebar: Modules & Lessons Navigation */}
-      <div style={{ width: "320px", borderRight: "1px solid var(--border-color)", background: "var(--card-bg)", display: "flex", flexDirection: "column" }}>
+      <div className="learn-sidebar">
         <div style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
           <button onClick={() => router.push("/dashboard/student/courses")} style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "var(--text-xs)", fontWeight: 600, marginBottom: "0.5rem" }}>
             <ArrowLeft size={14} /> Back to Courses
@@ -264,7 +264,7 @@ export default function LearnPage() {
       </div>
 
       {/* Right panel: Main Lesson Content Area */}
-      <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+      <div className="learn-main-content">
         
         {/* Graduation Banner when completed */}
         {totalLessons > 0 && completedLessonIds.size === totalLessons && (
@@ -274,7 +274,7 @@ export default function LearnPage() {
             padding: "2rem 2.5rem",
             margin: "2rem auto 0 auto",
             maxWidth: "45rem",
-            width: "calc(100% - 6rem)",
+            width: "calc(100% - 2rem)",
             borderRadius: "var(--radius-lg)",
             boxShadow: "var(--shadow-md)"
           }}>
@@ -305,7 +305,7 @@ export default function LearnPage() {
         )}
 
         {activeLesson ? (
-          <div style={{ padding: "3rem", maxWidth: "45rem", margin: "0 auto", width: "100%" }}>
+          <div className="learn-content-inner">
             <div style={{ marginBottom: "2rem" }}>
               <span className="badge badge-blue">
                 Active Lesson
