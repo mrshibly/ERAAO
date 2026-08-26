@@ -5,6 +5,7 @@ import ConditionalWrapper from "./ConditionalWrapper";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import JsonLd from "@/components/JsonLd";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -94,6 +95,7 @@ export default function RootLayout({
     <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${greatVibes.variable} ${cinzel.variable}`}>
       <body suppressHydrationWarning>
         <JsonLd />
+        <ServiceWorkerRegister />
         <AuthProvider>
           <ConditionalWrapper
             navbar={<Navbar />}
