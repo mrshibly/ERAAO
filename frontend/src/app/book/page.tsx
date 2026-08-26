@@ -298,7 +298,7 @@ export default function BookPage() {
                   <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                     <Calendar size={16} style={{ color: "var(--accent-blue)" }} /> 1. Select Date
                   </h4>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", width: "100%" }}>
+                  <div className="book-date-grid">
                     {dates.map((date) => {
                       const isSelected = selectedDate === date.value;
                       return (
@@ -306,20 +306,7 @@ export default function BookPage() {
                           key={date.value}
                           type="button"
                           onClick={() => { setSelectedDate(date.value); setSelectedSlot(null); setSelectedSlotId(null); }}
-                          style={{
-                            flex: "1 1 100px",
-                            padding: "0.65rem 0.75rem",
-                            borderRadius: "var(--radius-md)",
-                            border: isSelected ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                            background: isSelected ? "var(--accent-blue)" : "var(--bg-primary)",
-                            color: isSelected ? "#ffffff" : "var(--text-secondary)",
-                            cursor: "pointer",
-                            whiteSpace: "nowrap",
-                            fontWeight: isSelected ? 700 : 500,
-                            fontSize: "var(--text-xs)",
-                            textAlign: "center",
-                            transition: "all 0.2s ease"
-                          }}
+                          className={`book-date-btn ${isSelected ? "active" : ""}`}
                         >
                           {date.label}
                         </button>
@@ -333,7 +320,7 @@ export default function BookPage() {
                   <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                     <Clock size={16} style={{ color: "var(--accent-blue)" }} /> 2. Select Time Slot
                   </h4>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(105px, 1fr))", gap: "0.65rem", width: "100%" }}>
+                  <div className="book-slot-grid">
                     {displaySlots.length === 0 ? (
                       <p style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", gridColumn: "1 / -1", padding: "0.5rem 0" }}>No available slots on this date.</p>
                     ) : displaySlots.map((slot) => {
@@ -343,18 +330,7 @@ export default function BookPage() {
                           key={slot.label}
                           type="button"
                           onClick={() => { setSelectedSlot(slot.label); setSelectedSlotId(slot.id); }}
-                          style={{
-                            padding: "0.65rem 0.6rem",
-                            borderRadius: "var(--radius-md)",
-                            border: isSelected ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
-                            background: isSelected ? "var(--accent-blue-bg)" : "var(--bg-primary)",
-                            color: isSelected ? "var(--accent-blue)" : "var(--text-secondary)",
-                            cursor: "pointer",
-                            fontWeight: isSelected ? 700 : 500,
-                            fontSize: "var(--text-xs)",
-                            transition: "all 0.2s ease",
-                            textAlign: "center"
-                          }}
+                          className={`book-slot-btn ${isSelected ? "active" : ""}`}
                         >
                           {slot.label}
                         </button>
