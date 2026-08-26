@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import { Mail, Phone, MapPin, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 // Clean inline brand SVGs
 const FacebookIcon = ({ size = 18 }: { size?: number }) => (
@@ -17,12 +17,6 @@ const LinkedinIcon = ({ size = 18 }: { size?: number }) => (
   </svg>
 );
 
-const GithubIcon = ({ size = 18 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-  </svg>
-);
-
 export default function Footer() {
   return (
     <footer style={{
@@ -31,7 +25,7 @@ export default function Footer() {
       borderTop: "1px solid rgba(255, 255, 255, 0.08)",
       position: "relative",
       overflow: "hidden",
-      paddingTop: "4rem",
+      paddingTop: "3.5rem",
       paddingBottom: "2rem"
     }}>
 
@@ -49,69 +43,12 @@ export default function Footer() {
 
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
 
-        {/* Top Callout Banner */}
-        <div style={{
-          background: "rgba(255, 255, 255, 0.03)",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
-          borderRadius: "var(--radius-xl)",
-          padding: "1.5rem 2rem",
-          marginBottom: "3.5rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "1.25rem",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
-        }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
-              <span className="badge" style={{ background: "rgba(14, 165, 233, 0.15)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
-                ⚡ Practical Mastery
-              </span>
-              <span style={{ fontSize: "var(--text-xs)", color: "#cbd5e1", fontWeight: 600 }}>
-                Next-Gen Cybersecurity &amp; AI Academy
-              </span>
-            </div>
-            <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em" }}>
-              Ready to elevate your engineering career or secure your enterprise?
-            </h3>
-          </div>
-
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-            <Link
-              href="/academy"
-              className="btn btn-primary"
-              style={{
-                fontSize: "var(--text-xs)",
-                padding: "0.6rem 1.25rem",
-                borderRadius: "var(--radius-md)"
-              }}
-            >
-              <span>Explore Academy</span>
-              <ArrowRight size={14} />
-            </Link>
-            <Link
-              href="/book"
-              className="btn btn-outline"
-              style={{
-                fontSize: "var(--text-xs)",
-                padding: "0.6rem 1.25rem",
-                borderRadius: "var(--radius-md)",
-                borderColor: "rgba(255, 255, 255, 0.2)",
-                color: "#ffffff"
-              }}
-            >
-              Book Consultation
-            </Link>
-          </div>
-        </div>
-
         {/* Main 4-Column Footer Grid */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
           gap: "3rem",
-          marginBottom: "3.5rem"
+          marginBottom: "3rem"
         }}>
 
           {/* Col 1: Brand & Bio */}
@@ -138,7 +75,7 @@ export default function Footer() {
               Leading cybersecurity &amp; artificial intelligence service provider and practitioner development institute headquartered in Dhaka, Bangladesh.
             </p>
 
-            {/* Social Channels */}
+            {/* Social Channels (Facebook & LinkedIn) */}
             <div style={{ display: "flex", gap: "0.65rem", alignItems: "center" }}>
               {[
                 {
@@ -152,12 +89,6 @@ export default function Footer() {
                   label: "LinkedIn",
                   icon: <LinkedinIcon size={16} />,
                   hoverBg: "#0a66c2"
-                },
-                {
-                  href: "https://github.com/mrshibly",
-                  label: "GitHub",
-                  icon: <GithubIcon size={16} />,
-                  hoverBg: "#24292f"
                 }
               ].map((s, idx) => (
                 <a
@@ -305,29 +236,20 @@ export default function Footer() {
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <Phone size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
-                <span style={{ color: "#cbd5e1" }}>+880 1700-000000</span>
+                <a href="tel:+8801517825859" style={{ color: "#cbd5e1", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"} onMouseLeave={(e) => e.currentTarget.style.color = "#cbd5e1"}>
+                  +880 1517-825859
+                </a>
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <MapPin size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
                 <span style={{ color: "#cbd5e1" }}>Dhaka, Bangladesh</span>
-              </li>
-              <li style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.25rem" }}>
-                <FacebookIcon size={14} />
-                <a
-                  href="https://www.facebook.com/eraao.academy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}
-                >
-                  fb.com/eraao.academy
-                </a>
               </li>
             </ul>
           </div>
 
         </div>
 
-        {/* Bottom Bar — Copyright, Status & Legal */}
+        {/* Bottom Bar — Copyright & Legal Links */}
         <div style={{
           borderTop: "1px solid rgba(255, 255, 255, 0.08)",
           paddingTop: "1.75rem",
@@ -340,23 +262,6 @@ export default function Footer() {
         }}>
           <div>
             &copy; {new Date().getFullYear()} ERAAO Platform. All rights reserved.
-          </div>
-
-          {/* Operational Status Pill */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            background: "rgba(16, 185, 129, 0.1)",
-            border: "1px solid rgba(16, 185, 129, 0.25)",
-            padding: "0.25rem 0.65rem",
-            borderRadius: "var(--radius-full)",
-            color: "#34d399",
-            fontWeight: 700,
-            fontSize: "11px"
-          }}>
-            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981", display: "inline-block", boxShadow: "0 0 8px #10b981" }} />
-            <span>All Systems Operational</span>
           </div>
 
           <div style={{ display: "flex", gap: "1.25rem" }}>
