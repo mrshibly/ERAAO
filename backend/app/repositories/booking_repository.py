@@ -24,7 +24,7 @@ class BookingRepository:
         """
         stmt = (
             select(TimeSlot)
-            .where(TimeSlot.id == slot_id, TimeSlot.is_available == True)  # noqa: E712
+            .where(TimeSlot.id == slot_id)
         )
         is_sqlite = False
         try:
