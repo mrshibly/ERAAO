@@ -21,7 +21,14 @@ export default function Navbar() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const handleEscapeKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDropdownOpen(false);
+    };
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
   }, [dropdownOpen]);
 
   const getDashboardLink = () => {
@@ -53,6 +60,8 @@ export default function Navbar() {
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="mobile-toggle nav-mobile-btn"
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -79,6 +88,8 @@ export default function Navbar() {
                 <button 
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="nav-avatar-btn"
+                  aria-label="User menu"
+                  aria-expanded={dropdownOpen}
                 >
                   {getInitials()}
                 </button>

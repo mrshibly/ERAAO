@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: eraao
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-eraao_secure_pw_change_me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
       POSTGRES_DB: eraao
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -54,9 +54,9 @@ services:
       dockerfile: Dockerfile.prod
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+asyncpg://eraao:${POSTGRES_PASSWORD:-eraao_secure_pw_change_me}@postgres:5432/eraao
+      DATABASE_URL: postgresql+asyncpg://eraao:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/eraao
       REDIS_URL: redis://redis:6379/0
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-a3f8c9d2e1b4a7f0c3d6e9f2b5a8c1d4e7f0a3b6c9d2e5f8a1b4c7d0e3f6a9b2}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
       OPENROUTER_MODEL: ${OPENROUTER_MODEL:-meta-llama/llama-3.3-70b-instruct:free}
       ALLOWED_ORIGINS: https://eraao.com,https://www.eraao.com
@@ -66,6 +66,11 @@ services:
       resources:
         limits:
           memory: 256M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 15s
+      retries: 3
+      start_period: 15s
     depends_on:
       postgres:
         condition: service_healthy

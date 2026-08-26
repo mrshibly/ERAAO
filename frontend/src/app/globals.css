@@ -207,14 +207,7 @@ a {
   border-radius: var(--radius-md);
 }
 
-.hover-lift {
-  transition: var(--transition-all);
-}
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(14, 165, 233, 0.3);
-}
+/* hover-lift: defined in ANIMATIONS section below */
 
 .text-gradient {
   background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-teal) 100%);
@@ -531,11 +524,8 @@ a {
   100% { background-position: 200% center; }
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-}
+/* @keyframes float: defined in ANIMATIONS section below */
+
 
 @media (max-width: 900px) {
   .mobile-toggle {
@@ -603,6 +593,48 @@ a {
   flex-wrap: wrap;
   gap: 1rem;
   font-size: var(--text-xs);
+}
+
+/* Footer link hover — CSS-based, works on touch + desktop */
+.footer-link {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: #38bdf8;
+  transform: translateX(3px);
+}
+
+/* Footer social icon hover — CSS-based */
+.footer-social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+.footer-social-icon:hover,
+.footer-social-icon:focus-visible {
+  color: #ffffff;
+  transform: translateY(-3px);
+}
+.footer-social-icon.facebook:hover,
+.footer-social-icon.facebook:focus-visible {
+  background-color: #1877f2;
+  box-shadow: 0 4px 15px rgba(24, 119, 242, 0.35);
+}
+.footer-social-icon.linkedin:hover,
+.footer-social-icon.linkedin:focus-visible {
+  background-color: #0a66c2;
+  box-shadow: 0 4px 15px rgba(10, 102, 194, 0.35);
 }
 
 @media (max-width: 768px) {
@@ -1725,34 +1757,7 @@ input:focus, select:focus, textarea:focus {
   max-width: 24rem;
 }
 
-/* Footer */
-.site-footer {
-  background-color: var(--bg-dark);
-  color: var(--text-on-dark);
-  padding: var(--spacing-section) 0 2rem 0;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 3rem;
-}
-
-.footer-column h4 {
-  color: var(--text-on-dark);
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 1.25rem;
-}
-
-.footer-column ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  font-size: var(--text-sm);
-  color: var(--text-on-dark-subtle);
-}
+/* Footer styles defined in base section above */
 
 /* Filter Pill Buttons */
 .filter-pills {

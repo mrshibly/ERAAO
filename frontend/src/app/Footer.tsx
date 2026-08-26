@@ -72,54 +72,24 @@ export default function Footer() {
 
             {/* Social Channels (Facebook & LinkedIn) */}
             <div style={{ display: "flex", gap: "0.65rem", alignItems: "center" }}>
-              {[
-                {
-                  href: "https://www.facebook.com/eraao.academy",
-                  label: "Facebook",
-                  icon: <FacebookIcon size={16} />,
-                  hoverBg: "#1877f2"
-                },
-                {
-                  href: "https://linkedin.com/company/eraao",
-                  label: "LinkedIn",
-                  icon: <LinkedinIcon size={16} />,
-                  hoverBg: "#0a66c2"
-                }
-              ].map((s, idx) => (
-                <a
-                  key={idx}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "50%",
-                    background: "rgba(255, 255, 255, 0.05)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    color: "#cbd5e1",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    transition: "all 0.25s ease"
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = s.hoverBg;
-                    e.currentTarget.style.color = "#ffffff";
-                    e.currentTarget.style.transform = "translateY(-3px)";
-                    e.currentTarget.style.boxShadow = `0 4px 15px ${s.hoverBg}55`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-                    e.currentTarget.style.color = "#cbd5e1";
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  {s.icon}
-                </a>
-              ))}
+              <a
+                href="https://www.facebook.com/eraao.academy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="footer-social-icon facebook"
+              >
+                <FacebookIcon size={16} />
+              </a>
+              <a
+                href="https://linkedin.com/company/eraao"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="footer-social-icon linkedin"
+              >
+                <LinkedinIcon size={16} />
+              </a>
             </div>
           </div>
 
@@ -143,23 +113,7 @@ export default function Footer() {
                 { label: "Verify Certificates", href: "/verify" }
               ].map((link, idx) => (
                 <li key={idx}>
-                  <Link
-                    href={link.href}
-                    style={{
-                      color: "#94a3b8",
-                      textDecoration: "none",
-                      transition: "all 0.2s ease",
-                      display: "inline-block"
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#38bdf8";
-                      e.currentTarget.style.transform = "translateX(3px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "#94a3b8";
-                      e.currentTarget.style.transform = "translateX(0)";
-                    }}
-                  >
+                  <Link href={link.href} className="footer-link">
                     {link.label}
                   </Link>
                 </li>
@@ -187,23 +141,7 @@ export default function Footer() {
                 { label: "Technical Consultation", href: "/book" }
               ].map((link, idx) => (
                 <li key={idx}>
-                  <Link
-                    href={link.href}
-                    style={{
-                      color: "#94a3b8",
-                      textDecoration: "none",
-                      transition: "all 0.2s ease",
-                      display: "inline-block"
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#38bdf8";
-                      e.currentTarget.style.transform = "translateX(3px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "#94a3b8";
-                      e.currentTarget.style.transform = "translateX(0)";
-                    }}
-                  >
+                  <Link href={link.href} className="footer-link">
                     {link.label}
                   </Link>
                 </li>
@@ -225,13 +163,13 @@ export default function Footer() {
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.85rem", fontSize: "var(--text-xs)" }}>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <Mail size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
-                <a href="mailto:info@eraao.com" style={{ color: "#cbd5e1", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"} onMouseLeave={(e) => e.currentTarget.style.color = "#cbd5e1"}>
+                <a href="mailto:info@eraao.com" className="footer-link" style={{ color: "#cbd5e1" }}>
                   info@eraao.com
                 </a>
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <Phone size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
-                <a href="tel:+8801517835859" style={{ color: "#cbd5e1", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"} onMouseLeave={(e) => e.currentTarget.style.color = "#cbd5e1"}>
+                <a href="tel:+8801517835859" className="footer-link" style={{ color: "#cbd5e1" }}>
                   +880 1517-835859
                 </a>
               </li>
@@ -251,10 +189,10 @@ export default function Footer() {
           </div>
 
           <div style={{ display: "flex", gap: "1.25rem" }}>
-            <Link href="/about" style={{ color: "#94a3b8", textDecoration: "none" }}>About</Link>
-            <Link href="/careers" style={{ color: "#94a3b8", textDecoration: "none" }}>Careers</Link>
-            <Link href="/privacy" style={{ color: "#94a3b8", textDecoration: "none" }}>Privacy Policy</Link>
-            <Link href="/terms" style={{ color: "#94a3b8", textDecoration: "none" }}>Terms of Service</Link>
+            <Link href="/about" className="footer-link">About</Link>
+            <Link href="/careers" className="footer-link">Careers</Link>
+            <Link href="/privacy" className="footer-link">Privacy Policy</Link>
+            <Link href="/terms" className="footer-link">Terms of Service</Link>
           </div>
         </div>
 
