@@ -34,6 +34,16 @@ class Settings(BaseSettings):
     DB_POOL_RECYCLE: int = 3600
     DB_POOL_TIMEOUT: int = 30
 
+    @property
+    def async_database_url(self) -> str:
+        """Ensure PostgreSQL connection strings use the asyncpg driver."""
+        url = self.DATABASE_URL
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql+asyncpg://", 1)
+        elif url.startswith("postgresql://") and not url.startswith("postgresql+asyncpg://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
+
     # ---- Redis ----
     REDIS_URL: str = "redis://localhost:6379/0"
     REDIS_CACHE_DEFAULT_TTL: int = 300  # seconds
