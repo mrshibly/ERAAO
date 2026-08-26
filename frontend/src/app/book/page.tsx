@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Clock, Video, CheckCircle2, AlertCircle } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { Calendar, Clock, Video, CheckCircle2, AlertCircle, ShieldCheck, Mail, Phone, ArrowRight, UserCheck } from "lucide-react";
 
 interface SlotData {
   id: string;
@@ -32,11 +33,12 @@ function getNextWeekdays(count: number): { label: string; value: string }[] {
 
 const SERVICE_TYPES = [
   "Security Consultation",
-  "AI & LLM Development",
-  "Penetration Testing",
-  "Corporate Training",
-  "Cloud Security Audit",
-  "Other"
+  "AI & LLM Architecture",
+  "Offensive Penetration Testing",
+  "Corporate Ethical Hacking Training",
+  "Cloud Infrastructure Audit",
+  "Web & Mobile Security Audit",
+  "Custom Enterprise Request"
 ];
 
 const FALLBACK_SLOTS = [
@@ -49,6 +51,7 @@ const FALLBACK_SLOTS = [
 ];
 
 export default function BookPage() {
+  const { user } = useAuth();
   const dates = getNextWeekdays(5);
   const [selectedDate, setSelectedDate] = useState(dates[0]?.value || "");
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
@@ -65,6 +68,14 @@ export default function BookPage() {
   // API slots state
   const [apiSlots, setApiSlots] = useState<SlotData[]>([]);
   const [slotsLoaded, setSlotsLoaded] = useState(false);
+
+  // Auto-fill form details if student/client is logged in
+  useEffect(() => {
+    if (user) {
+      if (user.full_name) setName(user.full_name);
+      if (user.email) setEmail(user.email);
+    }
+  }, [user]);
 
   // Fetch available time slots from the API
   useEffect(() => {
@@ -116,7 +127,6 @@ export default function BookPage() {
         notes: notes || null,
       };
 
-      // If we matched an API slot, include the time_slot_id
       if (selectedSlotId) {
         payload.time_slot_id = selectedSlotId;
       }
@@ -142,142 +152,260 @@ export default function BookPage() {
   };
 
   return (
-    <div style={{ padding: "var(--spacing-section) 0" }}>
-      <div className="container" style={{ maxWidth: "55rem" }}>
+    <div style={{ padding: "var(--spacing-section) 0", background: "var(--bg-primary)" }}>
+      <div className="container" style={{ maxWidth: "62rem" }}>
         
-        <div style={{ display: "flex", flexWrap: "wrap", background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-md)" }}>
-          
-          {/* Left panel: Info */}
-          <div style={{ flex: "1 1 300px", background: "var(--bg-secondary)", padding: "2.5rem", borderRight: "1px solid var(--border-color)" }}>
-            <span className="badge badge-blue" style={{ marginBottom: "0.5rem" }}>Discovery</span>
-            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, margin: "0.5rem 0 1rem 0", color: "var(--text-primary)" }}>Security &amp; AI Consultation</h2>
-            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "2rem", lineHeight: 1.5 }}>
-              Meet with a senior solution engineer to discuss custom LLM application design, secure code integration, or corporate ethical hacking courses.
-            </p>
+        {/* Page Hero Header */}
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <span className="badge badge-blue" style={{ marginBottom: "0.75rem" }}>
+            1-on-1 Discovery Session
+          </span>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+            Schedule Your <span className="text-gradient">Technical Consultation</span>
+          </h1>
+          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", maxWidth: "38rem", margin: "0.75rem auto 0 auto", lineHeight: 1.6 }}>
+            Connect with a lead cybersecurity practitioner or AI solution architect to design, evaluate, or scale your enterprise roadmap.
+          </p>
+        </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
-                <Clock size={16} style={{ color: "var(--accent-blue)" }} />
-                <span>30 Minutes</span>
+        {/* Main Card Grid */}
+        <div className="book-card-grid">
+          
+          {/* Left Panel: Information & Host Info */}
+          <div className="book-left-panel">
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
+                <ShieldCheck size={20} style={{ color: "var(--accent-blue)" }} />
+                <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--accent-blue)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  ERAAO Advisory
+                </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
-                <Video size={16} style={{ color: "var(--accent-blue)" }} />
-                <span>Secure Google Meet link provided</span>
+
+              <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem" }}>
+                Technical Discovery Call
+              </h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "2rem" }}>
+                Direct access to our senior engineering specialists. Pure technical scope analysis — no high-pressure sales.
+              </p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "var(--accent-blue-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-blue)", flexShrink: 0 }}>
+                    <Clock size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Duration</div>
+                    <div style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--text-primary)" }}>30 Minutes</div>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "var(--accent-teal-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-teal)", flexShrink: 0 }}>
+                    <Video size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Location</div>
+                    <div style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--text-primary)" }}>Google Meet (Encrypted Video Link)</div>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(16, 185, 129, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-success)", flexShrink: 0 }}>
+                    <UserCheck size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Lead Practitioner</div>
+                    <div style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--text-primary)" }}>Solutions Specialist</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Direct Contact Footer Block */}
+            <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.5rem" }}>
+              <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--text-muted)", marginBottom: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Direct Assistance
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "var(--text-xs)" }}>
+                <a href="mailto:info@eraao.com" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", textDecoration: "none" }}>
+                  <Mail size={14} style={{ color: "var(--accent-blue)" }} /> info@eraao.com
+                </a>
+                <a href="tel:+8801517835859" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", textDecoration: "none" }}>
+                  <Phone size={14} style={{ color: "var(--accent-blue)" }} /> +880 1517-835859
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Right panel: Calendar Scheduler */}
-          <div style={{ flex: "1 1 400px", padding: "2.5rem" }}>
+          {/* Right Panel: Interactive Scheduler */}
+          <div className="book-right-panel">
             
             {success ? (
-              <div style={{ textAlign: "center", padding: "3rem 0" }}>
-                <CheckCircle2 size={64} style={{ color: "var(--color-success)", margin: "0 auto 1.5rem auto" }} />
-                <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem", color: "var(--text-primary)" }}>Consultation Scheduled!</h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "1.5rem" }}>
-                  A calendar invite and Google Meet link have been sent to <strong>{email}</strong>.
+              <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
+                <div style={{
+                  width: "72px",
+                  height: "72px",
+                  borderRadius: "50%",
+                  background: "rgba(16, 185, 129, 0.15)",
+                  border: "1px solid rgba(16, 185, 129, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "var(--color-success)",
+                  margin: "0 auto 1.5rem auto"
+                }}>
+                  <CheckCircle2 size={36} />
+                </div>
+                <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginBottom: "0.5rem", color: "var(--text-primary)" }}>
+                  Consultation Booked!
+                </h3>
+                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginBottom: "2rem", lineHeight: 1.6 }}>
+                  A calendar invite with the encrypted Google Meet link has been dispatched to <strong>{email}</strong>.
                 </p>
-                <button className="btn btn-outline" onClick={() => { setSuccess(false); setError(null); }}>
-                  Book another slot
+                <button
+                  className="btn btn-outline"
+                  onClick={() => { setSuccess(false); setError(null); setSelectedSlot(null); }}
+                  style={{ borderRadius: "var(--radius-md)" }}
+                >
+                  Schedule Another Session
                 </button>
               </div>
             ) : (
               <form onSubmit={handleBook}>
+                
                 {/* Error Banner */}
                 {error && (
                   <div style={{
-                    display: "flex", alignItems: "center", gap: "0.5rem",
-                    padding: "0.75rem 1rem", marginBottom: "1.5rem",
-                    background: "var(--color-error-bg)", border: "1px solid rgba(239, 68, 68, 0.3)",
-                    borderRadius: "var(--radius-md)", color: "var(--color-error)", fontSize: "var(--text-sm)", fontWeight: 500
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.6rem",
+                    padding: "0.85rem 1rem",
+                    marginBottom: "1.5rem",
+                    background: "rgba(239, 68, 68, 0.1)",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "var(--radius-md)",
+                    color: "var(--color-error)",
+                    fontSize: "var(--text-sm)",
+                    fontWeight: 500
                   }}>
-                    <AlertCircle size={16} />
+                    <AlertCircle size={16} style={{ flexShrink: 0 }} />
                     <span>{error}</span>
                   </div>
                 )}
 
-                {/* 1. Date Picker */}
-                <h4 style={{ fontWeight: 600, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
-                  <Calendar size={18} /> Select Date
-                </h4>
-                <div style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingBottom: "0.5rem", marginBottom: "2rem" }}>
-                  {dates.map((date) => (
-                    <button
-                      key={date.value}
-                      type="button"
-                      onClick={() => { setSelectedDate(date.value); setSelectedSlot(null); setSelectedSlotId(null); }}
-                      style={{
-                        padding: "0.6rem 0.8rem",
-                        borderRadius: "var(--radius-md)",
-                        border: "1px solid",
-                        borderColor: selectedDate === date.value ? "var(--text-primary)" : "var(--border-color)",
-                        background: selectedDate === date.value ? "var(--text-primary)" : "var(--card-bg)",
-                        color: selectedDate === date.value ? "var(--bg-primary)" : "var(--text-secondary)",
-                        cursor: "pointer",
-                        whiteSpace: "nowrap",
-                        fontWeight: selectedDate === date.value ? 600 : 500,
-                        fontSize: "var(--text-sm)",
-                        transition: "var(--transition-fast)"
-                      }}
-                    >
-                      {date.label}
-                    </button>
-                  ))}
+                {/* 1. Date Selector */}
+                <div style={{ marginBottom: "1.75rem" }}>
+                  <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
+                    <Calendar size={16} style={{ color: "var(--accent-blue)" }} /> 1. Select Date
+                  </h4>
+                  <div className="filter-pills" style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingBottom: "0.4rem" }}>
+                    {dates.map((date) => {
+                      const isSelected = selectedDate === date.value;
+                      return (
+                        <button
+                          key={date.value}
+                          type="button"
+                          onClick={() => { setSelectedDate(date.value); setSelectedSlot(null); setSelectedSlotId(null); }}
+                          style={{
+                            padding: "0.65rem 0.95rem",
+                            borderRadius: "var(--radius-md)",
+                            border: isSelected ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                            background: isSelected ? "var(--accent-blue)" : "var(--bg-primary)",
+                            color: isSelected ? "#ffffff" : "var(--text-secondary)",
+                            cursor: "pointer",
+                            whiteSpace: "nowrap",
+                            fontWeight: isSelected ? 700 : 500,
+                            fontSize: "var(--text-xs)",
+                            transition: "all 0.2s ease"
+                          }}
+                        >
+                          {date.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                {/* 2. Slot Picker */}
-                <h4 style={{ fontWeight: 600, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
-                  <Clock size={18} /> Select Time
-                </h4>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "0.75rem", marginBottom: "2rem" }}>
-                  {displaySlots.length === 0 ? (
-                    <p style={{ color: "var(--text-muted)", fontSize: "var(--text-sm)", gridColumn: "1 / -1" }}>No available slots for this date.</p>
-                  ) : displaySlots.map((slot) => (
-                    <button
-                      key={slot.label}
-                      type="button"
-                      onClick={() => { setSelectedSlot(slot.label); setSelectedSlotId(slot.id); }}
-                      style={{
-                        padding: "0.6rem 0.5rem",
-                        borderRadius: "var(--radius-md)",
-                        border: "1px solid",
-                        borderColor: selectedSlot === slot.label ? "var(--accent-blue)" : "var(--border-color)",
-                        background: selectedSlot === slot.label ? "var(--accent-blue-bg)" : "var(--card-bg)",
-                        color: selectedSlot === slot.label ? "var(--accent-blue)" : "var(--text-secondary)",
-                        cursor: "pointer",
-                        fontWeight: selectedSlot === slot.label ? 600 : 500,
-                        fontSize: "var(--text-sm)",
-                        transition: "var(--transition-fast)"
-                      }}
-                    >
-                      {slot.label}
-                    </button>
-                  ))}
+                {/* 2. Time Slot Selector */}
+                <div style={{ marginBottom: "2rem" }}>
+                  <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
+                    <Clock size={16} style={{ color: "var(--accent-blue)" }} /> 2. Select Time Slot
+                  </h4>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "0.65rem" }}>
+                    {displaySlots.length === 0 ? (
+                      <p style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", gridColumn: "1 / -1", padding: "0.5rem 0" }}>No available slots on this date.</p>
+                    ) : displaySlots.map((slot) => {
+                      const isSelected = selectedSlot === slot.label;
+                      return (
+                        <button
+                          key={slot.label}
+                          type="button"
+                          onClick={() => { setSelectedSlot(slot.label); setSelectedSlotId(slot.id); }}
+                          style={{
+                            padding: "0.65rem 0.6rem",
+                            borderRadius: "var(--radius-md)",
+                            border: isSelected ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                            background: isSelected ? "var(--accent-blue-bg)" : "var(--bg-primary)",
+                            color: isSelected ? "var(--accent-blue)" : "var(--text-secondary)",
+                            cursor: "pointer",
+                            fontWeight: isSelected ? 700 : 500,
+                            fontSize: "var(--text-xs)",
+                            transition: "all 0.2s ease",
+                            textAlign: "center"
+                          }}
+                        >
+                          {slot.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                {/* 3. Form */}
-                {selectedSlot && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "2rem" }}>
-                    <h4 style={{ fontWeight: 600, color: "var(--text-primary)" }}>Your Details</h4>
+                {/* 3. Details Form */}
+                {selectedSlot ? (
+                  <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                    <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                      3. Confirm Your Information
+                    </h4>
                     
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label className="form-label">Name</label>
-                        <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="input-field" />
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem" }}>
+                      <div>
+                        <label className="form-label">Full Name *</label>
+                        <input
+                          required
+                          type="text"
+                          placeholder="Your full name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="input-field"
+                        />
                       </div>
-                      <div className="form-group">
-                        <label className="form-label">Phone (Optional)</label>
-                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field" />
+                      <div>
+                        <label className="form-label">Phone Number</label>
+                        <input
+                          type="tel"
+                          placeholder="+880 1517-835859"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="input-field"
+                        />
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Email Address</label>
-                      <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" />
+                    <div>
+                      <label className="form-label">Email Address *</label>
+                      <input
+                        required
+                        type="email"
+                        placeholder="your.email@organization.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="input-field"
+                      />
                     </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Service Type</label>
+                    <div>
+                      <label className="form-label">Primary Interest / Service Area</label>
                       <select value={serviceType} onChange={(e) => setServiceType(e.target.value)} className="input-field">
                         {SERVICE_TYPES.map(st => (
                           <option key={st} value={st}>{st}</option>
@@ -285,14 +413,38 @@ export default function BookPage() {
                       </select>
                     </div>
 
-                    <div className="form-group">
-                      <label className="form-label">Consultation Details</label>
-                      <textarea placeholder="Briefly describe your project or training needs..." value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} className="input-field" style={{ resize: "vertical" }} />
+                    <div>
+                      <label className="form-label">Project Scope / Agenda Details</label>
+                      <textarea
+                        placeholder="Briefly describe your security, AI, or training requirements..."
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        rows={3}
+                        className="input-field"
+                        style={{ resize: "vertical" }}
+                      />
                     </div>
 
-                    <button disabled={loading} type="submit" className="btn btn-primary" style={{ width: "100%", marginTop: "1rem" }}>
-                      {loading ? "Scheduling..." : "Schedule Call"}
+                    <button
+                      disabled={loading}
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{ width: "100%", padding: "0.85rem 1.5rem", borderRadius: "var(--radius-md)", marginTop: "0.5rem" }}
+                    >
+                      {loading ? "Confirming Slot..." : "Confirm & Book Discovery Call"}
                     </button>
+                  </div>
+                ) : (
+                  <div style={{
+                    padding: "1.25rem",
+                    borderRadius: "var(--radius-md)",
+                    background: "var(--bg-secondary)",
+                    border: "1px dashed var(--border-color)",
+                    textAlign: "center",
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)"
+                  }}>
+                    Select a date and time slot above to continue booking.
                   </div>
                 )}
 

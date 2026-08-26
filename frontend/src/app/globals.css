@@ -696,6 +696,42 @@ a {
   .input-field {
     font-size: 16px !important; /* Prevents iOS Safari input auto-zoom */
   }
+
+  .book-left-panel {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 1.75rem 1.25rem !important;
+  }
+
+  .book-right-panel {
+    padding: 1.75rem 1.25rem !important;
+  }
+}
+
+/* Book Page Styling */
+.book-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.book-left-panel {
+  flex: 1 1 320px;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--card-bg) 100%);
+  padding: 2.75rem 2.25rem;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.book-right-panel {
+  flex: 1 1 420px;
+  padding: 2.75rem 2.25rem;
 }
 
 @media (max-width: 480px) {
