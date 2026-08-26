@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ShieldCheck, BrainCircuit, Users, Award, Phone, Globe, Target } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
 
@@ -149,11 +150,13 @@ export default function Home() {
               boxShadow: "var(--shadow-xl)",
               border: "1px solid var(--border-color)"
             }}>
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=75"
                 alt="Cybersecurity terminal interface"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                loading="eager"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: "cover" }}
+                priority
               />
               <div style={{
                 position: "absolute",
@@ -174,11 +177,13 @@ export default function Home() {
               boxShadow: "var(--shadow-xl)",
               border: "4px solid var(--bg-primary)"
             }}>
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format&fit=crop&q=75"
                 alt="AI neural network architecture"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                loading="eager"
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                style={{ objectFit: "cover" }}
+                priority
               />
             </div>
 
@@ -280,10 +285,12 @@ export default function Home() {
             {/* Card 1: AI Engineering */}
             <div className="hover-lift card" style={{ padding: 0, overflow: "hidden" }}>
               <div style={{ height: "220px", overflow: "hidden", position: "relative" }}>
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80&auto=format&fit=crop"
                   alt="AI and machine learning visualization"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
                 />
                 <div style={{
                   position: "absolute",
@@ -314,10 +321,12 @@ export default function Home() {
             {/* Card 2: Cybersecurity */}
             <div className="hover-lift card" style={{ padding: 0, overflow: "hidden" }}>
               <div style={{ height: "220px", overflow: "hidden", position: "relative" }}>
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80&auto=format&fit=crop"
                   alt="Cybersecurity code and security operations"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
                 />
                 <div style={{
                   position: "absolute",
@@ -348,10 +357,12 @@ export default function Home() {
             {/* Card 3: Academy */}
             <div className="hover-lift card" style={{ padding: 0, overflow: "hidden" }}>
               <div style={{ height: "220px", overflow: "hidden", position: "relative" }}>
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80&auto=format&fit=crop"
                   alt="Professional training and learning"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
                 />
                 <div style={{
                   position: "absolute",
@@ -401,12 +412,16 @@ export default function Home() {
               <div style={{
                 borderRadius: "16px",
                 overflow: "hidden",
-                boxShadow: "var(--shadow-lg)"
+                boxShadow: "var(--shadow-lg)",
+                position: "relative",
+                height: "400px"
               }}>
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&q=80&auto=format&fit=crop"
                   alt="Team collaboration in modern workspace"
-                  style={{ width: "100%", height: "400px", objectFit: "cover", display: "block" }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
               {/* Floating accent card */}
@@ -492,10 +507,12 @@ export default function Home() {
           inset: 0,
           zIndex: 0
         }}>
-          <img
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80&auto=format&fit=crop"
+          <Image
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=75&auto=format&fit=crop"
             alt="Technology data center"
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.12 }}
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover", opacity: 0.12 }}
           />
         </div>
         <div className="container" style={{
@@ -537,10 +554,12 @@ export default function Home() {
           inset: 0,
           zIndex: 0
         }}>
-          <img
-            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80&auto=format&fit=crop"
+          <Image
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=75&auto=format&fit=crop"
             alt="Modern office meeting"
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.2 }}
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover", opacity: 0.2 }}
           />
           <div style={{
             position: "absolute",

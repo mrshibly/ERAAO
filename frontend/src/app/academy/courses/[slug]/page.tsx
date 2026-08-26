@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import {
   ArrowLeft, Clock, Award, CheckCircle2, PlayCircle, BookOpen,
@@ -165,7 +166,14 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
           border: "1px solid rgba(255, 255, 255, 0.1)"
         }}>
           <div style={{ position: "absolute", inset: 0, opacity: 0.25, zIndex: 1 }}>
-            <img src={getCourseImage(course.title)} alt={course.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <Image
+              src={getCourseImage(course.title)}
+              alt={course.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 1200px"
+              style={{ objectFit: "cover" }}
+              priority
+            />
           </div>
 
           <div style={{ position: "relative", zIndex: 2, maxWidth: "750px" }}>

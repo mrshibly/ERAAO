@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display, Great_Vibes, Cinzel } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
 import ConditionalWrapper from "./ConditionalWrapper";
@@ -80,6 +80,16 @@ export const metadata: Metadata = {
   verification: {
     google: "g0ynYG72e6ijY_9IRQvui0F4K5VFQU5PMTM_XXJeCQA"
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#090d16" }
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

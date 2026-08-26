@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ShieldAlert,
   Bot,
@@ -361,16 +362,12 @@ export default function ServicesPage() {
                 >
                   {/* Thumbnail Image */}
                   <div style={{ position: "relative", height: "190px", overflow: "hidden" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={service.imageUrl}
                       alt={service.title}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        transition: "transform 0.4s ease"
-                      }}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{ objectFit: "cover" }}
                       loading="lazy"
                     />
                     <div style={{

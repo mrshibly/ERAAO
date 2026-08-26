@@ -4,11 +4,31 @@ export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { BookOpen, Clock, Loader, Search, ArrowRight, ChevronLeft, ChevronRight, X, Filter } from "lucide-react";
 
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface Course {
+  id: string;
+  title: string;
+  slug: string;
+  level: string;
+  short_description?: string;
+  price?: number;
+  duration_weeks?: number;
+  duration_hours?: number;
+  lessons_count?: number;
+  category_id?: string;
+}
+
 export default function AcademyPage() {
-  const [courses, setCourses] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Search & Filter state
@@ -226,10 +246,12 @@ export default function AcademyPage() {
                 
                 {/* Cover Image -> Links to Course Details Page */}
                 <Link href={`/academy/courses/${course.slug}`} style={{ height: "185px", overflow: "hidden", position: "relative", display: "block" }}>
-                  <img
+                  <Image
                     src={getCourseThumbnail(course.title)}
                     alt={course.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ objectFit: "cover" }}
                   />
                   <div style={{
                     position: "absolute",
