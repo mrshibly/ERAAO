@@ -209,14 +209,19 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {/* Main Content Layout */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.25rem" }}>
+      {/* Main Content Layout — Symmetric 2-Column Grid */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gap: "1.75rem",
+        alignItems: "start"
+      }}>
 
         {/* Left Column — My Enrolled Courses */}
-        <div style={{ gridColumn: "span 2" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-            <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)" }}>
-              My Courses
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: "32px", marginBottom: "1rem" }}>
+            <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <BookOpen size={20} style={{ color: "var(--accent-blue)" }} /> My Courses
             </h2>
             {activeCourses.length > 0 && (
               <Link href="/dashboard/student/courses" style={{ color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 700, textDecoration: "none" }}>
@@ -226,14 +231,40 @@ export default function StudentDashboard() {
           </div>
 
           {activeCourses.length === 0 ? (
-            <div className="empty-state card" style={{ padding: "3rem 1.5rem" }}>
-              <BookOpen size={36} style={{ color: "var(--text-muted)", marginBottom: "0.75rem" }} />
-              <h3 className="empty-title">No active courses</h3>
-              <p className="empty-text">
+            <div className="card hover-lift" style={{
+              padding: "3.5rem 2rem",
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border-color)",
+              boxShadow: "var(--shadow-sm)"
+            }}>
+              <div style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                background: "var(--accent-blue-bg)",
+                color: "var(--accent-blue)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "1.25rem",
+                boxShadow: "0 0 20px rgba(59, 130, 246, 0.15)"
+              }}>
+                <BookOpen size={28} />
+              </div>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                No active courses
+              </h3>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", maxWidth: "380px", margin: "0 auto 1.5rem auto", lineHeight: "1.6" }}>
                 Enroll in a course to start learning and tracking your progress.
               </p>
-              <Link href="/dashboard/student/catalog" className="btn btn-primary" style={{ marginTop: "1rem" }}>
-                Find Courses <ArrowRight size={16} />
+              <Link href="/dashboard/student/catalog" className="btn btn-primary" style={{ padding: "0.7rem 1.5rem", fontSize: "var(--text-sm)" }}>
+                <span>Find Courses</span>
+                <ArrowRight size={16} />
               </Link>
             </div>
           ) : (
@@ -302,14 +333,19 @@ export default function StudentDashboard() {
 
         {/* Right Column — My Certificates & Help */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          <div style={{ display: "flex", alignItems: "center", minHeight: "32px", marginBottom: "1rem" }}>
+            <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Award size={20} style={{ color: "var(--color-warning)" }} /> Overview & Support
+            </h2>
+          </div>
 
           {/* Certificates Widget */}
-          <div className="card" style={{ padding: "1.25rem" }}>
-            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div className="card hover-lift" style={{ padding: "1.5rem" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <Award size={18} style={{ color: "var(--color-warning)" }} /> My Certificates
             </h3>
             {certificates.length === 0 ? (
-              <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: "1.5" }}>
+              <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: "1.6" }}>
                 Complete any course syllabus to 100% to earn your verified completion certificate.
               </p>
             ) : (
@@ -342,11 +378,11 @@ export default function StudentDashboard() {
           </div>
 
           {/* Help Widget */}
-          <div className="card" style={{ padding: "1.25rem" }}>
-            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div className="card hover-lift" style={{ padding: "1.5rem" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <HelpCircle size={18} style={{ color: "var(--accent-blue)" }} /> Need Help?
             </h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "1rem", lineHeight: "1.4" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "1.25rem", lineHeight: "1.5" }}>
               Have questions about your courses or virtual labs? Ask our team anytime.
             </p>
             <Link
@@ -354,7 +390,7 @@ export default function StudentDashboard() {
               className="btn btn-outline"
               style={{
                 width: "100%",
-                padding: "0.55rem",
+                padding: "0.6rem",
                 fontSize: "var(--text-xs)",
                 justifyContent: "center"
               }}
