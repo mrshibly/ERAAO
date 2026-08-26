@@ -1616,8 +1616,6 @@ input:focus, select:focus, textarea:focus {
   color: var(--text-on-dark-subtle);
 }
 
-}
-
 /* Filter Pill Buttons */
 .filter-pills {
   display: flex;
