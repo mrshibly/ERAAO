@@ -44,12 +44,7 @@ export default function Footer() {
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
 
         {/* Main 4-Column Footer Grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "3rem",
-          marginBottom: "3rem"
-        }}>
+        <div className="footer-grid">
 
           {/* Col 1: Brand & Bio */}
           <div>
@@ -250,16 +245,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar — Copyright & Legal Links */}
-        <div style={{
-          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-          paddingTop: "1.75rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "1rem",
-          fontSize: "var(--text-xs)"
-        }}>
+        <div className="footer-bottom">
           <div>
             &copy; {new Date().getFullYear()} ERAAO Platform. All rights reserved.
           </div>
