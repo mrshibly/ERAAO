@@ -27,7 +27,7 @@ async def google_login(
     try:
         # Verify the ID token using google-auth library
         import asyncio
-        client_id = settings.GOOGLE_CLIENT_ID or None
+        client_id = settings.GOOGLE_CLIENT_ID or "1077790098218-or3jf6egdbmin5u10o6v0m1vnqsi6n9o.apps.googleusercontent.com"
         idinfo = await asyncio.to_thread(
             id_token.verify_oauth2_token,
             data.id_token,

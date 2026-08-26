@@ -64,7 +64,7 @@ class AuthService:
             )
         except Exception:
             import structlog
-            structlog.get_logger().warning("email_task_failed", event="registration_verification", user_email=user.email)
+            structlog.get_logger().warning("email_task_failed", event_type="registration_verification", user_email=user.email)
 
         return {"user_id": str(user.id), "verification_token": verification_token}
 
@@ -270,7 +270,7 @@ class AuthService:
             )
         except Exception:
             import structlog
-            structlog.get_logger().warning("email_task_failed", event="password_reset", user_email=user.email)
+            structlog.get_logger().warning("email_task_failed", event_type="password_reset", user_email=user.email)
 
         return token
 
