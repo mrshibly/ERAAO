@@ -81,7 +81,7 @@ export default function StudentOnboardingModal({ onComplete }: StudentOnboarding
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <Logo size={28} withText={true} textColor="#ffffff" />
             <button
-              onClick={() => handleSave(false)}
+              onClick={() => handleSave(true)}
               title="Skip for now"
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
