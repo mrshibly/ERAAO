@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 interface UserProfile {
   id: string;
@@ -52,20 +52,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (newToken: string, userProfile: UserProfile) => {
     setToken(newToken);
     setUser(userProfile);
-    localStorage.setItem("token", newToken);
-    localStorage.setItem("user", JSON.stringify(userProfile));
+    // Security: Do NOT store sensitive JWT access token in localStorage (XSS prevention).
+    // Store non-sensitive user metadata in sessionStorage for tab-isolated quick render.
+    try {
+      sessionStorage.setItem("user", JSON.stringify(userProfile));
+      localStorage.removeItem("token"); // Clean up any legacy localStorage tokens
+      localStorage.removeItem("user");
+    } catch {
+      // Storage unavailable (e.g. private browsing quota)
+    }
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    // Trigger backend logout to clear HTTPOnly cookie
+    try {
+      sessionStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    } catch {
+      // Storage unavailable
+    }
+    // Trigger backend logout to clear HTTPOnly refresh token cookie
     fetch("/api/v1/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
-  };
+  }, []);
 
-  const performRefresh = async () => {
+  const performRefresh = useCallback(async (): Promise<string | null> => {
     try {
       const res = await fetch("/api/v1/auth/refresh", {
         method: "POST",
@@ -75,49 +87,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (res.ok) {
         const data = await res.json();
         setToken(data.access_token);
-        localStorage.setItem("token", data.access_token);
+        return data.access_token;
       } else {
         logout();
+        return null;
       }
     } catch (e) {
       console.error("Token refresh failed:", e);
+      return null;
     }
-  };
+  }, [logout]);
 
   useEffect(() => {
-    // Load stored token & user on startup
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      try {
-        const parsed = JSON.parse(storedUser);
-        setUser(parsed);
-        
-        // Background sync to fetch fresh roles/profile details from backend
-        fetch("/api/v1/users/me", {
-          headers: { "Authorization": `Bearer ${storedToken}` }
-        })
-        .then(res => {
-          if (res.ok) return res.json();
-          throw new Error("Stale session");
-        })
-        .then(freshProfile => {
-          setUser(freshProfile);
-          localStorage.setItem("user", JSON.stringify(freshProfile));
-        })
-        .catch(() => {
-          // Keep existing cached user if background sync fails
-        });
-      } catch (e) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-      }
-    }
-    setLoading(false);
-  }, []);
+    // Clean up any legacy tokens stored in localStorage to prevent token exposure
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    } catch {}
 
-  // Set up token refresh timer
+    // Load initial user state from sessionStorage if available
+    try {
+      const cachedUser = sessionStorage.getItem("user");
+      if (cachedUser) {
+        setUser(JSON.parse(cachedUser));
+      }
+    } catch {}
+
+    // Silent background authentication using secure HTTPOnly refresh cookie
+    performRefresh().then(async (accessToken) => {
+      if (accessToken) {
+        try {
+          const profileRes = await fetch("/api/v1/users/me", {
+            headers: { "Authorization": `Bearer ${accessToken}` },
+            credentials: "include"
+          });
+          if (profileRes.ok) {
+            const freshProfile = await profileRes.json();
+            setUser(freshProfile);
+            try {
+              sessionStorage.setItem("user", JSON.stringify(freshProfile));
+            } catch {}
+          }
+        } catch {}
+      }
+      setLoading(false);
+    });
+  }, [performRefresh]);
+
+  // Set up token refresh timer before expiry
   useEffect(() => {
     if (!token) return;
 
@@ -125,7 +142,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!decoded || !decoded.exp) return;
 
     const expMs = decoded.exp * 1000;
-    const delay = expMs - Date.now() - 60000; // refresh 1 minute before expiry
+    const delay = expMs - Date.now() - 60000; // Refresh 1 minute before expiry
 
     if (delay <= 0) {
       performRefresh();
@@ -137,7 +154,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [token]);
+  }, [token, performRefresh]);
 
   return (
     <AuthContext.Provider value={{ user, token, loading, login, logout }}>
