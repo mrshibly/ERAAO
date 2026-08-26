@@ -262,13 +262,35 @@ a {
 }
 
 .nav-link {
-  font-weight: 500;
+  position: relative;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--text-secondary);
-  transition: var(--transition-all);
+  padding: 0.35rem 0.25rem;
+  transition: color 0.2s ease;
 }
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+  border-radius: var(--radius-full);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
 .nav-link:hover {
-  color: var(--text-primary);
+  color: var(--accent-blue);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  opacity: 1;
 }
 
 .nav-mobile-btn {
