@@ -294,11 +294,11 @@ export default function BookPage() {
                 )}
 
                 {/* 1. Date Selector */}
-                <div style={{ marginBottom: "1.75rem" }}>
+                <div style={{ marginBottom: "1.75rem", width: "100%" }}>
                   <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                     <Calendar size={16} style={{ color: "var(--accent-blue)" }} /> 1. Select Date
                   </h4>
-                  <div className="filter-pills" style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingBottom: "0.4rem" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", width: "100%" }}>
                     {dates.map((date) => {
                       const isSelected = selectedDate === date.value;
                       return (
@@ -307,7 +307,8 @@ export default function BookPage() {
                           type="button"
                           onClick={() => { setSelectedDate(date.value); setSelectedSlot(null); setSelectedSlotId(null); }}
                           style={{
-                            padding: "0.65rem 0.95rem",
+                            flex: "1 1 100px",
+                            padding: "0.65rem 0.75rem",
                             borderRadius: "var(--radius-md)",
                             border: isSelected ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
                             background: isSelected ? "var(--accent-blue)" : "var(--bg-primary)",
@@ -316,6 +317,7 @@ export default function BookPage() {
                             whiteSpace: "nowrap",
                             fontWeight: isSelected ? 700 : 500,
                             fontSize: "var(--text-xs)",
+                            textAlign: "center",
                             transition: "all 0.2s ease"
                           }}
                         >
@@ -331,7 +333,7 @@ export default function BookPage() {
                   <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", marginBottom: "0.85rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)" }}>
                     <Clock size={16} style={{ color: "var(--accent-blue)" }} /> 2. Select Time Slot
                   </h4>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "0.65rem" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(105px, 1fr))", gap: "0.65rem", width: "100%" }}>
                     {displaySlots.length === 0 ? (
                       <p style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", gridColumn: "1 / -1", padding: "0.5rem 0" }}>No available slots on this date.</p>
                     ) : displaySlots.map((slot) => {
