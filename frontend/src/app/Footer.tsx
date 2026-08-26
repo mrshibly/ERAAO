@@ -236,8 +236,8 @@ export default function Footer() {
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <Phone size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
-                <a href="tel:+8801517825859" style={{ color: "#cbd5e1", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"} onMouseLeave={(e) => e.currentTarget.style.color = "#cbd5e1"}>
-                  +880 1517-825859
+                <a href="tel:+8801517835859" style={{ color: "#cbd5e1", textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.color = "#ffffff"} onMouseLeave={(e) => e.currentTarget.style.color = "#cbd5e1"}>
+                  +880 1517-835859
                 </a>
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
