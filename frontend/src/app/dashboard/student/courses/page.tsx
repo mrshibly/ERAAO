@@ -89,7 +89,15 @@ export default function StudentCoursesPage() {
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="controls-bar" style={{ marginTop: "1.75rem" }}>
+        <div style={{
+          display: "flex",
+          gap: "1rem",
+          alignItems: "center",
+          flexWrap: "wrap",
+          marginTop: "1.75rem",
+          paddingTop: "1.25rem",
+          borderTop: "1px solid var(--border-color)"
+        }}>
           <div style={{ position: "relative", flex: 1, minWidth: "240px" }}>
             <Search size={16} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
             <input
@@ -98,11 +106,11 @@ export default function StudentCoursesPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="input-field"
-              style={{ paddingLeft: "2.5rem" }}
+              style={{ paddingLeft: "2.5rem", borderRadius: "var(--radius-lg)" }}
             />
           </div>
 
-          <div className="filter-pills">
+          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", flexWrap: "wrap" }}>
             {[
               { id: "all", label: `All Courses (${enrollments.length})` },
               { id: "in_progress", label: `In Progress (${enrollments.filter(e => (e.progress ?? e.completion_pct ?? 0) < 100).length})` },
@@ -111,7 +119,18 @@ export default function StudentCoursesPage() {
               <button
                 key={t.id}
                 onClick={() => setFilter(t.id as any)}
-                className={`filter-pill ${filter === t.id ? "active" : ""}`}
+                style={{
+                  padding: "0.45rem 1rem",
+                  borderRadius: "var(--radius-full)",
+                  fontSize: "var(--text-xs)",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  border: filter === t.id ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                  background: filter === t.id ? "var(--accent-blue)" : "var(--bg-primary)",
+                  color: filter === t.id ? "#ffffff" : "var(--text-secondary)",
+                  boxShadow: filter === t.id ? "0 2px 10px rgba(59, 130, 246, 0.25)" : "none"
+                }}
               >
                 {t.label}
               </button>
