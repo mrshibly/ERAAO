@@ -31,8 +31,32 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     await init_cache()
 
-    # NOTE: Column type migration (lessons.content_type → VARCHAR(50)) has been
-    # moved to a proper Alembic migration. Do NOT run DDL in lifespan handlers.
+    # Auto-create tables & seed default roles if needed on startup
+    try:
+        from app.db.session import engine, async_session_factory
+        from app.db.base import Base
+        from app.models import user, role, course, enrollment, certificate, ticket, booking, contact, blog, career  # noqa
+        from app.models.role import Role
+        from sqlalchemy import select
+
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+
+        async with async_session_factory() as session:
+            role_result = await session.execute(select(Role).where(Role.name == "student"))
+            if not role_result.scalar_one_or_none():
+                roles_data = [
+                    ("admin", "Platform administrator"),
+                    ("instructor", "Course instructor"),
+                    ("student", "Learner account"),
+                    ("corporate_client", "B2B client account"),
+                ]
+                for r_name, r_desc in roles_data:
+                    session.add(Role(name=r_name, description=r_desc))
+                await session.commit()
+    except Exception as e:
+        import structlog
+        structlog.get_logger().warning("db_auto_init_warning", error=str(e))
 
     yield
 
