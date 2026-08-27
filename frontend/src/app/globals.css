@@ -945,6 +945,117 @@ a {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   ACADEMY PAGE STYLES — Ultra-Premium Course Catalog
+   ═══════════════════════════════════════════════════════════════ */
+.academy-hero {
+  position: relative;
+  padding: 4.5rem 0 3.5rem 0;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.academy-hero-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.academy-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.academy-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.academy-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-blue);
+}
+
+.academy-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  position: relative;
+}
+
+.academy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(14, 165, 233, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+  border-color: rgba(14, 165, 233, 0.4);
+}
+
+.academy-card-image-wrap {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  background: #090d16;
+}
+
+.academy-card-image-wrap img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.academy-card:hover .academy-card-image-wrap img {
+  transform: scale(1.05);
+}
+
+.academy-card-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.academy-card-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.25rem 1.75rem;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.academy-advantage-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.academy-advantage-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-blue);
+}
+
 @media (max-width: 480px) {
   :root {
     --spacing-section: 2.75rem;
