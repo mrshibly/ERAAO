@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   ShieldAlert,
@@ -118,20 +119,22 @@ export default function ServiceDetailPage() {
           style={{
             padding: "0",
             overflow: "hidden",
-            borderRadius: "var(--radius-lg)",
+            borderRadius: "var(--radius-xl)",
             border: "1px solid var(--border-color)",
-            backgroundColor: "var(--bg-secondary)",
+            backgroundColor: "var(--card-bg)",
             boxShadow: "var(--shadow-lg)",
             marginBottom: "2.5rem"
           }}
         >
           {/* Visual Header Banner */}
-          <div style={{ position: "relative", height: "260px", width: "100%", overflow: "hidden" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div style={{ position: "relative", height: "260px", width: "100%", overflow: "hidden", backgroundColor: "#090d16" }}>
+            <Image
               src={service.imageUrl}
               alt={service.title}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              fill
+              priority
+              sizes="(max-width: 1200px) 100vw, 896px"
+              style={{ objectFit: "cover" }}
             />
             <div style={{
               position: "absolute",

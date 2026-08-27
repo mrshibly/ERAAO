@@ -1056,6 +1056,108 @@ a {
   border-color: var(--accent-blue);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   SERVICES PAGE STYLES — Ultra-Premium Technical Services
+   ═══════════════════════════════════════════════════════════════ */
+.services-hero {
+  position: relative;
+  padding: 4.5rem 0 3.5rem 0;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.services-hero-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 40% 20%, rgba(13, 148, 136, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.services-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.services-category-btn {
+  padding: 1.15rem 1.35rem;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow-xs);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.services-category-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-teal);
+  box-shadow: var(--shadow-md);
+}
+
+.services-category-btn.active {
+  border-color: var(--accent-teal);
+  background-color: var(--bg-secondary);
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.15);
+}
+
+.services-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  height: 100%;
+}
+
+.services-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(13, 148, 136, 0.15), 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+  border-color: rgba(13, 148, 136, 0.4);
+}
+
+.services-card-image-wrap {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  background: #090d16;
+}
+
+.services-card-image-wrap img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.services-card:hover .services-card-image-wrap img {
+  transform: scale(1.05);
+}
+
+.services-workflow-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.services-workflow-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-teal);
+}
+
 @media (max-width: 480px) {
   :root {
     --spacing-section: 2.75rem;
