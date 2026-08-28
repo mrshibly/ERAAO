@@ -5,6 +5,9 @@ import { Calendar, ArrowRight, Video, MessageSquare } from "lucide-react";
 export const metadata: Metadata = {
   title: "Live Bootcamps & Hacking Cohorts — Academy Bangladesh",
   description: "Enroll in live virtual ethical hacking classes, offensive penetration testing training, and secure AI systems engineering bootcamps in Bangladesh.",
+  alternates: {
+    canonical: "/training",
+  },
 };
 
 export default function TrainingPage() {

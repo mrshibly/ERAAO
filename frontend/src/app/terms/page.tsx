@@ -1,3 +1,13 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Terms and conditions for ERAAO Academy course enrollments, practical hacking labs, and enterprise consulting engagements.",
+  alternates: {
+    canonical: "/terms",
+  },
+};
+
 export default function TermsPage() {
   return (
     <div style={{ padding: "var(--spacing-section) 0" }}>

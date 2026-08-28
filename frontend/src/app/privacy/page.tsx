@@ -1,3 +1,13 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Learn how ERAAO collects, protects, and handles student and client information under ISO 27001 standards.",
+  alternates: {
+    canonical: "/privacy",
+  },
+};
+
 export default function PrivacyPage() {
   return (
     <div style={{ padding: "var(--spacing-section) 0" }}>

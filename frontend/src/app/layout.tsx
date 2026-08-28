@@ -37,7 +37,10 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://eraao.com"),
+  metadataBase: new URL("https://www.eraao.com"),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "ERAAO — Applied AI & Cybersecurity Academy",
     template: "%s | ERAAO"
@@ -61,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Eraao — Lighting the future.",
     description: "Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy.",
-    url: "https://eraao.com",
+    url: "https://www.eraao.com",
     siteName: "Eraao",
     locale: "en_US",
     type: "website"
