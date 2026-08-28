@@ -1,6 +1,7 @@
 """Unit tests for PaymentService."""
 from __future__ import annotations
 import uuid
+from unittest.mock import patch, AsyncMock, MagicMock
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.payment_service import PaymentService
@@ -47,14 +48,26 @@ async def test_create_checkout_success(db_session: AsyncSession) -> None:
     db_session.add(course)
     await db_session.commit()
 
-    # 3. Create checkout session
+    # 3. Mock SSLCommerz HTTP response
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "status": "SUCCESS",
+        "sessionkey": "mock_session_key_123",
+        "GatewayPageURL": "https://sandbox.sslcommerz.com/gwprocess/v4/gw.php?Q=mock_session_key_123"
+    }
+
+    # 4. Create checkout session with mocked gateway
     svc = PaymentService(db_session)
-    result = await svc.create_checkout(
-        user_id=user.id,
-        items=[{"item_type": "course", "item_id": str(course.id)}]
-    )
+    with patch("httpx.AsyncClient.post", new_callable=AsyncMock, return_value=mock_resp):
+        result = await svc.create_checkout(
+            user_id=user.id,
+            items=[{"item_type": "course", "item_id": str(course.id)}]
+        )
+
     assert "checkout_url" in result
     assert "order_id" in result
+    assert result["checkout_url"] == "https://sandbox.sslcommerz.com/gwprocess/v4/gw.php?Q=mock_session_key_123"
 
 @pytest.mark.anyio
 async def test_stripe_webhook_invalid_signature(db_session: AsyncSession) -> None:
