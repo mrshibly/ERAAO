@@ -13,6 +13,10 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    env:
+      DATABASE_URL: sqlite+aiosqlite:///./test.db
+      JWT_SECRET_KEY: ci_pipeline_test_secret_key_at_least_32_characters_long
+      ENVIRONMENT: local
 
     steps:
       - name: Checkout Code

@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
 
     # ---- Database ----
-    DATABASE_URL: str
+    DATABASE_URL: str = "sqlite+aiosqlite:///./eraao.db"
     DB_POOL_SIZE: int = 20
     DB_MAX_OVERFLOW: int = 10
     DB_POOL_RECYCLE: int = 3600
@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     REDIS_CACHE_DEFAULT_TTL: int = 300  # seconds
 
     # ---- JWT ----
-    JWT_SECRET_KEY: str
+    JWT_SECRET_KEY: str = "local_dev_secret_key_at_least_32_chars_long_change_in_prod"
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -105,6 +105,7 @@ class Settings(BaseSettings):
             # Reject any known insecure JWT secret defaults
             insecure_secrets = {
                 "CHANGE_ME_GENERATE_A_SECURE_RANDOM_KEY",
+                "local_dev_secret_key_at_least_32_chars_long_change_in_prod",
                 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",  # SHA-256 of empty string
             }
             if self.JWT_SECRET_KEY in insecure_secrets or len(self.JWT_SECRET_KEY) < 32:
