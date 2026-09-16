@@ -77,21 +77,10 @@ export default function Home() {
               fontSize: "var(--text-lg)",
               color: "var(--text-secondary)",
               lineHeight: 1.65,
-              marginBottom: "0.85rem",
+              marginBottom: "2rem",
               maxWidth: "34rem"
             }}>
               Enterprise AI architectures, advanced penetration testing services, and professional-grade practitioner bootcamps to future-proof your organization.
-            </p>
-
-            <p className="anim-fade-up anim-delay-2 font-bengali" style={{
-              fontSize: "1.05rem",
-              color: "var(--accent-blue)",
-              fontWeight: 600,
-              lineHeight: 1.6,
-              marginBottom: "2.25rem",
-              maxWidth: "34rem"
-            }}>
-              সহজ ভাষায় রিয়েল টেক স্কিলস — এআই অটোমেশন, সাইবার সিকিউরিটি ও গ্লোবাল কমিউনিকেশন। শূন্য থেকে প্র্যাকটিক্যাল লার্নিং।
             </p>
 
             {/* 10% Accent CTAs */}
@@ -105,7 +94,7 @@ export default function Home() {
                 boxShadow: "0 10px 25px rgba(14, 165, 233, 0.35)",
                 color: "white"
               }}>
-                <span className="font-bengali">একাডেমি কোর্স দেখুন</span>
+                <span>Browse Bootcamps</span>
                 <ArrowRight size={18} />
               </Link>
               <Link href="/book" className="btn btn-outline" style={{
@@ -119,7 +108,7 @@ export default function Home() {
                 boxShadow: "var(--shadow-sm)"
               }}>
                 <Phone size={18} />
-                <span className="font-bengali">ফ্রি কনসালটেশন</span>
+                <span>Schedule Consultation</span>
               </Link>
             </div>
 
@@ -387,22 +376,21 @@ export default function Home() {
                   fontSize: "var(--text-xs)",
                   fontWeight: 700
                 }}>
-                  <span className="font-bengali">১০০% প্র্যাকটিক্যাল লার্নিং</span> • Academy
+                  <span style={{ fontWeight: 800 }}>100% Hands-On Labs</span> • Academy
                 </div>
               </div>
               <div style={{ padding: "1.75rem" }}>
                 <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem" }}>
-                  <span className="font-bengali">প্র্যাকটিক্যাল ক্যারিয়ার একাডেমি</span>
+                  Practical Career Academy
                 </h3>
-                <p className="font-bengali" style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.65, marginBottom: "0.6rem" }}>
-                  মুখস্থ থিওরি নয় — রিয়েল প্রজেক্ট ও লাইভ ল্যাবে প্র্যাকটিস। এআই অটোমেশন, এথিক্যাল হ্যাকিং ও স্পোকেন ইংলিশে দক্ষ হয়ে ফ্রিল্যান্সিং ও জবের জন্য প্রস্তুত হোন।
+                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.65, marginBottom: "0.6rem" }}>
+                  Skip boring lectures. Master AI Automation, Offensive Cyber Security, and Spoken English through real-world projects, live browser sandboxes, and 1-on-1 mentorship.
                 </p>
                 <p style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", marginBottom: "1.25rem", fontWeight: 500 }}>
                   Hands-on bootcamps with 1-on-1 mentorship, browser sandboxes &amp; verified digital diplomas.
                 </p>
                 <Link href="/academy" style={{ color: "var(--accent-blue)", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-sm)" }}>
-                  <span className="font-bengali">কোর্সসমূহ দেখুন</span>
-                  <span>(Browse Courses)</span>
+                  <span>Explore Bootcamps</span>
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -587,16 +575,13 @@ export default function Home() {
         </div>
         <div className="container" style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
           <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.45rem 1.1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)", fontSize: "var(--text-xs)", fontWeight: 700, background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)" }}>
-            <span className="font-bengali">সরাসরি কথা বলুন এক্সপার্টদের সাথে</span> • Let&apos;s Build Together
+            Speak Directly with Experts • Let&apos;s Build Together
           </span>
           <h2 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, marginBottom: "1rem", color: "var(--text-on-dark)" }}>
             Ready to Build, Secure, or Learn?
           </h2>
-          <p className="font-bengali" style={{ color: "var(--text-on-dark)", fontSize: "1.15rem", maxWidth: "var(--max-width-narrow)", margin: "0 auto 0.5rem auto", lineHeight: 1.6, fontWeight: 500 }}>
-            নতুন এআই প্রজেক্ট ডেভেলপমেন্ট, সাইবার সিকিউরিটি অডিট কিংবা ক্যারিয়ারের সেরা স্কিল শেখার জন্য আমাদের সাথে সরাসরি কথা বলুন।
-          </p>
           <p style={{ color: "var(--text-on-dark-muted)", fontSize: "var(--text-base)", maxWidth: "var(--max-width-narrow)", margin: "0 auto 2.5rem auto", lineHeight: 1.6 }}>
-            Speak directly with senior AI developers, security consultants, and academy mentors. No sales fluff — real engineering solutions.
+            Whether you need custom AI development, rigorous security auditing, or career-accelerating technical skills, connect directly with our engineering and academy mentors.
           </p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <Link href="/book" className="btn btn-accent" style={{
@@ -609,7 +594,7 @@ export default function Home() {
               gap: "0.5rem"
             }}>
               <Phone size={18} />
-              <span className="font-bengali">ফ্রি কল শিডিউল করুন</span>
+              <span>Schedule Free Discovery Call</span>
             </Link>
             <Link href="/quote" className="btn" style={{
               padding: "0.9rem 2rem",

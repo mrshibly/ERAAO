@@ -128,20 +128,24 @@ export default function AcademyPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
       
       {/* ═══════════════════════════════════════════════════════════════
-          ACADEMY HERO SECTION — Modern Glow & Trust Metrics
+          ACADEMY HERO SECTION — Top Slidable Banners & Clean English
           ═══════════════════════════════════════════════════════════════ */}
-      {/* ═══════════════════════════════════════════════════════════════
-          ACADEMY HERO SECTION — Conversational, Bilingual & Slidable Banners
-          ═══════════════════════════════════════════════════════════════ */}
-      <section className="academy-hero">
+      <section className="academy-hero" style={{ paddingTop: "2rem" }}>
         <div className="academy-hero-glow" />
         
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ textAlign: "center", maxWidth: "52rem", margin: "0 auto" }}>
+          
+          {/* ═══════════════════════════════════════════════════════════════
+              TOP SLIDABLE BILLBOARD BANNERS (User Graphic Banners)
+              ═══════════════════════════════════════════════════════════════ */}
+          <div style={{ maxWidth: "1200px", margin: "0 auto 2.75rem auto" }}>
+            <AcademyBannerSlider />
+          </div>
+
+          <div style={{ textAlign: "center", maxWidth: "48rem", margin: "0 auto" }}>
             
-            <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.45rem 1.1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)", fontSize: "var(--text-xs)", fontWeight: 700 }}>
-              <Sparkles size={14} style={{ color: "var(--accent-blue)" }} /> 
-              <span className="font-bengali">ভবিষ্যতের হাই-ডিমান্ড ক্যারিয়ার স্কিলস</span> • Future-Ready Practitioner Learning
+            <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.4rem 1.1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)", fontSize: "var(--text-xs)", fontWeight: 700 }}>
+              <Sparkles size={14} style={{ color: "var(--accent-blue)" }} /> High-Demand Practitioner Bootcamps
             </span>
 
             <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1rem" }}>
@@ -156,15 +160,12 @@ export default function AcademyPage() {
               </span>
             </h1>
 
-            <p className="font-bengali" style={{ fontSize: "1.15rem", color: "var(--text-primary)", lineHeight: 1.65, fontWeight: 500, maxWidth: "44rem", margin: "0.75rem auto 0 auto" }}>
-              কোনো জটিল মুখস্থ থিওরি নয় — রিয়েল-লাইফ প্রজেক্ট, হ্যান্ডস-অন ল্যাব আর টপ মেন্টরদের সাথে শিখে নিজেকে তৈরি করুন দেশ ও বিদেশের হাই-পেয়িং ক্যারিয়ারের জন্য।
-            </p>
-            <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: "38rem", margin: "0.5rem auto 0 auto" }}>
-              Master high-income skills with step-by-step guidance. Real browser labs, portfolio-ready capstones, and verifiable digital certificates.
+            <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, maxWidth: "40rem", margin: "0 auto 1.75rem auto" }}>
+              Zero boring lectures or academic fluff. Build production-ready projects in cloud labs with direct guidance from active cybersecurity consultants and AI engineers.
             </p>
 
-            {/* Conversational Action CTAs */}
-            <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap", marginTop: "1.75rem" }}>
+            {/* Action CTAs */}
+            <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
               <a
                 href="#courses-catalog"
                 className="btn btn-accent"
@@ -178,8 +179,7 @@ export default function AcademyPage() {
                   color: "white"
                 }}
               >
-                <span className="font-bengali">কোর্সগুলো দেখুন</span>
-                <span>• Explore Courses</span>
+                <span>Explore Bootcamps</span>
                 <ArrowRight size={16} />
               </a>
 
@@ -197,13 +197,13 @@ export default function AcademyPage() {
                 }}
               >
                 <PhoneCall size={16} style={{ color: "var(--accent-teal)" }} />
-                <span className="font-bengali">ফ্রি ক্যারিয়ার গাইডেন্স নিন</span>
+                <span>Book Free Career Guidance</span>
               </Link>
             </div>
           </div>
 
-          {/* Trust Metrics Bar with bilingual micro-labels */}
-          <div className="academy-stat-grid" style={{ marginTop: "2.5rem" }}>
+          {/* Trust Metrics Bar */}
+          <div className="academy-stat-grid" style={{ marginTop: "2.75rem" }}>
             <div className="academy-stat-card">
               <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "var(--accent-blue-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-blue)", flexShrink: 0 }}>
                 <CheckCircle2 size={22} />
@@ -211,7 +211,7 @@ export default function AcademyPage() {
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>98%</div>
                 <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Completion Rate <span className="font-bengali text-muted">(সফল সমাপ্তি)</span>
+                  Completion Rate
                 </div>
               </div>
             </div>
@@ -223,7 +223,7 @@ export default function AcademyPage() {
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>100%</div>
                 <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Hands-On Labs <span className="font-bengali text-muted">(লাইভ প্র্যাকটিস)</span>
+                  Hands-On Labs
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function AcademyPage() {
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>Verified</div>
                 <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Digital Diplomas <span className="font-bengali text-muted">(ভেরিফায়েড)</span>
+                  Digital Diplomas
                 </div>
               </div>
             </div>
@@ -247,24 +247,17 @@ export default function AcademyPage() {
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>10,000+</div>
                 <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Alumni Community <span className="font-bengali text-muted">(লার্নার গ্রুপ)</span>
+                  Alumni Community
                 </div>
               </div>
             </div>
           </div>
 
           {/* ═══════════════════════════════════════════════════════════════
-              FLAGSHIP SLIDABLE BANNERS (User Photo Banners + Interactive Slider)
-              ═══════════════════════════════════════════════════════════════ */}
-          <div style={{ marginTop: "3.5rem", marginBottom: "1rem" }}>
-            <AcademyBannerSlider />
-          </div>
-
-          {/* ═══════════════════════════════════════════════════════════════
-              CONVERSATIONAL LEAD GENERATION MAGNET (Counseling Call & WhatsApp)
+              LEAD GENERATION CARD (Free 1-on-1 Call & WhatsApp)
               ═══════════════════════════════════════════════════════════════ */}
           <div style={{
-            marginTop: "2.5rem",
+            marginTop: "2.75rem",
             background: "linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%)",
             border: "1px solid var(--border-focus)",
             borderRadius: "var(--radius-xl)",
@@ -279,14 +272,14 @@ export default function AcademyPage() {
             <div style={{ maxWidth: "38rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
                 <span className="badge badge-green" style={{ fontSize: "var(--text-xs)", fontWeight: 700, padding: "0.25rem 0.65rem" }}>
-                  <span className="font-bengali">ফ্রি ক্যারিয়ার গাইডলাইন</span> • 1-on-1 Guidance
+                  Free Career Guidance • 1-on-1 Counseling
                 </span>
               </div>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.35rem" }}>
-                <span className="font-bengali">ক্যারিয়ার নিয়ে দ্বিধায় আছেন? কোন কোর্সটি আপনার জন্য পারফেক্ট?</span>
+                Confused Which Track is Best for Your Background?
               </h3>
-              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                আমাদের অভিজ্ঞ ক্যারিয়ার মেন্টরের সাথে ১৫ মিনিটের ফ্রি ওয়ান-টু-ওয়ান ফোনে কথা বলুন অথবা হোয়াটসঅ্যাপে মেসেজ দিন — আপনার বর্তমান স্কিল ও ব্যাকগ্রাউন্ড অনুযায়ী সেরা রোডম্যাপ বেছে দিতে আমরা সাহায্য করব।
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Speak directly with our senior mentors for a free 15-minute 1-on-1 discovery call or message our admissions team on WhatsApp. We will help you identify the fastest roadmap to freelance clients and high-income tech careers.
               </p>
             </div>
 
@@ -302,7 +295,7 @@ export default function AcademyPage() {
                 }}
               >
                 <PhoneCall size={16} />
-                <span className="font-bengali">ফ্রি কল শিডিউল করুন</span>
+                <span>Schedule Free Call</span>
               </Link>
               <a
                 href="https://wa.me/8801700000000?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20know%20which%20course%20is%20best%20for%20me"
@@ -322,7 +315,7 @@ export default function AcademyPage() {
                 }}
               >
                 <MessageSquare size={16} style={{ color: "var(--color-success)" }} />
-                <span className="font-bengali">হোয়াটসঅ্যাপ চ্যাট</span>
+                <span>WhatsApp Chat</span>
               </a>
             </div>
           </div>
@@ -347,7 +340,7 @@ export default function AcademyPage() {
                 <Search size={18} style={{ position: "absolute", left: "1.1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                 <input
                   type="text"
-                  placeholder="কোর্স বা টপিক খুঁজুন (e.g. AI Automation, Bug Bounty, Spoken English, Python)..."
+                  placeholder="Search bootcamps (e.g. AI Automation, Ethical Hacking, Spoken English, Python)..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -381,7 +374,7 @@ export default function AcademyPage() {
                   className="input-field"
                   style={{ cursor: "pointer" }}
                 >
-                  <option value="all">All Topics (সকল ক্যাটাগরি)</option>
+                  <option value="all">All Topics & Tracks</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
@@ -397,7 +390,7 @@ export default function AcademyPage() {
                   className="btn btn-outline"
                   style={{ padding: "0.6rem 1rem", fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: "0.3rem" }}
                 >
-                  <X size={14} /> <span className="font-bengali">ফিল্টার রিসেট</span>
+                  <X size={14} /> <span>Clear Filters</span>
                 </button>
               )}
             </div>
@@ -409,10 +402,10 @@ export default function AcademyPage() {
                   <Filter size={13} /> Level:
                 </span>
                 {[
-                  { key: "all", label: "সব লেভেল (All)" },
-                  { key: "beginner", label: "শুরুর ধাপ (Beginner)" },
-                  { key: "intermediate", label: "মাঝারি (Intermediate)" },
-                  { key: "advanced", label: "অ্যাডভান্সড (Advanced)" }
+                  { key: "all", label: "All Levels" },
+                  { key: "beginner", label: "Beginner" },
+                  { key: "intermediate", label: "Intermediate" },
+                  { key: "advanced", label: "Advanced" }
                 ].map((lvl) => {
                   const active = selectedLevel === lvl.key;
                   return (
@@ -425,7 +418,7 @@ export default function AcademyPage() {
                       className={`filter-pill ${active ? "active" : ""}`}
                       style={{ padding: "0.35rem 0.85rem", fontSize: "var(--text-xs)" }}
                     >
-                      <span className="font-bengali">{lvl.label}</span>
+                      <span>{lvl.label}</span>
                     </button>
                   );
                 })}
@@ -624,13 +617,13 @@ export default function AcademyPage() {
           
           <div style={{ textAlign: "center", maxWidth: "44rem", margin: "0 auto 3.5rem auto" }}>
             <span className="section-badge" style={{ background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", marginBottom: "0.75rem" }}>
-              <span className="font-bengali">কেন আমাদের একাডেমি আলাদা?</span> • The ERAAO Advantage
+              Why Choose ERAAO • The Advantage
             </span>
             <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
-              <span className="font-bengali">মুখস্থ বিদ্যা নয়, কাজের মাধ্যমে শেখা</span>
+              Learn by Doing, Not Memorizing
             </h2>
-            <p className="font-bengali" style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.65, marginTop: "0.75rem" }}>
-              প্রথাগত বোরিং স্লাইড দেখে সময় নষ্ট না করে সরাসরি লাইভ ল্যাব, ক্লাউড স্যান্ডবক্স আর রিয়েল ক্লায়েন্ট প্রজেক্টে কাজ করে নিজেকে তৈরি করুন।
+            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.65, marginTop: "0.75rem" }}>
+              Skip passive video watching. Build production-grade skills through browser-based virtual labs, sandbox attack simulations, and live mentor code reviews.
             </p>
           </div>
 
@@ -641,11 +634,11 @@ export default function AcademyPage() {
                 <Terminal size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                <span className="font-bengali">ব্রাউজারেই লাইভ ল্যাব</span>
-                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Zero Setup Cloud Labs</span>
+                Zero-Setup Cloud Labs
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Instant Browser Access</span>
               </h3>
-              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                ল্যাপটপে ভারী সফটওয়্যার ইন্সটলের ঝামেলা নেই — ব্রাউজার ওপেন করেই সরাসরি Kali Linux ও AI মডেল নিয়ে কাজ শুরু করতে পারবেন।
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                No complicated local installations. Launch full Kali Linux environments and AI developer sandboxes directly from any modern web browser.
               </p>
             </div>
 
@@ -654,11 +647,11 @@ export default function AcademyPage() {
                 <Users size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                <span className="font-bengali">ইন্ডাস্ট্রি স্পেশালিস্ট মেন্টর</span>
-                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Active Industry Mentors</span>
+                Active Industry Mentors
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>1-on-1 Code & Lab Reviews</span>
               </h3>
-              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                যারা অলরেডি সাইবার সিকিউরিটি ও AI ফিল্ডে ফুল-টাইম কাজ করছেন, তাদের কাছ থেকেই শিখুন বাস্তব অভিজ্ঞতা ও ক্যারিয়ার ট্রিকস।
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Learn directly from professionals who are currently working full-time in cybersecurity operations, AI automation, and global tech consulting.
               </p>
             </div>
 
@@ -667,11 +660,11 @@ export default function AcademyPage() {
                 <Award size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                <span className="font-bengali">ভেরিফায়েড সার্টিফিকেট</span>
-                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Verifiable Credentials</span>
+                Verifiable Credentials
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Digital Cryptographic Badges</span>
               </h3>
-              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                কোর্স সফলভাবে শেষ করলে পাবেন গ্লোবালি ভেরিফাইড ডিজিটাল সার্টিফিকেট, যা সরাসরি LinkedIn এবং আপনার সিভিতে যোগ করতে পারবেন।
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Earn globally verifiable credentials with unique verification IDs ready to showcase on LinkedIn, resumes, and client proposals.
               </p>
             </div>
 
@@ -680,11 +673,11 @@ export default function AcademyPage() {
                 <ShieldCheck size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                <span className="font-bengali">ক্যারিয়ার ও ফ্রিল্যান্স সাপোর্ট</span>
-                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Career Acceleration</span>
+                Career & Freelance Acceleration
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Interview & Portfolio Prep</span>
               </h3>
-              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                সিভি ও পোর্টফোলিও রিভিউ, মক ইন্টারভিউ এবং টপ পারফরমারদের জন্য সরাসরি জব রেফারেন্স ও ফ্রিল্যান্সিং গাইডলাইন।
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Resume optimization, GitHub audit, mock technical interviews, and direct guidance on winning high-paying international remote contracts.
               </p>
             </div>
 
@@ -707,13 +700,13 @@ export default function AcademyPage() {
           }}>
             <div style={{ maxWidth: "36rem" }}>
               <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", marginBottom: "0.75rem" }}>
-                <span className="font-bengali">কর্পোরেট ও কাস্টম টিম ট্রেনিং</span> • Enterprise Cohorts
+                Corporate & Custom Cohorts • Enterprise Training
               </span>
               <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "white", marginTop: "0.5rem" }}>
-                <span className="font-bengali">আপনার পুরো টিমকে আপগ্রেড করতে চান?</span>
+                Upskill Your Engineering & Security Teams
               </h3>
-              <p className="font-bengali" style={{ color: "#94a3b8", fontSize: "var(--text-sm)", lineHeight: 1.6, marginTop: "0.5rem" }}>
-                কোম্পানির টিম মেম্বারদের আধুনিক AI টুলস, এন্টারপ্রাইজ সাইবার সিকিউরিটি ও প্রফেশনাল স্পোকেন ইংলিশে দক্ষ করে তুলতে কাস্টমাইজড ট্রেনিং ব্যাচ বুক করুন।
+              <p style={{ color: "#94a3b8", fontSize: "var(--text-sm)", lineHeight: 1.6, marginTop: "0.5rem" }}>
+                Equip your workforce with cutting-edge AI automation workflows, defense-in-depth cybersecurity practices, and professional executive communication.
               </p>
             </div>
 
@@ -723,7 +716,7 @@ export default function AcademyPage() {
                 className="btn btn-accent"
                 style={{ background: "linear-gradient(135deg, var(--accent-blue), var(--accent-violet))", color: "white", padding: "0.85rem 1.75rem", borderRadius: "var(--radius-md)", fontWeight: 700 }}
               >
-                <span className="font-bengali">টিম ট্রেনিং কনসালটেশন নিন</span>
+                <span>Book Corporate Discovery</span>
                 <ArrowRight size={16} />
               </Link>
             </div>

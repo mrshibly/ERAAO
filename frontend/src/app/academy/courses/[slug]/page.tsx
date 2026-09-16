@@ -223,7 +223,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
                 <span className="badge badge-blue" style={{ fontSize: "var(--text-xs)", fontWeight: 700 }}>
                   <Sparkles size={13} style={{ color: "var(--accent-blue)" }} />
-                  <span className="font-bengali">কোর্স পরিচিতি</span> • Overview
+                  <span>Curriculum Overview</span>
                 </span>
               </div>
               <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem" }}>
@@ -233,7 +233,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 {course.description || "This comprehensive course provides in-depth technical knowledge and hands-on skill building designed by active industry experts."}
               </p>
 
-              {/* Who is this course for (Conversational Bengali) */}
+              {/* Who is this course for */}
               <div style={{
                 background: "var(--bg-secondary)",
                 border: "1px solid var(--border-color)",
@@ -243,48 +243,47 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               }}>
                 <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <Users size={18} style={{ color: "var(--accent-blue)" }} />
-                  <span className="font-bengali">এই কোর্সটি কাদের জন্য?</span>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500 }}>(Who is this for?)</span>
+                  <span>Who is this bootcamp designed for?</span>
                 </h3>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
                     <CheckCircle2 size={16} style={{ color: "var(--color-success)", flexShrink: 0, marginTop: "3px" }} />
-                    <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
-                      <strong>শিক্ষার্থী ও নতুন শিক্ষার্থী:</strong> যারা কোনো জটিল প্রোগ্রামিং ব্যাকগ্রাউন্ড ছাড়াই শুরু থেকে স্টেপ-বাই-স্টেপ প্র্যাকটিক্যাল স্কিল শিখতে চান।
+                    <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
+                      <strong>Beginners &amp; Career Starters:</strong> Learn step-by-step with practical labs. No advanced computer science or programming background required.
                     </p>
                   </div>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
                     <CheckCircle2 size={16} style={{ color: "var(--accent-blue)", flexShrink: 0, marginTop: "3px" }} />
-                    <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
-                      <strong>ফ্রিল্যান্সার ও সার্ভিস প্রোভাইডার:</strong> যারা ইন্টারন্যাশনাল ক্লায়েন্টদের হাই-টিকিট প্রজেক্ট ডেলিভারি দিয়ে ইনকাম বৃদ্ধি করতে চান।
+                    <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
+                      <strong>Freelancers &amp; Independent Consultants:</strong> Master high-demand skills to build and deliver high-ticket projects for international clients.
                     </p>
                   </div>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
                     <CheckCircle2 size={16} style={{ color: "var(--accent-violet)", flexShrink: 0, marginTop: "3px" }} />
-                    <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
-                      <strong>কর্মজীবী প্রফেশনাল:</strong> যারা নিজেদের স্কিল আপগ্রেড করে আধুনিক AI টুলস ও সাইবার সিকিউরিটিতে ক্যারিয়ার সুইচ বা প্রোমোশন চান।
+                    <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
+                      <strong>Working Tech Professionals:</strong> Modernize your skillset with real-world AI automation and cybersecurity to switch fields or secure promotions.
                     </p>
                   </div>
                 </div>
               </div>
 
               <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem" }}>
-                <span className="font-bengali">কোর্স শেষে আপনি কী কী শিখবেন ও তৈরি করবেন?</span>
-                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500, marginTop: "2px" }}>Practical Real-World Outcomes</span>
+                What You Will Master &amp; Build
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500, marginTop: "2px" }}>Practical Real-World Competencies</span>
               </h3>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
                 {[
-                  "হাতে-কলমে লাইভ ব্রাউজার ল্যাব প্র্যাকটিস (Zero Setup)",
-                  "রিয়েল-লাইফ ক্লায়েন্ট ও পোর্টফোলিও প্রজেক্ট তৈরি",
-                  "ইন্ডাস্ট্রি ফ্রেমওয়ার্ক ও সিকিউরিটি বেস্ট প্র্যাকটিসেস",
-                  "সরাসরি মেন্টর সাপোর্ট ও ওয়ান-টু-ওয়ান প্রবলেম সলভিং",
-                  "গ্লোবালি ভেরিফায়েড ডিজিটাল সার্টিফিকেট (LinkedIn-ready)",
-                  "লাইফটাইম কোর্স অ্যাক্সেস এবং রেগুলার সিলেবাস আপডেট"
+                  "Hands-on practice in live browser sandboxes (Zero Setup)",
+                  "Production-grade client & portfolio-ready capstone projects",
+                  "Modern industry security frameworks & automated workflows",
+                  "Direct mentor code reviews & 1-on-1 technical troubleshooting",
+                  "Globally verifiable digital credentials (LinkedIn-ready)",
+                  "Full lifetime course access & continuous syllabus updates"
                 ].map((item, idx) => (
                   <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
                     <CheckCircle2 size={18} style={{ color: "var(--color-success)", flexShrink: 0, marginTop: "2px" }} />
-                    <span className="font-bengali">{item}</span>
+                    <span>{item}</span>
                   </div>
                 ))}
               </div>
@@ -295,7 +294,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
                 <div>
                   <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)" }}>
-                    Curriculum Syllabus <span className="font-bengali text-muted" style={{ fontSize: "var(--text-sm)", fontWeight: 500 }}>(কোর্স মডিউলসমূহ)</span>
+                    Curriculum Syllabus
                   </h2>
                   <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
                     {course.modules?.length || 0} Modules &bull; {totalLessons} Lectures
@@ -354,17 +353,17 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
             <div className="card" style={{ padding: "2rem", position: "sticky", top: "2rem", boxShadow: "var(--shadow-md)" }}>
               <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
                 <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
-                  Tuition Fee <span className="font-bengali">(কোর্স ফি)</span>
+                  Tuition Fee
                 </span>
                 <div style={{ fontSize: "var(--text-3xl)", fontWeight: 900, color: "var(--text-primary)", marginTop: "0.25rem" }}>
-                  {course.price > 0 ? `৳${course.price} BDT` : "Free Access"}
+                  {course.price > 0 ? `৳${course.price.toLocaleString()} BDT` : "Free Access"}
                 </div>
               </div>
 
               {enrollSuccess ? (
                 <div style={{ background: "var(--color-success-bg)", border: "1px solid rgba(34, 197, 94, 0.3)", color: "var(--color-success)", padding: "1rem", borderRadius: "var(--radius-md)", textAlign: "center", fontWeight: 700, marginBottom: "1rem" }}>
                   <CheckCircle2 size={24} style={{ margin: "0 auto 0.5rem auto", display: "block" }} />
-                  <span className="font-bengali">সফলভাবে ভর্তি সম্পন্ন হয়েছে! ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...</span>
+                  <span>Successfully enrolled! Redirecting to dashboard...</span>
                 </div>
               ) : (
                 <button
@@ -373,8 +372,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   className="btn btn-accent"
                   style={{ width: "100%", padding: "0.85rem", fontSize: "var(--text-base)", marginBottom: "1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
                 >
-                  <span className="font-bengali">{enrolling ? "যুক্ত করা হচ্ছে..." : "কোর্সে যুক্ত হোন"}</span>
-                  <span>• {enrolling ? "Enrolling..." : "Enroll Now"}</span>
+                  <span>{enrolling ? "Enrolling..." : "Enroll in Bootcamp"}</span>
                   <ArrowRight size={18} />
                 </button>
               )}
@@ -382,15 +380,15 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <Shield size={16} style={{ color: "var(--accent-blue)" }} />
-                  <span className="font-bengali">লাইফটাইম অ্যাক্সেস (Full Lifetime Access)</span>
+                  <span>Full Lifetime Access</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <Award size={16} style={{ color: "var(--color-warning)" }} />
-                  <span className="font-bengali">ভেরিফায়েড সার্টিফিকেট (Verifiable Certificate)</span>
+                  <span>Verifiable Digital Certificate</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <Clock size={16} style={{ color: "var(--color-success)" }} />
-                  <span className="font-bengali">নিজের সুবিধাজনক সময়ে শিখুন (Self-Paced)</span>
+                  <span>Self-Paced with Flexible Schedule</span>
                 </div>
               </div>
 
@@ -404,12 +402,12 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: "0.35rem" }}>
                   <Sparkles size={14} style={{ color: "var(--accent-blue)" }} />
-                  <span className="font-bengali" style={{ fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--text-primary)" }}>
-                    কোর্সটি আপনার জন্য সঠিক কি না দ্বিধায় আছেন?
+                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--text-primary)" }}>
+                    Unsure if this track is right for you?
                   </span>
                 </div>
-                <p className="font-bengali" style={{ fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "0.75rem" }}>
-                  আমাদের মেন্টরের সাথে সরাসরি হোয়াটসঅ্যাপে চ্যাট করুন। আপনার ব্যাকগ্রাউন্ড অনুযায়ী বিস্তারিত জেনে নিন।
+                <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "0.75rem" }}>
+                  Chat directly with our admissions mentors on WhatsApp to get personalized guidance tailored to your background.
                 </p>
                 <a
                   href={`https://wa.me/8801700000000?text=${encodeURIComponent(`Hello ERAAO Academy, I want to know more about the course: ${course.title}`)}`}
@@ -429,7 +427,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   }}
                 >
                   <MessageSquare size={14} style={{ color: "var(--color-success)" }} />
-                  <span className="font-bengali">হোয়াটসঅ্যাপে প্রশ্ন করুন</span>
+                  <span>Ask via WhatsApp</span>
                 </a>
               </div>
             </div>

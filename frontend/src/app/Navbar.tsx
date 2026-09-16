@@ -70,31 +70,7 @@ export default function Navbar() {
         <nav className={`nav-menu ${mobileMenuOpen ? "open" : ""}`}>
           <ul className="nav-links">
             <li><Link href="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link></li>
-            <li>
-              <Link
-                href="/academy"
-                className="nav-link"
-                style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span>Academy</span>
-                <span
-                  className="font-bengali"
-                  style={{
-                    fontSize: "0.68rem",
-                    padding: "0.15rem 0.5rem",
-                    background: "rgba(14, 165, 233, 0.12)",
-                    color: "var(--accent-blue)",
-                    borderRadius: "var(--radius-full)",
-                    fontWeight: 700,
-                    lineHeight: 1.3,
-                    border: "1px solid rgba(14, 165, 233, 0.25)"
-                  }}
-                >
-                  ভর্তি চলছে
-                </span>
-              </Link>
-            </li>
+            <li><Link href="/academy" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Academy</Link></li>
             <li><Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Services</Link></li>
             <li><Link href="/careers" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Careers</Link></li>
             <li><Link href="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About</Link></li>
