@@ -8,8 +8,9 @@ import Image from "next/image";
 import {
   BookOpen, Clock, Loader, Search, ArrowRight, ChevronLeft, ChevronRight,
   X, Filter, ShieldCheck, Award, Terminal, Users, Sparkles, CheckCircle2,
-  Layers, Star, Laptop, ArrowUpRight
+  Layers, Star, Laptop, ArrowUpRight, MessageSquare, PhoneCall
 } from "lucide-react";
+import AcademyBannerSlider from "@/components/AcademyBannerSlider";
 
 interface Category {
   id: string;
@@ -129,42 +130,89 @@ export default function AcademyPage() {
       {/* ═══════════════════════════════════════════════════════════════
           ACADEMY HERO SECTION — Modern Glow & Trust Metrics
           ═══════════════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════════════
+          ACADEMY HERO SECTION — Conversational, Bilingual & Slidable Banners
+          ═══════════════════════════════════════════════════════════════ */}
       <section className="academy-hero">
         <div className="academy-hero-glow" />
         
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ textAlign: "center", maxWidth: "48rem", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", maxWidth: "52rem", margin: "0 auto" }}>
             
-            <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.4rem 1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)" }}>
-              <Sparkles size={14} style={{ color: "var(--accent-blue)" }} /> Professional Practitioner Academy
+            <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.45rem 1.1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)", fontSize: "var(--text-xs)", fontWeight: 700 }}>
+              <Sparkles size={14} style={{ color: "var(--accent-blue)" }} /> 
+              <span className="font-bengali">ভবিষ্যতের হাই-ডিমান্ড ক্যারিয়ার স্কিলস</span> • Future-Ready Practitioner Learning
             </span>
 
-            <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem" }}>
-              Master Applied AI &amp;{" "}
+            <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1rem" }}>
+              Skills That Actually Pay:{" "}
               <span className="gradient-text-animated" style={{
                 background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-teal) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text"
               }}>
-                Offensive Cybersecurity
+                AI, Cyber Security &amp; Spoken English
               </span>
             </h1>
 
-            <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, maxWidth: "40rem", margin: "0 auto" }}>
-              Curated practitioner bootcamps designed by active security consultants and AI engineers. Real browser labs, cryptographic certificate verification, and career-accelerating roadmaps.
+            <p className="font-bengali" style={{ fontSize: "1.15rem", color: "var(--text-primary)", lineHeight: 1.65, fontWeight: 500, maxWidth: "44rem", margin: "0.75rem auto 0 auto" }}>
+              কোনো জটিল মুখস্থ থিওরি নয় — রিয়েল-লাইফ প্রজেক্ট, হ্যান্ডস-অন ল্যাব আর টপ মেন্টরদের সাথে শিখে নিজেকে তৈরি করুন দেশ ও বিদেশের হাই-পেয়িং ক্যারিয়ারের জন্য।
             </p>
+            <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: "38rem", margin: "0.5rem auto 0 auto" }}>
+              Master high-income skills with step-by-step guidance. Real browser labs, portfolio-ready capstones, and verifiable digital certificates.
+            </p>
+
+            {/* Conversational Action CTAs */}
+            <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap", marginTop: "1.75rem" }}>
+              <a
+                href="#courses-catalog"
+                className="btn btn-accent"
+                style={{
+                  padding: "0.8rem 1.75rem",
+                  borderRadius: "var(--radius-full)",
+                  fontWeight: 700,
+                  fontSize: "var(--text-sm)",
+                  background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%)",
+                  boxShadow: "0 8px 20px rgba(14, 165, 233, 0.3)",
+                  color: "white"
+                }}
+              >
+                <span className="font-bengali">কোর্সগুলো দেখুন</span>
+                <span>• Explore Courses</span>
+                <ArrowRight size={16} />
+              </a>
+
+              <Link
+                href="/book"
+                className="btn btn-outline"
+                style={{
+                  padding: "0.8rem 1.6rem",
+                  borderRadius: "var(--radius-full)",
+                  fontWeight: 600,
+                  fontSize: "var(--text-sm)",
+                  background: "var(--card-bg)",
+                  borderColor: "var(--border-focus)",
+                  color: "var(--text-primary)"
+                }}
+              >
+                <PhoneCall size={16} style={{ color: "var(--accent-teal)" }} />
+                <span className="font-bengali">ফ্রি ক্যারিয়ার গাইডেন্স নিন</span>
+              </Link>
+            </div>
           </div>
 
-          {/* Trust Metrics Bar */}
-          <div className="academy-stat-grid">
+          {/* Trust Metrics Bar with bilingual micro-labels */}
+          <div className="academy-stat-grid" style={{ marginTop: "2.5rem" }}>
             <div className="academy-stat-card">
               <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "var(--accent-blue-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-blue)", flexShrink: 0 }}>
                 <CheckCircle2 size={22} />
               </div>
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>98%</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Completion Rate</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
+                  Completion Rate <span className="font-bengali text-muted">(সফল সমাপ্তি)</span>
+                </div>
               </div>
             </div>
 
@@ -174,7 +222,9 @@ export default function AcademyPage() {
               </div>
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>100%</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Hands-On Labs</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
+                  Hands-On Labs <span className="font-bengali text-muted">(লাইভ প্র্যাকটিস)</span>
+                </div>
               </div>
             </div>
 
@@ -184,7 +234,9 @@ export default function AcademyPage() {
               </div>
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>Verified</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Digital Diplomas</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
+                  Digital Diplomas <span className="font-bengali text-muted">(ভেরিফায়েড)</span>
+                </div>
               </div>
             </div>
 
@@ -194,8 +246,84 @@ export default function AcademyPage() {
               </div>
               <div>
                 <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>10,000+</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Alumni Community</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
+                  Alumni Community <span className="font-bengali text-muted">(লার্নার গ্রুপ)</span>
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════════
+              FLAGSHIP SLIDABLE BANNERS (User Photo Banners + Interactive Slider)
+              ═══════════════════════════════════════════════════════════════ */}
+          <div style={{ marginTop: "3.5rem", marginBottom: "1rem" }}>
+            <AcademyBannerSlider />
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════════════
+              CONVERSATIONAL LEAD GENERATION MAGNET (Counseling Call & WhatsApp)
+              ═══════════════════════════════════════════════════════════════ */}
+          <div style={{
+            marginTop: "2.5rem",
+            background: "linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%)",
+            border: "1px solid var(--border-focus)",
+            borderRadius: "var(--radius-xl)",
+            padding: "1.75rem 2rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1.5rem",
+            boxShadow: "var(--shadow-sm)"
+          }}>
+            <div style={{ maxWidth: "38rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+                <span className="badge badge-green" style={{ fontSize: "var(--text-xs)", fontWeight: 700, padding: "0.25rem 0.65rem" }}>
+                  <span className="font-bengali">ফ্রি ক্যারিয়ার গাইডলাইন</span> • 1-on-1 Guidance
+                </span>
+              </div>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.35rem" }}>
+                <span className="font-bengali">ক্যারিয়ার নিয়ে দ্বিধায় আছেন? কোন কোর্সটি আপনার জন্য পারফেক্ট?</span>
+              </h3>
+              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                আমাদের অভিজ্ঞ ক্যারিয়ার মেন্টরের সাথে ১৫ মিনিটের ফ্রি ওয়ান-টু-ওয়ান ফোনে কথা বলুন অথবা হোয়াটসঅ্যাপে মেসেজ দিন — আপনার বর্তমান স্কিল ও ব্যাকগ্রাউন্ড অনুযায়ী সেরা রোডম্যাপ বেছে দিতে আমরা সাহায্য করব।
+              </p>
+            </div>
+
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+              <Link
+                href="/book"
+                className="btn btn-accent"
+                style={{
+                  padding: "0.75rem 1.4rem",
+                  fontSize: "var(--text-sm)",
+                  borderRadius: "var(--radius-md)",
+                  fontWeight: 700
+                }}
+              >
+                <PhoneCall size={16} />
+                <span className="font-bengali">ফ্রি কল শিডিউল করুন</span>
+              </Link>
+              <a
+                href="https://wa.me/8801700000000?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20know%20which%20course%20is%20best%20for%20me"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline"
+                style={{
+                  padding: "0.75rem 1.25rem",
+                  fontSize: "var(--text-sm)",
+                  borderRadius: "var(--radius-md)",
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  borderColor: "rgba(16, 185, 129, 0.4)",
+                  color: "var(--text-primary)"
+                }}
+              >
+                <MessageSquare size={16} style={{ color: "var(--color-success)" }} />
+                <span className="font-bengali">হোয়াটসঅ্যাপ চ্যাট</span>
+              </a>
             </div>
           </div>
 
@@ -205,7 +333,7 @@ export default function AcademyPage() {
       {/* ═══════════════════════════════════════════════════════════════
           CATALOG SECTION — Interactive Filters & Course Grid
           ═══════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: "3.5rem 0", background: "var(--bg-secondary)" }}>
+      <section id="courses-catalog" style={{ padding: "3.5rem 0", background: "var(--bg-secondary)" }}>
         <div className="container">
           
           {/* Filter Controls Box */}
@@ -219,7 +347,7 @@ export default function AcademyPage() {
                 <Search size={18} style={{ position: "absolute", left: "1.1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                 <input
                   type="text"
-                  placeholder="Search bootcamps (e.g. LLMs, Pentesting, OSCP prep, Python)..."
+                  placeholder="কোর্স বা টপিক খুঁজুন (e.g. AI Automation, Bug Bounty, Spoken English, Python)..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -243,7 +371,7 @@ export default function AcademyPage() {
               </div>
 
               {/* Category Selector */}
-              <div style={{ flex: "0 1 220px" }}>
+              <div style={{ flex: "0 1 240px" }}>
                 <select
                   value={selectedCategory}
                   onChange={(e) => {
@@ -253,7 +381,7 @@ export default function AcademyPage() {
                   className="input-field"
                   style={{ cursor: "pointer" }}
                 >
-                  <option value="all">All Topics &amp; Tracks</option>
+                  <option value="all">All Topics (সকল ক্যাটাগরি)</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
@@ -269,7 +397,7 @@ export default function AcademyPage() {
                   className="btn btn-outline"
                   style={{ padding: "0.6rem 1rem", fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: "0.3rem" }}
                 >
-                  <X size={14} /> <span>Clear Filters</span>
+                  <X size={14} /> <span className="font-bengali">ফিল্টার রিসেট</span>
                 </button>
               )}
             </div>
@@ -281,10 +409,10 @@ export default function AcademyPage() {
                   <Filter size={13} /> Level:
                 </span>
                 {[
-                  { key: "all", label: "All Levels" },
-                  { key: "beginner", label: "Beginner" },
-                  { key: "intermediate", label: "Intermediate" },
-                  { key: "advanced", label: "Advanced" }
+                  { key: "all", label: "সব লেভেল (All)" },
+                  { key: "beginner", label: "শুরুর ধাপ (Beginner)" },
+                  { key: "intermediate", label: "মাঝারি (Intermediate)" },
+                  { key: "advanced", label: "অ্যাডভান্সড (Advanced)" }
                 ].map((lvl) => {
                   const active = selectedLevel === lvl.key;
                   return (
@@ -297,7 +425,7 @@ export default function AcademyPage() {
                       className={`filter-pill ${active ? "active" : ""}`}
                       style={{ padding: "0.35rem 0.85rem", fontSize: "var(--text-xs)" }}
                     >
-                      {lvl.label}
+                      <span className="font-bengali">{lvl.label}</span>
                     </button>
                   );
                 })}
@@ -494,15 +622,15 @@ export default function AcademyPage() {
       <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
         <div className="container">
           
-          <div style={{ textAlign: "center", maxWidth: "42rem", margin: "0 auto 3.5rem auto" }}>
+          <div style={{ textAlign: "center", maxWidth: "44rem", margin: "0 auto 3.5rem auto" }}>
             <span className="section-badge" style={{ background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", marginBottom: "0.75rem" }}>
-              The ERAAO Advantage
+              <span className="font-bengali">কেন আমাদের একাডেমি আলাদা?</span> • The ERAAO Advantage
             </span>
             <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
-              Built for Serious Practitioners
+              <span className="font-bengali">মুখস্থ বিদ্যা নয়, কাজের মাধ্যমে শেখা</span>
             </h2>
-            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginTop: "0.75rem" }}>
-              We reject passive slide decks. Our platform is engineered around hands-on capture-the-flag environments, real LLM deployments, and active industry defense drills.
+            <p className="font-bengali" style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.65, marginTop: "0.75rem" }}>
+              প্রথাগত বোরিং স্লাইড দেখে সময় নষ্ট না করে সরাসরি লাইভ ল্যাব, ক্লাউড স্যান্ডবক্স আর রিয়েল ক্লায়েন্ট প্রজেক্টে কাজ করে নিজেকে তৈরি করুন।
             </p>
           </div>
 
@@ -513,10 +641,11 @@ export default function AcademyPage() {
                 <Terminal size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                Browser Virtual Labs
+                <span className="font-bengali">ব্রাউজারেই লাইভ ল্যাব</span>
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Zero Setup Cloud Labs</span>
               </h3>
-              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                Launch dedicated Kali Linux and AI development sandboxes straight in your browser. Zero local installation or hardware requirements.
+              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                ল্যাপটপে ভারী সফটওয়্যার ইন্সটলের ঝামেলা নেই — ব্রাউজার ওপেন করেই সরাসরি Kali Linux ও AI মডেল নিয়ে কাজ শুরু করতে পারবেন।
               </p>
             </div>
 
@@ -525,10 +654,11 @@ export default function AcademyPage() {
                 <Users size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                Active Industry Mentors
+                <span className="font-bengali">ইন্ডাস্ট্রি স্পেশালিস্ট মেন্টর</span>
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Active Industry Mentors</span>
               </h3>
-              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                Learn directly from lead penetration testers, AI engineers, and cloud architects working with Fortune 500 enterprise networks.
+              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                যারা অলরেডি সাইবার সিকিউরিটি ও AI ফিল্ডে ফুল-টাইম কাজ করছেন, তাদের কাছ থেকেই শিখুন বাস্তব অভিজ্ঞতা ও ক্যারিয়ার ট্রিকস।
               </p>
             </div>
 
@@ -537,10 +667,11 @@ export default function AcademyPage() {
                 <Award size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                Cryptographic Credentials
+                <span className="font-bengali">ভেরিফায়েড সার্টিফিকেট</span>
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Verifiable Credentials</span>
               </h3>
-              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                Earn tamper-evident digital certificates verifiable via our public verification portal (`/verify`) and LinkedIn credentials API.
+              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                কোর্স সফলভাবে শেষ করলে পাবেন গ্লোবালি ভেরিফাইড ডিজিটাল সার্টিফিকেট, যা সরাসরি LinkedIn এবং আপনার সিভিতে যোগ করতে পারবেন।
               </p>
             </div>
 
@@ -549,10 +680,11 @@ export default function AcademyPage() {
                 <ShieldCheck size={24} />
               </div>
               <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                Enterprise Placement
+                <span className="font-bengali">ক্যারিয়ার ও ফ্রিল্যান্স সাপোর্ট</span>
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Career Acceleration</span>
               </h3>
-              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                Top bootcamp graduates receive direct candidate introductions to banking, telecommunications, and tech firms hiring in Bangladesh.
+              <p className="font-bengali" style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                সিভি ও পোর্টফোলিও রিভিউ, মক ইন্টারভিউ এবং টপ পারফরমারদের জন্য সরাসরি জব রেফারেন্স ও ফ্রিল্যান্সিং গাইডলাইন।
               </p>
             </div>
 
@@ -573,15 +705,15 @@ export default function AcademyPage() {
             boxShadow: "var(--shadow-xl)",
             border: "1px solid rgba(255, 255, 255, 0.1)"
           }}>
-            <div style={{ maxWidth: "34rem" }}>
+            <div style={{ maxWidth: "36rem" }}>
               <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", marginBottom: "0.75rem" }}>
-                Enterprise Cohorts &amp; Custom Training
+                <span className="font-bengali">কর্পোরেট ও কাস্টম টিম ট্রেনিং</span> • Enterprise Cohorts
               </span>
               <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "white", marginTop: "0.5rem" }}>
-                Upskill Your Engineering &amp; Security Teams
+                <span className="font-bengali">আপনার পুরো টিমকে আপগ্রেড করতে চান?</span>
               </h3>
-              <p style={{ color: "#94a3b8", fontSize: "var(--text-sm)", lineHeight: 1.6, marginTop: "0.5rem" }}>
-                Customized corporate bootcamps, red-teaming workshops, and private AI architecture sessions tailored for enterprise teams.
+              <p className="font-bengali" style={{ color: "#94a3b8", fontSize: "var(--text-sm)", lineHeight: 1.6, marginTop: "0.5rem" }}>
+                কোম্পানির টিম মেম্বারদের আধুনিক AI টুলস, এন্টারপ্রাইজ সাইবার সিকিউরিটি ও প্রফেশনাল স্পোকেন ইংলিশে দক্ষ করে তুলতে কাস্টমাইজড ট্রেনিং ব্যাচ বুক করুন।
               </p>
             </div>
 
@@ -591,7 +723,7 @@ export default function AcademyPage() {
                 className="btn btn-accent"
                 style={{ background: "linear-gradient(135deg, var(--accent-blue), var(--accent-violet))", color: "white", padding: "0.85rem 1.75rem", borderRadius: "var(--radius-md)", fontWeight: 700 }}
               >
-                <span>Book Corporate Discovery</span>
+                <span className="font-bengali">টিম ট্রেনিং কনসালটেশন নিন</span>
                 <ArrowRight size={16} />
               </Link>
             </div>

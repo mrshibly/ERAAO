@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono, Great_Vibes, Cinzel } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono, Great_Vibes, Cinzel, Hind_Siliguri } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
 import ConditionalWrapper from "./ConditionalWrapper";
 import Navbar from "./Navbar";
@@ -33,6 +33,13 @@ const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
   weight: ["700", "800"],
+  display: "swap",
+});
+
+const hindSiliguri = Hind_Siliguri({
+  variable: "--font-bengali",
+  subsets: ["bengali", "latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -99,7 +106,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${greatVibes.variable} ${cinzel.variable}`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${greatVibes.variable} ${cinzel.variable} ${hindSiliguri.variable}`}>
       <body suppressHydrationWarning>
         <JsonLd />
         <ServiceWorkerRegister />
