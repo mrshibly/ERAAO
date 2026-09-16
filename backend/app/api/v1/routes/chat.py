@@ -5,14 +5,11 @@ FastAPI Route for AI Assistant Chatbot integration.
 from __future__ import annotations
 
 from fastapi import APIRouter, Request, Depends
-from slowapi import Limiter
-from slowapi.util import get_remote_address
-
+from app.core.rate_limit import limiter
 from app.schemas.chat import ChatRequest, ChatResponse
 from app.services.ai_chat_service import AIChatService
 
 router = APIRouter()
-limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("/message", response_model=ChatResponse, summary="Send message to ERAAO AI Chatbot")

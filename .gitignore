@@ -12,6 +12,7 @@ build/
 venv/
 .venv/
 env/
+backend/venv/
 
 # IDE
 .vscode/
@@ -29,18 +30,19 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Testing
+# Testing & Coverage
 .pytest_cache/
 htmlcov/
 .coverage
+.coverage.*
 coverage.xml
 
-# MyPy
+# MyPy & Linters
 .mypy_cache/
-
-# Ruff
 .ruff_cache/
+.eslintcache
 
 # Node / Next.js
 node_modules/
@@ -52,10 +54,13 @@ yarn-error.log*
 
 # Databases
 *.db
+*.sqlite
 *.sqlite3
 
-# Docker & Logs
+# Docker, Celery & Logs
 *.log
+celerybeat-schedule*
+celerybeat.pid
 
 # Standalone Visit Landing Page (Pushed to separate repository)
 landing-page/
@@ -66,3 +71,11 @@ cloudflared.exe
 # Documentation & Spec Plans
 docs/
 
+# Root-level temporary scratch files, dropped media & audit exports
+/*.png
+/*.svg
+/*.jpg
+/*.jpeg
+/*.webp
+/*.pdf
+/*.csv

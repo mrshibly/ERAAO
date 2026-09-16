@@ -39,13 +39,23 @@ function parseJwt(token: string) {
         .join("")
     );
     return JSON.parse(jsonPayload);
-  } catch (e) {
+  } catch {
     return null;
   }
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cachedUser = sessionStorage.getItem("user");
+        if (cachedUser) {
+          return JSON.parse(cachedUser);
+        }
+      } catch {}
+    }
+    return null;
+  });
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -105,14 +115,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem("user");
     } catch {}
 
-    // Load initial user state from sessionStorage if available
-    try {
-      const cachedUser = sessionStorage.getItem("user");
-      if (cachedUser) {
-        setUser(JSON.parse(cachedUser));
-      }
-    } catch {}
-
     // Silent background authentication using secure HTTPOnly refresh cookie
     performRefresh().then(async (accessToken) => {
       if (accessToken) {
@@ -144,14 +146,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const expMs = decoded.exp * 1000;
     const delay = expMs - Date.now() - 60000; // Refresh 1 minute before expiry
 
-    if (delay <= 0) {
-      performRefresh();
-      return;
-    }
-
     const timer = setTimeout(() => {
       performRefresh();
-    }, delay);
+    }, Math.max(delay, 0));
 
     return () => clearTimeout(timer);
   }, [token, performRefresh]);

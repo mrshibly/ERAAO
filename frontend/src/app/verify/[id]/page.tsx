@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Download, Copy, Check, Share2, Loader, XCircle, Award } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const FacebookIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -134,15 +135,8 @@ export default function CertificateVerificationPage() {
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "8px", background: "linear-gradient(90deg, #0284c7 0%, #0ea5e9 30%, #38bdf8 50%, #0ea5e9 70%, #0284c7 100%)", pointerEvents: "none" }} />
 
                 {/* Background Watermark Logo */}
-                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%) scale(2.2)", opacity: 0.035, pointerEvents: "none", zIndex: 0 }}>
-                  <svg width="220" height="220" viewBox="0 0 512 512" fill="none">
-                    <polygon points="256,40 80,460 160,460 256,165" fill="#0ea5e9" />
-                    <polygon points="256,40 432,460 352,460 256,165" fill="#0ea5e9" />
-                    <polygon points="256,40 220,130 292,130" fill="#0284c7" />
-                    <polygon points="118,260 270,260 262,290 126,290" fill="#38bdf8" />
-                    <polygon points="104,330 254,330 246,360 112,360" fill="#38bdf8" />
-                    <polygon points="88,400 236,400 230,430 95,430" fill="#38bdf8" />
-                  </svg>
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.04, pointerEvents: "none", zIndex: 0 }}>
+                  <Logo size={320} withText={false} href={null} />
                 </div>
 
                 {/* Guilloché Border Frame — Layer 1 (Outer Solid) */}
@@ -187,20 +181,8 @@ export default function CertificateVerificationPage() {
                 {/* TOP HEADER SECTION */}
                 <div style={{ zIndex: 1, textAlign: "center", paddingTop: "2rem", width: "100%" }}>
                   {/* 1. Logo on Top */}
-                  <div style={{ marginBottom: "0.25rem" }}>
-                    <svg width="42" height="42" viewBox="0 0 512 512" fill="none" style={{ margin: "0 auto" }}>
-                      <defs>
-                        <linearGradient id="hdr-g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#0284c7" /><stop offset="100%" stopColor="#0ea5e9" /></linearGradient>
-                        <linearGradient id="hdr-g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#38bdf8" /><stop offset="100%" stopColor="#0ea5e9" /></linearGradient>
-                      </defs>
-                      <polygon points="256,40 80,460 160,460 256,165" fill="url(#hdr-g1)" />
-                      <polygon points="256,40 432,460 352,460 256,165" fill="url(#hdr-g2)" />
-                      <polygon points="256,40 220,130 292,130" fill="#0284c7" />
-                      <polygon points="118,260 270,260 262,290 126,290" fill="#38bdf8" />
-                      <polygon points="104,330 254,330 246,360 112,360" fill="#38bdf8" />
-                      <polygon points="88,400 236,400 230,430 95,430" fill="#38bdf8" />
-                      <polygon points="345,290 372,245 380,260 353,305" fill="#38bdf8" />
-                    </svg>
+                  <div style={{ marginBottom: "0.25rem", display: "flex", justifyContent: "center" }}>
+                    <Logo size={46} withText={false} href={null} />
                   </div>
 
                   {/* 2. ERAAO Title in Middle */}

@@ -73,6 +73,12 @@ export default function StudentCatalogPage() {
       return;
     }
 
+    const course = courses.find((c) => c.id === courseId);
+    if (course && Number(course.price || 0) > 0) {
+      router.push(`/academy/courses/${course.slug}`);
+      return;
+    }
+
     setEnrollingId(courseId);
     setEnrollSuccessMsg(null);
 
@@ -379,7 +385,13 @@ export default function StudentCatalogPage() {
                         }}
                       >
                         <Plus size={16} />
-                        <span>{isEnrolling ? "Enrolling..." : "Enroll Now"}</span>
+                        <span>
+                          {Number(course.price || 0) > 0
+                            ? "View Syllabus & Enroll"
+                            : isEnrolling
+                            ? "Enrolling..."
+                            : "Enroll Free"}
+                        </span>
                       </button>
                     )}
                   </div>

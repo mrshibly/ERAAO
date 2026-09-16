@@ -124,22 +124,28 @@ export default function Chatbot() {
                 </Link>
               );
             }
-            return (
-              <a
-                key={idx}
-                href={linkUrl}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  color: "var(--accent-blue)",
-                  fontWeight: 700,
-                  textDecoration: "underline",
-                  textUnderlineOffset: "3px"
-                }}
-              >
-                {linkText}
-              </a>
-            );
+            // Strict security check: only allow http/https protocols for external links
+            const isSafeExternal = linkUrl.startsWith("https://") || linkUrl.startsWith("http://");
+            if (isSafeExternal) {
+              return (
+                <a
+                  key={idx}
+                  href={linkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "var(--accent-blue)",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    textUnderlineOffset: "3px"
+                  }}
+                >
+                  {linkText}
+                </a>
+              );
+            }
+            // Fallback for untrusted or dangerous schemes (javascript:, data:, etc.)
+            return <span key={idx}>{linkText}</span>;
           }
           // Process bold formatting **text**
           const boldParts = part.split(/(\*\*[^*]+\*\*)/g);

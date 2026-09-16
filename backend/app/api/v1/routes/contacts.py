@@ -1,9 +1,10 @@
 """Contact and quote request routes."""
 from __future__ import annotations
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.core.dependencies import require_role
+from app.core.rate_limit import limiter
 from app.schemas.contact import ContactCreate, ContactRead, QuoteCreate, QuoteRead
 from app.schemas.auth import MessageResponse
 from app.services.contact_service import ContactService
@@ -11,7 +12,8 @@ from app.services.contact_service import ContactService
 router = APIRouter()
 
 @router.post("", response_model=MessageResponse, status_code=201)
-async def submit_contact(data: ContactCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def submit_contact(request: Request, data: ContactCreate, db: AsyncSession = Depends(get_db)):
     svc = ContactService(db)
     await svc.submit_contact(**data.model_dump())
     return MessageResponse(message="Message received. We'll be in touch shortly.")
@@ -23,7 +25,8 @@ async def list_contacts(db: AsyncSession = Depends(get_db)):
     return [ContactRead.model_validate(c) for c in subs]
 
 @router.post("/quotes", response_model=MessageResponse, status_code=201)
-async def submit_quote(data: QuoteCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def submit_quote(request: Request, data: QuoteCreate, db: AsyncSession = Depends(get_db)):
     svc = ContactService(db)
     await svc.submit_quote(**data.model_dump())
     return MessageResponse(message="Quote request submitted.")

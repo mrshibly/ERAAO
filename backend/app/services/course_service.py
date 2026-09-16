@@ -49,45 +49,67 @@ class CourseService:
         await self.repo.soft_delete(course)
         await self.db.commit()
 
-    async def create_module(self, course_id: UUID, **kwargs):
+    async def create_module(self, course_id: UUID, actor_id: UUID, is_admin: bool, **kwargs):
         course = await self.repo.get_by_id(course_id)
         if course is None:
             raise NotFoundError(resource="Course")
+        if not is_admin and course.instructor_id != actor_id:
+            raise ForbiddenError(message="You can only manage modules and lessons of your own courses.")
         module = await self.repo.create_module(course_id=course_id, **kwargs)
         await self.db.commit()
         return module
 
-    async def create_lesson(self, module_id: UUID, **kwargs):
+    async def create_lesson(self, module_id: UUID, actor_id: UUID, is_admin: bool, **kwargs):
+        module = await self.repo.get_module_by_id(module_id)
+        if module is None:
+            raise NotFoundError(resource="Module")
+        course = await self.repo.get_by_id(module.course_id)
+        if course and not is_admin and course.instructor_id != actor_id:
+            raise ForbiddenError(message="You can only manage modules and lessons of your own courses.")
         lesson = await self.repo.create_lesson(module_id=module_id, **kwargs)
         await self.db.commit()
         return lesson
 
-    async def update_module(self, module_id: UUID, **kwargs):
+    async def update_module(self, module_id: UUID, actor_id: UUID, is_admin: bool, **kwargs):
         module = await self.repo.get_module_by_id(module_id)
         if module is None:
             raise NotFoundError(resource="Module")
+        course = await self.repo.get_by_id(module.course_id)
+        if course and not is_admin and course.instructor_id != actor_id:
+            raise ForbiddenError(message="You can only manage modules and lessons of your own courses.")
         module = await self.repo.update_module(module, **kwargs)
         await self.db.commit()
         return module
 
-    async def delete_module(self, module_id: UUID):
+    async def delete_module(self, module_id: UUID, actor_id: UUID, is_admin: bool):
         module = await self.repo.get_module_by_id(module_id)
         if module is None:
             raise NotFoundError(resource="Module")
+        course = await self.repo.get_by_id(module.course_id)
+        if course and not is_admin and course.instructor_id != actor_id:
+            raise ForbiddenError(message="You can only manage modules and lessons of your own courses.")
         await self.repo.delete_module(module)
         await self.db.commit()
 
-    async def update_lesson(self, lesson_id: UUID, **kwargs):
+    async def update_lesson(self, lesson_id: UUID, actor_id: UUID, is_admin: bool, **kwargs):
         lesson = await self.repo.get_lesson_by_id(lesson_id)
         if lesson is None:
             raise NotFoundError(resource="Lesson")
+        module = await self.repo.get_module_by_id(lesson.module_id)
+        course = await self.repo.get_by_id(module.course_id) if module else None
+        if course and not is_admin and course.instructor_id != actor_id:
+            raise ForbiddenError(message="You can only manage modules and lessons of your own courses.")
         lesson = await self.repo.update_lesson(lesson, **kwargs)
         await self.db.commit()
         return lesson
 
-    async def delete_lesson(self, lesson_id: UUID):
+    async def delete_lesson(self, lesson_id: UUID, actor_id: UUID, is_admin: bool):
         lesson = await self.repo.get_lesson_by_id(lesson_id)
         if lesson is None:
             raise NotFoundError(resource="Lesson")
+        module = await self.repo.get_module_by_id(lesson.module_id)
+        course = await self.repo.get_by_id(module.course_id) if module else None
+        if course and not is_admin and course.instructor_id != actor_id:
+            raise ForbiddenError(message="You can only manage modules and lessons of your own courses.")
         await self.repo.delete_lesson(lesson)
         await self.db.commit()

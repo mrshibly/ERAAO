@@ -12,7 +12,32 @@ class EnrollmentService:
         self.enroll_repo = EnrollmentRepository(db)
         self.course_repo = CourseRepository(db)
 
-    async def enroll(self, user_id: UUID, course_id: UUID, cohort_id: UUID | None = None):
+    async def enroll(self, user_id: UUID, course_id: UUID, cohort_id: UUID | None = None, bypass_payment_check: bool = False):
+        from sqlalchemy import select
+        from app.models.course import Course
+        from app.models.order import Order, OrderItem, OrderStatus, ItemType
+        from app.core.exceptions import ForbiddenError
+
+        course = await self.course_repo.get_by_id(course_id)
+        if course is None:
+            raise NotFoundError(resource="Course")
+
+        # Business rule: Paid courses require an approved/paid order unless bypassed (admin or payment webhook)
+        if float(course.price or 0.0) > 0 and not bypass_payment_check:
+            order_stmt = (
+                select(Order)
+                .join(OrderItem, OrderItem.order_id == Order.id)
+                .where(
+                    Order.user_id == user_id,
+                    OrderItem.item_type == ItemType.COURSE,
+                    OrderItem.item_id == course_id,
+                    Order.status == OrderStatus.PAID
+                )
+            )
+            paid_order = (await self.db.execute(order_stmt)).scalar_one_or_none()
+            if not paid_order:
+                raise ForbiddenError(message="This course requires enrollment purchase. Please complete checkout.")
+
         existing = await self.enroll_repo.get_by_user_and_course(user_id, course_id)
         if existing is not None:
             raise ConflictError(message="Already enrolled in this course.")

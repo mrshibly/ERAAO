@@ -77,6 +77,32 @@ services:
       redis:
         condition: service_healthy
 
+  # --- Celery Background Worker (~120MB) ---
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    command: celery -A app.workers.celery_app worker --loglevel=info -c 2
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+asyncpg://eraao:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/eraao
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-meta-llama/llama-3.3-70b-instruct:free}
+      ALLOWED_ORIGINS: https://eraao.com,https://www.eraao.com
+      ENVIRONMENT: production
+      DEBUG: "false"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   # --- Next.js Frontend (standalone, ~120MB) ---
   frontend:
     build:

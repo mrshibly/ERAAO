@@ -99,7 +99,7 @@ async def sslcommerz_success(
         for item in order.items:
             if item.item_type == ItemType.COURSE:
                 try:
-                    await enroll_svc.enroll(order.user_id, item.item_id)
+                    await enroll_svc.enroll(order.user_id, item.item_id, bypass_payment_check=True)
                 except Exception:
                     pass
         await db.commit()
@@ -112,6 +112,11 @@ async def sslcommerz_fail(
     db: AsyncSession = Depends(get_db)
 ):
     """Callback for failed SSLCommerz transactions."""
+    stmt = select(Order).where(Order.id == order_id)
+    order = (await db.execute(stmt)).scalar_one_or_none()
+    if order and order.status == OrderStatus.PENDING:
+        order.status = OrderStatus.FAILED
+        await db.commit()
     settings = get_settings()
     base_url = settings.allowed_origins_list[0]
     return RedirectResponse(url=f"{base_url}/academy?payment=failed", status_code=303)
@@ -122,6 +127,11 @@ async def sslcommerz_cancel(
     db: AsyncSession = Depends(get_db)
 ):
     """Callback for cancelled SSLCommerz transactions."""
+    stmt = select(Order).where(Order.id == order_id)
+    order = (await db.execute(stmt)).scalar_one_or_none()
+    if order and order.status == OrderStatus.PENDING:
+        order.status = OrderStatus.CANCELLED
+        await db.commit()
     settings = get_settings()
     base_url = settings.allowed_origins_list[0]
     return RedirectResponse(url=f"{base_url}/academy?payment=cancelled", status_code=303)

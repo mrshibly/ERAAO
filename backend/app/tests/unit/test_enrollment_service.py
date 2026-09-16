@@ -7,7 +7,8 @@ from app.services.enrollment_service import EnrollmentService
 from app.models.user import User
 from app.models.course import Course, Module, Lesson, CourseLevel, CourseStatus
 from app.models.enrollment import EnrollmentStatus
-from app.core.exceptions import ConflictError, NotFoundError
+from app.models.order import Order, OrderItem, OrderStatus, ItemType
+from app.core.exceptions import ConflictError, NotFoundError, ForbiddenError
 from app.core.security import hash_password
 
 @pytest.mark.anyio
@@ -23,13 +24,13 @@ async def test_enroll_student_success(db_session: AsyncSession) -> None:
     db_session.add(user)
     await db_session.flush()
 
-    # 2. Create a course
+    # 2. Create a free course
     course = Course(
-        title="AI Engineering Bootcamp",
-        slug=f"ai-bootcamp-{uuid.uuid4().hex[:6]}",
+        title="Free Intro to AI Systems",
+        slug=f"free-ai-{uuid.uuid4().hex[:6]}",
         short_description="Build production AI systems",
         description="Full LLM engineering curriculum",
-        price=120.0,
+        price=0.0,
         currency="USD",
         level=CourseLevel.BEGINNER,
         status=CourseStatus.PUBLISHED,
@@ -38,12 +39,82 @@ async def test_enroll_student_success(db_session: AsyncSession) -> None:
     db_session.add(course)
     await db_session.commit()
 
-    # 3. Enroll student
+    # 3. Enroll student in free course
     svc = EnrollmentService(db_session)
     enrollment = await svc.enroll(user_id=user.id, course_id=course.id)
     assert enrollment.id is not None
     assert enrollment.user_id == user.id
     assert enrollment.course_id == course.id
+    assert enrollment.status == EnrollmentStatus.ACTIVE
+
+@pytest.mark.anyio
+async def test_enroll_paid_course_without_order_fails(db_session: AsyncSession) -> None:
+    user = User(
+        email=f"payer_{uuid.uuid4().hex[:6]}@academy.dev",
+        hashed_password=hash_password("Pass123!"),
+        full_name="Unpaid Student",
+        is_active=True,
+        is_verified=True
+    )
+    db_session.add(user)
+    await db_session.flush()
+
+    course = Course(
+        title="Offensive Security Lab",
+        slug=f"offsec-lab-{uuid.uuid4().hex[:6]}",
+        short_description="Hands-on hacking",
+        description="Penetration testing",
+        price=250.0,
+        currency="USD",
+        level=CourseLevel.ADVANCED,
+        status=CourseStatus.PUBLISHED,
+        instructor_id=user.id
+    )
+    db_session.add(course)
+    await db_session.commit()
+
+    svc = EnrollmentService(db_session)
+    with pytest.raises(ForbiddenError):
+        await svc.enroll(user_id=user.id, course_id=course.id)
+
+@pytest.mark.anyio
+async def test_enroll_paid_course_with_order_succeeds(db_session: AsyncSession) -> None:
+    user = User(
+        email=f"paid_{uuid.uuid4().hex[:6]}@academy.dev",
+        hashed_password=hash_password("Pass123!"),
+        full_name="Paying Student",
+        is_active=True,
+        is_verified=True
+    )
+    db_session.add(user)
+    await db_session.flush()
+
+    course = Course(
+        title="Certified Red Teamer Bootcamp",
+        slug=f"crt-bootcamp-{uuid.uuid4().hex[:6]}",
+        short_description="Red team ops",
+        description="Adversary emulation",
+        price=300.0,
+        currency="USD",
+        level=CourseLevel.ADVANCED,
+        status=CourseStatus.PUBLISHED,
+        instructor_id=user.id
+    )
+    db_session.add(course)
+    await db_session.flush()
+
+    # Create completed paid order
+    order = Order(user_id=user.id, total_amount=300.0, currency="USD", status=OrderStatus.PAID)
+    db_session.add(order)
+    await db_session.flush()
+
+    item = OrderItem(order_id=order.id, item_type=ItemType.COURSE, item_id=course.id, unit_price=300.0, quantity=1)
+    db_session.add(item)
+    await db_session.commit()
+
+    svc = EnrollmentService(db_session)
+    enrollment = await svc.enroll(user_id=user.id, course_id=course.id)
+    assert enrollment.id is not None
     assert enrollment.status == EnrollmentStatus.ACTIVE
 
 @pytest.mark.anyio
@@ -59,13 +130,13 @@ async def test_enroll_student_duplicate_fails(db_session: AsyncSession) -> None:
     await db_session.flush()
 
     course = Course(
-        title="Offensive Security Lab",
-        slug=f"offsec-lab-{uuid.uuid4().hex[:6]}",
+        title="Free Security Basics",
+        slug=f"free-sec-{uuid.uuid4().hex[:6]}",
         short_description="Hands-on hacking",
         description="Penetration testing",
-        price=99.0,
+        price=0.0,
         currency="USD",
-        level=CourseLevel.ADVANCED,
+        level=CourseLevel.BEGINNER,
         status=CourseStatus.PUBLISHED,
         instructor_id=user.id
     )
@@ -96,7 +167,7 @@ async def test_update_progress_and_completion(db_session: AsyncSession) -> None:
         slug=f"llm-sec-{uuid.uuid4().hex[:6]}",
         short_description="Short course",
         description="Detailed lessons",
-        price=50.0,
+        price=0.0,
         currency="USD",
         level=CourseLevel.BEGINNER,
         status=CourseStatus.PUBLISHED,

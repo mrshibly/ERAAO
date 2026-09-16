@@ -15,7 +15,7 @@ interface SlotData {
 function getNextWeekdays(count: number): { label: string; value: string }[] {
   const days: { label: string; value: string }[] = [];
   const now = new Date();
-  let d = new Date(now);
+  const d = new Date(now);
   // Start from tomorrow
   d.setDate(d.getDate() + 1);
 

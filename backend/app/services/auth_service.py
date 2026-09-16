@@ -203,6 +203,11 @@ class AuthService:
             is_denied = await redis_client.get(f"rt_deny:{token_hash}")
             if is_denied:
                 raise UnauthorizedError(message="Token has been revoked. Please log in again.")
+            user_revoked_at = await redis_client.get(f"user_revoked:{payload.get('sub')}")
+            if user_revoked_at:
+                iat = payload.get("iat", 0)
+                if int(iat) <= int(user_revoked_at):
+                    raise UnauthorizedError(message="Session expired due to security update. Please log in again.")
 
         user_id = payload.get("sub")
         user = await self.user_repo.get_by_id(UUID(user_id))
@@ -279,12 +284,24 @@ class AuthService:
         Reset a user's password using a valid reset token.
 
         Raises:
-            ValidationError: If the token is invalid.
+            ValidationError: If the token is invalid or already used.
             NotFoundError: If the user is not found.
         """
+        import hashlib
+        import time
+        from app.core.redis_cache import get_redis_client
+
         payload = decode_token(token)
         if payload.get("type") != "password_reset":
             raise ValidationError(message="Invalid reset token.")
+
+        # Check if reset token has already been consumed
+        redis_client = get_redis_client()
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+        if redis_client:
+            is_used = await redis_client.get(f"pwd_reset_used:{token_hash}")
+            if is_used:
+                raise ValidationError(message="Password reset token has already been used.")
 
         user = await self.user_repo.get_by_id(UUID(payload["sub"]))
         if user is None:
@@ -293,3 +310,11 @@ class AuthService:
         hashed = hash_password(new_password)
         await self.user_repo.update(user, hashed_password=hashed)
         await self.db.commit()
+
+        # Mark token as consumed and revoke existing active user sessions
+        if redis_client:
+            exp = payload.get("exp", 0)
+            ttl = max(int(exp - time.time()), 3600)
+            await redis_client.set(f"pwd_reset_used:{token_hash}", "1", ex=ttl)
+            # Invalidate all refresh tokens issued prior to this password reset
+            await redis_client.set(f"user_revoked:{user.id}", str(int(time.time())), ex=7 * 24 * 3600)

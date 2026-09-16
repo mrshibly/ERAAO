@@ -118,13 +118,13 @@ class PaymentService:
                     return {"checkout_url": res_data.get("GatewayPageURL"), "order_id": str(order.id)}
                 else:
                     raise PaymentError(message=res_data.get("failedreason") or "SSLCommerz session creation failed.")
-        else:
+            base_url = settings.allowed_origins_list[0]
             try:
                 session = stripe.checkout.Session.create(
                     line_items=line_items,
                     mode="payment",
-                    success_url=f"{settings.ALLOWED_ORIGINS}/payment/success?order_id={order.id}",
-                    cancel_url=f"{settings.ALLOWED_ORIGINS}/payment/cancel",
+                    success_url=f"{base_url}/payment/success?order_id={order.id}",
+                    cancel_url=f"{base_url}/payment/cancel",
                     metadata={"order_id": str(order.id)},
                 )
             except stripe.error.StripeError as e:
@@ -172,7 +172,7 @@ class PaymentService:
                     for item in order.items:
                         if item.item_type == ItemType.COURSE:
                             try:
-                                await enroll_svc.enroll(order.user_id, item.item_id)
+                                await enroll_svc.enroll(order.user_id, item.item_id, bypass_payment_check=True)
                             except Exception:
                                 pass
                                 

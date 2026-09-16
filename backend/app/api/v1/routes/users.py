@@ -39,7 +39,11 @@ async def get_me(user: User = Depends(get_current_active_user)) -> UserRead:
 async def update_me(data: UserUpdate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)) -> UserRead:
     """Update current user's profile."""
     svc = UserService(db)
-    updated = await svc.update_profile(user.id, **data.model_dump(exclude_unset=True))
+    update_data = data.model_dump(exclude_unset=True)
+    is_staff = any(ur.role.name in ("instructor", "admin") for ur in user.user_roles)
+    if "signature_url" in update_data and not is_staff:
+        update_data.pop("signature_url", None)
+    updated = await svc.update_profile(user.id, **update_data)
     return _user_to_read(updated)
 
 @router.post("", response_model=UserRead, status_code=201, dependencies=[Depends(require_role("admin"))])

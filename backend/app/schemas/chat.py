@@ -16,7 +16,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     """Payload sent by the frontend chatbot widget."""
-    messages: List[ChatMessage] = Field(..., min_items=1, max_items=20, description="Conversation history")
+    messages: List[ChatMessage] = Field(..., min_length=1, max_length=20, description="Conversation history")
     context_url: Optional[str] = Field(None, description="Optional active URL path for context-aware assistance")
 
 

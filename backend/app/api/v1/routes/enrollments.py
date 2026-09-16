@@ -16,7 +16,8 @@ router = APIRouter()
 async def enroll(data: EnrollmentCreate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     """Enroll the current user in a course."""
     svc = EnrollmentService(db)
-    enrollment = await svc.enroll(user.id, data.course_id, data.cohort_id)
+    is_admin = any(ur.role.name == "admin" for ur in user.user_roles)
+    enrollment = await svc.enroll(user.id, data.course_id, data.cohort_id, bypass_payment_check=is_admin)
     return EnrollmentRead.model_validate(enrollment)
 
 @router.get("/me", response_model=list[EnrollmentRead], status_code=200)

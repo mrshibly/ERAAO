@@ -253,7 +253,7 @@ export default function BlogListingPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "var(--text-muted)", fontSize: "var(--text-xs)", marginBottom: "0.85rem", flexWrap: "wrap" }}>
                   <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
                     <Calendar size={14} />
-                    {new Date(post.published_at || post.created_at || Date.now()).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                    {new Date(post.published_at || post.created_at || "2026-01-01").toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
                   </span>
                   <span>&bull;</span>
                   <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
