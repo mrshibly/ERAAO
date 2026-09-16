@@ -2251,9 +2251,11 @@ input:focus, select:focus, textarea:focus {
    ═══════════════════════════════════════════════════════════════ */
 .font-bengali {
   font-family: var(--font-bengali);
-  line-height: 1.65;
+  line-height: 1.68;
+  letter-spacing: 0 !important;
   font-feature-settings: "cv01", "cv02";
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* ═══════════════════════════════════════════════════════════════
