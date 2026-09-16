@@ -49,7 +49,7 @@ export default function Footer() {
           {/* Col 1: Brand & Bio */}
           <div>
             <div style={{ marginBottom: "1rem" }}>
-              <Logo size={30} textColor="#ffffff" />
+              <Logo size={34} textColor="#ffffff" />
             </div>
             <div style={{
               fontSize: "var(--text-xs)",

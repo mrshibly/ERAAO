@@ -150,7 +150,7 @@ export default function DashboardSidebar({
       <div className="dashboard-sidebar-header">
         {collapsed ? (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-            <Logo size={28} withText={false} href={null} />
+            <Logo size={20} withText={false} href={null} />
             <button
               onClick={() => setCollapsed(false)}
               className="sidebar-expand-btn desktop-only-table"

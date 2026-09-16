@@ -54,7 +54,7 @@ export default function Navbar() {
       <div className="container nav">
         
         {/* Brand Logo */}
-        <Logo size={30} />
+        <Logo size={38} />
         
         {/* Mobile Toggle Button */}
         <button 

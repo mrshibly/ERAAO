@@ -57,7 +57,7 @@ export default function DashboardLayout({
     <div className="dashboard-container">
       {/* Mobile Top Header */}
       <div className="mobile-dashboard-header">
-        <Logo size={26} />
+        <Logo size={32} />
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="nav-mobile-btn"
