@@ -193,8 +193,9 @@ export default function AcademyPage() {
             {/* Left Column: Copy & CTAs */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.6rem", flexWrap: "wrap" }}>
-                <span className="badge badge-green" style={{ fontSize: "0.72rem", fontWeight: 800, padding: "0.25rem 0.65rem" }}>
-                  🎉 100% Free Live Bootcamp
+                <span className="badge badge-green" style={{ fontSize: "0.72rem", fontWeight: 800, padding: "0.25rem 0.65rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                  <Sparkles size={12} />
+                  <span>100% Free Live Bootcamp</span>
                 </span>
                 <span className="badge badge-blue" style={{ fontSize: "0.72rem", fontWeight: 700 }}>
                   26 Sep, 2026 • 09:00 PM

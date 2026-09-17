@@ -220,8 +220,9 @@ export default function FreeBootcampPage() {
                 </div>
 
                 {timeLeft.isLive ? (
-                  <div style={{ textAlign: "center", padding: "1rem", color: "var(--color-success)", fontWeight: 800, fontSize: "var(--text-base)" }}>
-                    🔴 লাইভ সেশন চলছে! এখনই টেলিগ্রাম গ্রুপে যোগ দিন।
+                  <div style={{ textAlign: "center", padding: "1rem", color: "var(--color-success)", fontWeight: 800, fontSize: "var(--text-base)", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--color-danger, #ef4444)", animation: "pulse 1.5s infinite" }} />
+                    <span>লাইভ সেশন চলছে! এখনই টেলিগ্রাম গ্রুপে যোগ দিন।</span>
                   </div>
                 ) : (
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.75rem", textAlign: "center" }}>
@@ -773,8 +774,9 @@ export default function FreeBootcampPage() {
             boxShadow: "0 25px 60px -15px rgba(0, 0, 0, 0.5)"
           }}>
             
-            <span className="badge badge-green" style={{ fontSize: "var(--text-xs)", fontWeight: 800, padding: "0.35rem 0.85rem", marginBottom: "1.25rem" }}>
-              🚀 FREE BOOTCAMP ADMISSIONS OPEN
+            <span className="badge badge-green" style={{ fontSize: "var(--text-xs)", fontWeight: 800, padding: "0.35rem 0.85rem", marginBottom: "1.25rem", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+              <Sparkles size={14} />
+              <span>FREE BOOTCAMP ADMISSIONS OPEN</span>
             </span>
 
             <h2 style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)", fontWeight: 900, lineHeight: 1.3, marginBottom: "1rem" }}>
@@ -833,11 +835,17 @@ export default function FreeBootcampPage() {
             </div>
 
             <div style={{ marginTop: "1.75rem", fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", justifyContent: "center", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-              <span>📅 ২৬ সেপ্টেম্বর, ২০২৬</span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <Calendar size={14} style={{ color: "var(--accent-blue)" }} /> ২৬ সেপ্টেম্বর, ২০২৬
+              </span>
               <span>•</span>
-              <span>⏰ রাত ৯:০০ টা - ১১:০০ টা</span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <Clock size={14} style={{ color: "var(--accent-teal)" }} /> রাত ৯:০০ টা - ১১:০০ টা
+              </span>
               <span>•</span>
-              <span>💻 অনলাইন লাইভ সেশন</span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <Video size={14} style={{ color: "var(--accent-violet)" }} /> অনলাইন লাইভ সেশন
+              </span>
             </div>
 
           </div>
