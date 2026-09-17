@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
-    const backendUrl = process.env.BACKEND_URL || "https://eraao.onrender.com";
+    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "https://eraao.onrender.com";
     return [
       {
         source: "/api/:path*",
