@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { PhoneCall, User, LogOut, Layout, Menu, X } from "lucide-react";
+import { User, LogOut, Layout, Menu, X, ArrowRight } from "lucide-react";
 import Logo from "@/components/Logo";
 
 export default function Navbar() {
@@ -12,7 +12,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click (VIS-5)
+  // Close dropdown on outside click
   useEffect(() => {
     if (!dropdownOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
@@ -51,11 +51,12 @@ export default function Navbar() {
 
   return (
     <header className="header">
-      <div className="container nav">
-        
-        {/* Brand Logo */}
-        <Logo size={38} />
-        
+      <div className="nav">
+        {/* Brand Logo with generous breathing room */}
+        <div className="nav-brand-wrap">
+          <Logo size={38} />
+        </div>
+
         {/* Mobile Toggle Button */}
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -66,27 +67,47 @@ export default function Navbar() {
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Navigation Links & Buttons */}
+        {/* Navigation Links & Action Buttons */}
         <nav className={`nav-menu ${mobileMenuOpen ? "open" : ""}`}>
           <ul className="nav-links">
-            <li><Link href="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link></li>
-            <li><Link href="/academy" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Academy</Link></li>
-            <li><Link href="/academy#bootcamps" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Bootcamps</Link></li>
-            <li><Link href="/academy#learning-cycle" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Learning Cycle</Link></li>
-            <li><Link href="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About</Link></li>
             <li>
-              <Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)} style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+              <Link href="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/academy" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+                Academy
+              </Link>
+            </li>
+            <li>
+              <Link href="/academy#learning-cycle" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+                Learning Cycle
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                 <span>Services</span>
-                <span style={{ fontSize: "0.65rem", padding: "0.1rem 0.4rem", borderRadius: "4px", background: "rgba(148, 163, 184, 0.12)", border: "1px solid var(--border-color)", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+                <span className="nav-enterprise-pill">
                   Enterprise
                 </span>
               </Link>
             </li>
           </ul>
-          
+
           <div className="nav-actions">
-            <Link href="/academy" className="btn btn-accent nav-btn-sm" onClick={() => setMobileMenuOpen(false)} style={{ padding: "0.45rem 1.15rem", fontSize: "var(--text-xs)", fontWeight: 700 }}>
+            <Link 
+              href="/academy" 
+              className="btn btn-accent nav-btn-sm" 
+              onClick={() => setMobileMenuOpen(false)}
+            >
               <span>Browse Bootcamps</span>
+              <ArrowRight size={14} />
             </Link>
 
             {user ? (
@@ -127,8 +148,12 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
-              <Link href="/login" className="btn btn-primary nav-btn-sm" onClick={() => setMobileMenuOpen(false)}>
-                <User size={16} />
+              <Link 
+                href="/login" 
+                className="btn btn-primary nav-btn-sm" 
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <User size={14} />
                 <span>Login</span>
               </Link>
             )}
