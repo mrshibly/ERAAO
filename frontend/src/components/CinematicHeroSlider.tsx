@@ -24,7 +24,6 @@ interface HeroSlide {
   ctaPrimaryHref: string;
   ctaSecondaryText: string;
   ctaSecondaryHref: string;
-  metrics: { label: string; value: string }[];
   accentColor: string;
   accentSecondary: string;
   gradientText: string;
@@ -50,12 +49,6 @@ const TRACKS: HeroSlide[] = [
     ctaPrimaryHref: "/academy/courses/english-for-freelancers",
     ctaSecondaryText: "Free Level Assessment",
     ctaSecondaryHref: "/book",
-    metrics: [
-      { value: "12 Weeks", label: "Structured Cohort" },
-      { value: "36 Classes", label: "Live Interactive Drills" },
-      { value: "6 Stages", label: "Scientific Retention Cycle" },
-      { value: "1-on-1", label: "Mentor Speech Review" },
-    ],
     accentColor: "#38bdf8",
     accentSecondary: "#0284c7",
     gradientText: "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)",
@@ -85,12 +78,6 @@ const TRACKS: HeroSlide[] = [
     ctaPrimaryHref: "/academy/courses/ai-automation-agents",
     ctaSecondaryText: "Explore Agent Curriculum",
     ctaSecondaryHref: "/academy",
-    metrics: [
-      { value: "12 Weeks", label: "Production Lab" },
-      { value: "36 Sessions", label: "Hands-On System Builds" },
-      { value: "5+ Agents", label: "Production Capstones" },
-      { value: "Live Code", label: "Architect Review" },
-    ],
     accentColor: "#c084fc",
     accentSecondary: "#a855f7",
     gradientText: "linear-gradient(135deg, #c084fc 0%, #34d399 100%)",
@@ -120,12 +107,6 @@ const TRACKS: HeroSlide[] = [
     ctaPrimaryHref: "/academy/courses/offensive-cyber-security",
     ctaSecondaryText: "Explore Red Team Labs",
     ctaSecondaryHref: "/academy",
-    metrics: [
-      { value: "12 Weeks", label: "Red Team Immersion" },
-      { value: "36 Labs", label: "Live Attack Range" },
-      { value: "100% Practical", label: "Zero Pointless Theory" },
-      { value: "Verified", label: "Technical Competency" },
-    ],
     accentColor: "#fb7185",
     accentSecondary: "#e11d48",
     gradientText: "linear-gradient(135deg, #fb7185 0%, #fb923c 100%)",
@@ -358,7 +339,7 @@ export default function CinematicHeroSlider() {
                 alignItems: "center",
                 gap: "1rem",
                 flexWrap: "wrap",
-                marginBottom: "2.5rem",
+                marginBottom: 0,
               }}
             >
               <Link
@@ -406,49 +387,6 @@ export default function CinematicHeroSlider() {
               </Link>
             </div>
 
-            {/* Factual Cohort Metrics Bar */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "1.25rem",
-                paddingTop: "1.75rem",
-                borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-                maxWidth: "38rem",
-              }}
-              className="cinematic-metrics-grid"
-            >
-              {current.metrics.map((m, i) => (
-                <div key={i}>
-                  <div
-                    style={{
-                      fontSize: "clamp(1.25rem, 1.8vw, 1.7rem)",
-                      fontWeight: 900,
-                      color:
-                        i === 0
-                          ? current.accentColor
-                          : i === 1
-                          ? "#34d399"
-                          : i === 2
-                          ? "#c084fc"
-                          : "#fbbf24",
-                    }}
-                  >
-                    {m.value}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.72rem",
-                      color: "#94a3b8",
-                      fontWeight: 600,
-                      marginTop: "0.2rem",
-                    }}
-                  >
-                    {m.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* ── RIGHT COLUMN: Studio Photography Showcase with Floating Glass Chips ── */}
