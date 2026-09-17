@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ChevronLeft,
@@ -38,6 +39,7 @@ interface HeroSlide {
   gradientText: string;
   glowColor: string;
   bgAtmosphere: string;
+  unsplashBg: string;
   trackType: "english" | "ai" | "security";
 }
 
@@ -76,6 +78,7 @@ const TRACKS: HeroSlide[] = [
     glowColor: "rgba(56, 189, 248, 0.28)",
     bgAtmosphere:
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(14, 165, 233, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
+    unsplashBg: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=80&auto=format&fit=crop",
     trackType: "english",
   },
   {
@@ -112,6 +115,7 @@ const TRACKS: HeroSlide[] = [
     glowColor: "rgba(168, 85, 247, 0.28)",
     bgAtmosphere:
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(168, 85, 247, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
+    unsplashBg: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80&auto=format&fit=crop",
     trackType: "ai",
   },
   {
@@ -148,6 +152,7 @@ const TRACKS: HeroSlide[] = [
     glowColor: "rgba(251, 113, 133, 0.28)",
     bgAtmosphere:
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(244, 63, 94, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
+    unsplashBg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80&auto=format&fit=crop",
     trackType: "security",
   },
 ];
@@ -234,13 +239,53 @@ export default function CinematicHeroSlider() {
         padding: "2.5rem 0 3.5rem 0",
       }}
     >
-      {/* ── Dynamic Full-Bleed Atmospheric Spotlight Glow (100% Edge-to-Edge) ── */}
+      {/* ── Faded Atmospheric Unsplash Image Layer (Smooth Cross-Fade) ── */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: `${current.bgAtmosphere}, linear-gradient(180deg, rgba(6, 9, 19, 0.82) 0%, rgba(6, 9, 19, 0.98) 100%)`,
           zIndex: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+        }}
+      >
+        {TRACKS.map((t, idx) => (
+          <div
+            key={t.id}
+            style={{
+              position: "absolute",
+              inset: 0,
+              opacity: idx === activeIdx ? 0.18 : 0,
+              transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            <Image
+              src={t.unsplashBg}
+              alt={t.tabLabel}
+              fill
+              priority={idx === 0}
+              sizes="100vw"
+              style={{
+                objectFit: "cover",
+                objectPosition: "center 35%",
+                filter: "saturate(1.25) contrast(1.1)",
+              }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* ── Multi-Angle Cyber Vignette & Dynamic Full-Bleed Atmospheric Glow ── */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `
+            linear-gradient(90deg, rgba(6, 9, 19, 0.96) 0%, rgba(6, 9, 19, 0.82) 48%, rgba(6, 9, 19, 0.68) 100%),
+            linear-gradient(180deg, rgba(6, 9, 19, 0.45) 0%, rgba(6, 9, 19, 0.98) 100%),
+            ${current.bgAtmosphere}
+          `,
+          zIndex: 1,
           transition: "background 0.8s ease",
         }}
       />
@@ -254,7 +299,7 @@ export default function CinematicHeroSlider() {
             "radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
           opacity: 0.45,
-          zIndex: 0,
+          zIndex: 2,
         }}
       />
 
@@ -263,7 +308,7 @@ export default function CinematicHeroSlider() {
         className="container"
         style={{
           position: "relative",
-          zIndex: 1,
+          zIndex: 3,
           width: "100%",
           maxWidth: "1360px",
           margin: "0 auto",
