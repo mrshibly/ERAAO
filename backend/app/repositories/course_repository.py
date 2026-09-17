@@ -23,7 +23,10 @@ class CourseRepository:
             base = base.where(or_(Course.title.ilike(f"%{search}%"), Course.short_description.ilike(f"%{search}%")))
         count_stmt = select(func.count()).select_from(base.subquery())
         total = (await self.db.execute(count_stmt)).scalar() or 0
-        stmt = base.options(selectinload(Course.modules).selectinload(Module.lessons)).offset((page - 1) * page_size).limit(page_size).order_by(Course.created_at.desc())
+        stmt = base.options(
+            selectinload(Course.modules).selectinload(Module.lessons),
+            selectinload(Course.category)
+        ).offset((page - 1) * page_size).limit(page_size).order_by(Course.created_at.desc())
         result = await self.db.execute(stmt)
         return list(result.scalars().unique().all()), int(total)
 
@@ -39,17 +42,26 @@ class CourseRepository:
             base = base.where(or_(Course.title.ilike(f"%{search}%"), Course.short_description.ilike(f"%{search}%")))
         count_stmt = select(func.count()).select_from(base.subquery())
         total = (await self.db.execute(count_stmt)).scalar() or 0
-        stmt = base.options(selectinload(Course.modules).selectinload(Module.lessons)).offset((page - 1) * page_size).limit(page_size).order_by(Course.created_at.desc())
+        stmt = base.options(
+            selectinload(Course.modules).selectinload(Module.lessons),
+            selectinload(Course.category)
+        ).offset((page - 1) * page_size).limit(page_size).order_by(Course.created_at.desc())
         result = await self.db.execute(stmt)
         return list(result.scalars().unique().all()), int(total)
 
     async def get_by_slug(self, slug: str) -> Course | None:
-        stmt = select(Course).where(Course.slug == slug, Course.deleted_at.is_(None)).options(selectinload(Course.modules).selectinload(Module.lessons))
+        stmt = select(Course).where(Course.slug == slug, Course.deleted_at.is_(None)).options(
+            selectinload(Course.modules).selectinload(Module.lessons),
+            selectinload(Course.category)
+        )
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 
     async def get_by_id(self, course_id: UUID) -> Course | None:
-        stmt = select(Course).where(Course.id == course_id, Course.deleted_at.is_(None)).options(selectinload(Course.modules).selectinload(Module.lessons))
+        stmt = select(Course).where(Course.id == course_id, Course.deleted_at.is_(None)).options(
+            selectinload(Course.modules).selectinload(Module.lessons),
+            selectinload(Course.category)
+        )
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel, Field
+from app.schemas.category import CategoryRead
 
 class LessonCreate(BaseModel):
     title: str = Field(max_length=500)
@@ -75,6 +76,7 @@ class CourseRead(BaseModel):
     duration_hours: float | None = None
     instructor_id: UUID
     category_id: UUID | None = None
+    category: CategoryRead | None = None
     created_at: datetime
     modules: list[ModuleRead] = []
     model_config = {"from_attributes": True}

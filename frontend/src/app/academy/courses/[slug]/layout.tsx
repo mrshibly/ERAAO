@@ -7,7 +7,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const backendUrl = process.env.BACKEND_URL || "https://eraao-backend.onrender.com";
+  const backendUrl = process.env.BACKEND_URL || "https://eraao.onrender.com";
 
   try {
     const res = await fetch(`${backendUrl}/api/v1/courses/${slug}`, {
