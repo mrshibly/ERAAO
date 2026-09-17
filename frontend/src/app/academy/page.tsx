@@ -172,6 +172,112 @@ export default function AcademyPage() {
         </div>
       </section>
 
+      {/* ═══════════════════════════════════════════════════════════════
+          FEATURED SPOTLIGHT: 1-DAY "ZERO TO FLUENT" FREE BOOTCAMP
+          ═══════════════════════════════════════════════════════════════ */}
+      <section style={{ paddingTop: "0.75rem", paddingBottom: "0.75rem" }}>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div
+            style={{
+              background: "linear-gradient(135deg, rgba(14, 165, 233, 0.09) 0%, rgba(124, 58, 237, 0.09) 100%)",
+              border: "1px solid rgba(14, 165, 233, 0.35)",
+              borderRadius: "var(--radius-xl)",
+              padding: "1.5rem 1.75rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "1.75rem",
+              alignItems: "center",
+              boxShadow: "0 15px 35px -10px rgba(0, 0, 0, 0.45)"
+            }}
+          >
+            {/* Left Column: Copy & CTAs */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.6rem", flexWrap: "wrap" }}>
+                <span className="badge badge-green" style={{ fontSize: "0.72rem", fontWeight: 800, padding: "0.25rem 0.65rem" }}>
+                  🎉 100% Free Live Bootcamp
+                </span>
+                <span className="badge badge-blue" style={{ fontSize: "0.72rem", fontWeight: 700 }}>
+                  26 Sep, 2026 • 09:00 PM
+                </span>
+              </div>
+
+              <h3 style={{ fontSize: "clamp(1.2rem, 2vw, 1.55rem)", fontWeight: 900, color: "var(--text-primary)", lineHeight: 1.25, marginBottom: "0.4rem" }}>
+                ZERO TO FLUENT: Free English Bootcamp
+              </h3>
+
+              <p style={{ fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700, marginBottom: "0.5rem" }}>
+                মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
+              </p>
+
+              <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "1.25rem" }}>
+                সহজ Sentence Building, Listening & Speaking Drills, এবং স্পিকিং কনফিডেন্স তৈরির উপায় শিখুন Mentor <strong>Ayesha Anika</strong> (4+ Years Exp)-এর সাথে।
+              </p>
+
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+                <a
+                  href="https://t.me/+BWxzf8Zk2stmNWY1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                  style={{
+                    padding: "0.65rem 1.25rem",
+                    fontSize: "var(--text-xs)",
+                    fontWeight: 800,
+                    borderRadius: "var(--radius-md)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
+                    border: "none",
+                    color: "#ffffff"
+                  }}
+                >
+                  <span>Join Free on Telegram</span>
+                  <ArrowRight size={14} />
+                </a>
+
+                <Link
+                  href="/academy/free-bootcamp"
+                  className="btn btn-outline"
+                  style={{
+                    padding: "0.65rem 1.15rem",
+                    fontSize: "var(--text-xs)",
+                    fontWeight: 700,
+                    borderRadius: "var(--radius-md)"
+                  }}
+                >
+                  <span>View Full Details & Bonuses</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: Poster Thumbnail Preview */}
+            <div style={{ position: "relative" }}>
+              <Link href="/academy/free-bootcamp" style={{ display: "block", textDecoration: "none" }}>
+                <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "var(--radius-lg)",
+                    overflow: "hidden",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
+                    aspectRatio: "1024 / 537"
+                  }}
+                >
+                  <Image
+                    src="/banners/zero-to-fluent-free-bootcamp.png"
+                    alt="Zero to Fluent Free English Bootcamp - ERAAO Academy"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 500px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section style={{ paddingTop: "1.25rem", paddingBottom: "3rem" }}>
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           {/* ═══════════════════════════════════════════════════════════════
