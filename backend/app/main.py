@@ -127,7 +127,19 @@ def create_app() -> FastAPI:
 
     application.include_router(api_v1_router, prefix="/api/v1")
 
-    # ---- Health checks ----
+    # ---- Health checks & Root ----
+    @application.get("/", tags=["Health"], status_code=200)
+    async def root() -> JSONResponse:
+        """Root API status endpoint."""
+        return JSONResponse(
+            content={
+                "name": settings.APP_NAME,
+                "status": "online",
+                "version": "0.1.0",
+                "health": "/healthz",
+            }
+        )
+
     @application.get("/healthz", tags=["Health"], status_code=200)
     async def healthz() -> JSONResponse:
         """Liveness probe — the process is running."""
