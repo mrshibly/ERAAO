@@ -32,6 +32,7 @@ interface HeroSlide {
   bgAtmosphere: string;
   unsplashBg: string;
   cardImage: string;
+  cardImagePosition?: string;
   chipTop: { dotColor: string; text: string };
   chipBottom: { icon: React.ReactNode; text: string };
   trackType: "english" | "ai" | "security";
@@ -65,6 +66,7 @@ const TRACKS: HeroSlide[] = [
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=80&auto=format&fit=crop",
     cardImage:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1000&auto=format&fit=crop&q=85",
+    cardImagePosition: "center 12%",
     chipTop: { dotColor: "#10b981", text: "Live Zoom Pitch Simulation" },
     chipBottom: {
       icon: <Sparkles size={14} style={{ color: "#38bdf8" }} />,
@@ -99,6 +101,7 @@ const TRACKS: HeroSlide[] = [
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80&auto=format&fit=crop",
     cardImage:
       "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1000&auto=format&fit=crop&q=85",
+    cardImagePosition: "center 22%",
     chipTop: { dotColor: "#a855f7", text: "Autonomous Agent Lab" },
     chipBottom: {
       icon: <Bot size={14} style={{ color: "#c084fc" }} />,
@@ -110,7 +113,7 @@ const TRACKS: HeroSlide[] = [
     id: "cyber-security",
     tabLabel: "Offensive Cyber Security",
     titlePrefix: "Master Active Adversary Emulation &",
-    titleHighlight: "Real-World Ethical Hacking",
+    titleHighlight: "Real\u2011World Ethical Hacking",
     description:
       "Gain hands-on attack immersion in live cloud sandboxes, enterprise threat exploitation, and red-team penetration testing.",
     ctaPrimaryText: "Enroll in Security Cohort",
@@ -132,7 +135,8 @@ const TRACKS: HeroSlide[] = [
     unsplashBg:
       "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80&auto=format&fit=crop",
     cardImage:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1000&auto=format&fit=crop&q=85",
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1000&auto=format&fit=crop&q=85",
+    cardImagePosition: "center 20%",
     chipTop: { dotColor: "#ef4444", text: "Live Isolated Red Team Sandbox" },
     chipBottom: {
       icon: <ShieldCheck size={14} style={{ color: "#fb7185" }} />,
@@ -494,7 +498,7 @@ export default function CinematicHeroSlider() {
                     priority={idx === 0}
                     style={{
                       objectFit: "cover",
-                      objectPosition: "center",
+                      objectPosition: t.cardImagePosition || "center",
                     }}
                   />
                   {/* Subtle lighting vignette overlay to ensure chip contrast */}
