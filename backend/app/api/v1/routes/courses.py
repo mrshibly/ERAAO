@@ -70,7 +70,8 @@ async def create_course(data: CourseCreate, user: User = Depends(get_current_act
     """Create a new course (instructor/admin)."""
     from app.core.redis_cache import cache_invalidate
     svc = CourseService(db)
-    course = await svc.create_course(user.id, **data.model_dump())
+    is_admin = any(ur.role.name == "admin" for ur in user.user_roles)
+    course = await svc.create_course(user.id, is_admin=is_admin, **data.model_dump())
     await cache_invalidate("courses:*")
     return CourseRead.model_validate(course)
 

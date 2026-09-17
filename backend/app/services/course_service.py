@@ -23,9 +23,11 @@ class CourseService:
             raise NotFoundError(resource="Course")
         return course
 
-    async def create_course(self, instructor_id: UUID, **kwargs):
+    async def create_course(self, instructor_id: UUID, is_admin: bool = False, **kwargs):
         from sqlalchemy.orm.attributes import set_committed_value
-        course = await self.repo.create(instructor_id=instructor_id, status=CourseStatus.DRAFT, **kwargs)
+        status_raw = kwargs.pop("status", "draft")
+        status = CourseStatus.PUBLISHED if (is_admin and status_raw == "published") else CourseStatus.DRAFT
+        course = await self.repo.create(instructor_id=instructor_id, status=status, **kwargs)
         set_committed_value(course, "modules", [])
         await self.db.commit()
         return course

@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import BrandLoader from "@/components/BrandLoader";
 import CustomModal from "@/components/CustomModal";
-import { getCourseBySlug, ALL_COURSES, CourseData } from "@/data/courses";
 
 export default function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -22,10 +21,8 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   const router = useRouter();
   const { user, token } = useAuth();
 
-  const staticCourse = getCourseBySlug(slug);
-
-  const [course, setCourse] = useState<any>(staticCourse || null);
-  const [loading, setLoading] = useState(!staticCourse);
+  const [course, setCourse] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false);
@@ -37,46 +34,27 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   });
 
   useEffect(() => {
-    if (staticCourse) {
-      document.title = `${staticCourse.title} | ERAAO Academy`;
-    }
-
     const fetchCourse = async () => {
       try {
         const res = await fetch(`/api/v1/courses/${slug}`);
         if (res.ok) {
           const apiData = await res.json();
-          // Merge API data with rich static PDF curriculum specifications
-          setCourse((prev: any) => ({
-            ...(staticCourse || {}),
-            ...apiData,
-            modules: (apiData.modules && apiData.modules.length > 0) ? apiData.modules : (staticCourse?.modules || []),
-            outcomes: staticCourse?.outcomes || apiData.outcomes || [],
-            target_audience: staticCourse?.target_audience || [],
-            weekly_rhythm: staticCourse?.weekly_rhythm || "",
-            resources_included: staticCourse?.resources_included || "",
-            classes_count: staticCourse?.classes_count || 36,
-            classes_per_week: staticCourse?.classes_per_week || 3,
-            class_length_minutes: staticCourse?.class_length_minutes || 70,
-            price: apiData.price ?? staticCourse?.price ?? 0
-          }));
+          setCourse(apiData);
           if (apiData?.title) {
             document.title = `${apiData.title} | ERAAO Academy`;
           }
-        } else if (!staticCourse) {
+        } else {
           setError("Course not found.");
         }
       } catch {
-        if (!staticCourse) {
-          setError("Error connecting to server.");
-        }
+        setError("Error connecting to server.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchCourse();
-  }, [slug, staticCourse]);
+  }, [slug]);
 
   const handleEnroll = async () => {
     if (!user) {

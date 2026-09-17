@@ -11,7 +11,6 @@ import {
   Layers, Star, Laptop, ArrowUpRight, MessageSquare, PhoneCall
 } from "lucide-react";
 import AcademyBannerSlider from "@/components/AcademyBannerSlider";
-import { ALL_COURSES } from "@/data/courses";
 
 interface Category {
   id: string;
@@ -88,50 +87,16 @@ export default function AcademyPage() {
         const res = await fetch(`/api/v1/courses?${queryParams.toString()}`).catch(() => null);
         if (res && res.ok) {
           const body = await res.json();
-          if (body.items && body.items.length > 0) {
-            setCourses(body.items);
-            setTotal(body.total || body.items.length);
-            setLoading(false);
-            return;
-          }
+          setCourses(body.items || []);
+          setTotal(body.total || (body.items ? body.items.length : 0));
+        } else {
+          setCourses([]);
+          setTotal(0);
         }
-
-        // Fallback to authentic typed catalog from official PDFs
-        let filtered = [...ALL_COURSES];
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase();
-          filtered = filtered.filter(
-            (c) => c.title.toLowerCase().includes(q) || c.short_description.toLowerCase().includes(q)
-          );
-        }
-        if (selectedLevel !== "all") {
-          filtered = filtered.filter((c) => c.level === selectedLevel);
-        }
-        if (selectedCategory !== "all") {
-          filtered = filtered.filter(
-            (c) => c.category_slug === selectedCategory || c.category === selectedCategory
-          );
-        }
-
-        const mapped: Course[] = filtered.map((c) => ({
-          id: c.id,
-          title: c.title,
-          slug: c.slug,
-          level: c.level,
-          short_description: c.short_description,
-          price: c.price,
-          duration_weeks: c.duration_weeks,
-          duration_hours: c.duration_hours,
-          lessons_count: c.classes_count,
-          modules_count: c.modules.length,
-          category_id: c.category_slug,
-          category: { id: c.category_slug, name: c.category, slug: c.category_slug }
-        }));
-
-        setCourses(mapped);
-        setTotal(mapped.length);
       } catch (err) {
         console.error("Error loading courses:", err);
+        setCourses([]);
+        setTotal(0);
       } finally {
         setLoading(false);
       }
@@ -192,11 +157,6 @@ export default function AcademyPage() {
           }}>
             {/* Left Column — Core Academy Value Proposition */}
             <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.35rem 0.85rem", borderRadius: "var(--radius-full)", background: "rgba(14, 165, 233, 0.1)", border: "1px solid rgba(14, 165, 233, 0.25)", color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 800, marginBottom: "1.25rem", letterSpacing: "0.02em" }}>
-                <Sparkles size={14} />
-                <span>OFFICIAL 12-WEEK PRACTITIONER BOOTCAMPS</span>
-              </div>
-
               <h1 className="hero-title" style={{ fontSize: "clamp(2.15rem, 4.2vw, 3.25rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem", textWrap: "balance" }}>
                 Practical Skills for Global Careers:{" "}
                 <span className="gradient-text-animated" style={{

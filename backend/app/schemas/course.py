@@ -43,11 +43,12 @@ class CourseCreate(BaseModel):
     description: str | None = None
     short_description: str | None = None
     price: float = 0
-    currency: str = "USD"
+    currency: str = "BDT"
     level: str = "beginner"
     category_id: UUID | None = None
     thumbnail_url: str | None = None
     duration_hours: float | None = None
+    status: str | None = "draft"
 
 class CourseUpdate(BaseModel):
     title: str | None = None

@@ -1,17 +1,44 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight, BookOpen, Clock, Calendar, CheckCircle2, ShieldCheck,
   BrainCircuit, MessageSquare, Award, Sparkles, Terminal, Layers,
-  Phone, Laptop, Check, ArrowUpRight, Headphones, Users, HelpCircle
+  Phone, Laptop, Check, ArrowUpRight, Headphones, Users, HelpCircle,
+  Loader
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
 import AcademyBannerSlider from "@/components/AcademyBannerSlider";
-import { ALL_COURSES } from "@/data/courses";
 
 export default function Home() {
-  const englishCourses = ALL_COURSES.filter((c) => c.category_slug === "english-communication");
-  const techCourses = ALL_COURSES.filter((c) => c.category_slug !== "english-communication");
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/v1/courses?page=1&page_size=20")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.items) {
+          setCourses(data.items);
+        }
+      })
+      .catch((err) => console.error("Error fetching courses on homepage:", err))
+      .finally(() => setLoadingCourses(false));
+  }, []);
+
+  const englishCourses = courses.filter((c) => {
+    const cat = (c.category?.slug || c.category_slug || c.category?.name || "").toLowerCase();
+    const title = (c.title || "").toLowerCase();
+    return cat.includes("english") || title.includes("english") || title.includes("spoken");
+  });
+
+  const techCourses = courses.filter((c) => {
+    const cat = (c.category?.slug || c.category_slug || c.category?.name || "").toLowerCase();
+    const title = (c.title || "").toLowerCase();
+    return !cat.includes("english") && !title.includes("english") && !title.includes("spoken");
+  });
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -54,11 +81,6 @@ export default function Home() {
         }}>
           {/* Left Column — Core Narrative */}
           <div>
-            <div className="anim-fade-up" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.35rem 0.85rem", borderRadius: "var(--radius-full)", background: "rgba(14, 165, 233, 0.1)", border: "1px solid rgba(14, 165, 233, 0.25)", color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 800, marginBottom: "1.25rem", letterSpacing: "0.02em" }}>
-              <Sparkles size={14} />
-              <span>PRACTICAL 12-WEEK PRACTITIONER BOOTCAMPS</span>
-            </div>
-
             <h1 className="hero-title anim-fade-up anim-delay-1" style={{
               fontSize: "clamp(2.15rem, 3.6vw, 3.25rem)",
               fontWeight: 900,
@@ -179,15 +201,22 @@ export default function Home() {
                 </div>
 
                 <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
-                  <Link href="/academy/courses/english-for-freelancers" className="badge badge-blue" style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
-                    Spoken English (Freelancers)
-                  </Link>
-                  <Link href="/academy/courses/ai-automation-agents" className="badge badge-violet" style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
-                    AI Automation &amp; Agents
-                  </Link>
-                  <Link href="/academy/courses/offensive-cyber-security" className="badge badge-teal" style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
-                    Offensive Security
-                  </Link>
+                  {courses.length > 0 ? (
+                    courses.slice(0, 3).map((c, i) => (
+                      <Link
+                        key={c.id}
+                        href={`/academy/courses/${c.slug}`}
+                        className={`badge ${i === 0 ? "badge-blue" : i === 1 ? "badge-violet" : "badge-teal"}`}
+                        style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}
+                      >
+                        {c.title}
+                      </Link>
+                    ))
+                  ) : (
+                    <span className="badge badge-blue" style={{ fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
+                      Upcoming Cohorts Enrolling Soon
+                    </span>
+                  )}
                 </div>
 
                 <Link
@@ -206,7 +235,7 @@ export default function Home() {
                     textDecoration: "none"
                   }}
                 >
-                  <span>Explore All 5 Bootcamps &amp; Syllabi</span>
+                  <span>Explore Academy Directory &amp; Syllabi</span>
                   <ArrowRight size={14} style={{ color: "var(--accent-blue)" }} />
                 </Link>
               </div>
@@ -311,199 +340,234 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Track 1: English Communication (3 Bootcamps — 3-Column Symmetrical Grid) */}
-          <div style={{ marginBottom: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.35rem" }}>
-              <span className="badge badge-blue" style={{ fontSize: "0.7rem", fontWeight: 800, padding: "0.2rem 0.6rem" }}>TRACK 01</span>
-              <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
-                English Communication for International Careers
-              </h3>
+          {loadingCourses ? (
+            <div className="loading-container" style={{ minHeight: "300px", textAlign: "center", padding: "4rem 0" }}>
+              <Loader className="animate-spin text-accent" style={{ color: "var(--accent-blue)", margin: "0 auto 1rem auto" }} size={36} />
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)" }}>Loading active cohorts...</p>
             </div>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", margin: 0 }}>
-              Practical speaking mechanics, client proposals, pitch rehearsals, and executive fluency for freelancers and remote contractors.
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginBottom: "3.5rem" }}>
-            {englishCourses.map((c) => (
-              <div key={c.id} className="academy-card">
-                <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
-                  <Image
-                    src={c.thumbnail_url}
-                    alt={c.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <div style={{
-                    position: "absolute",
-                    top: "0.85rem",
-                    left: "0.85rem",
-                    background: "rgba(15, 23, 42, 0.85)",
-                    backdropFilter: "blur(6px)",
-                    border: "1px solid rgba(255, 255, 255, 0.15)",
-                    padding: "0.25rem 0.75rem",
-                    borderRadius: "var(--radius-full)",
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 700,
-                    color: "white",
-                    textTransform: "capitalize",
-                    zIndex: 2
-                  }}>
-                    {c.level}
-                  </div>
-                </Link>
-
-                <div className="academy-card-body">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
-                    <span className="badge badge-blue">
-                      {c.category}
-                    </span>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
-                      <Clock size={13} />
-                      <span>12 Wks • 36 Classes</span>
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
-                    <Link href={`/academy/courses/${c.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
-                      {c.title}
-                    </Link>
-                  </h3>
-
-                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
-                    {c.short_description}
-                  </p>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                      <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
-                      <span>3 Live Classes / Week • Mentored Sessions</span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                      <Layers size={13} style={{ color: "var(--accent-teal)" }} />
-                      <span>{c.modules.length} Modules • Practice Packs Included</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="academy-card-footer">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                    <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
-                    <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
-                      ৳{c.price.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>BDT</span>
-                    </span>
-                  </div>
-
-                  <Link
-                    href={`/academy/courses/${c.slug}`}
-                    className="btn btn-accent"
-                    style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
-                  >
-                    <span>Explore Syllabus</span>
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Track 2: Applied AI & Offensive Cybersecurity (2 Bootcamps — 2-Column Symmetrical Grid) */}
-          <div style={{ marginBottom: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.35rem" }}>
-              <span className="badge badge-violet" style={{ fontSize: "0.7rem", fontWeight: 800, padding: "0.2rem 0.6rem" }}>TRACK 02</span>
-              <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
-                Applied Technology &amp; Offensive Security
+          ) : courses.length === 0 ? (
+            <div className="card" style={{ padding: "4rem 2rem", textAlign: "center", maxWidth: "620px", margin: "0 auto" }}>
+              <BookOpen size={42} style={{ color: "var(--accent-blue)", margin: "0 auto 1.25rem auto" }} />
+              <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                Upcoming Cohorts Opening Soon
               </h3>
-            </div>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", margin: 0 }}>
-              Hands-on engineering tracks with real-world sandboxes, terminal penetration labs, and automated multi-agent LLM workflows.
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem" }}>
-            {techCourses.map((c) => (
-              <div key={c.id} className="academy-card">
-                <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
-                  <Image
-                    src={c.thumbnail_url}
-                    alt={c.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <div style={{
-                    position: "absolute",
-                    top: "0.85rem",
-                    left: "0.85rem",
-                    background: "rgba(15, 23, 42, 0.85)",
-                    backdropFilter: "blur(6px)",
-                    border: "1px solid rgba(255, 255, 255, 0.15)",
-                    padding: "0.25rem 0.75rem",
-                    borderRadius: "var(--radius-full)",
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 700,
-                    color: "white",
-                    textTransform: "capitalize",
-                    zIndex: 2
-                  }}>
-                    {c.level}
-                  </div>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.75rem" }}>
+                Our admissions department is finalizing the live schedule for the upcoming 12-week bootcamps. Check back shortly or speak directly with our team for priority enrollment notifications.
+              </p>
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+                <Link href="/book" className="btn btn-accent" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                  <Phone size={16} />
+                  <span>Book Free Consultation</span>
                 </Link>
-
-                <div className="academy-card-body">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
-                    <span className="badge badge-violet">
-                      {c.category}
-                    </span>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
-                      <Clock size={13} />
-                      <span>12 Wks • 36 Classes</span>
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
-                    <Link href={`/academy/courses/${c.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
-                      {c.title}
-                    </Link>
-                  </h3>
-
-                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
-                    {c.short_description}
-                  </p>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                      <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
-                      <span>3 Live Classes / Week • Mentored Sessions</span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                      <Layers size={13} style={{ color: "var(--accent-teal)" }} />
-                      <span>{c.modules.length} Modules • Practice Packs Included</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="academy-card-footer">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                    <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
-                    <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
-                      ৳{c.price.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>BDT</span>
-                    </span>
-                  </div>
-
-                  <Link
-                    href={`/academy/courses/${c.slug}`}
-                    className="btn btn-accent"
-                    style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
-                  >
-                    <span>Explore Syllabus</span>
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
+                <Link href="/academy" className="btn btn-outline" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span>View Academy Catalog</span>
+                  <ArrowRight size={16} />
+                </Link>
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <>
+              {englishCourses.length > 0 && (
+                <>
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.35rem" }}>
+                      <span className="badge badge-blue" style={{ fontSize: "0.7rem", fontWeight: 800, padding: "0.2rem 0.6rem" }}>TRACK 01</span>
+                      <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
+                        English Communication for International Careers
+                      </h3>
+                    </div>
+                    <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", margin: 0 }}>
+                      Practical speaking mechanics, client proposals, pitch rehearsals, and executive fluency for freelancers and remote contractors.
+                    </p>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginBottom: "3.5rem" }}>
+                    {englishCourses.map((c) => (
+                      <div key={c.id} className="academy-card">
+                        <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
+                          <Image
+                            src={c.thumbnail_url || "/banners/banner-spoken-english.jpg"}
+                            alt={c.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            style={{ objectFit: "cover" }}
+                          />
+                          <div style={{
+                            position: "absolute",
+                            top: "0.85rem",
+                            left: "0.85rem",
+                            background: "rgba(15, 23, 42, 0.85)",
+                            backdropFilter: "blur(6px)",
+                            border: "1px solid rgba(255, 255, 255, 0.15)",
+                            padding: "0.25rem 0.75rem",
+                            borderRadius: "var(--radius-full)",
+                            fontSize: "var(--text-xs)",
+                            fontWeight: 700,
+                            color: "white",
+                            textTransform: "capitalize",
+                            zIndex: 2
+                          }}>
+                            {c.level}
+                          </div>
+                        </Link>
+
+                        <div className="academy-card-body">
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                            <span className="badge badge-blue">
+                              {c.category?.name || "English Communication"}
+                            </span>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                              <Clock size={13} />
+                              <span>{c.duration_hours || 36} Hours</span>
+                            </div>
+                          </div>
+
+                          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
+                            <Link href={`/academy/courses/${c.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+                              {c.title}
+                            </Link>
+                          </h3>
+
+                          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
+                            {c.short_description || c.description}
+                          </p>
+
+                          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                              <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
+                              <span>Live Classes &bull; 1-on-1 Mentor Guidance</span>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                              <Layers size={13} style={{ color: "var(--accent-teal)" }} />
+                              <span>{c.modules?.length || 0} Modules Included</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="academy-card-footer">
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                            <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
+                              ৳{c.price?.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>{c.currency || "BDT"}</span>
+                            </span>
+                          </div>
+
+                          <Link
+                            href={`/academy/courses/${c.slug}`}
+                            className="btn btn-accent"
+                            style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                          >
+                            <span>Explore Syllabus</span>
+                            <ArrowRight size={16} />
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {techCourses.length > 0 && (
+                <>
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.35rem" }}>
+                      <span className="badge badge-violet" style={{ fontSize: "0.7rem", fontWeight: 800, padding: "0.2rem 0.6rem" }}>TRACK 02</span>
+                      <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
+                        Applied Technology &amp; Offensive Security
+                      </h3>
+                    </div>
+                    <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", margin: 0 }}>
+                      Hands-on engineering tracks with real-world sandboxes, terminal penetration labs, and automated multi-agent LLM workflows.
+                    </p>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem" }}>
+                    {techCourses.map((c) => (
+                      <div key={c.id} className="academy-card">
+                        <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
+                          <Image
+                            src={c.thumbnail_url || "/banners/banner-ai-automation.jpg"}
+                            alt={c.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                            style={{ objectFit: "cover" }}
+                          />
+                          <div style={{
+                            position: "absolute",
+                            top: "0.85rem",
+                            left: "0.85rem",
+                            background: "rgba(15, 23, 42, 0.85)",
+                            backdropFilter: "blur(6px)",
+                            border: "1px solid rgba(255, 255, 255, 0.15)",
+                            padding: "0.25rem 0.75rem",
+                            borderRadius: "var(--radius-full)",
+                            fontSize: "var(--text-xs)",
+                            fontWeight: 700,
+                            color: "white",
+                            textTransform: "capitalize",
+                            zIndex: 2
+                          }}>
+                            {c.level}
+                          </div>
+                        </Link>
+
+                        <div className="academy-card-body">
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                            <span className="badge badge-violet">
+                              {c.category?.name || "Applied Technology"}
+                            </span>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                              <Clock size={13} />
+                              <span>{c.duration_hours || 36} Hours</span>
+                            </div>
+                          </div>
+
+                          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
+                            <Link href={`/academy/courses/${c.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+                              {c.title}
+                            </Link>
+                          </h3>
+
+                          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
+                            {c.short_description || c.description}
+                          </p>
+
+                          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                              <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
+                              <span>Live Classes &bull; Hands-on Sandbox Labs</span>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                              <Layers size={13} style={{ color: "var(--accent-teal)" }} />
+                              <span>{c.modules?.length || 0} Modules Included</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="academy-card-footer">
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                            <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
+                              ৳{c.price?.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>{c.currency || "BDT"}</span>
+                            </span>
+                          </div>
+
+                          <Link
+                            href={`/academy/courses/${c.slug}`}
+                            className="btn btn-accent"
+                            style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                          >
+                            <span>Explore Syllabus</span>
+                            <ArrowRight size={16} />
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
+          )}
         </div>
       </section>
 

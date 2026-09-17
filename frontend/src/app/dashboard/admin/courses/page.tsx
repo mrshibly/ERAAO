@@ -20,8 +20,9 @@ export default function AdminCoursesPage() {
     confirmText: "Confirm",
     onConfirm: undefined as (() => void) | undefined
   });
+  const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
   const [courseForm, setCourseForm] = useState({
-    title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft"
+    title: "", slug: "", description: "", short_description: "", price: 15000, level: "beginner", category_id: "", thumbnail_url: "/banners/banner-spoken-english.jpg", duration_hours: 36, status: "published"
   });
   const [editId, setEditId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("all");
@@ -41,17 +42,28 @@ export default function AdminCoursesPage() {
     finally { setFetching(false); }
   };
 
-  useEffect(() => { fetchCourses(); }, []);
+  useEffect(() => {
+    fetchCourses();
+    fetch("/api/v1/categories")
+      .then(res => res.json())
+      .then(data => { if (Array.isArray(data)) setCategories(data); })
+      .catch(console.error);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const url = editId ? `/api/v1/courses/${editId}` : "/api/v1/courses";
       const method = editId ? "PATCH" : "POST";
-      const res = await fetch(url, { method, headers, body: JSON.stringify(courseForm) });
+      const payload: any = {
+        ...courseForm,
+        currency: "BDT",
+        category_id: courseForm.category_id ? courseForm.category_id : null,
+      };
+      const res = await fetch(url, { method, headers, body: JSON.stringify(payload) });
       if (res.ok) {
         showMessage(editId ? "Course updated successfully!" : "Course created successfully!");
-        setCourseForm({ title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft" });
+        setCourseForm({ title: "", slug: "", description: "", short_description: "", price: 15000, level: "beginner", category_id: "", thumbnail_url: "/banners/banner-spoken-english.jpg", duration_hours: 36, status: "published" });
         setEditId(null);
         fetchCourses();
       } else {
@@ -64,9 +76,15 @@ export default function AdminCoursesPage() {
   const handleEdit = (course: any) => {
     setEditId(course.id);
     setCourseForm({
-      title: course.title, slug: course.slug, description: course.description || "",
-      short_description: course.short_description || "", price: course.price,
-      level: course.level, duration_hours: course.duration_hours || 10,
+      title: course.title,
+      slug: course.slug,
+      description: course.description || "",
+      short_description: course.short_description || "",
+      price: course.price,
+      level: course.level,
+      category_id: course.category_id || "",
+      thumbnail_url: course.thumbnail_url || "/banners/banner-spoken-english.jpg",
+      duration_hours: course.duration_hours || 36,
       status: course.status
     });
   };
@@ -249,48 +267,77 @@ export default function AdminCoursesPage() {
 
         {/* Create/Edit Course Form */}
         <div className="card" style={{ padding: "1.5rem", height: "fit-content" }}>
-          <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, marginBottom: "1rem", color: "var(--text-primary)" }}>{editId ? "Edit Course" : "Add New Course"}</h2>
+          <h2 style={{ fontSize: "var(--text-base)", fontWeight: 700, marginBottom: "1rem", color: "var(--text-primary)" }}>{editId ? "Edit Course Track" : "Add New Course Track"}</h2>
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <div className="form-group">
               <label className="form-label">Course Title</label>
               <input
                 type="text" required
+                placeholder="e.g. Spoken English for Freelancers"
                 value={courseForm.title}
-                onChange={(e) => setCourseForm({ ...courseForm, title: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  const autoSlug = val.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+                  setCourseForm({ ...courseForm, title: val, slug: courseForm.slug === "" || courseForm.slug === autoSlug.slice(0, -1) ? autoSlug : courseForm.slug });
+                }}
                 className="input-field"
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">URL Slug</label>
-              <input
-                type="text" required
-                value={courseForm.slug}
-                onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })}
-                className="input-field"
-              />
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">URL Slug</label>
+                <input
+                  type="text" required
+                  placeholder="e.g. spoken-english-freelancers"
+                  value={courseForm.slug}
+                  onChange={(e) => setCourseForm({ ...courseForm, slug: e.target.value })}
+                  className="input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Category Track</label>
+                <select
+                  value={courseForm.category_id}
+                  onChange={(e) => setCourseForm({ ...courseForm, category_id: e.target.value })}
+                  className="input-field"
+                >
+                  <option value="">Select a Category</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+
             <div className="form-group">
               <label className="form-label">Short Tagline</label>
               <input
                 type="text"
+                placeholder="Clear 1-sentence value proposition for students"
                 value={courseForm.short_description}
                 onChange={(e) => setCourseForm({ ...courseForm, short_description: e.target.value })}
                 className="input-field"
               />
             </div>
+
             <div className="form-group">
               <label className="form-label">Full Description</label>
               <textarea
                 rows={3}
+                placeholder="Comprehensive syllabus overview, target audience, and outcomes"
                 value={courseForm.description}
                 onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })}
                 className="input-field"
                 style={{ resize: "vertical" }}
               />
             </div>
+
             <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Price (BDT)</label>
+                <label className="form-label">Tuition Fee (BDT)</label>
                 <input
                   type="number" required
                   value={courseForm.price}
@@ -311,25 +358,72 @@ export default function AdminCoursesPage() {
                 </select>
               </div>
             </div>
-            <div className="form-group">
-              <label className="form-label">Publishing Status</label>
-              <select
-                value={courseForm.status}
-                onChange={(e) => setCourseForm({ ...courseForm, status: e.target.value })}
-                className="input-field"
-              >
-                <option value="draft">Draft (Private)</option>
-                <option value="published">Published (Live)</option>
-              </select>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Live Hours / Classes</label>
+                <input
+                  type="number"
+                  value={courseForm.duration_hours}
+                  onChange={(e) => setCourseForm({ ...courseForm, duration_hours: parseFloat(e.target.value) || 36 })}
+                  className="input-field"
+                  placeholder="36"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Publishing Status</label>
+                <select
+                  value={courseForm.status}
+                  onChange={(e) => setCourseForm({ ...courseForm, status: e.target.value })}
+                  className="input-field"
+                >
+                  <option value="published">Published (Live to Catalog)</option>
+                  <option value="draft">Draft (Private in Admin)</option>
+                </select>
+              </div>
             </div>
+
+            <div className="form-group">
+              <label className="form-label">Thumbnail Banner Image</label>
+              <input
+                type="text"
+                value={courseForm.thumbnail_url}
+                onChange={(e) => setCourseForm({ ...courseForm, thumbnail_url: e.target.value })}
+                className="input-field"
+                placeholder="/banners/banner-spoken-english.jpg"
+              />
+              <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.4rem", flexWrap: "wrap" }}>
+                {[
+                  { label: "English Banner", src: "/banners/banner-spoken-english.jpg" },
+                  { label: "AI Banner", src: "/banners/banner-ai-automation.jpg" },
+                  { label: "Cyber Banner", src: "/banners/banner-cyber-security.jpg" }
+                ].map((b) => (
+                  <button
+                    key={b.src}
+                    type="button"
+                    onClick={() => setCourseForm({ ...courseForm, thumbnail_url: b.src })}
+                    className="btn btn-outline"
+                    style={{
+                      padding: "0.2rem 0.5rem",
+                      fontSize: "11px",
+                      borderColor: courseForm.thumbnail_url === b.src ? "var(--accent-blue)" : "var(--border-color)",
+                      color: courseForm.thumbnail_url === b.src ? "var(--accent-blue)" : "var(--text-secondary)"
+                    }}
+                  >
+                    {b.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
               {editId && (
-                <button type="button" onClick={() => { setEditId(null); setCourseForm({ title: "", slug: "", description: "", short_description: "", price: 99.0, level: "beginner", duration_hours: 10, status: "draft" }); }} className="btn btn-outline">
+                <button type="button" onClick={() => { setEditId(null); setCourseForm({ title: "", slug: "", description: "", short_description: "", price: 15000, level: "beginner", category_id: "", thumbnail_url: "/banners/banner-spoken-english.jpg", duration_hours: 36, status: "published" }); }} className="btn btn-outline">
                   Cancel
                 </button>
               )}
               <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>
-                {editId ? "Update Course" : "Create Course"}
+                {editId ? "Update Course Track" : "Create & Publish Course"}
               </button>
             </div>
           </form>
