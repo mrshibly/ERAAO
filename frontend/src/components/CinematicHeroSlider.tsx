@@ -12,7 +12,6 @@ import {
   Bot,
   ShieldCheck,
   CheckCircle2,
-  Clock,
   MessageSquare,
   Phone
 } from "lucide-react";
@@ -161,7 +160,6 @@ export default function CinematicHeroSlider() {
   const router = useRouter();
   const [activeIdx, setActiveIdx] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
@@ -169,29 +167,18 @@ export default function CinematicHeroSlider() {
 
   const nextSlide = useCallback(() => {
     setActiveIdx((prev) => (prev + 1) % TRACKS.length);
-    setProgress(0);
   }, []);
 
   const prevSlide = useCallback(() => {
     setActiveIdx((prev) => (prev - 1 + TRACKS.length) % TRACKS.length);
-    setProgress(0);
   }, []);
 
-  // Timer & Progress Animation
+  // Autoplay Timer (every 7 seconds, pauses on hover)
   useEffect(() => {
     if (isPaused) return;
-
-    const intervalStep = 50; // update every 50ms
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          nextSlide();
-          return 0;
-        }
-        return prev + (intervalStep / SLIDE_DURATION) * 100;
-      });
-    }, intervalStep);
-
+      nextSlide();
+    }, SLIDE_DURATION);
     return () => clearInterval(timer);
   }, [isPaused, nextSlide]);
 
@@ -316,83 +303,7 @@ export default function CinematicHeroSlider() {
           padding: "0 1.5rem",
         }}
       >
-        {/* ═══════════════════════════════════════════════════════════════
-            TRACK SWITCHER TABS (Top Command Bar)
-            ═══════════════════════════════════════════════════════════════ */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "0.75rem",
-            flexWrap: "wrap",
-            marginBottom: "2.75rem",
-            position: "relative",
-            zIndex: 10,
-          }}
-        >
-          {TRACKS.map((t, idx) => {
-            const isActive = idx === activeIdx;
-            return (
-              <button
-                key={t.id}
-                onClick={() => {
-                  setActiveIdx(idx);
-                  setProgress(0);
-                }}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.55rem",
-                  padding: "0.65rem 1.35rem",
-                  borderRadius: "999px",
-                  background: isActive
-                    ? "rgba(15, 23, 42, 0.85)"
-                    : "rgba(15, 23, 42, 0.45)",
-                  border: isActive
-                    ? `1px solid ${t.accentColor}`
-                    : "1px solid rgba(255, 255, 255, 0.08)",
-                  color: isActive ? "#ffffff" : "#94a3b8",
-                  fontSize: "0.85rem",
-                  fontWeight: isActive ? 700 : 500,
-                  cursor: "pointer",
-                  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                  backdropFilter: "blur(12px)",
-                  boxShadow: isActive
-                    ? `0 0 20px ${t.glowColor}, inset 0 0 12px ${t.glowColor}`
-                    : "none",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                {/* Active countdown fill bar */}
-                {isActive && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      height: "3px",
-                      width: `${progress}%`,
-                      background: t.gradientText,
-                      transition: "width 0.05s linear",
-                      borderRadius: "999px",
-                    }}
-                  />
-                )}
-                <span
-                  style={{
-                    color: isActive ? t.accentColor : "inherit",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {t.tabIcon}
-                </span>
-                <span>{t.tabLabel}</span>
-              </button>
-            );
-          })}
-        </div>
+
 
         {/* ═══════════════════════════════════════════════════════════════
             HERO DUAL-COLUMN STAGE (Edge-to-edge on canvas)
@@ -408,55 +319,6 @@ export default function CinematicHeroSlider() {
         >
           {/* ── LEFT COLUMN: High-Converting Narrative & Direct CTAs ── */}
           <div>
-            {/* Cohort Status Pill & Schedule Indicator */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                flexWrap: "wrap",
-                marginBottom: "1.35rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.45rem",
-                  padding: "0.35rem 0.85rem",
-                  borderRadius: "999px",
-                  background: "rgba(255, 255, 255, 0.06)",
-                  border: `1px solid ${current.accentColor}44`,
-                  backdropFilter: "blur(8px)",
-                  fontSize: "0.72rem",
-                  fontWeight: 800,
-                  letterSpacing: "0.06em",
-                  color: current.accentColor,
-                  boxShadow: `0 0 14px ${current.glowColor}`,
-                }}
-              >
-                {current.badgeIcon}
-                <span>{current.badge}</span>
-              </div>
-
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                  fontSize: "0.75rem",
-                  color: "#94a3b8",
-                  fontWeight: 600,
-                  background: "rgba(0, 0, 0, 0.4)",
-                  padding: "0.3rem 0.75rem",
-                  borderRadius: "8px",
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
-                }}
-              >
-                <Clock size={13} style={{ color: current.accentColor }} />
-                <span>{current.schedule}</span>
-              </div>
-            </div>
 
             {/* Huge Headline with Vector Animated Gradient */}
             <h1
@@ -1067,10 +929,7 @@ export default function CinematicHeroSlider() {
         {TRACKS.map((t, idx) => (
           <button
             key={t.id}
-            onClick={() => {
-              setActiveIdx(idx);
-              setProgress(0);
-            }}
+            onClick={() => setActiveIdx(idx)}
             aria-label={`Switch to ${t.tabLabel}`}
             style={{
               height: "6px",
