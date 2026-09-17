@@ -188,10 +188,6 @@ export default function AcademyPage() {
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           
           <div className="responsive-grid-split" style={{
-            display: "grid",
-            gridTemplateColumns: "1.15fr 1fr",
-            gap: "3.5rem",
-            alignItems: "center",
             marginBottom: "3rem"
           }}>
             {/* Left Column — Core Academy Value Proposition */}
@@ -201,7 +197,7 @@ export default function AcademyPage() {
                 <span>OFFICIAL 12-WEEK PRACTITIONER BOOTCAMPS</span>
               </div>
 
-              <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.4rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem" }}>
+              <h1 className="hero-title" style={{ fontSize: "clamp(2.15rem, 4.2vw, 3.25rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem", textWrap: "balance" }}>
                 Practical Skills for Global Careers:{" "}
                 <span className="gradient-text-animated" style={{
                   display: "block",
@@ -336,11 +332,7 @@ export default function AcademyPage() {
               </p>
             </div>
 
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-              gap: "0.75rem"
-            }}>
+            <div className="learning-cycle-grid">
               {[
                 { step: "01", name: "Understand", desc: "Introduced through context, sound, situation & meaning" },
                 { step: "02", name: "Notice", desc: "Recognise recurring words, structures & patterns" },
