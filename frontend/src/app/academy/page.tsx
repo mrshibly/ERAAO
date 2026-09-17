@@ -10,7 +10,7 @@ import {
   X, Filter, ShieldCheck, Award, Terminal, Users, Sparkles, CheckCircle2,
   Layers, Star, Laptop, ArrowUpRight, MessageSquare, PhoneCall
 } from "lucide-react";
-import AcademyBannerSlider from "@/components/AcademyBannerSlider";
+import CinematicHeroSlider from "@/components/CinematicHeroSlider";
 
 interface Category {
   id: string;
@@ -152,121 +152,11 @@ export default function AcademyPage() {
         
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           
-          <div className="responsive-grid-split" style={{
-            marginBottom: "3rem"
-          }}>
-            {/* Left Column — Core Academy Value Proposition */}
-            <div>
-              <h1 className="hero-title" style={{ fontSize: "clamp(2.15rem, 4.2vw, 3.25rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem", textWrap: "balance" }}>
-                Practical Skills for Global Careers:{" "}
-                <span className="gradient-text-animated" style={{
-                  display: "block",
-                  background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-teal) 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  backgroundSize: "200% auto"
-                }}>
-                  English, AI &amp; Cyber Security
-                </span>
-              </h1>
-
-              <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: "36rem" }}>
-                Structured 12-week cohorts built on active production work. Master international client communication, autonomous AI workflows, and hands-on offensive security with 1-on-1 mentor guidance.
-              </p>
-
-              {/* Action CTAs */}
-              <div style={{ display: "flex", gap: "0.85rem", alignItems: "center", flexWrap: "wrap", marginBottom: "2.25rem" }}>
-                <a
-                  href="#bootcamps"
-                  className="btn btn-accent"
-                  style={{
-                    padding: "0.85rem 1.85rem",
-                    borderRadius: "var(--radius-xl)",
-                    fontWeight: 700,
-                    fontSize: "var(--text-sm)",
-                    background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%)",
-                    boxShadow: "0 8px 20px rgba(14, 165, 233, 0.3)",
-                    color: "white",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.4rem"
-                  }}
-                >
-                  <span>Browse All Bootcamps</span>
-                  <ArrowRight size={16} />
-                </a>
-
-                <Link
-                  href="/book"
-                  className="btn btn-outline"
-                  style={{
-                    padding: "0.85rem 1.75rem",
-                    borderRadius: "var(--radius-xl)",
-                    fontWeight: 600,
-                    fontSize: "var(--text-sm)",
-                    background: "var(--card-bg)",
-                    borderColor: "var(--border-focus)",
-                    color: "var(--text-primary)",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.4rem"
-                  }}
-                >
-                  <PhoneCall size={16} style={{ color: "var(--accent-teal)" }} />
-                  <span>Free Skill Assessment</span>
-                </Link>
-              </div>
-
-              {/* Verified Curriculum Attributes Bar — ZERO Fake Data */}
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
-                gap: "1rem",
-                paddingTop: "1.5rem",
-                borderTop: "1px solid var(--border-color)"
-              }}>
-                <div>
-                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--accent-blue)" }}>12 Weeks</div>
-                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Structured Cohort</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--accent-teal)" }}>36 Classes</div>
-                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Mon / Wed / Fri</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--accent-violet)" }}>6 Stages</div>
-                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>ERAAO Retention</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--color-warning)" }}>1-on-1</div>
-                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Live Speech Review</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column — Slidable Billboard Banner */}
-            <div>
-              <div style={{
-                borderRadius: "20px",
-                overflow: "hidden",
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--border-color)",
-                background: "var(--card-bg)",
-                padding: "0.75rem"
-              }}>
-                <AcademyBannerSlider />
-                
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.85rem 0.5rem 0.25rem 0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--color-success)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.35rem" }}>
-                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--color-success)", display: "inline-block", boxShadow: "0 0 8px var(--color-success)" }} />
-                    Active Cohorts Enrolling
-                  </span>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                    Swipe to explore tracks
-                  </span>
-                </div>
-              </div>
-            </div>
+          {/* ═══════════════════════════════════════════════════════════════
+              FULL-WIDTH CINEMATIC HERO SLIDER
+              ═══════════════════════════════════════════════════════════════ */}
+          <div style={{ marginBottom: "2rem" }}>
+            <CinematicHeroSlider />
           </div>
 
           {/* ═══════════════════════════════════════════════════════════════

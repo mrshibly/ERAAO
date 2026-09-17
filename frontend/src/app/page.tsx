@@ -10,7 +10,7 @@ import {
   Loader
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
-import AcademyBannerSlider from "@/components/AcademyBannerSlider";
+import CinematicHeroSlider from "@/components/CinematicHeroSlider";
 
 export default function Home() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -41,21 +41,19 @@ export default function Home() {
   });
 
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ position: "relative", overflowX: "hidden", background: "var(--bg-primary)" }}>
       {/* ═══════════════════════════════════════════════════════════════
-          HERO SECTION — Academy-First High-Conversion Hero
+          FULL-WIDTH CINEMATIC HERO SLIDER SECTION
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         position: "relative",
-        minHeight: "92vh",
-        display: "flex",
-        alignItems: "center",
+        paddingTop: "2.5rem",
+        paddingBottom: "2rem",
         overflow: "hidden",
-        background: "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
         borderBottom: "1px solid var(--border-color)"
       }}>
-        {/* Soft Ambient Radial Glow */}
-        <div className="anim-glow" style={{
+        {/* Subtle Ambient Light Gradients */}
+        <div style={{
           position: "absolute",
           inset: 0,
           backgroundImage: `
@@ -74,173 +72,12 @@ export default function Home() {
           zIndex: 0
         }} />
 
-        <div className="container responsive-grid-split" style={{
+        <div className="container" style={{
           position: "relative",
           zIndex: 1,
-          padding: "4.5rem 1.5rem"
+          padding: "1rem 1rem 0 1rem"
         }}>
-          {/* Left Column — Core Narrative */}
-          <div>
-            <h1 className="hero-title anim-fade-up anim-delay-1" style={{
-              fontSize: "clamp(2.15rem, 3.6vw, 3.25rem)",
-              fontWeight: 900,
-              letterSpacing: "-0.035em",
-              lineHeight: 1.15,
-              color: "var(--text-primary)",
-              marginBottom: "1.5rem",
-              textWrap: "balance"
-            }}>
-              Master Skills That Unlock
-              <span className="gradient-text-animated" style={{
-                display: "block",
-                background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 55%, var(--accent-teal) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                backgroundSize: "200% auto"
-              }}>
-                Global High-Income Careers
-              </span>
-            </h1>
-
-            <p className="anim-fade-up anim-delay-2" style={{
-              fontSize: "var(--text-base)",
-              color: "var(--text-secondary)",
-              lineHeight: 1.65,
-              marginBottom: "2rem",
-              maxWidth: "36rem"
-            }}>
-              Structured 12-week cohorts in <strong>Spoken English for Freelancers</strong>, <strong>AI Automation &amp; Agents</strong>, and <strong>Offensive Cyber Security</strong>. Zero passive lectures — build real fluency through live speaking drills, browser sandboxes, and direct mentor feedback.
-            </p>
-
-            {/* CTAs */}
-            <div className="anim-fade-up anim-delay-3" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-              <Link href="/academy" className="btn btn-accent" style={{
-                padding: "0.9rem 2.25rem",
-                fontSize: "var(--text-base)",
-                fontWeight: 700,
-                borderRadius: "var(--radius-xl)",
-                background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%)",
-                boxShadow: "0 10px 25px rgba(14, 165, 233, 0.35)",
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem"
-              }}>
-                <span>Explore Bootcamps</span>
-                <ArrowRight size={18} />
-              </Link>
-              <Link href="/book" className="btn btn-outline" style={{
-                padding: "0.9rem 2.25rem",
-                fontSize: "var(--text-base)",
-                fontWeight: 600,
-                borderRadius: "var(--radius-xl)",
-                background: "var(--bg-primary)",
-                borderColor: "var(--border-focus)",
-                color: "var(--text-primary)",
-                boxShadow: "var(--shadow-sm)",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem"
-              }}>
-                <Phone size={18} />
-                <span>Free Level Assessment</span>
-              </Link>
-            </div>
-
-            {/* Verified Curriculum Attributes Bar — ZERO Fake Data */}
-            <div className="anim-fade-up anim-delay-4" style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
-              gap: "1.25rem",
-              marginTop: "2.5rem",
-              paddingTop: "1.75rem",
-              borderTop: "1px solid var(--border-color)"
-            }}>
-              <div>
-                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--accent-blue)" }}>12 Weeks</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Structured Cohort</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--accent-teal)" }}>36 Classes</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>3 Live Sessions/Wk</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--accent-violet)" }}>6 Stages</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Scientific Retention</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--color-warning)" }}>1-on-1</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Mentor Speech Review</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column — Interactive Slidable Billboard Banner & Live Cohort Tracks */}
-          <div className="anim-slide-right anim-delay-3" style={{ position: "relative" }}>
-            <div style={{
-              borderRadius: "24px",
-              overflow: "hidden",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--border-color)",
-              background: "var(--card-bg)",
-              padding: "0.85rem"
-            }}>
-              {/* Slidable Billboard Banners */}
-              <AcademyBannerSlider />
-
-              {/* Live Track Highlights */}
-              <div style={{ padding: "1.25rem 0.5rem 0.5rem 0.5rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.85rem", flexWrap: "wrap", gap: "0.5rem" }}>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--color-success)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--color-success)", display: "inline-block", boxShadow: "0 0 8px var(--color-success)" }} />
-                    NEXT 12-WEEK COHORTS ENROLLING
-                  </span>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                    Mon / Wed / Fri Classes
-                  </span>
-                </div>
-
-                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
-                  {courses.length > 0 ? (
-                    courses.slice(0, 3).map((c, i) => (
-                      <Link
-                        key={c.id}
-                        href={`/academy/courses/${c.slug}`}
-                        className={`badge ${i === 0 ? "badge-blue" : i === 1 ? "badge-violet" : "badge-teal"}`}
-                        style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}
-                      >
-                        {c.title}
-                      </Link>
-                    ))
-                  ) : (
-                    <span className="badge badge-blue" style={{ fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
-                      Upcoming Cohorts Enrolling Soon
-                    </span>
-                  )}
-                </div>
-
-                <Link
-                  href="/academy"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "0.75rem 1rem",
-                    borderRadius: "var(--radius-md)",
-                    background: "var(--bg-secondary)",
-                    border: "1px solid var(--border-color)",
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 700,
-                    color: "var(--text-primary)",
-                    textDecoration: "none"
-                  }}
-                >
-                  <span>Explore Academy Directory &amp; Syllabi</span>
-                  <ArrowRight size={14} style={{ color: "var(--accent-blue)" }} />
-                </Link>
-              </div>
-            </div>
-          </div>
+          <CinematicHeroSlider />
         </div>
       </section>
 

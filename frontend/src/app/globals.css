@@ -2502,3 +2502,20 @@ input:focus, select:focus, textarea:focus {
   transform-origin: 50% 50%;
   animation: radarSweep 4s linear infinite;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   CINEMATIC HERO SHOWCASE RESPONSIVENESS
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .cinematic-stage-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .cinematic-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+}
