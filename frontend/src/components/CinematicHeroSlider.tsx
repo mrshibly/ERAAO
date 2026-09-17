@@ -239,7 +239,7 @@ export default function CinematicHeroSlider() {
         padding: "2.5rem 0 3.5rem 0",
       }}
     >
-      {/* ── Faded Atmospheric Unsplash Image Layer (Smooth Cross-Fade) ── */}
+      {/* ── Faded Atmospheric Unsplash Image Layer (Clearly Visible & Faded) ── */}
       <div
         style={{
           position: "absolute",
@@ -255,34 +255,35 @@ export default function CinematicHeroSlider() {
             style={{
               position: "absolute",
               inset: 0,
-              opacity: idx === activeIdx ? 0.18 : 0,
-              transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1)",
+              opacity: idx === activeIdx ? 0.42 : 0,
+              transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
             <Image
               src={t.unsplashBg}
               alt={t.tabLabel}
               fill
+              unoptimized
               priority={idx === 0}
               sizes="100vw"
               style={{
                 objectFit: "cover",
-                objectPosition: "center 35%",
-                filter: "saturate(1.25) contrast(1.1)",
+                objectPosition: "center 30%",
+                filter: "saturate(1.3) contrast(1.15)",
               }}
             />
           </div>
         ))}
       </div>
 
-      {/* ── Multi-Angle Cyber Vignette & Dynamic Full-Bleed Atmospheric Glow ── */}
+      {/* ── Balanced Multi-Angle Gradient Overlay (Protects text while showing image) ── */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background: `
-            linear-gradient(90deg, rgba(6, 9, 19, 0.96) 0%, rgba(6, 9, 19, 0.82) 48%, rgba(6, 9, 19, 0.68) 100%),
-            linear-gradient(180deg, rgba(6, 9, 19, 0.45) 0%, rgba(6, 9, 19, 0.98) 100%),
+            linear-gradient(90deg, rgba(6, 10, 20, 0.92) 0%, rgba(6, 10, 20, 0.68) 45%, rgba(6, 10, 20, 0.35) 100%),
+            linear-gradient(180deg, rgba(6, 10, 20, 0.3) 0%, rgba(6, 10, 20, 0.88) 100%),
             ${current.bgAtmosphere}
           `,
           zIndex: 1,
