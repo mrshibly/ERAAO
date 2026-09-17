@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, ArrowRight, Sparkles, Bot, ShieldCheck, CheckCircle2, Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Sparkles, Bot, ShieldCheck, CheckCircle2, Clock, Activity, Cpu, Terminal } from "lucide-react";
 
 interface BannerSlide {
   id: string;
@@ -21,7 +20,7 @@ interface BannerSlide {
   gradientText: string;
   glowColor: string;
   bgAtmosphere: string;
-  backdropImage?: string;
+  visualType: "audio-waveform" | "neural-network" | "cyber-matrix";
 }
 
 const SLIDES: BannerSlide[] = [
@@ -38,9 +37,9 @@ const SLIDES: BannerSlide[] = [
     linkHref: "/academy/courses/english-for-freelancers",
     accentColor: "#38bdf8",
     gradientText: "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)",
-    glowColor: "rgba(56, 189, 248, 0.22)",
-    bgAtmosphere: "radial-gradient(ellipse 90% 70% at 85% 20%, rgba(14, 165, 233, 0.22) 0%, rgba(15, 23, 42, 0) 70%)",
-    backdropImage: "/banners/banner-spoken-english.jpg",
+    glowColor: "rgba(56, 189, 248, 0.28)",
+    bgAtmosphere: "radial-gradient(ellipse 90% 70% at 85% 25%, rgba(14, 165, 233, 0.25) 0%, rgba(8, 12, 22, 0) 70%)",
+    visualType: "audio-waveform",
   },
   {
     id: "ai-automation",
@@ -55,9 +54,9 @@ const SLIDES: BannerSlide[] = [
     linkHref: "/academy/courses/ai-automation-agents",
     accentColor: "#a855f7",
     gradientText: "linear-gradient(135deg, #c084fc 0%, #34d399 100%)",
-    glowColor: "rgba(168, 85, 247, 0.22)",
-    bgAtmosphere: "radial-gradient(ellipse 90% 70% at 85% 20%, rgba(168, 85, 247, 0.22) 0%, rgba(15, 23, 42, 0) 70%)",
-    backdropImage: "/banners/banner-ai-automation.jpg",
+    glowColor: "rgba(168, 85, 247, 0.28)",
+    bgAtmosphere: "radial-gradient(ellipse 90% 70% at 85% 25%, rgba(168, 85, 247, 0.25) 0%, rgba(8, 12, 22, 0) 70%)",
+    visualType: "neural-network",
   },
   {
     id: "cyber-security",
@@ -72,9 +71,9 @@ const SLIDES: BannerSlide[] = [
     linkHref: "/academy/courses/offensive-cyber-security",
     accentColor: "#fb7185",
     gradientText: "linear-gradient(135deg, #fb7185 0%, #fb923c 100%)",
-    glowColor: "rgba(251, 113, 133, 0.22)",
-    bgAtmosphere: "radial-gradient(ellipse 90% 70% at 85% 20%, rgba(244, 63, 94, 0.22) 0%, rgba(15, 23, 42, 0) 70%)",
-    backdropImage: "/banners/banner-cyber-security.jpg",
+    glowColor: "rgba(251, 113, 133, 0.28)",
+    bgAtmosphere: "radial-gradient(ellipse 90% 70% at 85% 25%, rgba(244, 63, 94, 0.25) 0%, rgba(8, 12, 22, 0) 70%)",
+    visualType: "cyber-matrix",
   },
 ];
 
@@ -173,25 +172,90 @@ export default function AcademyBannerSlider() {
               background: "#080d1a",
             }}
           >
-            {/* Atmospheric Background Layer (Image texture with dark cyber gradient) */}
-            {slide.backdropImage && (
+            {/* ── Animated Motion Graphics (Pure CSS, 0 images) ── */}
+            {slide.visualType === "audio-waveform" && (
               <div
                 style={{
                   position: "absolute",
-                  inset: 0,
-                  zIndex: 0,
-                  opacity: 0.22,
-                  filter: "saturate(1.25) contrast(1.1)",
+                  right: "1.5rem",
+                  bottom: "2.25rem",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: "5px",
+                  height: "72px",
+                  zIndex: 1,
+                  opacity: 0.38,
+                  pointerEvents: "none",
                 }}
               >
-                <Image
-                  src={slide.backdropImage}
-                  alt={slide.titlePrefix}
-                  fill
-                  priority={index === 0}
-                  sizes="(max-width: 768px) 100vw, 700px"
-                  style={{ objectFit: "cover" }}
-                />
+                {[35, 60, 95, 45, 80, 100, 55, 75, 90, 48, 68, 85, 42, 65].map((h, i) => (
+                  <span
+                    key={i}
+                    className="anim-waveform-bar"
+                    style={{
+                      width: "4px",
+                      height: `${h}%`,
+                      borderRadius: "4px",
+                      background: "linear-gradient(to top, #0284c7, #38bdf8)",
+                      animationDelay: `${(i * 0.08).toFixed(2)}s`,
+                      animationDuration: `${0.75 + (i % 3) * 0.3}s`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+
+            {slide.visualType === "neural-network" && (
+              <div
+                style={{
+                  position: "absolute",
+                  right: "1.5rem",
+                  bottom: "2rem",
+                  width: "130px",
+                  height: "85px",
+                  zIndex: 1,
+                  opacity: 0.42,
+                  pointerEvents: "none",
+                }}
+              >
+                <svg width="130" height="85" viewBox="0 0 130 85" fill="none">
+                  <line x1="15" y1="42" x2="60" y2="18" stroke="#a855f7" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <line x1="15" y1="42" x2="60" y2="68" stroke="#a855f7" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <line x1="60" y1="18" x2="112" y2="42" stroke="#34d399" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <line x1="60" y1="68" x2="112" y2="42" stroke="#34d399" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <circle cx="15" cy="42" r="7" fill="#a855f7" className="anim-neural-node" />
+                  <circle cx="60" cy="18" r="8" fill="#c084fc" className="anim-neural-node" style={{ animationDelay: "-0.8s" }} />
+                  <circle cx="60" cy="68" r="8" fill="#8b5cf6" className="anim-neural-node" style={{ animationDelay: "-1.6s" }} />
+                  <circle cx="112" cy="42" r="9" fill="#34d399" className="anim-neural-node" style={{ animationDelay: "-2.4s" }} />
+                </svg>
+              </div>
+            )}
+
+            {slide.visualType === "cyber-matrix" && (
+              <div
+                style={{
+                  position: "absolute",
+                  right: "1.5rem",
+                  bottom: "1.75rem",
+                  width: "95px",
+                  height: "95px",
+                  zIndex: 1,
+                  opacity: 0.45,
+                  pointerEvents: "none",
+                }}
+              >
+                <svg width="95" height="95" viewBox="0 0 95 95" fill="none">
+                  <circle cx="47" cy="47" r="42" stroke="#fb7185" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
+                  <circle cx="47" cy="47" r="26" stroke="#fb7185" strokeWidth="1" opacity="0.4" />
+                  <circle cx="47" cy="47" r="10" stroke="#fb7185" strokeWidth="1" opacity="0.6" />
+                  <line x1="47" y1="5" x2="47" y2="89" stroke="#fb7185" strokeWidth="0.75" opacity="0.3" />
+                  <line x1="5" y1="47" x2="89" y2="47" stroke="#fb7185" strokeWidth="0.75" opacity="0.3" />
+                  <g className="anim-radar-beam">
+                    <line x1="47" y1="47" x2="47" y2="5" stroke="#fb7185" strokeWidth="2" strokeLinecap="round" opacity="0.85" />
+                  </g>
+                  <circle cx="64" cy="30" r="3" fill="#fb923c" className="anim-neural-node" />
+                  <circle cx="32" cy="62" r="2.5" fill="#f43f5e" className="anim-neural-node" style={{ animationDelay: "-1.2s" }} />
+                </svg>
               </div>
             )}
 

@@ -2469,3 +2469,36 @@ input:focus, select:focus, textarea:focus {
     gap: 2.5rem !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO BANNER MOTION ANIMATIONS (Pure CSS, 60fps)
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes wavePulse {
+  0% { transform: scaleY(0.2); opacity: 0.35; }
+  50% { transform: scaleY(1); opacity: 0.95; }
+  100% { transform: scaleY(0.25); opacity: 0.45; }
+}
+
+@keyframes neuralPulse {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.18); opacity: 0.9; }
+}
+
+@keyframes radarSweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.anim-waveform-bar {
+  transform-origin: bottom;
+  animation: wavePulse 1.2s infinite ease-in-out alternate;
+}
+
+.anim-neural-node {
+  animation: neuralPulse 2.6s infinite ease-in-out;
+}
+
+.anim-radar-beam {
+  transform-origin: 50% 50%;
+  animation: radarSweep 4s linear infinite;
+}
