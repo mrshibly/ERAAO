@@ -114,10 +114,10 @@ const TRACKS: HeroSlide[] = [
     bgAtmosphere:
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(244, 63, 94, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     unsplashBg:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80&auto=format&fit=crop",
     cardImage:
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1000&auto=format&fit=crop&q=85",
-    cardImagePosition: "center 20%",
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000&auto=format&fit=crop&q=85",
+    cardImagePosition: "center",
     chipTop: { dotColor: "#ef4444", text: "Live Isolated Red Team Sandbox" },
     chipBottom: {
       icon: <ShieldCheck size={14} style={{ color: "#fb7185" }} />,
