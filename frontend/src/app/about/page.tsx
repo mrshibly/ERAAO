@@ -2,15 +2,15 @@ import { Metadata } from "next";
 import { ShieldCheck, Cpu, Target } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us — Academy Bangladesh",
-  description: "Learn more about our elite team of OSCP & OSCE certified security consultants and our secure Applied AI mission in Bangladesh.",
+  title: "About Us — ERAAO Academy",
+  description: "Learn more about our elite practitioner instructors in Spoken English, Applied AI, and Offensive Cyber Security.",
 };
 
 export default function AboutPage() {
   const team = [
     { name: "Alex Mercer", role: "Principal Security Consultant", certs: "OSCP, OSCE, OSWE", desc: "10+ years of offensive penetration testing and infrastructure compromise simulation.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&auto=format&fit=crop" },
     { name: "Dr. Sarah Chen", role: "AI Research Lead", certs: "PhD Machine Learning", desc: "Author of multiple whitepapers on LLM prompt injection defense and secure agent orchestration.", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop" },
-    { name: "Marcus Vance", role: "Director of Academy Operations", certs: "CISSP, CEH", desc: "Designed training pipelines for 10,000+ engineers globally across cybersecurity tracks.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop" }
+    { name: "Marcus Vance", role: "Director of Academy Operations", certs: "CISSP, CEH", desc: "Architect of structured practitioner bootcamps, hands-on cloud labs, and professional communication curricula.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop" }
   ];
 
   return (

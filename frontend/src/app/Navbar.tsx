@@ -71,16 +71,22 @@ export default function Navbar() {
           <ul className="nav-links">
             <li><Link href="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link></li>
             <li><Link href="/academy" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Academy</Link></li>
-            <li><Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Services</Link></li>
-            <li><Link href="/careers" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Careers</Link></li>
+            <li><Link href="/academy#bootcamps" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Bootcamps</Link></li>
+            <li><Link href="/academy#learning-cycle" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Learning Cycle</Link></li>
             <li><Link href="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About</Link></li>
-            <li><Link href="/blog" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Blog</Link></li>
+            <li>
+              <Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)} style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <span>Services</span>
+                <span style={{ fontSize: "0.65rem", padding: "0.1rem 0.4rem", borderRadius: "4px", background: "rgba(148, 163, 184, 0.12)", border: "1px solid var(--border-color)", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+                  Enterprise
+                </span>
+              </Link>
+            </li>
           </ul>
           
           <div className="nav-actions">
-            <Link href="/book" className="btn btn-outline nav-btn-sm" onClick={() => setMobileMenuOpen(false)}>
-              <PhoneCall size={16} />
-              <span>Consultation</span>
+            <Link href="/academy" className="btn btn-accent nav-btn-sm" onClick={() => setMobileMenuOpen(false)} style={{ padding: "0.45rem 1.15rem", fontSize: "var(--text-xs)", fontWeight: 700 }}>
+              <span>Browse Bootcamps</span>
             </Link>
 
             {user ? (

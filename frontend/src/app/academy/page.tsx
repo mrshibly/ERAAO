@@ -11,6 +11,7 @@ import {
   Layers, Star, Laptop, ArrowUpRight, MessageSquare, PhoneCall
 } from "lucide-react";
 import AcademyBannerSlider from "@/components/AcademyBannerSlider";
+import { ALL_COURSES } from "@/data/courses";
 
 interface Category {
   id: string;
@@ -33,9 +34,15 @@ interface Course {
   category?: Category;
 }
 
+const DEFAULT_CATEGORIES: Category[] = [
+  { id: "english-communication", name: "English Communication", slug: "english-communication" },
+  { id: "artificial-intelligence", name: "Artificial Intelligence", slug: "artificial-intelligence" },
+  { id: "cybersecurity", name: "Cybersecurity", slug: "cybersecurity" },
+];
+
 export default function AcademyPage() {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [loading, setLoading] = useState(true);
 
   // Search & Filter state
@@ -55,7 +62,9 @@ export default function AcademyPage() {
         const res = await fetch("/api/v1/categories");
         if (res.ok) {
           const data = await res.json();
-          setCategories(data);
+          if (Array.isArray(data) && data.length > 0) {
+            setCategories(data);
+          }
         }
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -76,12 +85,51 @@ export default function AcademyPage() {
         if (selectedLevel !== "all") queryParams.set("level", selectedLevel);
         if (selectedCategory !== "all") queryParams.set("category_id", selectedCategory);
 
-        const res = await fetch(`/api/v1/courses?${queryParams.toString()}`);
-        if (res.ok) {
+        const res = await fetch(`/api/v1/courses?${queryParams.toString()}`).catch(() => null);
+        if (res && res.ok) {
           const body = await res.json();
-          setCourses(body.items || []);
-          setTotal(body.total || 0);
+          if (body.items && body.items.length > 0) {
+            setCourses(body.items);
+            setTotal(body.total || body.items.length);
+            setLoading(false);
+            return;
+          }
         }
+
+        // Fallback to authentic typed catalog from official PDFs
+        let filtered = [...ALL_COURSES];
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          filtered = filtered.filter(
+            (c) => c.title.toLowerCase().includes(q) || c.short_description.toLowerCase().includes(q)
+          );
+        }
+        if (selectedLevel !== "all") {
+          filtered = filtered.filter((c) => c.level === selectedLevel);
+        }
+        if (selectedCategory !== "all") {
+          filtered = filtered.filter(
+            (c) => c.category_slug === selectedCategory || c.category === selectedCategory
+          );
+        }
+
+        const mapped: Course[] = filtered.map((c) => ({
+          id: c.id,
+          title: c.title,
+          slug: c.slug,
+          level: c.level,
+          short_description: c.short_description,
+          price: c.price,
+          duration_weeks: c.duration_weeks,
+          duration_hours: c.duration_hours,
+          lessons_count: c.classes_count,
+          modules_count: c.modules.length,
+          category_id: c.category_slug,
+          category: { id: c.category_slug, name: c.category, slug: c.category_slug }
+        }));
+
+        setCourses(mapped);
+        setTotal(mapped.length);
       } catch (err) {
         console.error("Error loading courses:", err);
       } finally {
@@ -91,7 +139,7 @@ export default function AcademyPage() {
 
     const timer = setTimeout(() => {
       fetchCourses();
-    }, 250);
+    }, 200);
 
     return () => clearTimeout(timer);
   }, [page, pageSize, searchQuery, selectedLevel, selectedCategory]);
@@ -105,15 +153,19 @@ export default function AcademyPage() {
     setPage(1);
   };
 
-  const getCourseThumbnail = (title: string) => {
+  const getCourseThumbnail = (title: string, slug?: string) => {
     const t = (title || "").toLowerCase();
-    if (t.includes("cyber") || t.includes("hack") || t.includes("security") || t.includes("pentest") || t.includes("defense")) {
-      return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=700&q=80&auto=format&fit=crop";
+    const s = (slug || "").toLowerCase();
+    if (s.includes("english") || t.includes("english") || t.includes("spoken")) {
+      return "/banners/banner-spoken-english.jpg";
     }
-    if (t.includes("ai") || t.includes("llm") || t.includes("gpt") || t.includes("machine") || t.includes("model") || t.includes("intelligence")) {
-      return "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=700&q=80&auto=format&fit=crop";
+    if (s.includes("ai") || t.includes("ai") || t.includes("agent") || t.includes("llm")) {
+      return "/banners/banner-ai-automation.jpg";
     }
-    return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=700&q=80&auto=format&fit=crop";
+    if (s.includes("cyber") || t.includes("security") || t.includes("pentest") || t.includes("hack")) {
+      return "/banners/banner-cyber-security.jpg";
+    }
+    return "/banners/banner-spoken-english.jpg";
   };
 
   const getLevelBadgeClass = (level: string) => {
@@ -128,9 +180,9 @@ export default function AcademyPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
       
       {/* ═══════════════════════════════════════════════════════════════
-          ACADEMY HERO SECTION — Top Slidable Banners & Clean English
+          ACADEMY HERO SECTION — Top Slidable Banners & Authentic Curriculum
           ═══════════════════════════════════════════════════════════════ */}
-      <section className="academy-hero" style={{ paddingTop: "2rem" }}>
+      <section className="academy-hero" style={{ paddingTop: "1.25rem", paddingBottom: "3rem" }}>
         <div className="academy-hero-glow" />
         
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
@@ -138,30 +190,26 @@ export default function AcademyPage() {
           {/* ═══════════════════════════════════════════════════════════════
               TOP SLIDABLE BILLBOARD BANNERS (User Graphic Banners)
               ═══════════════════════════════════════════════════════════════ */}
-          <div style={{ maxWidth: "1200px", margin: "0 auto 2.75rem auto" }}>
+          <div style={{ maxWidth: "1200px", margin: "0 auto 2.5rem auto" }}>
             <AcademyBannerSlider />
           </div>
 
           <div style={{ textAlign: "center", maxWidth: "48rem", margin: "0 auto" }}>
             
-            <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.4rem 1.1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)", fontSize: "var(--text-xs)", fontWeight: 700 }}>
-              <Sparkles size={14} style={{ color: "var(--accent-blue)" }} /> High-Demand Practitioner Bootcamps
-            </span>
-
             <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1rem" }}>
-              Skills That Actually Pay:{" "}
+              Practical Skills for Global Careers:{" "}
               <span className="gradient-text-animated" style={{
                 background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-teal) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text"
               }}>
-                AI, Cyber Security &amp; Spoken English
+                English, AI &amp; Cyber Security
               </span>
             </h1>
 
             <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, maxWidth: "40rem", margin: "0 auto 1.75rem auto" }}>
-              Zero boring lectures or academic fluff. Build production-ready projects in cloud labs with direct guidance from active cybersecurity consultants and AI engineers.
+              Structured 12-week cohorts built on active production work. Master international client communication, autonomous AI workflows, and hands-on offensive security.
             </p>
 
             {/* Action CTAs */}
@@ -179,7 +227,7 @@ export default function AcademyPage() {
                   color: "white"
                 }}
               >
-                <span>Explore Bootcamps</span>
+                <span>Browse All Bootcamps</span>
                 <ArrowRight size={16} />
               </a>
 
@@ -202,54 +250,90 @@ export default function AcademyPage() {
             </div>
           </div>
 
-          {/* Trust Metrics Bar */}
-          <div className="academy-stat-grid" style={{ marginTop: "2.75rem" }}>
-            <div className="academy-stat-card">
-              <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "var(--accent-blue-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-blue)", flexShrink: 0 }}>
-                <CheckCircle2 size={22} />
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>98%</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Completion Rate
-                </div>
-              </div>
+          {/* ═══════════════════════════════════════════════════════════════
+              THE ERAAO LEARNING CYCLE — Authentic Core Pedagogy
+              ═══════════════════════════════════════════════════════════════ */}
+          <div id="learning-cycle" style={{
+            marginTop: "3rem",
+            background: "linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "var(--radius-xl)",
+            padding: "2rem 1.75rem",
+            boxShadow: "var(--shadow-sm)"
+          }}>
+            <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+              <span style={{ fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--accent-blue)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                The ERAAO Learning Cycle
+              </span>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginTop: "0.25rem" }}>
+                From Understanding Context to Spontaneous Application
+              </h3>
+              <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", maxWidth: "34rem", margin: "0.35rem auto 0 auto" }}>
+                Every class moves through the same six stages. No memorizing rules or reciting scripts — you build, speak, and retain naturally.
+              </p>
             </div>
 
-            <div className="academy-stat-card">
-              <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "rgba(124, 58, 237, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-violet)", flexShrink: 0 }}>
-                <Terminal size={22} />
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>100%</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Hands-On Labs
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+              gap: "0.75rem"
+            }}>
+              {[
+                { step: "01", name: "Understand", desc: "Introduced through context, sound, situation & meaning" },
+                { step: "02", name: "Notice", desc: "Recognise recurring words, structures & patterns" },
+                { step: "03", name: "Build", desc: "Construct your own sentences from scratch" },
+                { step: "04", name: "Practice", desc: "Controlled repetition, variation & substitution drills" },
+                { step: "05", name: "Use", desc: "Speak and communicate in realistic scenarios" },
+                { step: "06", name: "Recall", desc: "Spaced retrieval across subsequent classes" }
+              ].map((stage) => (
+                <div
+                  key={stage.name}
+                  style={{
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border-color)",
+                    borderRadius: "var(--radius-lg)",
+                    padding: "1rem 0.85rem",
+                    textAlign: "center"
+                  }}
+                >
+                  <div style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--accent-teal)", letterSpacing: "0.05em", marginBottom: "0.25rem" }}>
+                    STAGE {stage.step}
+                  </div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.25rem" }}>
+                    {stage.name}
+                  </div>
+                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                    {stage.desc}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
 
-            <div className="academy-stat-card">
-              <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "var(--accent-teal-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-teal)", flexShrink: 0 }}>
-                <Award size={22} />
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>Verified</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Digital Diplomas
-                </div>
-              </div>
-            </div>
-
-            <div className="academy-stat-card">
-              <div style={{ width: "42px", height: "42px", borderRadius: "10px", background: "rgba(16, 185, 129, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-success)", flexShrink: 0 }}>
-                <Users size={22} />
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.1 }}>10,000+</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                  Alumni Community
-                </div>
-              </div>
+            {/* Verified Cohort Specifications (Factual Program Specs, Zero Fake Stats) */}
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "1.5rem",
+              flexWrap: "wrap",
+              marginTop: "1.5rem",
+              paddingTop: "1.25rem",
+              borderTop: "1px solid var(--border-color)",
+              fontSize: "var(--text-xs)",
+              color: "var(--text-secondary)",
+              fontWeight: 600
+            }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <CheckCircle2 size={14} style={{ color: "var(--accent-blue)" }} /> 12-Week Structured Cohorts
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <Clock size={14} style={{ color: "var(--accent-teal)" }} /> 3 Live Classes / Week (36 Total)
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <Users size={14} style={{ color: "var(--accent-violet)" }} /> 1-on-1 Dedicated Mentor Guidance
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <Award size={14} style={{ color: "var(--color-success)" }} /> Verifiable Digital Diplomas
+              </span>
             </div>
           </div>
 
@@ -326,7 +410,7 @@ export default function AcademyPage() {
       {/* ═══════════════════════════════════════════════════════════════
           CATALOG SECTION — Interactive Filters & Course Grid
           ═══════════════════════════════════════════════════════════════ */}
-      <section id="courses-catalog" style={{ padding: "3.5rem 0", background: "var(--bg-secondary)" }}>
+      <section id="bootcamps" style={{ padding: "3.5rem 0", background: "var(--bg-secondary)" }}>
         <div className="container">
           
           {/* Filter Controls Box */}
@@ -515,12 +599,12 @@ export default function AcademyPage() {
                     
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
                       <span className={`badge ${getLevelBadgeClass(course.level)}`}>
-                        Practitioner Track
+                        {course.category?.name || "Practitioner Track"}
                       </span>
                       
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "var(--text-xs)", color: "#f59e0b", fontWeight: 700 }}>
-                        <Star size={13} fill="#f59e0b" />
-                        <span>4.9</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                        <Clock size={13} />
+                        <span>{course.duration_weeks || 12} Weeks • 36 Classes</span>
                       </div>
                     </div>
 
@@ -534,15 +618,15 @@ export default function AcademyPage() {
                       {course.short_description || "Comprehensive hands-on curriculum with real-world browser attack/defense environments and official graduation diploma."}
                     </p>
 
-                    {/* Features checklist */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                    {/* Features checklist - 100% authentic program specs */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                        <Clock size={13} style={{ color: "var(--accent-blue)" }} />
-                        <span>{course.duration_hours || 24} Hours on-demand training</span>
+                        <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
+                        <span>3 Live Classes / Week • Mentored Sessions</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                        <Laptop size={13} style={{ color: "var(--accent-teal)" }} />
-                        <span>Browser-based practice terminal &amp; labs</span>
+                        <Layers size={13} style={{ color: "var(--accent-teal)" }} />
+                        <span>{course.modules_count || 10} Structured Modules • Downloadable Practice Materials</span>
                       </div>
                     </div>
 

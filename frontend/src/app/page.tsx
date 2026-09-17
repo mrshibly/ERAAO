@@ -1,36 +1,40 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShieldCheck, BrainCircuit, Users, Award, Phone, Globe, Target } from "lucide-react";
+import {
+  ArrowRight, BookOpen, Clock, Calendar, CheckCircle2, ShieldCheck,
+  BrainCircuit, MessageSquare, Award, Sparkles, Terminal, Layers,
+  Phone, Laptop, Check, ArrowUpRight, Headphones, Users, HelpCircle
+} from "lucide-react";
 import Chatbot from "@/components/Chatbot";
+import { ALL_COURSES } from "@/data/courses";
 
 export default function Home() {
   return (
     <div style={{ overflowX: "hidden" }}>
       {/* ═══════════════════════════════════════════════════════════════
-          HERO SECTION — 60-30-10 Light Mode Ultra-Premium
-          60% Light Canvas | 30% Dark Slate Structure | 10% Cyan/Violet Accent
-         ═══════════════════════════════════════════════════════════════ */}
+          HERO SECTION — Academy-First High-Conversion Hero
+          ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         position: "relative",
-        minHeight: "90vh",
+        minHeight: "92vh",
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
         background: "linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)",
         borderBottom: "1px solid var(--border-color)"
       }}>
-        {/* 60% Dominant Canvas — Soft Ambient Radial Glow & Grid Pattern */}
+        {/* Soft Ambient Radial Glow */}
         <div className="anim-glow" style={{
           position: "absolute",
           inset: 0,
           backgroundImage: `
-            radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
+            radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.09) 0%, transparent 45%),
             radial-gradient(circle at 85% 75%, rgba(124, 58, 237, 0.08) 0%, transparent 45%)
           `,
           zIndex: 0
         }} />
 
-        {/* Lightweight Fast-Loading Dot Matrix Grid */}
+        {/* Dot Matrix Pattern */}
         <div className="anim-fade-in" style={{
           position: "absolute",
           inset: 0,
@@ -46,44 +50,47 @@ export default function Home() {
           gridTemplateColumns: "1.2fr 1fr",
           gap: "4rem",
           alignItems: "center",
-          padding: "4rem 1.5rem"
+          padding: "4.5rem 1.5rem"
         }}>
-          {/* Left Column — 30% Text Structure & 10% Accent Buttons */}
+          {/* Left Column — Core Narrative */}
           <div>
-            {/* 30% Secondary — High Contrast Main Title */}
+            <div className="anim-fade-up" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.35rem 0.85rem", borderRadius: "var(--radius-full)", background: "rgba(14, 165, 233, 0.1)", border: "1px solid rgba(14, 165, 233, 0.25)", color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 800, marginBottom: "1.25rem", letterSpacing: "0.02em" }}>
+              <Sparkles size={14} />
+              <span>PRACTICAL 12-WEEK PRACTITIONER BOOTCAMPS</span>
+            </div>
+
             <h1 className="hero-title anim-fade-up anim-delay-1" style={{
-              fontSize: "3.75rem",
+              fontSize: "clamp(2.5rem, 5vw, 3.85rem)",
               fontWeight: 900,
               letterSpacing: "-0.035em",
               lineHeight: 1.1,
               color: "var(--text-primary)",
               marginBottom: "1.5rem"
             }}>
-              The Convergence of
+              Master Skills That Unlock
               <span className="gradient-text-animated" style={{
                 display: "block",
-                background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 60%, var(--accent-teal) 100%)",
+                background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 55%, var(--accent-teal) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
                 backgroundSize: "200% auto"
               }}>
-                Applied AI &amp; Offensive Security
+                Global High-Income Careers
               </span>
             </h1>
 
-            {/* Subheadline Paragraph */}
             <p className="anim-fade-up anim-delay-2" style={{
-              fontSize: "var(--text-lg)",
+              fontSize: "var(--text-base)",
               color: "var(--text-secondary)",
               lineHeight: 1.65,
               marginBottom: "2rem",
-              maxWidth: "34rem"
+              maxWidth: "36rem"
             }}>
-              Enterprise AI architectures, advanced penetration testing services, and professional-grade practitioner bootcamps to future-proof your organization.
+              Structured 12-week cohorts in <strong>Spoken English for Freelancers</strong>, <strong>AI Automation &amp; Agents</strong>, and <strong>Offensive Cyber Security</strong>. Zero passive lectures — build real fluency through live speaking drills, browser sandboxes, and direct mentor feedback.
             </p>
 
-            {/* 10% Accent CTAs */}
+            {/* CTAs */}
             <div className="anim-fade-up anim-delay-3" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <Link href="/academy" className="btn btn-accent" style={{
                 padding: "0.9rem 2.25rem",
@@ -92,9 +99,12 @@ export default function Home() {
                 borderRadius: "var(--radius-xl)",
                 background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%)",
                 boxShadow: "0 10px 25px rgba(14, 165, 233, 0.35)",
-                color: "white"
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem"
               }}>
-                <span>Browse Bootcamps</span>
+                <span>Explore Bootcamps</span>
                 <ArrowRight size={18} />
               </Link>
               <Link href="/book" className="btn btn-outline" style={{
@@ -105,517 +115,518 @@ export default function Home() {
                 background: "var(--bg-primary)",
                 borderColor: "var(--border-focus)",
                 color: "var(--text-primary)",
-                boxShadow: "var(--shadow-sm)"
+                boxShadow: "var(--shadow-sm)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem"
               }}>
                 <Phone size={18} />
-                <span>Schedule Consultation</span>
+                <span>Free Level Assessment</span>
               </Link>
             </div>
 
-            {/* 30% Structural Trust Bar */}
+            {/* Verified Curriculum Attributes Bar — ZERO Fake Data */}
             <div className="anim-fade-up anim-delay-4" style={{
-              display: "flex",
-              gap: "1.5rem",
-              flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+              gap: "1.25rem",
               marginTop: "2.5rem",
               paddingTop: "1.75rem",
               borderTop: "1px solid var(--border-color)"
             }}>
               <div>
-                <div style={{ fontSize: "var(--text-3xl)", fontWeight: 900, color: "var(--accent-blue)" }}>98%</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Completion Rate</div>
+                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--accent-blue)" }}>12 Weeks</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Structured Cohort</div>
               </div>
               <div>
-                <div style={{ fontSize: "var(--text-3xl)", fontWeight: 900, color: "var(--accent-violet)" }}>10k+</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Graduates</div>
+                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--accent-teal)" }}>36 Classes</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>3 Live Sessions/Wk</div>
               </div>
               <div>
-                <div style={{ fontSize: "var(--text-3xl)", fontWeight: 900, color: "var(--accent-teal)" }}>50+</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Enterprise Clients</div>
+                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--accent-violet)" }}>6 Stages</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Scientific Retention</div>
+              </div>
+              <div>
+                <div style={{ fontSize: "var(--text-2xl)", fontWeight: 900, color: "var(--color-warning)" }}>1-on-1</div>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Mentor Speech Review</div>
               </div>
             </div>
           </div>
 
-          {/* Right Column — 30% Secondary Dark Framing & 10% Accent Floating Cards */}
-          <div className="anim-slide-right anim-delay-3" style={{ position: "relative", minHeight: "480px" }}>
-            {/* Primary Frame (Cyber Security Terminal — Fast Load WebP) */}
-            <div className="anim-float" style={{
-              position: "absolute",
-              top: "0",
-              right: "0",
-              width: "88%",
-              height: "310px",
-              borderRadius: "20px",
+          {/* Right Column — Visual Bootcamp Showcase Card */}
+          <div className="anim-slide-right anim-delay-3" style={{ position: "relative" }}>
+            <div style={{
+              borderRadius: "24px",
               overflow: "hidden",
               boxShadow: "var(--shadow-xl)",
-              border: "1px solid var(--border-color)"
+              border: "1px solid var(--border-color)",
+              background: "var(--card-bg)"
             }}>
-              <Image
-                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=75"
-                alt="Cybersecurity terminal interface"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                style={{ objectFit: "cover" }}
-                priority
-              />
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.5) 100%)"
-              }} />
-            </div>
-
-            {/* Secondary Frame (AI Neural Core — Fast Load WebP) */}
-            <div className="anim-float-delayed" style={{
-              position: "absolute",
-              bottom: "20px",
-              left: "0",
-              width: "68%",
-              height: "240px",
-              borderRadius: "18px",
-              overflow: "hidden",
-              boxShadow: "var(--shadow-xl)",
-              border: "4px solid var(--bg-primary)"
-            }}>
-              <Image
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format&fit=crop&q=75"
-                alt="AI neural network architecture"
-                fill
-                sizes="(max-width: 768px) 100vw, 40vw"
-                style={{ objectFit: "cover" }}
-                priority
-              />
-            </div>
-
-            {/* Floating Glassmorphic Badge 1: SOC-2 Ready */}
-            <div className="anim-float glass" style={{
-              position: "absolute",
-              top: "210px",
-              right: "-15px",
-              borderRadius: "16px",
-              padding: "1rem 1.25rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.85rem",
-              boxShadow: "var(--shadow-lg)",
-              animationDelay: "-1.5s",
-              zIndex: 10
-            }}>
-              <div style={{
-                width: "42px",
-                height: "42px",
-                borderRadius: "var(--radius-xl)",
-                background: "var(--accent-blue-bg)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                <ShieldCheck size={24} style={{ color: "var(--accent-blue)" }} />
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)" }}>SOC-2 &amp; ISO Ready</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Enterprise Defense</div>
-              </div>
-            </div>
-
-            {/* Floating Glassmorphic Badge 2: LLM Multi-Agent */}
-            <div className="anim-float-delayed glass" style={{
-              position: "absolute",
-              bottom: "-10px",
-              right: "30px",
-              borderRadius: "16px",
-              padding: "0.9rem 1.2rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.85rem",
-              boxShadow: "var(--shadow-lg)",
-              animationDelay: "-4.5s",
-              zIndex: 10
-            }}>
-              <div style={{
-                width: "38px",
-                height: "38px",
-                borderRadius: "var(--radius-xl)",
-                background: "rgba(124, 58, 237, 0.12)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                <BrainCircuit size={22} style={{ color: "var(--accent-violet)" }} />
-              </div>
-              <div>
-                <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)" }}>LLM Multi-Agent</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Custom Orchestration</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust & Verification Badges */}
-      <section style={{ background: "var(--bg-primary)", borderBottom: "1px solid var(--border-color)", padding: "2.5rem 0" }}>
-        <div className="container" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around", alignItems: "center", gap: "2rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "var(--text-secondary)" }}>
-            <Award size={24} style={{ color: "var(--accent-teal)" }} />
-            <span style={{ fontWeight: 600 }}>OSCP &amp; OSCE Certified Bangladeshi Instructors</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "var(--text-secondary)" }}>
-            <BrainCircuit size={24} style={{ color: "var(--accent-violet)" }} />
-            <span style={{ fontWeight: 600 }}>Custom LLM &amp; RAG Solutions</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "var(--text-secondary)" }}>
-            <ShieldCheck size={24} style={{ color: "var(--accent-blue)" }} />
-            <span style={{ fontWeight: 600 }}>ISO 27001 Audit Ready Services</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Services with Images */}
-      <section style={{ padding: "var(--spacing-section) 0" }}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-badge">What We Do</span>
-            <h2 className="section-title">Our Core Offerings</h2>
-            <p className="section-subtitle">
-              Structured to deliver technical excellence for businesses and practitioners.
-            </p>
-          </div>
-
-          <div className="responsive-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem" }}>
-            {/* Card 1: AI Engineering */}
-            <div className="hover-lift card" style={{ padding: 0, overflow: "hidden" }}>
-              <div style={{ height: "220px", overflow: "hidden", position: "relative" }}>
+              {/* Card Banner Image */}
+              <div style={{ position: "relative", height: "240px" }}>
                 <Image
-                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80&auto=format&fit=crop"
-                  alt="AI and machine learning visualization"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover" }}
-                />
-                <div style={{
-                  position: "absolute",
-                  top: "1rem",
-                  left: "1rem",
-                  background: "rgba(139, 92, 246, 0.9)",
-                  color: "white",
-                  padding: "0.3rem 0.75rem",
-                  borderRadius: "var(--radius-sm)",
-                  fontSize: "var(--text-xs)",
-                  fontWeight: 700
-                }}>
-                  AI &amp; ML
-                </div>
-              </div>
-              <div style={{ padding: "1.75rem" }}>
-                <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>AI &amp; Software Engineering</h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                  End-to-end custom AI systems, multi-agent LLM platforms, MLOps orchestration, and secure application development.
-                </p>
-                <Link href="/services" style={{ color: "var(--accent-violet)", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "var(--text-sm)" }}>
-                  <span>Explore AI Services</span>
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card 2: Cybersecurity */}
-            <div className="hover-lift card" style={{ padding: 0, overflow: "hidden" }}>
-              <div style={{ height: "220px", overflow: "hidden", position: "relative" }}>
-                <Image
-                  src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80&auto=format&fit=crop"
-                  alt="Cybersecurity code and security operations"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover" }}
-                />
-                <div style={{
-                  position: "absolute",
-                  top: "1rem",
-                  left: "1rem",
-                  background: "rgba(13, 148, 136, 0.9)",
-                  color: "white",
-                  padding: "0.3rem 0.75rem",
-                  borderRadius: "var(--radius-sm)",
-                  fontSize: "var(--text-xs)",
-                  fontWeight: 700
-                }}>
-                  Security
-                </div>
-              </div>
-              <div style={{ padding: "1.75rem" }}>
-                <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>Cybersecurity Services</h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                  Offensive pentesting (Web, Mobile, AD, API), red teaming, AI security audits, and cloud configuration hardening.
-                </p>
-                <Link href="/services" style={{ color: "var(--accent-teal)", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "var(--text-sm)" }}>
-                  <span>View Security Services</span>
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card 3: Academy */}
-            <div className="hover-lift card" style={{ padding: 0, overflow: "hidden" }}>
-              <div style={{ height: "220px", overflow: "hidden", position: "relative" }}>
-                <Image
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80&auto=format&fit=crop"
-                  alt="Professional training and learning"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover" }}
-                />
-                <div style={{
-                  position: "absolute",
-                  top: "1rem",
-                  left: "1rem",
-                  background: "rgba(14, 165, 233, 0.95)",
-                  backdropFilter: "blur(4px)",
-                  color: "white",
-                  padding: "0.35rem 0.85rem",
-                  borderRadius: "var(--radius-full)",
-                  fontSize: "var(--text-xs)",
-                  fontWeight: 700
-                }}>
-                  <span style={{ fontWeight: 800 }}>100% Hands-On Labs</span> • Academy
-                </div>
-              </div>
-              <div style={{ padding: "1.75rem" }}>
-                <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.5rem" }}>
-                  Practical Career Academy
-                </h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.65, marginBottom: "0.6rem" }}>
-                  Skip boring lectures. Master AI Automation, Offensive Cyber Security, and Spoken English through real-world projects, live browser sandboxes, and 1-on-1 mentorship.
-                </p>
-                <p style={{ color: "var(--text-muted)", fontSize: "var(--text-xs)", marginBottom: "1.25rem", fontWeight: 500 }}>
-                  Hands-on bootcamps with 1-on-1 mentorship, browser sandboxes &amp; verified digital diplomas.
-                </p>
-                <Link href="/academy" style={{ color: "var(--accent-blue)", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-sm)" }}>
-                  <span>Explore Bootcamps</span>
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us — Visual showcase */}
-      <section style={{
-        padding: "var(--spacing-section) 0",
-        background: "var(--bg-primary)",
-        borderTop: "1px solid var(--border-color)",
-        borderBottom: "1px solid var(--border-color)"
-      }}>
-        <div className="container">
-          <div className="responsive-grid-split" style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "5rem",
-            alignItems: "center"
-          }}>
-            {/* Left — Image collage */}
-            <div style={{ position: "relative" }}>
-              <div style={{
-                borderRadius: "16px",
-                overflow: "hidden",
-                boxShadow: "var(--shadow-lg)",
-                position: "relative",
-                height: "400px"
-              }}>
-                <Image
-                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&q=80&auto=format&fit=crop"
-                  alt="Team collaboration in modern workspace"
+                  src="/banners/banner-spoken-english.jpg"
+                  alt="ERAAO Spoken English & Career Bootcamps"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   style={{ objectFit: "cover" }}
+                  priority
                 />
-              </div>
-              {/* Floating accent card */}
-              <div className="card" style={{
-                position: "absolute",
-                bottom: "-30px",
-                right: "-20px",
-                padding: "1.25rem 1.5rem",
-                boxShadow: "var(--shadow-xl)",
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem"
-              }}>
                 <div style={{
-                  width: "48px",
-                  height: "48px",
-                  borderRadius: "var(--radius-md)",
-                  background: "var(--color-success-bg)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(180deg, transparent 40%, rgba(15, 23, 42, 0.85) 100%)"
+                }} />
+                <div style={{
+                  position: "absolute",
+                  bottom: "1rem",
+                  left: "1.25rem",
+                  color: "white"
                 }}>
-                  <Target size={24} style={{ color: "var(--accent-emerald)" }} />
+                  <span className="badge" style={{ background: "rgba(14, 165, 233, 0.9)", color: "white", fontSize: "0.7rem", fontWeight: 800, marginBottom: "0.3rem" }}>
+                    Flagship Track
+                  </span>
+                  <div style={{ fontSize: "var(--text-lg)", fontWeight: 800 }}>Spoken English for Global Careers</div>
                 </div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: "var(--text-2xl)" }}>50+</div>
-                  <div style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)" }}>Local Clients</div>
+              </div>
+
+              {/* Card Body Highlights */}
+              <div style={{ padding: "1.75rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                    <Calendar size={14} />
+                    <span>Mon &bull; Wed &bull; Fri Schedule</span>
+                  </span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
+                    60-75 Min / Class
+                  </span>
                 </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.5rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                    <CheckCircle2 size={14} style={{ color: "var(--color-success)" }} />
+                    <span>Class 1: Understand &rarr; Notice &rarr; Build (Worksheet released)</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                    <CheckCircle2 size={14} style={{ color: "var(--accent-blue)" }} />
+                    <span>Class 2: Guided Speaking &amp; Live Pair Simulations</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                    <CheckCircle2 size={14} style={{ color: "var(--accent-violet)" }} />
+                    <span>Class 3: Dedicated Listening Audio Labs &amp; Active Recall</span>
+                  </div>
+                </div>
+
+                <Link
+                  href="/academy/courses/english-for-freelancers"
+                  className="btn btn-accent"
+                  style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                >
+                  <span>Explore Freelancer English Bootcamp</span>
+                  <ArrowRight size={16} />
+                </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Right — Content */}
+      {/* ═══════════════════════════════════════════════════════════════
+          THE ERAAO 6-STAGE LEARNING CYCLE SECTION
+          ═══════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderBottom: "1px solid var(--border-color)" }}>
+        <div className="container">
+          <div style={{ textAlign: "center", maxWidth: "46rem", margin: "0 auto 3.5rem auto" }}>
+            <span className="section-badge" style={{ background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", marginBottom: "0.75rem" }}>
+              Our Core Pedagogy
+            </span>
+            <h2 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.6rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+              The ERAAO 6-Stage Learning Cycle
+            </h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.65, marginTop: "0.75rem" }}>
+              Most courses fail because they jump straight from passive theory to an exam. We use a 6-stage cognitive cycle so that speaking English, engineering AI agents, or defending systems becomes second nature.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.25rem" }}>
+            {[
+              {
+                step: "01",
+                name: "Understand",
+                desc: "Clear, intuitive breakdown of sentence mechanics or architectural patterns. No abstract grammar jargon.",
+                color: "var(--accent-blue)"
+              },
+              {
+                step: "02",
+                name: "Notice",
+                desc: "Spot recurring patterns in authentic speech, client emails, and real production terminal outputs.",
+                color: "var(--accent-teal)"
+              },
+              {
+                step: "03",
+                name: "Build",
+                desc: "Construct accurate sentences, workflows, and tools from structured prompts and worksheet models.",
+                color: "var(--accent-violet)"
+              },
+              {
+                step: "04",
+                name: "Practice",
+                desc: "Low-stakes guided repetitions with direct instructor corrections to build speech and muscle confidence.",
+                color: "#f59e0b"
+              },
+              {
+                step: "05",
+                name: "Use",
+                desc: "High-stakes production challenges: cold pitch simulations, client discovery calls, and live red team labs.",
+                color: "var(--color-success)"
+              },
+              {
+                step: "06",
+                name: "Recall",
+                desc: "Spaced audio testing and retrieval quizzes at 1, 3, and 6 weeks to lock skills into permanent memory.",
+                color: "var(--accent-blue)"
+              }
+            ].map((cycle, idx) => (
+              <div key={idx} className="academy-advantage-card" style={{ padding: "1.5rem 1.25rem" }}>
+                <span style={{ fontSize: "0.75rem", fontWeight: 900, color: cycle.color, display: "block", marginBottom: "0.5rem" }}>
+                  STAGE {cycle.step}
+                </span>
+                <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                  {cycle.name}
+                </h3>
+                <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.55, margin: 0 }}>
+                  {cycle.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          FLAGSHIP ACADEMY BOOTCAMPS SHOWCASE
+          ═══════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: "var(--bg-secondary)" }}>
+        <div className="container">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem", flexWrap: "wrap", gap: "1.5rem" }}>
             <div>
-              <span className="section-badge" style={{ background: "rgba(13, 148, 136, 0.08)", color: "var(--accent-teal)" }}>
-                Why Choose Us
+              <span className="section-badge" style={{ background: "rgba(16, 185, 129, 0.1)", color: "var(--accent-teal)", marginBottom: "0.75rem" }}>
+                Active Cohorts
               </span>
-              <h2 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, letterSpacing: "-0.025em", marginBottom: "1rem", marginTop: "1rem" }}>
-                Built by Practitioners,<br />for Practitioners
+              <h2 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.6rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+                Flagship Academy Tracks
               </h2>
-              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.7, marginBottom: "2rem" }}>
-                Our team consists of certified security researchers, AI engineers, and educators who have built production systems for Fortune 500 companies.
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", marginTop: "0.5rem" }}>
+                Every program includes 12 weeks of live instruction, 36 classes, downloadable materials, and mentor feedback.
               </p>
+            </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                {[
-                  { icon: ShieldCheck, text: "OSCP, OSCE & OSWE certified offensive security experts in Dhaka", color: "var(--accent-teal)" },
-                  { icon: BrainCircuit, text: "Production-grade LLM & multi-agent system architects", color: "var(--accent-violet)" },
-                  { icon: Globe, text: "SOC-2 and ISO 27001 audit-ready infrastructure", color: "var(--accent-blue)" },
-                  { icon: Users, text: "10,000+ practitioners trained and certified in Bangladesh", color: "var(--accent-emerald)" }
-                ].map((item, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                    <div style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "var(--radius-md)",
-                      background: `${item.color}15`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0
-                    }}>
-                      <item.icon size={20} style={{ color: item.color }} />
+            <Link href="/academy" className="btn btn-outline" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+              <span>View Full Academy Catalog</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2rem" }}>
+            {ALL_COURSES.map((c) => (
+              <div key={c.id} className="academy-card">
+                <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
+                  <Image
+                    src={c.thumbnail_url}
+                    alt={c.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div style={{
+                    position: "absolute",
+                    top: "0.85rem",
+                    left: "0.85rem",
+                    background: "rgba(15, 23, 42, 0.85)",
+                    backdropFilter: "blur(6px)",
+                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    padding: "0.25rem 0.75rem",
+                    borderRadius: "var(--radius-full)",
+                    fontSize: "var(--text-xs)",
+                    fontWeight: 700,
+                    color: "white",
+                    textTransform: "capitalize",
+                    zIndex: 2
+                  }}>
+                    {c.level}
+                  </div>
+                </Link>
+
+                <div className="academy-card-body">
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                    <span className="badge badge-blue">
+                      {c.category}
+                    </span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                      <Clock size={13} />
+                      <span>12 Wks • 36 Classes</span>
                     </div>
-                    <span style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", fontWeight: 500 }}>
-                      {item.text}
+                  </div>
+
+                  <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
+                    <Link href={`/academy/courses/${c.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+                      {c.title}
+                    </Link>
+                  </h3>
+
+                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
+                    {c.short_description}
+                  </p>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
+                      <span>3 Live Classes / Week • Mentored Sessions</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <Layers size={13} style={{ color: "var(--accent-teal)" }} />
+                      <span>{c.modules.length} Modules • Practice Packs Included</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="academy-card-footer">
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                    <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
+                      ৳{c.price.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>BDT</span>
                     </span>
                   </div>
-                ))}
+
+                  <Link
+                    href={`/academy/courses/${c.slug}`}
+                    className="btn btn-accent"
+                    style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                  >
+                    <span>Explore Syllabus</span>
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          WHY ERAAO ACADEMY — Factual Advantages
+          ═══════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
+        <div className="container">
+          <div style={{ textAlign: "center", maxWidth: "44rem", margin: "0 auto 3.5rem auto" }}>
+            <span className="section-badge" style={{ background: "rgba(124, 58, 237, 0.1)", color: "var(--accent-violet)", marginBottom: "0.75rem" }}>
+              Why Students Choose ERAAO
+            </span>
+            <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+              Built for Practical Execution, Not Memorization
+            </h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.65, marginTop: "0.75rem" }}>
+              We eliminate traditional lecture halls in favor of active drills, real simulation challenges, and personalized instructor guidance.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+            <div className="academy-advantage-card">
+              <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "var(--accent-blue-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-blue)", marginBottom: "1.25rem" }}>
+                <MessageSquare size={24} />
+              </div>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                Live Speaking &amp; Lab Sessions
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Zero Passive Videos</span>
+              </h3>
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Every class demands active student participation. Speak in guided drills, build real agent scripts, or execute offensive penetration tests.
+              </p>
+            </div>
+
+            <div className="academy-advantage-card">
+              <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(124, 58, 237, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-violet)", marginBottom: "1.25rem" }}>
+                <Users size={24} />
+              </div>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                1-on-1 Dedicated Feedback
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Speech &amp; Code Diagnostics</span>
+              </h3>
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Instructors diagnose hesitation patterns, correct grammatical errors in real time, and review your code pull requests line-by-line.
+              </p>
+            </div>
+
+            <div className="academy-advantage-card">
+              <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "var(--accent-teal-bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-teal)", marginBottom: "1.25rem" }}>
+                <Headphones size={24} />
+              </div>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                Dedicated Audio &amp; Worksheets
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>Permanent Downloadable Packs</span>
+              </h3>
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Receive structured worksheets released Class 1 of every module and self-made listening audios at native speaking speed in Class 3.
+              </p>
+            </div>
+
+            <div className="academy-advantage-card">
+              <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(16, 185, 129, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-success)", marginBottom: "1.25rem" }}>
+                <Award size={24} />
+              </div>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                Cryptographic Verifiable Diplomas
+                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>LinkedIn &amp; Client Ready</span>
+              </h3>
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                Graduate with a verifiable digital diploma with a unique verification URL ready to demonstrate your competency to international clients.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          ENTERPRISE SERVICES — AUXILIARY SECTION FOR BUSINESSES
+          ═══════════════════════════════════════════════════════════════ */}
+      <section style={{
+        padding: "5rem 0",
+        background: "linear-gradient(180deg, #090d16 0%, #0f172a 100%)",
+        color: "white",
+        borderTop: "1px solid rgba(255, 255, 255, 0.1)"
+      }}>
+        <div className="container">
+          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "4rem", alignItems: "center" }}>
+            <div>
+              <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", marginBottom: "1rem" }}>
+                For Business &bull; Enterprise Solutions
+              </span>
+              <h2 style={{ fontSize: "clamp(2rem, 3.5vw, 2.75rem)", fontWeight: 900, color: "white", letterSpacing: "-0.02em", lineHeight: 1.25, marginBottom: "1rem" }}>
+                Need Custom AI Engineering or Offensive Security Audits?
+              </h2>
+              <p style={{ color: "#94a3b8", fontSize: "var(--text-base)", lineHeight: 1.65, marginBottom: "2rem" }}>
+                Beyond our practitioner academy, ERAAO partners with forward-thinking companies to build bespoke multi-agent LLM systems and conduct rigorous penetration testing.
+              </p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2.5rem" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <ShieldCheck size={20} style={{ color: "var(--accent-teal)", flexShrink: 0, marginTop: "3px" }} />
+                  <div>
+                    <strong style={{ fontSize: "var(--text-sm)", color: "white" }}>Offensive Penetration Testing</strong>
+                    <p style={{ fontSize: "var(--text-xs)", color: "#94a3b8", margin: "2px 0 0 0" }}>Web applications, mobile binaries, internal Active Directory, and API security assessments.</p>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <BrainCircuit size={20} style={{ color: "var(--accent-violet)", flexShrink: 0, marginTop: "3px" }} />
+                  <div>
+                    <strong style={{ fontSize: "var(--text-sm)", color: "white" }}>Autonomous Multi-Agent AI Software</strong>
+                    <p style={{ fontSize: "var(--text-xs)", color: "#94a3b8", margin: "2px 0 0 0" }}>Bespoke agent workflows, enterprise RAG pipelines, and automated customer operations.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <Link
+                  href="/services"
+                  className="btn btn-accent"
+                  style={{ background: "linear-gradient(135deg, var(--accent-blue), var(--accent-violet))", color: "white", padding: "0.85rem 1.75rem", borderRadius: "var(--radius-md)", fontWeight: 700 }}
+                >
+                  <span>Explore Enterprise Services</span>
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  href="/book"
+                  className="btn btn-outline"
+                  style={{ color: "white", borderColor: "rgba(255, 255, 255, 0.25)", padding: "0.85rem 1.5rem", borderRadius: "var(--radius-md)", fontWeight: 600 }}
+                >
+                  <span>Schedule Corporate Consultation</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Framing */}
+            <div style={{
+              background: "rgba(255, 255, 255, 0.03)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              borderRadius: "var(--radius-xl)",
+              padding: "2.5rem",
+              backdropFilter: "blur(8px)"
+            }}>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "white", marginBottom: "1.25rem" }}>
+                Enterprise Engagement Standards
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div style={{ padding: "1rem", borderRadius: "var(--radius-md)", background: "rgba(255, 255, 255, 0.04)", border: "1px solid rgba(255, 255, 255, 0.06)" }}>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>VERIFIED METHODOLOGY</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "white", marginTop: "2px" }}>OWASP Top 10 &amp; NIST CSF 2.0 Aligned</div>
+                </div>
+
+                <div style={{ padding: "1rem", borderRadius: "var(--radius-md)", background: "rgba(255, 255, 255, 0.04)", border: "1px solid rgba(255, 255, 255, 0.06)" }}>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-blue)", fontWeight: 700 }}>EXECUTIVE DELIVERABLES</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "white", marginTop: "2px" }}>CVSS v3.1 Scoring &amp; Board-Ready Reporting</div>
+                </div>
+
+                <div style={{ padding: "1rem", borderRadius: "var(--radius-md)", background: "rgba(255, 255, 255, 0.04)", border: "1px solid rgba(255, 255, 255, 0.06)" }}>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-violet)", fontWeight: 700 }}>CUSTOM AUTOMATION</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "white", marginTop: "2px" }}>Production MLOps, LLM Guardrails &amp; Agent Tooling</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Metrics with background image */}
+      {/* ═══════════════════════════════════════════════════════════════
+          CALL TO ACTION SECTION
+          ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         position: "relative",
-        padding: "var(--spacing-section) 0",
-        overflow: "hidden"
+        padding: "6rem 0",
+        background: "var(--bg-primary)",
+        borderTop: "1px solid var(--border-color)",
+        textAlign: "center"
       }}>
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 0
-        }}>
-          <Image
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=75&auto=format&fit=crop"
-            alt="Technology data center"
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover", opacity: 0.12 }}
-          />
-        </div>
-        <div className="container" style={{
-          position: "relative",
-          zIndex: 1,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "3rem",
-          textAlign: "center"
-        }}>
-          <div>
-            <h3 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, color: "var(--accent-blue)" }}>98%</h3>
-            <p style={{ color: "var(--text-secondary)", fontWeight: 500, marginTop: "0.25rem" }}>Course Completion Rate</p>
-          </div>
-          <div>
-            <h3 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, color: "var(--accent-teal)" }}>50+</h3>
-            <p style={{ color: "var(--text-secondary)", fontWeight: 500, marginTop: "0.25rem" }}>Bangladeshi Corporates</p>
-          </div>
-          <div>
-            <h3 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, color: "var(--accent-violet)" }}>10k+</h3>
-            <p style={{ color: "var(--text-secondary)", fontWeight: 500, marginTop: "0.25rem" }}>Certified Graduates</p>
-          </div>
-          <div>
-            <h3 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, color: "var(--text-primary)" }}>100%</h3>
-            <p style={{ color: "var(--text-secondary)", fontWeight: 500, marginTop: "0.25rem" }}>Practical Lab Focus</p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section — immersive background image */}
-      <section style={{
-        position: "relative",
-        padding: "7rem 0",
-        overflow: "hidden",
-        background: "var(--bg-dark)"
-      }}>
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 0
-        }}>
-          <Image
-            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=75&auto=format&fit=crop"
-            alt="Modern office meeting"
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover", opacity: 0.2 }}
-          />
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(14,165,233,0.2) 100%)"
-          }} />
-        </div>
-        <div className="container" style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
-          <span className="badge badge-blue" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.45rem 1.1rem", marginBottom: "1.25rem", borderRadius: "var(--radius-full)", fontSize: "var(--text-xs)", fontWeight: 700, background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)" }}>
-            Speak Directly with Experts • Let&apos;s Build Together
+        <div className="container" style={{ maxWidth: "44rem" }}>
+          <span className="section-badge" style={{ background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", marginBottom: "1rem" }}>
+            Ready to Accelerate Your Career?
           </span>
-          <h2 style={{ fontSize: "var(--text-4xl)", fontWeight: 800, marginBottom: "1rem", color: "var(--text-on-dark)" }}>
-            Ready to Build, Secure, or Learn?
+          <h2 style={{ fontSize: "clamp(2rem, 3.5vw, 2.75rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.02em", marginBottom: "1rem" }}>
+            Start with the Next 12-Week Cohort
           </h2>
-          <p style={{ color: "var(--text-on-dark-muted)", fontSize: "var(--text-base)", maxWidth: "var(--max-width-narrow)", margin: "0 auto 2.5rem auto", lineHeight: 1.6 }}>
-            Whether you need custom AI development, rigorous security auditing, or career-accelerating technical skills, connect directly with our engineering and academy mentors.
+          <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.65, marginBottom: "2.5rem" }}>
+            Explore the curriculum syllabi, review weekly class schedules, or connect directly with an admissions advisor for a personalized skill assessment.
           </p>
+
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/book" className="btn btn-accent" style={{
+            <Link href="/academy" className="btn btn-accent" style={{
               padding: "0.9rem 2.25rem",
               fontSize: "var(--text-base)",
               fontWeight: 700,
-              boxShadow: "0 0 30px rgba(14, 165, 233, 0.35)",
+              boxShadow: "0 8px 24px rgba(14, 165, 233, 0.35)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem"
+            }}>
+              <span>Browse All Academy Tracks</span>
+              <ArrowRight size={18} />
+            </Link>
+            <Link href="/book" className="btn btn-outline" style={{
+              padding: "0.9rem 2.25rem",
+              fontSize: "var(--text-base)",
+              fontWeight: 600,
               display: "flex",
               alignItems: "center",
               gap: "0.5rem"
             }}>
               <Phone size={18} />
-              <span>Schedule Free Discovery Call</span>
-            </Link>
-            <Link href="/quote" className="btn" style={{
-              padding: "0.9rem 2rem",
-              fontSize: "var(--text-base)",
-              fontWeight: 600,
-              background: "rgba(255,255,255,0.1)",
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(255,255,255,0.25)",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem"
-            }}>
-              <span>Request Quote / Services</span>
-              <ArrowRight size={16} />
+              <span>Book Admissions Counseling</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* AI Assistant Chatbot — Landing Page Only */}
+      {/* AI Assistant Chatbot */}
       <Chatbot />
     </div>
   );

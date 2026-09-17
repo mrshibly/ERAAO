@@ -8,10 +8,12 @@ import { useAuth } from "@/context/AuthContext";
 import {
   ArrowLeft, Clock, Award, CheckCircle2, PlayCircle, BookOpen,
   Shield, Video, FileText, CheckSquare, HelpCircle, ArrowRight,
-  Sparkles, Users, MessageSquare, PhoneCall
+  Sparkles, Users, MessageSquare, Calendar, Layers, Headphones,
+  Check, ArrowUpRight
 } from "lucide-react";
 import BrandLoader from "@/components/BrandLoader";
 import CustomModal from "@/components/CustomModal";
+import { getCourseBySlug, ALL_COURSES, CourseData } from "@/data/courses";
 
 export default function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -20,8 +22,10 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   const router = useRouter();
   const { user, token } = useAuth();
 
-  const [course, setCourse] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const staticCourse = getCourseBySlug(slug);
+
+  const [course, setCourse] = useState<any>(staticCourse || null);
+  const [loading, setLoading] = useState(!staticCourse);
   const [error, setError] = useState<string | null>(null);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false);
@@ -33,27 +37,46 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   });
 
   useEffect(() => {
+    if (staticCourse) {
+      document.title = `${staticCourse.title} | ERAAO Academy`;
+    }
+
     const fetchCourse = async () => {
       try {
         const res = await fetch(`/api/v1/courses/${slug}`);
         if (res.ok) {
-          const data = await res.json();
-          setCourse(data);
-          if (data?.title) {
-            document.title = `${data.title} | ERAAO Academy`;
+          const apiData = await res.json();
+          // Merge API data with rich static PDF curriculum specifications
+          setCourse((prev: any) => ({
+            ...(staticCourse || {}),
+            ...apiData,
+            modules: (apiData.modules && apiData.modules.length > 0) ? apiData.modules : (staticCourse?.modules || []),
+            outcomes: staticCourse?.outcomes || apiData.outcomes || [],
+            target_audience: staticCourse?.target_audience || [],
+            weekly_rhythm: staticCourse?.weekly_rhythm || "",
+            resources_included: staticCourse?.resources_included || "",
+            classes_count: staticCourse?.classes_count || 36,
+            classes_per_week: staticCourse?.classes_per_week || 3,
+            class_length_minutes: staticCourse?.class_length_minutes || 70,
+            price: apiData.price ?? staticCourse?.price ?? 0
+          }));
+          if (apiData?.title) {
+            document.title = `${apiData.title} | ERAAO Academy`;
           }
-        } else {
+        } else if (!staticCourse) {
           setError("Course not found.");
         }
       } catch {
-        setError("Error connecting to server.");
+        if (!staticCourse) {
+          setError("Error connecting to server.");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchCourse();
-  }, [slug]);
+  }, [slug, staticCourse]);
 
   const handleEnroll = async () => {
     if (!user) {
@@ -99,19 +122,23 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
     }
   };
 
-  const getCourseImage = (title: string) => {
+  const getCourseImage = (title: string, s?: string) => {
     const t = (title || "").toLowerCase();
-    if (t.includes("hack") || t.includes("penetration") || t.includes("security") || t.includes("cyber")) {
-      return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1200";
+    const sl = (s || "").toLowerCase();
+    if (t.includes("english") || sl.includes("english")) {
+      return "/banners/banner-spoken-english.jpg";
     }
-    if (t.includes("ai") || t.includes("intelligence") || t.includes("model") || t.includes("machine")) {
-      return "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=1200";
+    if (t.includes("ai") || t.includes("automation") || sl.includes("ai")) {
+      return "/banners/banner-ai-automation.jpg";
+    }
+    if (t.includes("hack") || t.includes("penetration") || t.includes("security") || sl.includes("cyber")) {
+      return "/banners/banner-cyber-security.jpg";
     }
     return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200";
   };
 
   if (loading) {
-    return <BrandLoader message="Loading course syllabus & lab details..." />;
+    return <BrandLoader message="Loading official course syllabus & curriculum..." />;
   }
 
   if (error || !course) {
@@ -123,7 +150,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
           The requested course syllabus could not be found or has been updated.
         </p>
         <Link href="/academy" className="btn btn-accent">
-          Browse Catalog
+          Browse Academy Catalog
         </Link>
       </div>
     );
@@ -132,43 +159,37 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   const totalLessons = (course.modules || []).reduce((acc: number, m: any) => acc + (m.lessons?.length || 0), 0);
 
   return (
-    <div style={{ minHeight: "90vh", paddingBottom: "4rem", paddingTop: "2rem" }}>
+    <div style={{ minHeight: "90vh", paddingBottom: "5rem", paddingTop: "2rem" }}>
       <div className="container">
         
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            background: "none",
-            border: "none",
-            color: "var(--text-secondary)",
-            cursor: "pointer",
-            fontWeight: 700,
-            fontSize: "var(--text-sm)",
-            marginBottom: "1.5rem"
-          }}
-        >
-          <ArrowLeft size={16} /> Back to Catalog
-        </button>
+        {/* Breadcrumb Navigation */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.5rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+          <Link href="/academy" style={{ color: "var(--text-secondary)", textDecoration: "none", fontWeight: 600 }}>
+            Academy
+          </Link>
+          <span>/</span>
+          <span style={{ color: "var(--accent-blue)", fontWeight: 700 }}>
+            {course.category || (course.category_slug ? course.category_slug.replace(/-/g, " ") : "Bootcamp")}
+          </span>
+          <span>/</span>
+          <span style={{ color: "var(--text-muted)" }}>{course.title}</span>
+        </div>
 
         {/* Hero Cover Header */}
         <div className="anim-fade-up" style={{
           position: "relative",
-          borderRadius: "var(--radius-lg)",
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
-          background: "var(--bg-dark)",
+          background: "linear-gradient(135deg, #090d16 0%, #0f172a 100%)",
           color: "white",
-          padding: "3rem 2.5rem",
+          padding: "3.5rem 2.5rem",
           marginBottom: "2.5rem",
           boxShadow: "var(--shadow-xl)",
           border: "1px solid rgba(255, 255, 255, 0.1)"
         }}>
-          <div style={{ position: "absolute", inset: 0, opacity: 0.25, zIndex: 1 }}>
+          <div style={{ position: "absolute", inset: 0, opacity: 0.22, zIndex: 1 }}>
             <Image
-              src={getCourseImage(course.title)}
+              src={getCourseImage(course.title, course.slug)}
               alt={course.title}
               fill
               sizes="(max-width: 768px) 100vw, 1200px"
@@ -177,36 +198,68 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
             />
           </div>
 
-          <div style={{ position: "relative", zIndex: 2, maxWidth: "750px" }}>
-            <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "center", marginBottom: "1rem" }}>
-              <span className="badge badge-blue">
-                {course.level || "Intermediate"} Bootcamp
+          <div style={{ position: "relative", zIndex: 2, maxWidth: "800px" }}>
+            <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "center", marginBottom: "1.25rem" }}>
+              <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                {course.category || "Bootcamp"}
               </span>
-              <span className="badge" style={{ background: "rgba(255, 255, 255, 0.1)", color: "var(--text-on-dark-subtle)" }}>
-                {course.duration_hours ? `${course.duration_hours} Hours Content` : "Self-Paced Learning"}
+              <span className="badge" style={{ background: "rgba(255, 255, 255, 0.12)", color: "white", textTransform: "capitalize", fontWeight: 700 }}>
+                {course.level || "All Levels"} Level
+              </span>
+              <span className="badge" style={{ background: "rgba(16, 185, 129, 0.2)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                <Clock size={13} style={{ marginRight: "4px" }} />
+                12 Weeks • 36 Live Classes
               </span>
             </div>
 
-            <h1 style={{ fontSize: "var(--text-3xl)", fontWeight: 800, color: "var(--text-on-dark)", letterSpacing: "-0.01em", lineHeight: "1.25", marginBottom: "1rem" }}>
+            <h1 style={{ fontSize: "clamp(1.85rem, 3.5vw, 2.75rem)", fontWeight: 900, color: "var(--text-on-dark)", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: "1.25rem" }}>
               {course.title}
             </h1>
 
-            <p style={{ color: "var(--text-on-dark-subtle)", fontSize: "var(--text-base)", lineHeight: "1.6", marginBottom: "1.75rem" }}>
-              {course.short_description || course.description || "Master industry-standard practical skills with real-world hands-on lab exercises."}
+            <p style={{ color: "var(--text-on-dark-subtle)", fontSize: "var(--text-base)", lineHeight: 1.65, marginBottom: "2rem" }}>
+              {course.short_description || course.description}
             </p>
 
-            <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", fontSize: "var(--text-sm)", color: "var(--text-on-dark-muted)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <BookOpen size={16} style={{ color: "var(--accent-cyan)" }} />
-                <span>{course.modules?.length || 0} Syllabus Modules</span>
+            {/* Program specifications */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", paddingTop: "1.25rem", borderTop: "1px solid rgba(255, 255, 255, 0.12)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(14, 165, 233, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-blue)" }}>
+                  <Calendar size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "rgba(255, 255, 255, 0.6)", fontWeight: 600 }}>Rhythm</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "white" }}>3 Classes / Week</div>
+                </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <PlayCircle size={16} style={{ color: "var(--color-success)" }} />
-                <span>{totalLessons} Interactive Lectures &amp; Labs</span>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(16, 185, 129, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-teal)" }}>
+                  <Layers size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "rgba(255, 255, 255, 0.6)", fontWeight: 600 }}>Structure</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "white" }}>{course.modules?.length || 10} Deep Modules</div>
+                </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <Award size={16} style={{ color: "var(--color-warning)" }} />
-                <span>Verified Graduation Badge</span>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(124, 58, 237, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent-violet)" }}>
+                  <BookOpen size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "rgba(255, 255, 255, 0.6)", fontWeight: 600 }}>Class Length</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "white" }}>{course.class_length_minutes || 70} Mins / Class</div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(245, 158, 11, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#f59e0b" }}>
+                  <Award size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "rgba(255, 255, 255, 0.6)", fontWeight: 600 }}>Credential</div>
+                  <div style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "white" }}>Verified Diploma</div>
+                </div>
               </div>
             </div>
           </div>
@@ -215,91 +268,162 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         {/* Main Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
 
-          {/* Left Column — Detailed Course Description & Syllabus Breakdown */}
+          {/* Left Column — Detailed Course Description, Learning Cycle & Syllabus */}
           <div style={{ gridColumn: "span 2" }}>
             
-            {/* Overview & What You Will Learn */}
-            <div className="card" style={{ padding: "2rem", marginBottom: "2rem" }}>
+            {/* ERAAO 6-Stage Learning Cycle Box */}
+            <div className="card" style={{ padding: "2rem", marginBottom: "2rem", background: "linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-                <span className="badge badge-blue" style={{ fontSize: "var(--text-xs)", fontWeight: 700 }}>
+                <span className="badge badge-blue" style={{ fontSize: "var(--text-xs)", fontWeight: 800 }}>
                   <Sparkles size={13} style={{ color: "var(--accent-blue)" }} />
-                  <span>Curriculum Overview</span>
+                  <span>The ERAAO Learning Methodology</span>
                 </span>
               </div>
-              <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem" }}>
-                {course.title}
+              <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                How This Course Works: 6-Stage Learning Cycle
               </h2>
-              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: "1.65", marginBottom: "2rem", whiteSpace: "pre-line" }}>
-                {course.description || "This comprehensive course provides in-depth technical knowledge and hands-on skill building designed by active industry experts."}
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+                Every module in this bootcamp moves systematically through 6 scientific retention stages so you don&apos;t just memorize information — you gain unconscious fluency.
               </p>
 
-              {/* Who is this course for */}
-              <div style={{
-                background: "var(--bg-secondary)",
-                border: "1px solid var(--border-color)",
-                borderRadius: "var(--radius-lg)",
-                padding: "1.5rem",
-                marginBottom: "2rem"
-              }}>
-                <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <Users size={18} style={{ color: "var(--accent-blue)" }} />
-                  <span>Who is this bootcamp designed for?</span>
-                </h3>
-                
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                    <CheckCircle2 size={16} style={{ color: "var(--color-success)", flexShrink: 0, marginTop: "3px" }} />
-                    <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
-                      <strong>Beginners &amp; Career Starters:</strong> Learn step-by-step with practical labs. No advanced computer science or programming background required.
-                    </p>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                    <CheckCircle2 size={16} style={{ color: "var(--accent-blue)", flexShrink: 0, marginTop: "3px" }} />
-                    <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
-                      <strong>Freelancers &amp; Independent Consultants:</strong> Master high-demand skills to build and deliver high-ticket projects for international clients.
-                    </p>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                    <CheckCircle2 size={16} style={{ color: "var(--accent-violet)", flexShrink: 0, marginTop: "3px" }} />
-                    <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5, margin: 0 }}>
-                      <strong>Working Tech Professionals:</strong> Modernize your skillset with real-world AI automation and cybersecurity to switch fields or secure promotions.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "1rem" }}>
-                What You Will Master &amp; Build
-                <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500, marginTop: "2px" }}>Practical Real-World Competencies</span>
-              </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "0.75rem" }}>
                 {[
-                  "Hands-on practice in live browser sandboxes (Zero Setup)",
-                  "Production-grade client & portfolio-ready capstone projects",
-                  "Modern industry security frameworks & automated workflows",
-                  "Direct mentor code reviews & 1-on-1 technical troubleshooting",
-                  "Globally verifiable digital credentials (LinkedIn-ready)",
-                  "Full lifetime course access & continuous syllabus updates"
+                  { step: "01", name: "Understand", desc: "Break concept down into clear, intuitive mechanics." },
+                  { step: "02", name: "Notice", desc: "Spot the patterns in authentic spoken dialogues & code." },
+                  { step: "03", name: "Build", desc: "Construct correct sentences and systems from prompts." },
+                  { step: "04", name: "Practice", desc: "Low-stakes guided repetitions with instant instructor feedback." },
+                  { step: "05", name: "Use", desc: "High-stakes production challenges and real simulations." },
+                  { step: "06", name: "Recall", desc: "Spaced retrieval practice to lock fluency into long-term memory." },
                 ].map((item, idx) => (
-                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
-                    <CheckCircle2 size={18} style={{ color: "var(--color-success)", flexShrink: 0, marginTop: "2px" }} />
-                    <span>{item}</span>
+                  <div key={idx} style={{
+                    padding: "0.85rem",
+                    borderRadius: "var(--radius-md)",
+                    background: "var(--bg-primary)",
+                    border: "1px solid var(--border-color)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.25rem"
+                  }}>
+                    <span style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--accent-blue)" }}>{item.step}</span>
+                    <strong style={{ fontSize: "var(--text-xs)", color: "var(--text-primary)" }}>{item.name}</strong>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", lineHeight: 1.4 }}>{item.desc}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Curriculum Syllabus Modules */}
-            <div className="card" style={{ padding: "2rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-                <div>
-                  <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)" }}>
-                    Curriculum Syllabus
-                  </h2>
-                  <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
-                    {course.modules?.length || 0} Modules &bull; {totalLessons} Lectures
+            {/* Weekly Rhythm Breakdown (from PDF) */}
+            <div className="card" style={{ padding: "2rem", marginBottom: "2rem" }}>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <Calendar size={18} style={{ color: "var(--accent-blue)" }} />
+                <span>Weekly 3-Class Class Schedule</span>
+              </h3>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.25rem" }}>
+                {course.weekly_rhythm || "Each week features 3 live interactive sessions (Mon / Wed / Fri) engineered for progressive mastery."}
+              </p>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
+                <div style={{ padding: "1.25rem", borderRadius: "var(--radius-md)", background: "var(--bg-secondary)", border: "1px solid var(--border-color)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                    <span className="badge badge-blue" style={{ fontSize: "0.7rem", fontWeight: 800 }}>Class 1 &bull; Monday</span>
+                  </div>
+                  <strong style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", display: "block", marginBottom: "0.35rem" }}>
+                    New Input &amp; System Architecture
+                  </strong>
+                  <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.5, margin: 0 }}>
+                    Understand &rarr; Notice &rarr; Build. Module worksheet released with core sentence frames, key vocabulary, and guided models.
                   </p>
                 </div>
+
+                <div style={{ padding: "1.25rem", borderRadius: "var(--radius-md)", background: "var(--bg-secondary)", border: "1px solid var(--border-color)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                    <span className="badge" style={{ background: "rgba(16, 185, 129, 0.15)", color: "var(--accent-teal)", fontSize: "0.7rem", fontWeight: 800 }}>Class 2 &bull; Wednesday</span>
+                  </div>
+                  <strong style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", display: "block", marginBottom: "0.35rem" }}>
+                    Live Application &amp; Guided Speaking
+                  </strong>
+                  <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.5, margin: 0 }}>
+                    Practice &rarr; Use. Pair exercises, live drills, simulations, and real-time mentor corrections to eliminate hesitation.
+                  </p>
+                </div>
+
+                <div style={{ padding: "1.25rem", borderRadius: "var(--radius-md)", background: "var(--bg-secondary)", border: "1px solid var(--border-color)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                    <span className="badge" style={{ background: "rgba(124, 58, 237, 0.15)", color: "var(--accent-violet)", fontSize: "0.7rem", fontWeight: 800 }}>Class 3 &bull; Friday</span>
+                  </div>
+                  <strong style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", display: "block", marginBottom: "0.35rem" }}>
+                    Listening Lab &amp; Active Recall
+                  </strong>
+                  <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.5, margin: 0 }}>
+                    Recall &amp; Milestone. Self-made audio comprehension, speed listening drills, active recall testing, and error diagnosis.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* What You Will Master (Learning Outcomes) */}
+            <div className="card" style={{ padding: "2rem", marginBottom: "2rem" }}>
+              <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
+                What You Will Master &amp; Build
+              </h3>
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", marginBottom: "1.25rem" }}>
+                Factual competencies verified through weekly assessments and capstone projects:
+              </p>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "0.85rem" }}>
+                {(course.outcomes && course.outcomes.length > 0 ? course.outcomes : [
+                  "Systematic sentence architecture without mental translation",
+                  "Overcoming conversational hesitation in live dialogues",
+                  "Downloadable worksheets for persistent reference and practice",
+                  "Audio listening training with natural native speaker speed",
+                  "Direct instructor feedback and live correction in every class",
+                  "Verifiable digital diploma upon completing capstone evaluation"
+                ]).map((outcome: string, idx: number) => (
+                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
+                    <CheckCircle2 size={16} style={{ color: "var(--color-success)", flexShrink: 0, marginTop: "2px" }} />
+                    <span style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.5 }}>
+                      {outcome}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Target Audience */}
+              {course.target_audience && course.target_audience.length > 0 && (
+                <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid var(--border-color)" }}>
+                  <h4 style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                    <Users size={16} style={{ color: "var(--accent-blue)" }} />
+                    <span>Who is this bootcamp designed for?</span>
+                  </h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                    {course.target_audience.map((aud: any, idx: number) => (
+                      <div key={idx} style={{ background: "var(--bg-secondary)", padding: "0.85rem 1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)" }}>
+                        <strong style={{ fontSize: "var(--text-xs)", color: "var(--text-primary)", display: "block" }}>{aud.title}</strong>
+                        <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.4 }}>{aud.description}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Curriculum Syllabus Modules */}
+            <div className="card" style={{ padding: "2rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.75rem" }}>
+                <div>
+                  <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--text-primary)" }}>
+                    Official 12-Week Curriculum Syllabus
+                  </h2>
+                  <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
+                    {course.modules?.length || 0} Modules &bull; {totalLessons} Topic Lessons &bull; 36 Live Sessions
+                  </p>
+                </div>
+
+                {course.resources_included && (
+                  <span className="badge" style={{ background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 700 }}>
+                    {course.resources_included}
+                  </span>
+                )}
               </div>
 
               {(!course.modules || course.modules.length === 0) ? (
@@ -308,15 +432,26 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 </div>
               ) : (
                 course.modules.sort((a: any, b: any) => a.order - b.order).map((mod: any, idx: number) => (
-                  <div key={mod.id} style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", marginBottom: "1.25rem", overflow: "hidden" }}>
-                    <div style={{ padding: "1.15rem 1.25rem", background: "var(--bg-secondary)", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: mod.lessons?.length > 0 ? "1px solid var(--border-color)" : "none" }}>
+                  <div key={mod.id || idx} style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", marginBottom: "1.25rem", overflow: "hidden" }}>
+                    <div style={{ padding: "1.15rem 1.25rem", background: "var(--bg-secondary)", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: mod.lessons?.length > 0 ? "1px solid var(--border-color)" : "none", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
-                        <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-blue)", fontWeight: 700, textTransform: "uppercase" }}>
+                        <div style={{ fontSize: "var(--text-xs)", color: "var(--accent-blue)", fontWeight: 800, textTransform: "uppercase" }}>
                           Module {idx + 1}
                         </div>
                         <h4 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", marginTop: "0.15rem" }}>
                           {mod.title}
                         </h4>
+                        {mod.description && (
+                          <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.3rem", lineHeight: 1.5 }}>
+                            {mod.description}
+                          </p>
+                        )}
+                        {mod.student_outcome && (
+                          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", marginTop: "0.4rem", fontSize: "0.75rem", color: "var(--accent-teal)", fontWeight: 700 }}>
+                            <Check size={13} />
+                            <span>Milestone: {mod.student_outcome}</span>
+                          </div>
+                        )}
                       </div>
                       <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
                         {mod.lessons?.length || 0} {mod.lessons?.length === 1 ? "Lesson" : "Lessons"}
@@ -332,10 +467,11 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                               {lesson.content_type === "material" && <FileText size={16} style={{ color: "var(--color-success)" }} />}
                               {lesson.content_type === "assignment" && <CheckSquare size={16} style={{ color: "var(--color-warning)" }} />}
                               {lesson.content_type === "quiz" && <HelpCircle size={16} style={{ color: "var(--accent-violet)" }} />}
+                              {lesson.content_type === "text" && <BookOpen size={16} style={{ color: "var(--accent-blue)" }} />}
                               <span>{lesson.title}</span>
                             </div>
                             <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                              {lesson.duration_minutes ? `${lesson.duration_minutes}m` : "Self-paced"}
+                              {lesson.duration_minutes ? `${lesson.duration_minutes}m` : "Live session"}
                             </span>
                           </div>
                         ))}
@@ -348,22 +484,25 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
           </div>
 
-          {/* Right Column — Enrollment / Purchase Action Box */}
+          {/* Right Column — Enrollment Action Box */}
           <div>
             <div className="card" style={{ padding: "2rem", position: "sticky", top: "2rem", boxShadow: "var(--shadow-md)" }}>
               <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
                 <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
-                  Tuition Fee
+                  Official Tuition Fee
                 </span>
                 <div style={{ fontSize: "var(--text-3xl)", fontWeight: 900, color: "var(--text-primary)", marginTop: "0.25rem" }}>
                   {course.price > 0 ? `৳${course.price.toLocaleString()} BDT` : "Free Access"}
                 </div>
+                <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginTop: "0.25rem", display: "block" }}>
+                  Full 12-Week Cohort • All Materials Included
+                </span>
               </div>
 
               {enrollSuccess ? (
                 <div style={{ background: "var(--color-success-bg)", border: "1px solid rgba(34, 197, 94, 0.3)", color: "var(--color-success)", padding: "1rem", borderRadius: "var(--radius-md)", textAlign: "center", fontWeight: 700, marginBottom: "1rem" }}>
                   <CheckCircle2 size={24} style={{ margin: "0 auto 0.5rem auto", display: "block" }} />
-                  <span>Successfully enrolled! Redirecting to dashboard...</span>
+                  <span>Successfully enrolled! Redirecting to classroom...</span>
                 </div>
               ) : (
                 <button
@@ -377,22 +516,31 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 </button>
               )}
 
+              {/* Verified specifications list */}
               <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <Shield size={16} style={{ color: "var(--accent-blue)" }} />
-                  <span>Full Lifetime Access</span>
+                  <Clock size={16} style={{ color: "var(--accent-blue)" }} />
+                  <span>12 Weeks &bull; 36 Live Interactive Classes</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <Calendar size={16} style={{ color: "var(--accent-teal)" }} />
+                  <span>3 Live Classes Per Week (Mon / Wed / Fri)</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <FileText size={16} style={{ color: "var(--color-success)" }} />
+                  <span>Worksheets &amp; Dedicated Listening Audio Files</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <Users size={16} style={{ color: "var(--accent-violet)" }} />
+                  <span>1-on-1 Mentor Guidance &amp; Live Speech Feedback</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <Award size={16} style={{ color: "var(--color-warning)" }} />
-                  <span>Verifiable Digital Certificate</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <Clock size={16} style={{ color: "var(--color-success)" }} />
-                  <span>Self-Paced with Flexible Schedule</span>
+                  <span>Verifiable Digital Diploma with Credential ID</span>
                 </div>
               </div>
 
-              {/* Conversational Mentor Help Box */}
+              {/* Conversational Mentor Guidance Box */}
               <div style={{
                 marginTop: "1.5rem",
                 padding: "1.1rem",
@@ -403,14 +551,14 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: "0.35rem" }}>
                   <Sparkles size={14} style={{ color: "var(--accent-blue)" }} />
                   <span style={{ fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--text-primary)" }}>
-                    Unsure if this track is right for you?
+                    Need help choosing the right level?
                   </span>
                 </div>
                 <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "0.75rem" }}>
-                  Chat directly with our admissions mentors on WhatsApp to get personalized guidance tailored to your background.
+                  Speak directly with an ERAAO advisor on WhatsApp for an assessment and syllabus recommendation.
                 </p>
                 <a
-                  href={`https://wa.me/8801700000000?text=${encodeURIComponent(`Hello ERAAO Academy, I want to know more about the course: ${course.title}`)}`}
+                  href={`https://wa.me/8801700000000?text=${encodeURIComponent(`Hello ERAAO Academy, I would like to learn more about the ${course.title} bootcamp.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline"
@@ -427,7 +575,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   }}
                 >
                   <MessageSquare size={14} style={{ color: "var(--color-success)" }} />
-                  <span>Ask via WhatsApp</span>
+                  <span>Chat on WhatsApp</span>
                 </a>
               </div>
             </div>

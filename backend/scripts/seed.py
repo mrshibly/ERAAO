@@ -9,6 +9,7 @@ from sqlalchemy import select
 from app.db.session import async_session_factory, engine
 from app.db.base import Base
 import app.models  # Ensure all models are loaded
+from app.models.category import Category
 from app.models.role import Role, Permission, RolePermission, UserRole
 from app.models.user import User
 from app.models.course import Course, Module, Lesson, CourseLevel, CourseStatus, ContentType
@@ -89,47 +90,144 @@ async def seed() -> None:
             db.add(UserRole(user_id=student_user.id, role_id=roles["student"].id))
             await db.flush()
 
-        # 6. Seed Default Published Courses
-        sample_courses_data = [
+        # 6. Seed Categories
+        categories_data = [
+            {"name": "English Communication", "slug": "english-communication"},
+            {"name": "Artificial Intelligence", "slug": "artificial-intelligence"},
+            {"name": "Cybersecurity", "slug": "cybersecurity"},
+        ]
+        categories = {}
+        for cdata in categories_data:
+            cat_stmt = select(Category).where(Category.slug == cdata["slug"])
+            cat = (await db.execute(cat_stmt)).scalar_one_or_none()
+            if not cat:
+                cat = Category(name=cdata["name"], slug=cdata["slug"])
+                db.add(cat)
+                await db.flush()
+            categories[cdata["slug"]] = cat
+
+        # 7. Seed Authentic Bootcamps from Official Curriculum PDFs
+        authentic_courses_data = [
             {
-                "title": "Advanced Penetration Testing & Ethical Hacking",
-                "slug": "advanced-penetration-testing-ethical-hacking",
-                "short_description": "Master real-world offensive security, network exploitation, web app pentesting, and privilege escalation.",
-                "description": "Comprehensive hands-on training covering network reconnaissance, vulnerability assessment, web application security testing, Metasploit, Active Directory exploitation, and post-exploitation techniques.",
+                "title": "Basic English: Build a Usable Foundation",
+                "slug": "basic-english-foundation",
+                "short_description": "Turn fragmented school English into a usable spoken system. Learn through context, pattern building, and real-life practice without memorizing rules.",
+                "description": "Build a usable English foundation from the English you already half-know. Built entirely on the 6-stage ERAAO Learning Cycle: Understand -> Notice -> Build -> Practice -> Use -> Recall. 12 weeks, 36 classes.",
+                "level": CourseLevel.BEGINNER,
+                "price": 12000.00,
+                "currency": "BDT",
+                "duration_hours": 36.0,
+                "thumbnail_url": "/banners/banner-spoken-english.jpg",
+                "category_slug": "english-communication",
+                "modules": [
+                    ("Module 1: Reset Your English", ["Why Knowing English Doesn't Mean Being Able to Use It", "The ERAAO Learning Cycle", "Removing Fear of Mistakes"]),
+                    ("Module 2: Building the English Sentence", ["The SVO Engine: Subject, Verb, Object", "Transforming Statements: Positive & Negative", "Question Formation Patterns"]),
+                    ("Module 3: The Core Verb System", ["Mastering Be, Have, and Do", "Action Verbs & Everyday Combinations", "Modal Verbs: Can, Must, Should"]),
+                    ("Module 4: Time & Basic Grammar", ["Present Simple vs. Continuous", "Narrating Past & Future Plans", "Time Markers & Sequence Linking"]),
+                    ("Module 5: Everyday English Patterns", ["High-Frequency Conversational Formulas", "Expressing Preferences & Personal Views", "Everyday Q&A Dialogue Drills"]),
+                    ("Module 6: Listening to Understand", ["Breaking the Mental Translation Habit", "Connected Speech & Sound Reduction", "Context-Based Inference Lab"]),
+                    ("Module 7: Speaking from Patterns", ["Substitution Techniques & Rapid Swapping", "Spontaneous Response Drills", "Building Multi-Turn Dialogues"]),
+                    ("Module 8: Writing Your English", ["Structuring Clear, Readable Paragraphs", "Describing, Explaining & Narrating", "Practical Messages & Written Summaries"]),
+                    ("Module 9: English in Real Life & Final Integration", ["Handling Everyday Phone Calls", "Workplace Scenarios & Explaining Problems", "Full Course Recall & Capstone Assessment"])
+                ]
+            },
+            {
+                "title": "English for Freelancers: International Client Communication",
+                "slug": "english-for-freelancers",
+                "short_description": "Communicate professionally, pitch proposals, run client calls, negotiate deadlines and scope, and win high-ticket international contracts.",
+                "description": "Professional communication with real international clients. Covers proposal writing, pricing negotiation, client video calls, email protocols, managing scope changes, and ends with a complete 2-week end-to-end client simulation.",
+                "level": CourseLevel.INTERMEDIATE,
+                "price": 15000.00,
+                "currency": "BDT",
+                "duration_hours": 36.0,
+                "thumbnail_url": "/banners/banner-spoken-english.jpg",
+                "category_slug": "english-communication",
+                "modules": [
+                    ("Module 1: Thinking in Professional English", ["Casual vs. Professional English", "Direct vs. Indirect Business Communication", "Introducing Your Skills Professionally"]),
+                    ("Module 2: Freelancer Vocabulary in Context", ["Scope, Deliverables, Milestones & Revisions", "Technical vs. Non-Technical Phrasing", "Contextual Vocabulary Practice"]),
+                    ("Module 3: Client Conversations & First Discovery Calls", ["Opening Discovery Calls Gracefully", "Asking High-Value Clarifying Questions", "Summarizing Client Requirements Back"]),
+                    ("Module 4: Professional Sentence Construction", ["Softening Direct Commands with Modals", "Making Suggestions Politely", "Sentence Transformation Workshop"]),
+                    ("Module 5: Client Chat & Async Messaging", ["Concise, Actionable Standup Updates", "Explaining Roadblocks Without Panic", "Slack & Upwork Messaging Protocols"]),
+                    ("Module 6: Proposal Writing & Pricing Pitches", ["The Problem-First Proposal Framework", "Justifying Value & Framing Pricing", "Drafting & Verbal Pitch Presentation"]),
+                    ("Module 7: Professional Email English", ["Subject Lines That Get Opened", "Formal Milestone & Invoice Emails", "10-Scenario Email Playbook"]),
+                    ("Module 8: Live Client Meetings & Presentations", ["Opening Zoom/Meet Calls Smoothly", "Presenting Work & Screen Sharing", "Handling Critical Feedback on Camera"]),
+                    ("Module 9: Difficult Situations & Contract Negotiations", ["Identifying Scope Creep Professionally", "Following Up on Overdue Invoices", "The Art of Saying No Professionally"]),
+                    ("Module 10: Full End-to-End Client Simulation", ["Simulation Phase 1: Brief & Proposal", "Simulation Phase 2: Live Negotiation & Sign-Off", "Final Evaluation & Portfolio Packaging"])
+                ]
+            },
+            {
+                "title": "Advanced English: Natural Fluency & Nuanced Communication",
+                "slug": "advanced-english-fluency",
+                "short_description": "Move from consciously constructing English to expressing complex, abstract thoughts naturally with tone, subtlety, and persuasive power.",
+                "description": "Not harder grammar — move from constructing English consciously to expressing complex thought naturally. Master collocations, fast connected speech, persuasive rhetoric, cultural subtext, and executive discussions.",
                 "level": CourseLevel.ADVANCED,
+                "price": 18000.00,
+                "currency": "BDT",
+                "duration_hours": 36.0,
+                "thumbnail_url": "/banners/banner-spoken-english.jpg",
+                "category_slug": "english-communication",
+                "modules": [
+                    ("Module 1: Beyond Basic Sentences", ["Logical Connectors That Elevate Cohesion", "Comparing Conflicting Viewpoints", "Substantiating Assertions with Examples"]),
+                    ("Module 2: Advanced Sentence Structure", ["Relative Clauses & Subordination", "Participle Clauses for Concise Speech", "Mixed Conditionals in Decision-Making"]),
+                    ("Module 3: Grammar Through Meaning", ["Diplomatic Passive Voice", "Narrative Mastery: Past Perfect Nuance", "Inversion & Fronting for Emphasis"]),
+                    ("Module 4: Natural Vocabulary, Collocations & Phrasal Verbs", ["Technology Collocations Bank", "Phrasal Verbs in Professional Settings", "Register Switching: Casual to Boardroom"]),
+                    ("Module 5: Natural Listening Deep-Focus Lab", ["Decoding Reduced Vowels & Glottals", "Extended Multi-Speaker Audio Lab", "Inference & Reading Subtext"]),
+                    ("Module 6: Fluent Speaking & Persuasive Rhetoric", ["The PREP Framework in Action", "Executive Storytelling Structures", "Constructive Rebuttal Under Pressure"]),
+                    ("Module 7: Expressing Complex & Abstract Ideas", ["Multi-Factor Causality Analysis", "Philosophical & Strategic Tradeoffs", "Executive Debate Round"]),
+                    ("Module 8: Advanced Professional Writing", ["Executive Summary Writing", "Analytical Report Writing", "Self-Editing Protocols"]),
+                    ("Module 9: Natural Communication & Cultural Nuance", ["Indirect Criticism & Constructive Feedback", "Navigating Humor & Organic Rapport", "Cross-Cultural Subtext Mastery"]),
+                    ("Module 10: Fluency Integration & Capstone Defense", ["Capstone Presentation Preparation", "Live Presentation & Panel Q&A Defense", "Final Diagnostic Report & Award"])
+                ]
+            },
+            {
+                "title": "Practical AI Automation & Intelligent Agents",
+                "slug": "ai-automation-agents",
+                "short_description": "Build autonomous multi-agent workflows, custom LLM pipelines, and no-code client automations with LangChain, Make, and Python.",
+                "description": "A hands-on practitioner bootcamp focused on building production-grade AI solutions. Master prompt engineering, tool calling, local and cloud LLMs, vector search, and client workflow automation without theoretical fluff.",
+                "level": CourseLevel.INTERMEDIATE,
                 "price": 25000.00,
                 "currency": "BDT",
                 "duration_hours": 36.0,
-                "thumbnail_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=600"
+                "thumbnail_url": "/banners/banner-ai-automation.jpg",
+                "category_slug": "artificial-intelligence",
+                "modules": [
+                    ("Module 1: Foundations of Modern AI & Agentic Systems", ["Landscape of Modern Models & Token Economics", "Configuring Developer Sandbox", "First Structured JSON Completion Pipeline"]),
+                    ("Module 2: Advanced Prompt Engineering & Function Calling", ["Role Framing & Chain-of-Thought", "Function Calling & Pydantic Tool Definitions", "Lab: Autonomous Calendar & Weather Agent"]),
+                    ("Module 3: Vector Embeddings & Production RAG Pipelines", ["Embedding Models & Chunking Strategies", "Vector Search with PostgreSQL pgvector", "Lab: Company Policy Knowledge Base Assistant"]),
+                    ("Module 4: Autonomous Multi-Agent Orchestration", ["State Management in Multi-Turn Agents", "Building Supervisor-Worker Agent Teams", "Lab: Competitor Intelligence Agent"]),
+                    ("Module 5: Low-Code & No-Code Automations (n8n & Make)", ["Self-Hosting n8n & Webhooks", "Inbound Lead Qualification Flow", "Lab: Automated Customer Support Ticket Routing"]),
+                    ("Module 6: Capstone Project & Client Delivery Packaging", ["Cloud Deployment on Docker & Supabase", "Monitoring Token Consumption & Latency", "Capstone Presentation & Client Proposal"])
+                ]
             },
             {
-                "title": "AI Systems Architecture & LLM Engineering",
-                "slug": "ai-systems-architecture-llm-engineering",
-                "short_description": "Build autonomous AI agents, RAG pipelines, fine-tuned LLMs, and scalable machine learning microservices.",
-                "description": "Deep dive into production AI development: LangChain, LlamaIndex, vector databases (Qdrant/Pgvector), prompt security, local model deployment, and agent orchestration.",
+                "title": "Offensive Cyber Security & Practical Penetration Testing",
+                "slug": "offensive-cyber-security",
+                "short_description": "Master ethical hacking, network reconnaissance, web app exploitation, privilege escalation, and Active Directory penetration in live browser labs.",
+                "description": "Zero-fluff offensive security training conducted inside browser-based virtual labs. Learn reconnaissance, web app attacks (OWASP Top 10), privilege escalation, network exploitation, and professional pentest report delivery.",
                 "level": CourseLevel.INTERMEDIATE,
                 "price": 28000.00,
                 "currency": "BDT",
-                "duration_hours": 42.0,
-                "thumbnail_url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=600"
-            },
-            {
-                "title": "Cybersecurity Essentials & Threat Intelligence",
-                "slug": "cybersecurity-essentials-threat-intelligence",
-                "short_description": "Foundational security concepts, SIEM monitoring, threat hunting, and SOC analyst workflows.",
-                "description": "Learn modern defensive security: threat intelligence frameworks (MITRE ATT&CK), log analysis, incident response, network traffic inspection, and malware analysis fundamentals.",
-                "level": CourseLevel.BEGINNER,
-                "price": 18000.00,
-                "currency": "BDT",
-                "duration_hours": 24.0,
-                "thumbnail_url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=600"
+                "duration_hours": 36.0,
+                "thumbnail_url": "/banners/banner-cyber-security.jpg",
+                "category_slug": "cybersecurity",
+                "modules": [
+                    ("Module 1: Offensive Security Foundations & Reconnaissance", ["Legal Scopes, Ethics & Rules of Engagement", "Passive & Active Reconnaissance", "Lab: Precision Host & Service Discovery"]),
+                    ("Module 2: Web Application Security (OWASP Top 10)", ["Burp Suite Workflow: Interception & Intruder", "Exploiting SQL Injection: Union & Error", "Lab: Bypassing Auth & Exploiting IDORs"]),
+                    ("Module 3: Network Exploitation & Vulnerability Assessment", ["Vulnerability Scanning Methodologies", "Metasploit Framework & Exploit Adaptation", "Lab: Remote Code Execution on Legacy Daemons"]),
+                    ("Module 4: Linux & Windows Privilege Escalation", ["Linux PrivEsc: SUID, Capabilities, Sudo", "Windows PrivEsc: Token Manipulation & DLLs", "Lab: Rooting Two Target Enterprise Machines"]),
+                    ("Module 5: Active Directory Domain Compromise", ["Active Directory & Kerberos Protocol", "Domain Mapping with BloodHound", "Lab: From Low-Priv User to Domain Admin"]),
+                    ("Module 6: Capstone Pentest & Professional Report Delivery", ["CVSS v3.1 Scoring & Remediation Writing", "Enterprise Pentest Report Deliverable", "Capstone Defense Before Security Board"])
+                ]
             }
         ]
 
         created_courses = []
-        for cdata in sample_courses_data:
+        for cdata in authentic_courses_data:
             c_stmt = select(Course).where(Course.slug == cdata["slug"])
             course = (await db.execute(c_stmt)).scalar_one_or_none()
+            cat = categories.get(cdata["category_slug"])
+            cat_id = cat.id if cat else None
+
             if not course:
                 course = Course(
                     title=cdata["title"],
@@ -142,26 +240,33 @@ async def seed() -> None:
                     duration_hours=cdata["duration_hours"],
                     status=CourseStatus.PUBLISHED,
                     thumbnail_url=cdata["thumbnail_url"],
+                    category_id=cat_id,
                     instructor_id=admin_user.id
                 )
                 db.add(course)
                 await db.flush()
 
-                # Add sample modules and lessons
-                mod1 = Module(course_id=course.id, title="Module 1: Foundations & Architecture", order=1)
-                mod2 = Module(course_id=course.id, title="Module 2: Practical Exploitation & Defense", order=2)
-                db.add_all([mod1, mod2])
-                await db.flush()
+                # Add modules and lessons
+                for m_idx, (m_title, lessons_list) in enumerate(cdata["modules"]):
+                    mod = Module(course_id=course.id, title=m_title, order=m_idx + 1)
+                    db.add(mod)
+                    await db.flush()
 
-                les1 = Lesson(module_id=mod1.id, title="1.1 Overview & System Architecture", content_type=ContentType.TEXT, content_body="Welcome to the course overview. This lesson lays the foundation.", duration_minutes=15, order=1)
-                les2 = Lesson(module_id=mod1.id, title="1.2 Core Security Protocols & Standards", content_type=ContentType.VIDEO, content_url="https://www.youtube.com/embed/dQw4w9WgXcQ", duration_minutes=25, order=2)
-                les3 = Lesson(module_id=mod2.id, title="2.1 Vulnerability Assessment Lab", content_type=ContentType.ASSIGNMENT, content_body="Hands-on lab assignment: analyze the target network topology.", duration_minutes=45, order=1)
-                db.add_all([les1, les2, les3])
-                await db.flush()
+                    for l_idx, l_title in enumerate(lessons_list):
+                        les = Lesson(
+                            module_id=mod.id,
+                            title=l_title,
+                            content_type="video" if l_idx % 2 == 1 else "text",
+                            content_body=f"Curriculum module lecture: {l_title}",
+                            duration_minutes=25,
+                            order=l_idx + 1
+                        )
+                        db.add(les)
+                    await db.flush()
 
             created_courses.append(course)
 
-        # 7. Seed Enrollments for Admin and Student
+        # 8. Seed Enrollments for Admin and Student
         for target_user in [admin_user, student_user]:
             for course in created_courses:
                 enr_stmt = select(Enrollment).where(Enrollment.user_id == target_user.id, Enrollment.course_id == course.id)
@@ -176,7 +281,7 @@ async def seed() -> None:
                     db.add(enr)
 
         await db.commit()
-        print("[SUCCESS] Seed complete: roles, permissions, admin & student users, published courses, modules, and active enrollments created.")
+        print("[SUCCESS] Seed complete: categories, authentic bootcamps, modules, lessons, and enrollments created.")
 
 
 if __name__ == "__main__":
