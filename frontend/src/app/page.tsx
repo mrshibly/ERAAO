@@ -6,6 +6,7 @@ import {
   Phone, Laptop, Check, ArrowUpRight, Headphones, Users, HelpCircle
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
+import AcademyBannerSlider from "@/components/AcademyBannerSlider";
 import { ALL_COURSES } from "@/data/courses";
 
 export default function Home() {
@@ -153,77 +154,60 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column — Visual Bootcamp Showcase Card */}
+          {/* Right Column — Interactive Slidable Billboard Banner & Live Cohort Tracks */}
           <div className="anim-slide-right anim-delay-3" style={{ position: "relative" }}>
             <div style={{
               borderRadius: "24px",
               overflow: "hidden",
-              boxShadow: "var(--shadow-xl)",
-              border: "1px solid var(--border-color)",
-              background: "var(--card-bg)"
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--border-color)",
+              background: "var(--card-bg)",
+              padding: "0.85rem"
             }}>
-              {/* Card Banner Image */}
-              <div style={{ position: "relative", height: "240px" }}>
-                <Image
-                  src="/banners/banner-spoken-english.jpg"
-                  alt="ERAAO Spoken English & Career Bootcamps"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: "cover" }}
-                  priority
-                />
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(180deg, transparent 40%, rgba(15, 23, 42, 0.85) 100%)"
-                }} />
-                <div style={{
-                  position: "absolute",
-                  bottom: "1rem",
-                  left: "1.25rem",
-                  color: "white"
-                }}>
-                  <span className="badge" style={{ background: "rgba(14, 165, 233, 0.9)", color: "white", fontSize: "0.7rem", fontWeight: 800, marginBottom: "0.3rem" }}>
-                    Flagship Track
-                  </span>
-                  <div style={{ fontSize: "var(--text-lg)", fontWeight: 800 }}>Spoken English for Global Careers</div>
-                </div>
-              </div>
+              {/* Slidable Billboard Banners */}
+              <AcademyBannerSlider />
 
-              {/* Card Body Highlights */}
-              <div style={{ padding: "1.75rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.35rem" }}>
-                    <Calendar size={14} />
-                    <span>Mon &bull; Wed &bull; Fri Schedule</span>
+              {/* Live Track Highlights */}
+              <div style={{ padding: "1.25rem 0.5rem 0.5rem 0.5rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.85rem", flexWrap: "wrap", gap: "0.5rem" }}>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--color-success)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--color-success)", display: "inline-block", boxShadow: "0 0 8px var(--color-success)" }} />
+                    NEXT 12-WEEK COHORTS ENROLLING
                   </span>
                   <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                    60-75 Min / Class
+                    Mon / Wed / Fri Classes
                   </span>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.5rem" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
-                    <CheckCircle2 size={14} style={{ color: "var(--color-success)" }} />
-                    <span>Class 1: Understand &rarr; Notice &rarr; Build (Worksheet released)</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
-                    <CheckCircle2 size={14} style={{ color: "var(--accent-blue)" }} />
-                    <span>Class 2: Guided Speaking &amp; Live Pair Simulations</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
-                    <CheckCircle2 size={14} style={{ color: "var(--accent-violet)" }} />
-                    <span>Class 3: Dedicated Listening Audio Labs &amp; Active Recall</span>
-                  </div>
+                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+                  <Link href="/academy/courses/english-for-freelancers" className="badge badge-blue" style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
+                    Spoken English (Freelancers)
+                  </Link>
+                  <Link href="/academy/courses/ai-automation-agents" className="badge badge-violet" style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
+                    AI Automation &amp; Agents
+                  </Link>
+                  <Link href="/academy/courses/offensive-cyber-security" className="badge badge-teal" style={{ textDecoration: "none", fontSize: "0.72rem", fontWeight: 700, padding: "0.35rem 0.75rem" }}>
+                    Offensive Security
+                  </Link>
                 </div>
 
                 <Link
-                  href="/academy/courses/english-for-freelancers"
-                  className="btn btn-accent"
-                  style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                  href="/academy"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0.75rem 1rem",
+                    borderRadius: "var(--radius-md)",
+                    background: "var(--bg-secondary)",
+                    border: "1px solid var(--border-color)",
+                    fontSize: "var(--text-xs)",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    textDecoration: "none"
+                  }}
                 >
-                  <span>Explore Freelancer English Bootcamp</span>
-                  <ArrowRight size={16} />
+                  <span>Explore All 5 Bootcamps &amp; Syllabi</span>
+                  <ArrowRight size={14} style={{ color: "var(--accent-blue)" }} />
                 </Link>
               </div>
             </div>

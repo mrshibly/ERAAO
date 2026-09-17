@@ -14,22 +14,22 @@ interface BannerSlide {
 
 const SLIDES: BannerSlide[] = [
   {
+    id: "spoken-english",
+    title: "Spoken English for Freelancers & Remote Pros",
+    imageSrc: "/banners/banner-spoken-english.jpg",
+    linkHref: "/academy/courses/english-for-freelancers",
+  },
+  {
     id: "ai-automation",
-    title: "AI Automation & No-Code Systems",
+    title: "AI Automation & Autonomous Agents",
     imageSrc: "/banners/banner-ai-automation.jpg",
-    linkHref: "#courses-catalog",
+    linkHref: "/academy/courses/ai-automation-agents",
   },
   {
     id: "cyber-security",
-    title: "Offensive Cyber Security & Defense",
+    title: "Offensive Cyber Security & Ethical Hacking",
     imageSrc: "/banners/banner-cyber-security.jpg",
-    linkHref: "#courses-catalog",
-  },
-  {
-    id: "spoken-english",
-    title: "Spoken English & Client Communication",
-    imageSrc: "/banners/banner-spoken-english.jpg",
-    linkHref: "/book",
+    linkHref: "/academy/courses/offensive-cyber-security",
   },
 ];
 

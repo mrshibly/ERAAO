@@ -182,71 +182,134 @@ export default function AcademyPage() {
       {/* ═══════════════════════════════════════════════════════════════
           ACADEMY HERO SECTION — Top Slidable Banners & Authentic Curriculum
           ═══════════════════════════════════════════════════════════════ */}
-      <section className="academy-hero" style={{ paddingTop: "1.25rem", paddingBottom: "3rem" }}>
+      <section className="academy-hero" style={{ paddingTop: "2.5rem", paddingBottom: "3rem" }}>
         <div className="academy-hero-glow" />
         
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           
-          {/* ═══════════════════════════════════════════════════════════════
-              TOP SLIDABLE BILLBOARD BANNERS (User Graphic Banners)
-              ═══════════════════════════════════════════════════════════════ */}
-          <div style={{ maxWidth: "1200px", margin: "0 auto 2.5rem auto" }}>
-            <AcademyBannerSlider />
-          </div>
+          <div className="responsive-grid-split" style={{
+            display: "grid",
+            gridTemplateColumns: "1.15fr 1fr",
+            gap: "3.5rem",
+            alignItems: "center",
+            marginBottom: "3rem"
+          }}>
+            {/* Left Column — Core Academy Value Proposition */}
+            <div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.35rem 0.85rem", borderRadius: "var(--radius-full)", background: "rgba(14, 165, 233, 0.1)", border: "1px solid rgba(14, 165, 233, 0.25)", color: "var(--accent-blue)", fontSize: "var(--text-xs)", fontWeight: 800, marginBottom: "1.25rem", letterSpacing: "0.02em" }}>
+                <Sparkles size={14} />
+                <span>OFFICIAL 12-WEEK PRACTITIONER BOOTCAMPS</span>
+              </div>
 
-          <div style={{ textAlign: "center", maxWidth: "48rem", margin: "0 auto" }}>
-            
-            <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1rem" }}>
-              Practical Skills for Global Careers:{" "}
-              <span className="gradient-text-animated" style={{
-                background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-teal) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text"
+              <h1 className="hero-title" style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.4rem)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: "1.25rem" }}>
+                Practical Skills for Global Careers:{" "}
+                <span className="gradient-text-animated" style={{
+                  display: "block",
+                  background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 50%, var(--accent-teal) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  backgroundSize: "200% auto"
+                }}>
+                  English, AI &amp; Cyber Security
+                </span>
+              </h1>
+
+              <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: "36rem" }}>
+                Structured 12-week cohorts built on active production work. Master international client communication, autonomous AI workflows, and hands-on offensive security with 1-on-1 mentor guidance.
+              </p>
+
+              {/* Action CTAs */}
+              <div style={{ display: "flex", gap: "0.85rem", alignItems: "center", flexWrap: "wrap", marginBottom: "2.25rem" }}>
+                <a
+                  href="#bootcamps"
+                  className="btn btn-accent"
+                  style={{
+                    padding: "0.85rem 1.85rem",
+                    borderRadius: "var(--radius-xl)",
+                    fontWeight: 700,
+                    fontSize: "var(--text-sm)",
+                    background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%)",
+                    boxShadow: "0 8px 20px rgba(14, 165, 233, 0.3)",
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.4rem"
+                  }}
+                >
+                  <span>Browse All Bootcamps</span>
+                  <ArrowRight size={16} />
+                </a>
+
+                <Link
+                  href="/book"
+                  className="btn btn-outline"
+                  style={{
+                    padding: "0.85rem 1.75rem",
+                    borderRadius: "var(--radius-xl)",
+                    fontWeight: 600,
+                    fontSize: "var(--text-sm)",
+                    background: "var(--card-bg)",
+                    borderColor: "var(--border-focus)",
+                    color: "var(--text-primary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.4rem"
+                  }}
+                >
+                  <PhoneCall size={16} style={{ color: "var(--accent-teal)" }} />
+                  <span>Free Skill Assessment</span>
+                </Link>
+              </div>
+
+              {/* Verified Curriculum Attributes Bar — ZERO Fake Data */}
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+                gap: "1rem",
+                paddingTop: "1.5rem",
+                borderTop: "1px solid var(--border-color)"
               }}>
-                English, AI &amp; Cyber Security
-              </span>
-            </h1>
+                <div>
+                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--accent-blue)" }}>12 Weeks</div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Structured Cohort</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--accent-teal)" }}>36 Classes</div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Mon / Wed / Fri</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--accent-violet)" }}>6 Stages</div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>ERAAO Retention</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--color-warning)" }}>1-on-1</div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Live Speech Review</div>
+                </div>
+              </div>
+            </div>
 
-            <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, maxWidth: "40rem", margin: "0 auto 1.75rem auto" }}>
-              Structured 12-week cohorts built on active production work. Master international client communication, autonomous AI workflows, and hands-on offensive security.
-            </p>
-
-            {/* Action CTAs */}
-            <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-              <a
-                href="#courses-catalog"
-                className="btn btn-accent"
-                style={{
-                  padding: "0.8rem 1.75rem",
-                  borderRadius: "var(--radius-full)",
-                  fontWeight: 700,
-                  fontSize: "var(--text-sm)",
-                  background: "linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%)",
-                  boxShadow: "0 8px 20px rgba(14, 165, 233, 0.3)",
-                  color: "white"
-                }}
-              >
-                <span>Browse All Bootcamps</span>
-                <ArrowRight size={16} />
-              </a>
-
-              <Link
-                href="/book"
-                className="btn btn-outline"
-                style={{
-                  padding: "0.8rem 1.6rem",
-                  borderRadius: "var(--radius-full)",
-                  fontWeight: 600,
-                  fontSize: "var(--text-sm)",
-                  background: "var(--card-bg)",
-                  borderColor: "var(--border-focus)",
-                  color: "var(--text-primary)"
-                }}
-              >
-                <PhoneCall size={16} style={{ color: "var(--accent-teal)" }} />
-                <span>Book Free Career Guidance</span>
-              </Link>
+            {/* Right Column — Slidable Billboard Banner */}
+            <div>
+              <div style={{
+                borderRadius: "20px",
+                overflow: "hidden",
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--border-color)",
+                background: "var(--card-bg)",
+                padding: "0.75rem"
+              }}>
+                <AcademyBannerSlider />
+                
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.85rem 0.5rem 0.25rem 0.5rem", flexWrap: "wrap", gap: "0.5rem" }}>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--color-success)", fontWeight: 800, display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--color-success)", display: "inline-block", boxShadow: "0 0 8px var(--color-success)" }} />
+                    Active Cohorts Enrolling
+                  </span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
+                    Swipe to explore tracks
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
