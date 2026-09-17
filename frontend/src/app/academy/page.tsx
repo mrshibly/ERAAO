@@ -10,7 +10,6 @@ import {
   X, Filter, ShieldCheck, Award, Terminal, Users, Sparkles, CheckCircle2,
   Layers, Star, Laptop, ArrowUpRight, MessageSquare, PhoneCall
 } from "lucide-react";
-import CinematicHeroSlider from "@/components/CinematicHeroSlider";
 
 interface Category {
   id: string;
@@ -145,17 +144,41 @@ export default function AcademyPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
       
       {/* ═══════════════════════════════════════════════════════════════
-          FULL-WIDTH CINEMATIC HERO SLIDER (Edge-to-Edge)
+          ACADEMY BANNER: ZERO TO FLUENT ENGLISH
           ═══════════════════════════════════════════════════════════════ */}
-      <CinematicHeroSlider />
+      <section style={{ paddingTop: "2rem", paddingBottom: "0.5rem" }}>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: "1600 / 293",
+              minHeight: "110px",
+              borderRadius: "clamp(12px, 1.5vw, 20px)",
+              overflow: "hidden",
+              boxShadow: "0 20px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08)",
+              background: "#060a16"
+            }}
+          >
+            <Image
+              src="/banners/zero-to-fluent-english.jpg"
+              alt="Zero to Fluent English - ERAAO Academy"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 1200px"
+              style={{ objectFit: "cover", objectPosition: "center" }}
+            />
+          </div>
+        </div>
+      </section>
 
-      <section style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
+      <section style={{ paddingTop: "1.25rem", paddingBottom: "3rem" }}>
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           {/* ═══════════════════════════════════════════════════════════════
               THE ERAAO LEARNING CYCLE — Authentic Core Pedagogy
               ═══════════════════════════════════════════════════════════════ */}
           <div id="learning-cycle" style={{
-            marginTop: "3rem",
+            marginTop: "0.5rem",
             background: "linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%)",
             border: "1px solid var(--border-color)",
             borderRadius: "var(--radius-xl)",
