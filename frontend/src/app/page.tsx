@@ -43,43 +43,9 @@ export default function Home() {
   return (
     <div style={{ position: "relative", overflowX: "hidden", background: "var(--bg-primary)" }}>
       {/* ═══════════════════════════════════════════════════════════════
-          FULL-WIDTH CINEMATIC HERO SLIDER SECTION
+          FULL-WIDTH CINEMATIC HERO SECTION (Edge-to-Edge)
           ═══════════════════════════════════════════════════════════════ */}
-      <section style={{
-        position: "relative",
-        paddingTop: "2.5rem",
-        paddingBottom: "2rem",
-        overflow: "hidden",
-        borderBottom: "1px solid var(--border-color)"
-      }}>
-        {/* Subtle Ambient Light Gradients */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `
-            radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.09) 0%, transparent 45%),
-            radial-gradient(circle at 85% 75%, rgba(124, 58, 237, 0.08) 0%, transparent 45%)
-          `,
-          zIndex: 0
-        }} />
-
-        {/* Dot Matrix Pattern */}
-        <div className="anim-fade-in" style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          zIndex: 0
-        }} />
-
-        <div className="container" style={{
-          position: "relative",
-          zIndex: 1,
-          padding: "1rem 1rem 0 1rem"
-        }}>
-          <CinematicHeroSlider />
-        </div>
-      </section>
+      <CinematicHeroSlider />
 
       {/* ═══════════════════════════════════════════════════════════════
           THE ERAAO 6-STAGE LEARNING CYCLE SECTION

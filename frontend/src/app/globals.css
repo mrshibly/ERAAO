@@ -2519,3 +2519,11 @@ input:focus, select:focus, textarea:focus {
     gap: 1rem !important;
   }
 }
+
+.hero-gradient-text {
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  display: inline !important;
+}

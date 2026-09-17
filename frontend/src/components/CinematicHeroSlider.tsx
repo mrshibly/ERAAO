@@ -75,7 +75,7 @@ const TRACKS: HeroSlide[] = [
     gradientText: "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)",
     glowColor: "rgba(56, 189, 248, 0.28)",
     bgAtmosphere:
-      "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(14, 165, 233, 0.22) 0%, rgba(8, 12, 22, 0) 70%)",
+      "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(14, 165, 233, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     trackType: "english",
   },
   {
@@ -111,7 +111,7 @@ const TRACKS: HeroSlide[] = [
     gradientText: "linear-gradient(135deg, #c084fc 0%, #34d399 100%)",
     glowColor: "rgba(168, 85, 247, 0.28)",
     bgAtmosphere:
-      "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(168, 85, 247, 0.22) 0%, rgba(8, 12, 22, 0) 70%)",
+      "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(168, 85, 247, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     trackType: "ai",
   },
   {
@@ -147,7 +147,7 @@ const TRACKS: HeroSlide[] = [
     gradientText: "linear-gradient(135deg, #fb7185 0%, #fb923c 100%)",
     glowColor: "rgba(251, 113, 133, 0.28)",
     bgAtmosphere:
-      "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(244, 63, 94, 0.22) 0%, rgba(8, 12, 22, 0) 70%)",
+      "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(244, 63, 94, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     trackType: "security",
   },
 ];
@@ -214,8 +214,8 @@ export default function CinematicHeroSlider() {
   const current = TRACKS[activeIdx];
 
   return (
-    <div
-      className="cinematic-hero-slider"
+    <section
+      className="hero-cinematic-section"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -224,137 +224,139 @@ export default function CinematicHeroSlider() {
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: "1280px",
-        margin: "0 auto",
-        padding: "1rem 1.5rem 3.5rem 1.5rem",
+        minHeight: "88vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        background: "#060913",
+        overflow: "hidden",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        padding: "2.5rem 0 3.5rem 0",
       }}
     >
-      {/* ═══════════════════════════════════════════════════════════════
-          TRACK SWITCHER TABS (Top Command Bar)
-          ═══════════════════════════════════════════════════════════════ */}
+      {/* ── Dynamic Full-Bleed Atmospheric Spotlight Glow (100% Edge-to-Edge) ── */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "0.75rem",
-          flexWrap: "wrap",
-          marginBottom: "2rem",
+          position: "absolute",
+          inset: 0,
+          background: `${current.bgAtmosphere}, linear-gradient(180deg, rgba(6, 9, 19, 0.82) 0%, rgba(6, 9, 19, 0.98) 100%)`,
+          zIndex: 0,
+          transition: "background 0.8s ease",
+        }}
+      />
+
+      {/* ── Edge-to-Edge Ambient Cyber Grid Pattern ── */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+          opacity: 0.45,
+          zIndex: 0,
+        }}
+      />
+
+      {/* ── Main Hero Content (No floating card box - The hero IS the section) ── */}
+      <div
+        className="container"
+        style={{
           position: "relative",
-          zIndex: 10,
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "1360px",
+          margin: "0 auto",
+          padding: "0 1.5rem",
         }}
       >
-        {TRACKS.map((t, idx) => {
-          const isActive = idx === activeIdx;
-          return (
-            <button
-              key={t.id}
-              onClick={() => {
-                setActiveIdx(idx);
-                setProgress(0);
-              }}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.55rem",
-                padding: "0.6rem 1.25rem",
-                borderRadius: "999px",
-                background: isActive
-                  ? "rgba(15, 23, 42, 0.85)"
-                  : "rgba(15, 23, 42, 0.4)",
-                border: isActive
-                  ? `1px solid ${t.accentColor}`
-                  : "1px solid rgba(255, 255, 255, 0.08)",
-                color: isActive ? "#ffffff" : "var(--text-muted)",
-                fontSize: "0.85rem",
-                fontWeight: isActive ? 700 : 500,
-                cursor: "pointer",
-                transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                backdropFilter: "blur(12px)",
-                boxShadow: isActive
-                  ? `0 0 20px ${t.glowColor}, inset 0 0 12px ${t.glowColor}`
-                  : "none",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              {/* Active countdown fill bar */}
-              {isActive && (
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    height: "3px",
-                    width: `${progress}%`,
-                    background: t.gradientText,
-                    transition: "width 0.05s linear",
-                    borderRadius: "999px",
-                  }}
-                />
-              )}
-              <span
+        {/* ═══════════════════════════════════════════════════════════════
+            TRACK SWITCHER TABS (Top Command Bar)
+            ═══════════════════════════════════════════════════════════════ */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "0.75rem",
+            flexWrap: "wrap",
+            marginBottom: "2.75rem",
+            position: "relative",
+            zIndex: 10,
+          }}
+        >
+          {TRACKS.map((t, idx) => {
+            const isActive = idx === activeIdx;
+            return (
+              <button
+                key={t.id}
+                onClick={() => {
+                  setActiveIdx(idx);
+                  setProgress(0);
+                }}
                 style={{
-                  color: isActive ? t.accentColor : "inherit",
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
+                  gap: "0.55rem",
+                  padding: "0.65rem 1.35rem",
+                  borderRadius: "999px",
+                  background: isActive
+                    ? "rgba(15, 23, 42, 0.85)"
+                    : "rgba(15, 23, 42, 0.45)",
+                  border: isActive
+                    ? `1px solid ${t.accentColor}`
+                    : "1px solid rgba(255, 255, 255, 0.08)",
+                  color: isActive ? "#ffffff" : "#94a3b8",
+                  fontSize: "0.85rem",
+                  fontWeight: isActive ? 700 : 500,
+                  cursor: "pointer",
+                  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                  backdropFilter: "blur(12px)",
+                  boxShadow: isActive
+                    ? `0 0 20px ${t.glowColor}, inset 0 0 12px ${t.glowColor}`
+                    : "none",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
-                {t.tabIcon}
-              </span>
-              <span>{t.tabLabel}</span>
-            </button>
-          );
-        })}
-      </div>
+                {/* Active countdown fill bar */}
+                {isActive && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      height: "3px",
+                      width: `${progress}%`,
+                      background: t.gradientText,
+                      transition: "width 0.05s linear",
+                      borderRadius: "999px",
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    color: isActive ? t.accentColor : "inherit",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {t.tabIcon}
+                </span>
+                <span>{t.tabLabel}</span>
+              </button>
+            );
+          })}
+        </div>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          THE CINEMATIC SHOWCASE CARD (Full-Width Responsive Stage)
-          ═══════════════════════════════════════════════════════════════ */}
-      <div
-        style={{
-          position: "relative",
-          borderRadius: "28px",
-          background: "#080c16",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          boxShadow: `0 35px 70px -15px rgba(0, 0, 0, 0.55), 0 0 50px ${current.glowColor}`,
-          overflow: "hidden",
-          transition: "box-shadow 0.6s ease, border-color 0.6s ease",
-        }}
-      >
-        {/* Dynamic Atmospheric Spotlight Glow */}
+        {/* ═══════════════════════════════════════════════════════════════
+            HERO DUAL-COLUMN STAGE (Edge-to-edge on canvas)
+            ═══════════════════════════════════════════════════════════════ */}
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            background: `${current.bgAtmosphere}, linear-gradient(180deg, rgba(8, 12, 22, 0.92) 0%, rgba(8, 12, 22, 0.98) 100%)`,
-            zIndex: 0,
-            transition: "background 0.8s ease",
-          }}
-        />
-
-        {/* Ambient Grid Texture */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-            opacity: 0.5,
-            zIndex: 0,
-          }}
-        />
-
-        {/* Inner Two-Column Stage Grid */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
             display: "grid",
-            gridTemplateColumns: "1.2fr 0.8fr",
-            gap: "3rem",
+            gridTemplateColumns: "1.15fr 0.85fr",
+            gap: "3.5rem",
             alignItems: "center",
-            padding: "clamp(2rem, 4vw, 3.75rem)",
           }}
           className="cinematic-stage-grid"
         >
@@ -367,7 +369,7 @@ export default function CinematicHeroSlider() {
                 alignItems: "center",
                 gap: "0.75rem",
                 flexWrap: "wrap",
-                marginBottom: "1.25rem",
+                marginBottom: "1.35rem",
               }}
             >
               <div
@@ -413,22 +415,25 @@ export default function CinematicHeroSlider() {
             {/* Huge Headline with Vector Animated Gradient */}
             <h1
               style={{
-                fontSize: "clamp(2rem, 3.4vw, 3.15rem)",
+                fontSize: "clamp(2.2rem, 3.8vw, 3.4rem)",
                 fontWeight: 900,
                 letterSpacing: "-0.035em",
                 lineHeight: 1.15,
                 color: "#ffffff",
-                marginBottom: "1.25rem",
+                marginBottom: "1.35rem",
                 textWrap: "balance",
               }}
             >
               {current.titlePrefix}{" "}
               <span
+                className="hero-gradient-text"
                 style={{
-                  display: "inline-block",
-                  background: current.gradientText,
+                  backgroundImage: current.gradientText,
                   WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
                   WebkitTextFillColor: "transparent",
+                  color: "transparent",
+                  display: "inline",
                 }}
               >
                 {current.titleHighlight}
@@ -438,10 +443,10 @@ export default function CinematicHeroSlider() {
             {/* Clear, Conversational Pedagogy Description */}
             <p
               style={{
-                fontSize: "clamp(0.95rem, 1.2vw, 1.05rem)",
+                fontSize: "clamp(0.95rem, 1.2vw, 1.08rem)",
                 color: "#cbd5e1",
                 lineHeight: 1.68,
-                marginBottom: "1.75rem",
+                marginBottom: "1.85rem",
                 maxWidth: "38rem",
               }}
             >
@@ -486,7 +491,7 @@ export default function CinematicHeroSlider() {
                 alignItems: "center",
                 gap: "1rem",
                 flexWrap: "wrap",
-                marginBottom: "2.25rem",
+                marginBottom: "2.5rem",
               }}
             >
               <Link
@@ -496,7 +501,7 @@ export default function CinematicHeroSlider() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.55rem",
-                  padding: "0.9rem 2.25rem",
+                  padding: "0.95rem 2.35rem",
                   borderRadius: "14px",
                   background: current.gradientText,
                   color: "#080c16",
@@ -517,7 +522,7 @@ export default function CinematicHeroSlider() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  padding: "0.9rem 1.75rem",
+                  padding: "0.95rem 1.85rem",
                   borderRadius: "14px",
                   background: "rgba(255, 255, 255, 0.06)",
                   border: "1px solid rgba(255, 255, 255, 0.15)",
@@ -539,8 +544,8 @@ export default function CinematicHeroSlider() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "1rem",
-                paddingTop: "1.5rem",
+                gap: "1.25rem",
+                paddingTop: "1.75rem",
                 borderTop: "1px solid rgba(255, 255, 255, 0.1)",
               }}
               className="cinematic-metrics-grid"
@@ -549,7 +554,7 @@ export default function CinematicHeroSlider() {
                 <div key={i}>
                   <div
                     style={{
-                      fontSize: "clamp(1.2rem, 1.8vw, 1.65rem)",
+                      fontSize: "clamp(1.25rem, 1.8vw, 1.7rem)",
                       fontWeight: 900,
                       color:
                         i === 0
@@ -568,7 +573,7 @@ export default function CinematicHeroSlider() {
                       fontSize: "0.72rem",
                       color: "#94a3b8",
                       fontWeight: 600,
-                      marginTop: "0.15rem",
+                      marginTop: "0.2rem",
                     }}
                   >
                     {m.label}
@@ -592,16 +597,16 @@ export default function CinematicHeroSlider() {
               style={{
                 position: "relative",
                 width: "100%",
-                maxWidth: "420px",
+                maxWidth: "460px",
                 aspectRatio: "1 / 1",
                 borderRadius: "24px",
-                background: "rgba(10, 15, 30, 0.7)",
+                background: "rgba(10, 15, 30, 0.75)",
                 border: `1px solid ${current.accentColor}33`,
-                boxShadow: `0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 30px ${current.glowColor}`,
+                boxShadow: `0 25px 60px rgba(0, 0, 0, 0.65), inset 0 0 35px ${current.glowColor}`,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                padding: "1.75rem",
+                padding: "2rem",
                 boxSizing: "border-box",
                 overflow: "hidden",
               }}
@@ -612,8 +617,8 @@ export default function CinematicHeroSlider() {
                   position: "absolute",
                   top: "12px",
                   left: "12px",
-                  width: "8px",
-                  height: "8px",
+                  width: "10px",
+                  height: "10px",
                   borderTop: `2px solid ${current.accentColor}`,
                   borderLeft: `2px solid ${current.accentColor}`,
                 }}
@@ -623,8 +628,8 @@ export default function CinematicHeroSlider() {
                   position: "absolute",
                   top: "12px",
                   right: "12px",
-                  width: "8px",
-                  height: "8px",
+                  width: "10px",
+                  height: "10px",
                   borderTop: `2px solid ${current.accentColor}`,
                   borderRight: `2px solid ${current.accentColor}`,
                 }}
@@ -634,8 +639,8 @@ export default function CinematicHeroSlider() {
                   position: "absolute",
                   bottom: "12px",
                   left: "12px",
-                  width: "8px",
-                  height: "8px",
+                  width: "10px",
+                  height: "10px",
                   borderBottom: `2px solid ${current.accentColor}`,
                   borderLeft: `2px solid ${current.accentColor}`,
                 }}
@@ -645,8 +650,8 @@ export default function CinematicHeroSlider() {
                   position: "absolute",
                   bottom: "12px",
                   right: "12px",
-                  width: "8px",
-                  height: "8px",
+                  width: "10px",
+                  height: "10px",
                   borderBottom: `2px solid ${current.accentColor}`,
                   borderRight: `2px solid ${current.accentColor}`,
                 }}
@@ -704,11 +709,11 @@ export default function CinematicHeroSlider() {
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "6px",
-                      height: "110px",
+                      height: "120px",
                       margin: "1rem 0",
                     }}
                   >
-                    {[30, 55, 90, 45, 80, 100, 60, 75, 95, 50, 70, 85, 40, 65, 80].map(
+                    {[30, 55, 90, 45, 80, 100, 60, 75, 95, 50, 70, 85, 40, 65, 80, 50].map(
                       (h, i) => (
                         <span
                           key={i}
@@ -930,22 +935,22 @@ export default function CinematicHeroSlider() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: "135px",
+                      height: "140px",
                       margin: "0.5rem 0",
                     }}
                   >
-                    <svg width="135" height="135" viewBox="0 0 135 135" fill="none">
-                      <circle cx="67.5" cy="67.5" r="60" stroke="#fb7185" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
-                      <circle cx="67.5" cy="67.5" r="40" stroke="#fb7185" strokeWidth="1" opacity="0.45" />
-                      <circle cx="67.5" cy="67.5" r="18" stroke="#fb7185" strokeWidth="1" opacity="0.65" />
-                      <line x1="67.5" y1="7" x2="67.5" y2="128" stroke="#fb7185" strokeWidth="0.75" opacity="0.35" />
-                      <line x1="7" y1="67.5" x2="128" y2="67.5" stroke="#fb7185" strokeWidth="0.75" opacity="0.35" />
+                    <svg width="140" height="140" viewBox="0 0 140 140" fill="none">
+                      <circle cx="70" cy="70" r="62" stroke="#fb7185" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
+                      <circle cx="70" cy="70" r="42" stroke="#fb7185" strokeWidth="1" opacity="0.45" />
+                      <circle cx="70" cy="70" r="18" stroke="#fb7185" strokeWidth="1" opacity="0.65" />
+                      <line x1="70" y1="7" x2="70" y2="133" stroke="#fb7185" strokeWidth="0.75" opacity="0.35" />
+                      <line x1="7" y1="70" x2="133" y2="70" stroke="#fb7185" strokeWidth="0.75" opacity="0.35" />
                       <g className="anim-radar-beam">
-                        <line x1="67.5" y1="67.5" x2="67.5" y2="7" stroke="#fb7185" strokeWidth="2.5" strokeLinecap="round" opacity="0.9" />
+                        <line x1="70" y1="70" x2="70" y2="7" stroke="#fb7185" strokeWidth="2.5" strokeLinecap="round" opacity="0.9" />
                       </g>
-                      <circle cx="95" cy="42" r="4" fill="#fb923c" className="anim-neural-node" />
-                      <circle cx="45" cy="90" r="3" fill="#f43f5e" className="anim-neural-node" style={{ animationDelay: "-1s" }} />
-                      <circle cx="35" cy="48" r="3" fill="#fb7185" className="anim-neural-node" style={{ animationDelay: "-2s" }} />
+                      <circle cx="98" cy="44" r="4" fill="#fb923c" className="anim-neural-node" />
+                      <circle cx="46" cy="92" r="3" fill="#f43f5e" className="anim-neural-node" style={{ animationDelay: "-1s" }} />
+                      <circle cx="36" cy="50" r="3" fill="#fb7185" className="anim-neural-node" style={{ animationDelay: "-2s" }} />
                     </svg>
                   </div>
 
@@ -981,34 +986,36 @@ export default function CinematicHeroSlider() {
             </div>
           </div>
         </div>
-
-        {/* ── Slide Navigation Controls (Prev / Next Glass Arrows) ── */}
-        <button
-          onClick={prevSlide}
-          className="academy-slider-nav-btn academy-slider-prev"
-          aria-label="Previous Track"
-          style={{ position: "absolute", left: "1.25rem", top: "50%", zIndex: 10 }}
-        >
-          <ChevronLeft size={22} />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          className="academy-slider-nav-btn academy-slider-next"
-          aria-label="Next Track"
-          style={{ position: "absolute", right: "1.25rem", top: "50%", zIndex: 10 }}
-        >
-          <ChevronRight size={22} />
-        </button>
       </div>
+
+      {/* ── Slide Navigation Controls (Prev / Next Glass Arrows on Edge of Section) ── */}
+      <button
+        onClick={prevSlide}
+        className="academy-slider-nav-btn academy-slider-prev"
+        aria-label="Previous Track"
+        style={{ position: "absolute", left: "1.5rem", top: "50%", zIndex: 10 }}
+      >
+        <ChevronLeft size={24} />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className="academy-slider-nav-btn academy-slider-next"
+        aria-label="Next Track"
+        style={{ position: "absolute", right: "1.5rem", top: "50%", zIndex: 10 }}
+      >
+        <ChevronRight size={24} />
+      </button>
 
       {/* ── Bottom Segmented Slide Indicators ── */}
       <div
         style={{
           display: "flex",
           justifyContent: "center",
-          gap: "0.5rem",
-          marginTop: "1.5rem",
+          gap: "0.6rem",
+          marginTop: "2.5rem",
+          position: "relative",
+          zIndex: 10,
         }}
       >
         {TRACKS.map((t, idx) => (
@@ -1021,7 +1028,7 @@ export default function CinematicHeroSlider() {
             aria-label={`Switch to ${t.tabLabel}`}
             style={{
               height: "6px",
-              width: idx === activeIdx ? "36px" : "12px",
+              width: idx === activeIdx ? "40px" : "12px",
               borderRadius: "999px",
               background:
                 idx === activeIdx ? t.accentColor : "rgba(255, 255, 255, 0.2)",
@@ -1032,6 +1039,6 @@ export default function CinematicHeroSlider() {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

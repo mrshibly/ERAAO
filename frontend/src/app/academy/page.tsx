@@ -145,20 +145,12 @@ export default function AcademyPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
       
       {/* ═══════════════════════════════════════════════════════════════
-          ACADEMY HERO SECTION — Top Slidable Banners & Authentic Curriculum
+          FULL-WIDTH CINEMATIC HERO SLIDER (Edge-to-Edge)
           ═══════════════════════════════════════════════════════════════ */}
-      <section className="academy-hero" style={{ paddingTop: "2.5rem", paddingBottom: "3rem" }}>
-        <div className="academy-hero-glow" />
-        
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          
-          {/* ═══════════════════════════════════════════════════════════════
-              FULL-WIDTH CINEMATIC HERO SLIDER
-              ═══════════════════════════════════════════════════════════════ */}
-          <div style={{ marginBottom: "2rem" }}>
-            <CinematicHeroSlider />
-          </div>
+      <CinematicHeroSlider />
 
+      <section style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
           {/* ═══════════════════════════════════════════════════════════════
               THE ERAAO LEARNING CYCLE — Authentic Core Pedagogy
               ═══════════════════════════════════════════════════════════════ */}
