@@ -8,7 +8,7 @@ import enum
 import uuid
 from datetime import date
 
-from sqlalchemy import Date, Enum, ForeignKey, Integer, String, Uuid
+from sqlalchemy import Date, Enum, ForeignKey, Integer, String, Text, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
@@ -40,6 +40,12 @@ class Cohort(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         Uuid, ForeignKey("organizations.id"), nullable=True, index=True
     )
     status: Mapped[CohortStatus] = mapped_column(Enum(CohortStatus), nullable=False, default=CohortStatus.UPCOMING)
+
+    # Live Class & Announcement controls
+    meeting_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
+    meeting_passcode: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    schedule_info: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    announcement: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Relationships
     course: Mapped["app.models.course.Course"] = relationship("Course")

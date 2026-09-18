@@ -95,6 +95,7 @@ class Lesson(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     content_body: Mapped[str | None] = mapped_column(Text, nullable=True)
     duration_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
     is_free_preview: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    attachments: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Relationships
     module: Mapped["Module"] = relationship("Module", back_populates="lessons")

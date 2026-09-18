@@ -49,6 +49,17 @@ class CohortService:
         await self.db.commit()
         return enrolled_count
 
+    async def update_cohort(self, cohort_id: UUID, **kwargs: object) -> Cohort:
+        cohort = await self.repo.get_by_id(cohort_id)
+        if cohort is None:
+            raise NotFoundError(resource="Cohort")
+        for k, v in kwargs.items():
+            if v is not None:
+                setattr(cohort, k, v)
+        await self.db.commit()
+        await self.db.refresh(cohort)
+        return cohort
+
     async def delete_cohort(self, cohort_id: UUID) -> None:
         await self.repo.delete(cohort_id)
         await self.db.commit()

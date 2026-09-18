@@ -6,11 +6,30 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.core.dependencies import get_current_active_user, require_role
 from app.models.user import User
-from app.schemas.enrollment import EnrollmentCreate, EnrollmentRead, LessonProgressUpdate
+from app.schemas.enrollment import EnrollmentCreate, EnrollmentRead, LessonProgressUpdate, AdminDirectEnrollRequest, AdminProgressOverrideRequest
 from app.schemas.auth import MessageResponse
 from app.services.enrollment_service import EnrollmentService
 
 router = APIRouter()
+
+@router.post("/direct", response_model=EnrollmentRead, status_code=201, dependencies=[Depends(require_role("admin"))])
+async def admin_direct_enroll(data: AdminDirectEnrollRequest, db: AsyncSession = Depends(get_db)):
+    """Admin: directly enroll a student into a course or cohort by user_id or email."""
+    svc = EnrollmentService(db)
+    enrollment = await svc.admin_direct_enroll(
+        course_id=data.course_id,
+        user_id=data.user_id,
+        user_email=data.user_email,
+        cohort_id=data.cohort_id
+    )
+    return EnrollmentRead.model_validate(enrollment)
+
+@router.patch("/{enrollment_id}/admin-progress", response_model=EnrollmentRead, status_code=200, dependencies=[Depends(require_role("admin"))])
+async def admin_override_progress(enrollment_id: UUID, data: AdminProgressOverrideRequest, db: AsyncSession = Depends(get_db)):
+    """Admin: override student progress and mark completed (automatically generating certificate)."""
+    svc = EnrollmentService(db)
+    enrollment = await svc.admin_override_progress(enrollment_id, data.status)
+    return EnrollmentRead.model_validate(enrollment)
 
 @router.post("", response_model=EnrollmentRead, status_code=201)
 async def enroll(data: EnrollmentCreate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):

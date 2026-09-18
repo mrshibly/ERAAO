@@ -25,3 +25,12 @@ class EnrollmentRead(BaseModel):
     progress: float = 0.0
     course: CourseRead | None = None
     model_config = {"from_attributes": True}
+
+class AdminDirectEnrollRequest(BaseModel):
+    user_email: str | None = None
+    user_id: UUID | None = None
+    course_id: UUID
+    cohort_id: UUID | None = None
+
+class AdminProgressOverrideRequest(BaseModel):
+    status: str  # active | completed

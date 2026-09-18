@@ -188,3 +188,63 @@ class EnrollmentService:
 
         return enrollment, certificate
 
+    async def admin_direct_enroll(self, course_id: UUID, user_id: UUID | None = None, user_email: str | None = None, cohort_id: UUID | None = None):
+        """Admin: directly enroll a student into a course or cohort, bypassing payment."""
+        from sqlalchemy import select
+        from app.models.user import User
+
+        target_user_id = user_id
+        if not target_user_id:
+            if not user_email:
+                raise NotFoundError(message="Either user_id or user_email must be provided.")
+            user_stmt = select(User).where(User.email == user_email.strip().lower())
+            user = (await self.db.execute(user_stmt)).scalar_one_or_none()
+            if not user:
+                raise NotFoundError(message=f"User with email '{user_email}' not found.")
+            target_user_id = user.id
+
+        return await self.enroll(target_user_id, course_id, cohort_id=cohort_id, bypass_payment_check=True)
+
+    async def admin_override_progress(self, enrollment_id: UUID, status: str):
+        """Admin: override student enrollment status and mark full course completed."""
+        from datetime import datetime, timezone
+        from sqlalchemy import select
+        from app.models.enrollment import EnrollmentStatus, ProgressStatus
+        from app.models.course import Lesson, Module
+        from app.services.certificate_utils import generate_certificate_in_process
+        from app.models.user import User
+        from app.models.course import Course
+
+        enrollment = await self.enroll_repo.get_by_id(enrollment_id)
+        if not enrollment:
+            raise NotFoundError(resource="Enrollment")
+
+        if status == "completed":
+            enrollment.status = EnrollmentStatus.COMPLETED
+            enrollment.completed_at = datetime.now(timezone.utc)
+
+            # Mark all lessons as completed in this course
+            lessons_stmt = (
+                select(Lesson)
+                .join(Module, Module.id == Lesson.module_id)
+                .where(Module.course_id == enrollment.course_id)
+            )
+            lessons = (await self.db.execute(lessons_stmt)).scalars().all()
+            for l in lessons:
+                await self.enroll_repo.upsert_lesson_progress(enrollment.id, l.id, ProgressStatus.COMPLETED)
+
+            # Automatically generate verified certificate
+            user_stmt = select(User).where(User.id == enrollment.user_id)
+            user = (await self.db.execute(user_stmt)).scalar_one_or_none()
+            course_stmt = select(Course).where(Course.id == enrollment.course_id)
+            course = (await self.db.execute(course_stmt)).scalar_one_or_none()
+            if user and course:
+                await generate_certificate_in_process(self.db, enrollment.id, user.full_name, course.title)
+        else:
+            enrollment.status = EnrollmentStatus.ACTIVE
+            enrollment.completed_at = None
+
+        await self.db.commit()
+        await self.db.refresh(enrollment)
+        return enrollment
+
