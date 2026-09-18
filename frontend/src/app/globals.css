@@ -2654,3 +2654,66 @@ input:focus, select:focus, textarea:focus {
   background-color: rgba(14, 165, 233, 0.03) !important;
 }
 
+/* Polished Text Selection */
+::selection {
+  background: rgba(14, 165, 233, 0.22);
+  color: #0284c7;
+}
+
+/* Polished Keyboard Focus Rings */
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Dynamic Button Shimmer */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.65s ease;
+}
+
+.btn-shimmer:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* Responsive Split Grid for Certificate and Detail Views */
+@media (max-width: 992px) {
+  .responsive-grid-split {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Print Stylesheet for High Fidelity Certificate Printing */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  
+  header, footer, nav, .no-print, .actions-sidebar {
+    display: none !important;
+  }
+  
+  .certificate-print-wrap {
+    box-shadow: none !important;
+    border: 2px solid #cbd5e1 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid;
+  }
+}
+

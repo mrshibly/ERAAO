@@ -132,7 +132,7 @@ export default function FreeBootcampPage() {
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
                 <span className="badge badge-blue" style={{ fontSize: "0.75rem", padding: "0.35rem 0.8rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
                   <Sparkles size={13} style={{ marginRight: "0.35rem" }} />
-                  1-Day Free Live Bootcamp
+                  One Day Free Live Bootcamp
                 </span>
                 <span className="badge badge-violet" style={{ fontSize: "0.75rem", padding: "0.35rem 0.8rem", fontWeight: 700 }}>
                   <Flame size={13} style={{ marginRight: "0.35rem", color: "#f59e0b" }} />
