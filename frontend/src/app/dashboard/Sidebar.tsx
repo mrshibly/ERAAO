@@ -8,7 +8,7 @@ import {
   Home, BookOpen, User, Users, FolderKanban,
   Award, ShieldAlert, LogOut, ChevronDown,
   X, Briefcase, Calendar, ChevronLeft, ChevronRight, PhoneCall,
-  Settings, FileText, HelpCircle, Compass, GraduationCap
+  Settings, FileText, HelpCircle, Compass, GraduationCap, FileCode
 } from "lucide-react";
 
 import Logo from "@/components/Logo";
@@ -94,6 +94,7 @@ export default function DashboardSidebar({
         { label: "Courses", href: "/dashboard/admin/courses", icon: <BookOpen size={18} /> },
         { label: "Cohorts", href: "/dashboard/admin/cohorts", icon: <FolderKanban size={18} /> },
         { label: "Enrollments & Payments", href: "/dashboard/admin/enrollments", icon: <GraduationCap size={18} /> },
+        { label: "Submissions & Grading", href: "/dashboard/admin/submissions", icon: <FileCode size={18} /> },
         { label: "Certificates", href: "/dashboard/admin/certificates", icon: <Award size={18} /> }
       ]
     },
@@ -115,6 +116,7 @@ export default function DashboardSidebar({
       items: [
         { label: "Overview", href: "/dashboard/instructor", icon: <Home size={18} /> },
         { label: "My Courses", href: "/dashboard/instructor/courses", icon: <BookOpen size={18} /> },
+        { label: "Submissions & Grading", href: "/dashboard/admin/submissions", icon: <FileCode size={18} /> },
         { label: "Articles", href: "/dashboard/instructor/blog", icon: <FileText size={18} /> }
       ]
     }

@@ -56,13 +56,14 @@ class EnrollmentService:
             setattr(e, "progress", e.completion_pct)
         return enrollments
 
-    async def update_progress(self, enrollment_id: UUID, lesson_id: UUID, status: str):
+    async def update_progress(self, enrollment_id: UUID, lesson_id: UUID, status: str, bypass_assessment_check: bool = False):
         from sqlalchemy import select, func
         from datetime import datetime, timezone
         from app.models.enrollment import Enrollment, EnrollmentStatus
         from app.models.course import Lesson, Module, Course
         from app.models.user import User
         from app.workers.tasks.certificate_tasks import generate_certificate_task
+        from app.core.exceptions import BadRequestError
 
         # Retrieve the enrollment
         enroll_stmt = select(Enrollment).where(Enrollment.id == enrollment_id)
@@ -70,6 +71,16 @@ class EnrollmentService:
         enrollment = enrollment_res.scalar_one_or_none()
         if enrollment is None:
             raise NotFoundError(resource="Enrollment")
+
+        # Academic Assessment Guard: prevent manual completion of quizzes and assignments
+        if not bypass_assessment_check and str(status).lower() == "completed":
+            les_stmt = select(Lesson).where(Lesson.id == lesson_id)
+            target_lesson = (await self.db.execute(les_stmt)).scalar_one_or_none()
+            if target_lesson:
+                if target_lesson.content_type == "quiz":
+                    raise BadRequestError(message="Quiz lessons must be submitted and passed through the examination runner.")
+                elif target_lesson.content_type == "assignment":
+                    raise BadRequestError(message="Assignment lessons must be submitted and graded by faculty.")
 
         progress = await self.enroll_repo.update_lesson_progress(enrollment_id, lesson_id, status)
 

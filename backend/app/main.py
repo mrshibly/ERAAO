@@ -35,7 +35,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
         from app.db.session import engine, async_session_factory
         from app.db.base import Base
-        from app.models import user, role, course, enrollment, certificate, ticket, booking, contact, blog, career  # noqa
+        from app.models import user, role, course, enrollment, certificate, ticket, booking, contact, blog, career, assessment  # noqa
         from app.models.role import Role
         from sqlalchemy import select
 
