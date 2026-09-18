@@ -24,7 +24,7 @@ def upgrade() -> None:
     sa.Column('lesson_id', sa.Uuid(), nullable=False),
     sa.Column('submission_url', sa.String(length=2048), nullable=False),
     sa.Column('notes', sa.Text(), nullable=True),
-    sa.Column('status', sa.Enum('SUBMITTED', 'GRADED', 'RESUBMISSION_REQUESTED', name='submissionstatus'), nullable=False),
+    sa.Column('status', sa.Enum('SUBMITTED', 'GRADED', 'RESUBMISSION_REQUESTED', name='assignment_submission_status'), nullable=False),
     sa.Column('score', sa.Float(), nullable=True),
     sa.Column('grade', sa.String(length=10), nullable=True),
     sa.Column('feedback', sa.Text(), nullable=True),

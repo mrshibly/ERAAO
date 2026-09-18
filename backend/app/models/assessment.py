@@ -57,7 +57,7 @@ class AssignmentSubmission(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     submission_url: Mapped[str] = mapped_column(String(2048), nullable=False)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[SubmissionStatus] = mapped_column(
-        Enum(SubmissionStatus), nullable=False, default=SubmissionStatus.SUBMITTED
+        Enum(SubmissionStatus, name="assignment_submission_status"), nullable=False, default=SubmissionStatus.SUBMITTED
     )
 
     # Grading fields
