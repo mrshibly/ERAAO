@@ -1,4 +1,4 @@
-"""Cohort service — live training cohort operations."""
+"""Cohort service : live training cohort operations."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

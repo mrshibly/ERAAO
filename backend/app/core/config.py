@@ -2,7 +2,7 @@
 Application settings loaded from environment variables via pydantic-settings.
 
 All secrets and environment-specific configuration must come from environment
-variables — never hardcoded. See `.env.example` for the full list.
+variables : never hardcoded. See `.env.example` for the full list.
 """
 
 from functools import lru_cache

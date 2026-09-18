@@ -1,5 +1,5 @@
 """
-Enrollment and LessonProgress models — tracks student progress through courses.
+Enrollment and LessonProgress models : tracks student progress through courses.
 """
 
 from __future__ import annotations

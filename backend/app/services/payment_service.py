@@ -1,4 +1,4 @@
-"""Payment service — Stripe checkout, webhook handling, order management."""
+"""Payment service : Stripe checkout, webhook handling, order management."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select

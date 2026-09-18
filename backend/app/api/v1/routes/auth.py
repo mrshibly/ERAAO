@@ -1,4 +1,4 @@
-"""Auth routes — register, login, refresh, verify email, password reset."""
+"""Auth routes : register, login, refresh, verify email, password reset."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Response, Request
 from sqlalchemy.ext.asyncio import AsyncSession

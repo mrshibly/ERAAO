@@ -1,4 +1,4 @@
-"""Category routes — public listing + admin CRUD."""
+"""Category routes : public listing + admin CRUD."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession

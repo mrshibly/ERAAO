@@ -1,4 +1,4 @@
-"""Service repository — CMS service pages DB queries."""
+"""Service repository : CMS service pages DB queries."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select

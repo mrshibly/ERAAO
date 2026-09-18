@@ -1,5 +1,5 @@
 """
-Course, Module, and Lesson models — the core LMS content structure.
+Course, Module, and Lesson models : the core LMS content structure.
 """
 
 from __future__ import annotations

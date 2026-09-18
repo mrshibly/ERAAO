@@ -1,5 +1,5 @@
 """
-Organization and OrganizationMember models — corporate client entities.
+Organization and OrganizationMember models : corporate client entities.
 """
 
 from __future__ import annotations

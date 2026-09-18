@@ -1,4 +1,4 @@
-"""Audit log repository — all audit log DB operations."""
+"""Audit log repository : all audit log DB operations."""
 from __future__ import annotations
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession

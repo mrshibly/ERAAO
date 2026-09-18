@@ -1,4 +1,4 @@
-"""Alembic env.py — async migration support for SQLAlchemy."""
+"""Alembic env.py : async migration support for SQLAlchemy."""
 from __future__ import annotations
 import asyncio
 import sys

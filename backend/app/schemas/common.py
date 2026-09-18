@@ -1,4 +1,4 @@
-"""Common schemas shared across domains — pagination, error envelope."""
+"""Common schemas shared across domains : pagination, error envelope."""
 from __future__ import annotations
 from typing import Any, Generic, List, TypeVar
 from pydantic import BaseModel

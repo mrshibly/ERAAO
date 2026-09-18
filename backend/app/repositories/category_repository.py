@@ -1,4 +1,4 @@
-"""Category and Tag repository — all category/tag-related DB queries."""
+"""Category and Tag repository : all category/tag-related DB queries."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select

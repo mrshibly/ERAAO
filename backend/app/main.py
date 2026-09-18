@@ -65,7 +65,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 
 def create_app() -> FastAPI:
-    """Application factory — builds and configures the FastAPI instance."""
+    """Application factory : builds and configures the FastAPI instance."""
     settings = get_settings()
 
     application = FastAPI(
@@ -146,14 +146,14 @@ def create_app() -> FastAPI:
 
     @application.get("/healthz", tags=["Health"], status_code=200)
     async def healthz() -> JSONResponse:
-        """Liveness probe — the process is running."""
+        """Liveness probe : the process is running."""
         return JSONResponse(content={"status": "ok"})
 
     @application.get("/readyz", tags=["Health"], status_code=200)
     async def readyz(
         db = Depends(get_db)
     ) -> JSONResponse:
-        """Readiness probe — the app can serve traffic."""
+        """Readiness probe : the app can serve traffic."""
         from sqlalchemy import text
         from app.core.redis_cache import get_redis_client
 

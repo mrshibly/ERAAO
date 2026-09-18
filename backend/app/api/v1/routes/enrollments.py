@@ -53,7 +53,7 @@ async def update_progress(enrollment_id: str, data: LessonProgressUpdate, user: 
     from sqlalchemy import select
     from app.models.enrollment import Enrollment as EnrollmentModel
 
-    # Ownership check — prevent IDOR
+    # Ownership check : prevent IDOR
     stmt = select(EnrollmentModel.user_id).where(EnrollmentModel.id == UUID(enrollment_id))
     owner_id = (await db.execute(stmt)).scalar_one_or_none()
     if owner_id is None:

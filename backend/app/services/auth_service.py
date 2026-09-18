@@ -1,4 +1,4 @@
-"""Auth service — registration, login, token management, password reset, email verification."""
+"""Auth service : registration, login, token management, password reset, email verification."""
 from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import UUID

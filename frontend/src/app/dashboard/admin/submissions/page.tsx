@@ -238,7 +238,7 @@ export default function AdminSubmissionsPage() {
             </thead>
             <tbody>
               {filteredSubmissions.map((sub) => (
-                <tr key={sub.id} style={{ borderBottom: "1px solid var(--border-color)" }}>
+                <tr key={sub.id} className="table-row-hover" style={{ borderBottom: "1px solid var(--border-color)" }}>
                   <td style={{ padding: "1rem 1.25rem" }}>
                     <div style={{ fontWeight: 700, color: "var(--text-primary)" }}>
                       {sub.user_name || "Enrolled Student"}

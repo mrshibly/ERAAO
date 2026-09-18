@@ -1,4 +1,4 @@
-"""File upload route — validates MIME type and size, uploads to S3."""
+"""File upload route : validates MIME type and size, uploads to S3."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, UploadFile, File, Request
 from app.core.dependencies import get_current_active_user

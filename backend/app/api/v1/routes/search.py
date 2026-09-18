@@ -1,4 +1,4 @@
-"""Global search route — Postgres full-text search across content types."""
+"""Global search route : Postgres full-text search across content types."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession

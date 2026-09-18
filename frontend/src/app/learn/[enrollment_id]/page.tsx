@@ -807,7 +807,8 @@ export default function LearnPage() {
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                <span className="badge badge-blue" style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                <span className="badge badge-blue" style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <span className="pulse-dot-live" />
                   <Video size={13} /> Cohort Live Classroom
                 </span>
                 <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text-primary)" }}>
@@ -826,7 +827,7 @@ export default function LearnPage() {
                     href={cohort.meeting_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-accent btn-sm"
+                    className="btn btn-accent btn-sm glow-blue"
                     style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", textDecoration: "none" }}
                   >
                     <Video size={14} />
@@ -1116,34 +1117,54 @@ export default function LearnPage() {
                                 <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>
                                   {qIdx + 1}. {q.question}
                                 </h4>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
                                   {q.options?.map((opt: string, oIdx: number) => {
                                     const isChecked = quizAnswers[q.index ?? qIdx] === oIdx;
+                                    const optionLetter = String.fromCharCode(65 + oIdx);
                                     return (
                                       <label
                                         key={oIdx}
                                         style={{
                                           display: "flex",
                                           alignItems: "center",
-                                          gap: "0.75rem",
-                                          padding: "0.75rem 1rem",
+                                          gap: "0.85rem",
+                                          padding: "0.85rem 1.15rem",
                                           border: isChecked ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
-                                          background: isChecked ? "rgba(124, 58, 237, 0.04)" : "transparent",
+                                          background: isChecked ? "rgba(124, 58, 237, 0.05)" : "var(--card-bg)",
                                           borderRadius: "var(--radius-md)",
                                           cursor: "pointer",
                                           fontSize: "var(--text-sm)",
                                           fontWeight: isChecked ? 600 : 500,
-                                          color: "var(--text-primary)"
+                                          color: "var(--text-primary)",
+                                          transition: "var(--transition-all)",
+                                          boxShadow: isChecked ? "0 0 16px -3px rgba(139, 92, 246, 0.2)" : "none"
                                         }}
                                       >
+                                        <span style={{
+                                          width: "26px",
+                                          height: "26px",
+                                          borderRadius: "50%",
+                                          background: isChecked ? "var(--accent-violet)" : "var(--bg-secondary)",
+                                          color: isChecked ? "white" : "var(--text-secondary)",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          fontSize: "0.75rem",
+                                          fontWeight: 700,
+                                          flexShrink: 0,
+                                          transition: "var(--transition-all)",
+                                          border: isChecked ? "none" : "1px solid var(--border-color)"
+                                        }}>
+                                          {optionLetter}
+                                        </span>
                                         <input
                                           type="radio"
                                           name={`question-${q.index ?? qIdx}`}
                                           checked={isChecked}
                                           onChange={() => setQuizAnswers(prev => ({ ...prev, [q.index ?? qIdx]: oIdx }))}
-                                          style={{ accentColor: "var(--accent-violet)" }}
+                                          style={{ display: "none" }}
                                         />
-                                        <span>{opt}</span>
+                                        <span style={{ flex: 1, lineHeight: 1.5 }}>{opt}</span>
                                       </label>
                                     );
                                   })}

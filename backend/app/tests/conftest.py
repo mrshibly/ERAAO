@@ -1,4 +1,4 @@
-"""conftest.py — Pytest configuration and shared async fixtures."""
+"""conftest.py : Pytest configuration and shared async fixtures."""
 from __future__ import annotations
 import os
 os.environ["ENVIRONMENT"] = "testing"

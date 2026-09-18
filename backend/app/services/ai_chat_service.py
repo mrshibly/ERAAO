@@ -1,5 +1,5 @@
 """
-AI Chat Service — Integrates with OpenRouter API to provide ERAAO platform support.
+AI Chat Service : Integrates with OpenRouter API to provide ERAAO platform support.
 Features robust fallback intent matching if OpenRouter API is unconfigured or unreachable.
 Includes security guardrails against prompt injection and sensitive data leakage.
 """
@@ -16,7 +16,7 @@ from app.schemas.chat import ChatMessage, ChatResponse
 
 logger = logging.getLogger(__name__)
 
-# ERAAO Official Knowledge Base System Prompt — Humanized, Realistic & Convincing Advisor
+# ERAAO Official Knowledge Base System Prompt : Humanized, Realistic & Convincing Advisor
 ERAAO_SYSTEM_PROMPT = """You are a knowledgeable, friendly, and articulate Solutions Advisor at ERAAO (eraao.com), an enterprise AI development agency and practitioner academy based in Dhaka, Bangladesh.
 Your company slogan is: "Lighting the future."
 

@@ -1,4 +1,4 @@
-"""Category service — course/blog categories and tags business logic."""
+"""Category service : course/blog categories and tags business logic."""
 from __future__ import annotations
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.category import Category, Tag

@@ -1,4 +1,4 @@
-"""Career service — job listings and application business logic."""
+"""Career service : job listings and application business logic."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

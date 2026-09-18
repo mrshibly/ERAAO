@@ -1,5 +1,5 @@
 """
-Assessment service — handles quiz grading, assignment submissions, and instructor grading.
+Assessment service : handles quiz grading, assignment submissions, and instructor grading.
 """
 
 from __future__ import annotations

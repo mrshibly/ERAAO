@@ -1,4 +1,4 @@
-"""Payment routes — checkout and Stripe webhook."""
+"""Payment routes : checkout and Stripe webhook."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Request, Header, Form
 from fastapi.responses import RedirectResponse
@@ -33,7 +33,7 @@ async def checkout(request: Request, data: CheckoutRequest, user: User = Depends
 
 @router.post("/webhook", status_code=200)
 async def stripe_webhook(request: Request, stripe_signature: str = Header(alias="stripe-signature"), db: AsyncSession = Depends(get_db)):
-    """Stripe webhook endpoint — no auth required, verified via signature."""
+    """Stripe webhook endpoint : no auth required, verified via signature."""
     payload = await request.body()
     svc = PaymentService(db)
     await svc.handle_webhook(payload, stripe_signature)

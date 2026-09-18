@@ -1,4 +1,4 @@
-"""Dashboard service — aggregates stats and logs for dashboard views."""
+"""Dashboard service : aggregates stats and logs for dashboard views."""
 from __future__ import annotations
 import asyncio
 from uuid import UUID

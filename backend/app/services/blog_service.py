@@ -1,4 +1,4 @@
-"""Blog service — blog post business logic."""
+"""Blog service : blog post business logic."""
 from __future__ import annotations
 from uuid import UUID
 from datetime import datetime, timezone

@@ -1,4 +1,4 @@
-"""Enrollment service — enroll students, track progress, compute completion."""
+"""Enrollment service : enroll students, track progress, compute completion."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

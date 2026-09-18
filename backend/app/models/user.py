@@ -1,5 +1,5 @@
 """
-User model — core identity for all authenticated personas.
+User model : core identity for all authenticated personas.
 """
 
 from __future__ import annotations

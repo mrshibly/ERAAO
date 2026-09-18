@@ -1,1 +1,1 @@
-"""Empty init — marks `core` as a Python package."""
+"""Empty init : marks `core` as a Python package."""

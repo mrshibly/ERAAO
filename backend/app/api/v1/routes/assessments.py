@@ -1,5 +1,5 @@
 """
-Assessment routes — quizzes, student assignments, and faculty grading.
+Assessment routes : quizzes, student assignments, and faculty grading.
 """
 
 from __future__ import annotations

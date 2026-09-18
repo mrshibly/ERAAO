@@ -1,5 +1,5 @@
 """
-Cohort model — manages live bootcamps, corporate training batches, and scheduled cohorts.
+Cohort model : manages live bootcamps, corporate training batches, and scheduled cohorts.
 """
 
 from __future__ import annotations

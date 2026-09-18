@@ -1,1 +1,1 @@
-"""Empty init — marks `dashboard` as a Python package."""
+"""Empty init : marks `dashboard` as a Python package."""

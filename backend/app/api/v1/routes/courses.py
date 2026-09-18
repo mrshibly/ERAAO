@@ -1,4 +1,4 @@
-"""Course routes — public catalog + instructor/admin CRUD."""
+"""Course routes : public catalog + instructor/admin CRUD."""
 from __future__ import annotations
 from uuid import UUID
 from fastapi import APIRouter, Depends, Query

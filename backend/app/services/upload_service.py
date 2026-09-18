@@ -1,4 +1,4 @@
-"""Upload service — handles file validation and storage."""
+"""Upload service : handles file validation and storage."""
 from __future__ import annotations
 import uuid
 import boto3

@@ -1,4 +1,4 @@
-"""Audit log — records sensitive admin and security-relevant actions."""
+"""Audit log : records sensitive admin and security-relevant actions."""
 from __future__ import annotations
 import uuid
 from datetime import datetime

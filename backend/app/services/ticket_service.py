@@ -1,4 +1,4 @@
-"""Support ticket service — customer support ticket lifecycles."""
+"""Support ticket service : customer support ticket lifecycles."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

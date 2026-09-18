@@ -80,7 +80,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
           router.push(`/learn/${enrollment.id}`);
         }, 1200);
       } else if (res.status === 403) {
-        // Requires payment — redirect to bKash manual checkout
+        // Requires payment: redirect to bKash manual checkout
         router.push(`/checkout?course=${course.slug || course.id}`);
       } else {
         const err = await res.json().catch(() => ({}));
@@ -187,9 +187,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               <span className="badge" style={{ background: "rgba(255, 255, 255, 0.12)", color: "white", textTransform: "capitalize", fontWeight: 700 }}>
                 {course.level || "All Levels"} Level
               </span>
-              <span className="badge" style={{ background: "rgba(16, 185, 129, 0.2)", color: "var(--accent-teal)", fontWeight: 700 }}>
-                <Clock size={13} style={{ marginRight: "4px" }} />
-                12 Weeks • 36 Live Classes
+              <span className="badge" style={{ background: "rgba(16, 185, 129, 0.2)", color: "var(--accent-teal)", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <Clock size={13} />
+                <span>12 Weeks, 36 Live Classes</span>
               </span>
             </div>
 
