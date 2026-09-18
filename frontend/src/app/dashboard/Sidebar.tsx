@@ -201,7 +201,8 @@ export default function DashboardSidebar({
                   title={collapsed ? item.label : undefined}
                 >
                   {item.icon}
-                  {!collapsed && <span>{item.label}</span>}
+                  {!collapsed && <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis" }}>{item.label}</span>}
+                  {!collapsed && isActive && <span className="dashboard-sidebar-active-indicator" />}
                 </Link>
               );
             })}
@@ -232,19 +233,23 @@ export default function DashboardSidebar({
           <button
             onClick={() => setUserDropdownOpen(!userDropdownOpen)}
             className="sidebar-user-btn"
+            title={user?.full_name ? `${user.full_name} (${user.email})` : undefined}
           >
             <div className="sidebar-user-avatar">
               {getInitials()}
             </div>
             {!collapsed && (
-              <div style={{ textAlign: "left", overflow: "hidden", width: "100%" }}>
-                <div className="nav-dropdown-name">
+              <div style={{ textAlign: "left", overflow: "hidden", flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.25 }}>
                   {user?.full_name}
                 </div>
-                <div className="nav-dropdown-email">
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {user?.email}
                 </div>
               </div>
+            )}
+            {!collapsed && (
+              <ChevronDown size={13} style={{ color: "var(--text-muted)", flexShrink: 0, transition: "transform 0.2s", transform: userDropdownOpen ? "rotate(180deg)" : "none" }} />
             )}
           </button>
 
