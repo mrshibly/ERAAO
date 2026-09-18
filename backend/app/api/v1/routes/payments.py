@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.core.config import get_settings
 from app.core.dependencies import get_current_active_user, require_role
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.models.order import Order, OrderStatus, ItemType
 from app.schemas.order import (
@@ -23,7 +24,8 @@ from app.services.payment_service import PaymentService
 router = APIRouter()
 
 @router.post("/checkout", response_model=CheckoutResponse, status_code=201)
-async def checkout(data: CheckoutRequest, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
+@limiter.limit("10/minute")
+async def checkout(request: Request, data: CheckoutRequest, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     """Create a Stripe or SSLCommerz checkout session for the given items."""
     svc = PaymentService(db)
     result = await svc.create_checkout(user.id, [item.model_dump() for item in data.items])
@@ -38,7 +40,9 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(alias=
     return {"received": True}
 
 @router.post("/manual-bkash", response_model=ManualBkashPaymentResponse, status_code=201)
+@limiter.limit("5/minute")
 async def submit_manual_bkash(
+    request: Request,
     data: ManualBkashPaymentRequest,
     user: User = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db)

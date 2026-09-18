@@ -98,12 +98,13 @@ def create_app() -> FastAPI:
     )
 
     # ---- Security headers middleware ----
-    # Note: X-Frame-Options is set in nginx (SAMEORIGIN). Do not duplicate here.
     @application.middleware("http")
     async def add_security_headers(request: Request, call_next) -> Response:  # type: ignore[no-untyped-def]
         response: Response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()"
         if settings.ENVIRONMENT == "production":
             response.headers["Strict-Transport-Security"] = (
                 "max-age=31536000; includeSubDomains"
@@ -115,7 +116,10 @@ def create_app() -> FastAPI:
                 "font-src 'self' https://fonts.gstatic.com; "
                 "img-src 'self' data: https://images.unsplash.com https://*.googleusercontent.com blob:; "
                 "connect-src 'self' https://accounts.google.com https://openrouter.ai; "
-                "frame-src https://accounts.google.com;"
+                "frame-src https://accounts.google.com; "
+                "frame-ancestors 'self'; "
+                "base-uri 'self'; "
+                "object-src 'none';"
             )
         return response
 

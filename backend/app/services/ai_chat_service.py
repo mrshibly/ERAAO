@@ -79,13 +79,14 @@ class AIChatService:
         # Build payload history
         formatted_messages = [{"role": "system", "content": ERAAO_SYSTEM_PROMPT}]
 
-        # Add optional context hint
+        # Add optional context hint (strictly validate path format to prevent prompt injection)
         if context_url:
-            clean_url = AIChatService._sanitize_input(context_url)
-            formatted_messages.append({
-                "role": "system",
-                "content": f"The visitor is currently viewing this page on ERAAO: {clean_url}"
-            })
+            clean_url = AIChatService._sanitize_input(context_url).strip()
+            if re.match(r"^/[a-zA-Z0-9_\-/?=&%.]{1,200}$", clean_url):
+                formatted_messages.append({
+                    "role": "system",
+                    "content": f"The visitor is currently viewing this page on ERAAO: {clean_url}"
+                })
 
         for msg in sanitized_messages:
             formatted_messages.append({"role": msg.role, "content": msg.content})

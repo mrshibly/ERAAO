@@ -207,6 +207,17 @@ class PaymentService:
         if not course:
             raise NotFoundError(resource="Course")
 
+        # Check if student is already enrolled
+        from app.models.enrollment import Enrollment
+        enrolled_stmt = select(Enrollment).where(
+            Enrollment.user_id == user_id,
+            Enrollment.course_id == course_id,
+            Enrollment.deleted_at.is_(None)
+        )
+        already_enrolled = (await self.db.execute(enrolled_stmt)).scalar_one_or_none()
+        if already_enrolled:
+            raise ConflictError(message="You are already enrolled in this bootcamp track.")
+
         # Check for duplicate TrxID
         dup_stmt = select(Order).where(Order.gateway_payment_id == clean_trx)
         existing = (await self.db.execute(dup_stmt)).scalar_one_or_none()
