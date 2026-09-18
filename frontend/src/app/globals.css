@@ -1109,18 +1109,26 @@ a {
 
 .academy-card-image-wrap {
   position: relative;
-  height: 200px;
   width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 180px;
   overflow: hidden;
-  background: #090d16;
+  background: #060a16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .academy-card-image-wrap img {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  object-fit: contain !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .academy-card:hover .academy-card-image-wrap img {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .academy-card-body {

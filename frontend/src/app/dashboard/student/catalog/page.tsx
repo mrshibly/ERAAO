@@ -280,11 +280,17 @@ export default function StudentCatalogPage() {
                 }}
               >
                 {/* Image Header */}
-                <div style={{ height: "165px", position: "relative", overflow: "hidden", background: "var(--bg-dark)" }}>
+                <div style={{ height: "165px", position: "relative", overflow: "hidden", background: "#060a16", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src={getCourseImage(course.title)}
+                    alt=""
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "blur(20px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.8 }}
+                    aria-hidden="true"
+                  />
                   <img
                     src={getCourseImage(course.title)}
                     alt={course.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.85 }}
+                    style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", position: "relative", zIndex: 1 }}
                   />
                   <div style={{
                     position: "absolute",

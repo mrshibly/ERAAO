@@ -251,11 +251,17 @@ export default function MeetTheInstructorPage() {
             }}
           >
             {/* Course Thumbnail Image */}
-            <div style={{ position: "relative", minHeight: "260px" }}>
+            <div style={{ position: "relative", minHeight: "260px", background: "#060a16", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <img
+                src="/banners/professional-zero-to-fluent-english.jpg"
+                alt=""
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
+                aria-hidden="true"
+              />
               <img
                 src="/banners/professional-zero-to-fluent-english.jpg"
                 alt="Professional Zero to Fluent English"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", position: "relative", zIndex: 1 }}
               />
               <div
                 style={{
