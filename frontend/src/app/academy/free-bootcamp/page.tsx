@@ -86,18 +86,18 @@ export default function FreeBootcampPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh", color: "var(--text-primary)" }}>
       
       {/* Top Breadcrumb Navigation Bar */}
-      <div style={{ borderBottom: "1px solid var(--border-color)", background: "rgba(10, 15, 30, 0.6)", backdropFilter: "blur(12px)" }}>
-        <div className="container" style={{ padding: "0.75rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
+      <div style={{ borderBottom: "1px solid var(--border-color)", background: "var(--bg-secondary)" }}>
+        <div className="container" style={{ padding: "0.65rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-            <Link href="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Home</Link>
-            <span>/</span>
-            <Link href="/academy" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Academy</Link>
-            <span>/</span>
-            <span style={{ color: "var(--accent-blue)", fontWeight: 600 }}>Zero to Fluent Free Bootcamp</span>
+            <Link href="/" style={{ color: "var(--text-secondary)", textDecoration: "none", fontWeight: 600 }}>Home</Link>
+            <span style={{ color: "var(--text-muted)", opacity: 0.6 }}>/</span>
+            <Link href="/academy" style={{ color: "var(--text-secondary)", textDecoration: "none", fontWeight: 600 }}>Academy</Link>
+            <span style={{ color: "var(--text-muted)", opacity: 0.6 }}>/</span>
+            <span style={{ color: "var(--accent-blue)", fontWeight: 700 }}>Zero to Fluent Free Bootcamp</span>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <span className="badge badge-green" style={{ fontSize: "0.72rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+            <span className="badge badge-green" style={{ fontSize: "0.72rem", display: "inline-flex", alignItems: "center", gap: "0.4rem", fontWeight: 700, padding: "0.25rem 0.65rem" }}>
               <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "currentColor", animation: "pulse 1.5s infinite" }} />
               Registration Open
             </span>
@@ -158,7 +158,7 @@ export default function FreeBootcampPage() {
 
               {/* Event Specs Quick Pill */}
               <div style={{
-                background: "rgba(255, 255, 255, 0.03)",
+                background: "var(--card-bg)",
                 border: "1px solid var(--border-color)",
                 borderRadius: "var(--radius-lg)",
                 padding: "1rem 1.25rem",
@@ -336,7 +336,7 @@ export default function FreeBootcampPage() {
                 {/* Quick Overlay Footer Badge */}
                 <div style={{
                   padding: "1rem 1.25rem",
-                  background: "rgba(10, 15, 30, 0.95)",
+                  background: "var(--card-bg)",
                   borderTop: "1px solid var(--border-color)",
                   display: "flex",
                   alignItems: "center",
