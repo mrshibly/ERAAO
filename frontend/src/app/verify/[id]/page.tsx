@@ -139,11 +139,11 @@ export default function CertificateVerificationPage() {
                   <Logo size={320} withText={false} href={null} />
                 </div>
 
-                {/* Guilloché Border Frame — Layer 1 (Outer Solid) */}
+                {/* Guilloché Border Frame: Layer 1 (Outer Solid) */}
                 <div style={{ position: "absolute", inset: "14px", border: "2px solid #cbd5e1", borderRadius: "10px", pointerEvents: "none" }} />
-                {/* Guilloché Border Frame — Layer 2 (Gold/Blue Accent Line) */}
+                {/* Guilloché Border Frame: Layer 2 (Gold/Blue Accent Line) */}
                 <div style={{ position: "absolute", inset: "19px", border: "1px solid rgba(14,165,233,0.35)", borderRadius: "8px", pointerEvents: "none" }} />
-                {/* Guilloché Border Frame — Layer 3 (Inner Fine Dashed) */}
+                {/* Guilloché Border Frame: Layer 3 (Inner Fine Dashed) */}
                 <div style={{ position: "absolute", inset: "24px", border: "1px solid #e2e8f0", borderRadius: "6px", pointerEvents: "none" }} />
 
                 {/* Intricate Corner Filigree Ornaments */}

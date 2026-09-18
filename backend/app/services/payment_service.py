@@ -184,7 +184,7 @@ class PaymentService:
                     if user:
                         send_email_task.delay(
                             to_email=user.email,
-                            subject="Payment Confirmation — Academy",
+                            subject="Payment Confirmation | Academy",
                             body_html=f"<h3>Hello {user.full_name},</h3><p>Your payment for Order #{order.id} was successful! You have been enrolled in your courses.</p>"
                         )
                     await self.db.commit()

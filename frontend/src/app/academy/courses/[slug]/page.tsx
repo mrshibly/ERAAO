@@ -246,7 +246,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         {/* Main Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
 
-          {/* Left Column — Detailed Course Description, Learning Cycle & Syllabus */}
+          {/* Left Column: Detailed Course Description, Learning Cycle & Syllabus */}
           <div style={{ gridColumn: "span 2" }}>
             
             {/* ERAAO 6-Stage Learning Cycle Box */}
@@ -261,7 +261,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 How This Course Works: 6-Stage Learning Cycle
               </h2>
               <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                Every module in this bootcamp moves systematically through 6 scientific retention stages so you don&apos;t just memorize information — you gain unconscious fluency.
+                Every module in this bootcamp moves systematically through 6 scientific retention stages so you don&apos;t just memorize information; you gain unconscious fluency.
               </p>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "0.75rem" }}>
@@ -462,7 +462,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
           </div>
 
-          {/* Right Column — Enrollment Action Box */}
+          {/* Right Column: Enrollment Action Box */}
           <div>
             <div className="card" style={{ padding: "2rem", position: "sticky", top: "2rem", boxShadow: "var(--shadow-md)" }}>
               <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>

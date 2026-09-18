@@ -388,7 +388,7 @@ export const SERVICES_CATALOG: ServiceItem[] = [
     categoryLabel: "AI & Automation",
     badge: "Operational Efficiency",
     shortDescription: "Eliminate repetitive manual operations through automated invoicing, contract generation, employee onboarding, and document routing.",
-    fullDescription: "Employees waste countless hours on repetitive manual workflows—copying data across spreadsheets, drafting standardized proposals, and sending manual receipts. We build end-to-end automations that execute these processes with zero human error.",
+    fullDescription: "Employees waste countless hours on repetitive manual workflows, including copying data across spreadsheets, drafting standardized proposals, and sending manual receipts. We build end-to-end automations that execute these processes with zero human error.",
     problemStatement: "Manual operational workflows lead to administrative delays, employee burnout, and costly data entry mistakes.",
     deliverables: [
       "Automated client invoicing, payment reconciliation, and reporting",
@@ -492,7 +492,7 @@ export const SERVICES_CATALOG: ServiceItem[] = [
     categoryLabel: "AI & Automation",
     badge: "Enterprise AI",
     shortDescription: "Custom AI solutions including OCR document extraction, enterprise RAG search engines, and smart recommendation systems.",
-    fullDescription: "We build proprietary artificial intelligence systems customized to your industry's specific challenges—from extracting structured data from unstructured invoices to private neural search across millions of documents.",
+    fullDescription: "We build proprietary artificial intelligence systems customized to your industry's specific challenges, ranging from extracting structured data from unstructured invoices to private neural search across millions of documents.",
     problemStatement: "Generic AI tools lack the domain context, accuracy, and security necessary to handle proprietary enterprise documents.",
     deliverables: [
       "Document and OCR data extraction from invoices, contracts, and IDs",

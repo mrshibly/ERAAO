@@ -182,7 +182,7 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar — Copyright & Legal Links */}
+        {/* Bottom Bar: Copyright & Legal Links */}
         <div className="footer-bottom">
           <div>
             &copy; {new Date().getFullYear()} ERAAO Platform. All rights reserved.

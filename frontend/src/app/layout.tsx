@@ -49,10 +49,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   title: {
-    default: "ERAAO — Applied AI & Cybersecurity Academy",
+    default: "ERAAO | Applied AI and Cybersecurity Academy",
     template: "%s | ERAAO"
   },
-  description: "ERAAO — Applied AI & Offensive Cybersecurity Academy & Enterprise Engineering Services in Bangladesh.",
+  description: "ERAAO: Applied AI and Offensive Cybersecurity Academy & Enterprise Engineering Services in Bangladesh.",
   keywords: [
     "Cybersecurity Bangladesh",
     "AI Development Dhaka",
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
   openGraph: {
-    title: "Eraao — Lighting the future.",
+    title: "Eraao | Lighting the future.",
     description: "Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy.",
     url: "https://www.eraao.com",
     siteName: "Eraao",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eraao — Lighting the future.",
+    title: "Eraao | Lighting the future.",
     description: "Lighting the future. Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy."
   },
   verification: {

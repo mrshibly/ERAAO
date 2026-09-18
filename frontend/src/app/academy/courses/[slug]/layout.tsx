@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (res.ok) {
       const course = await res.json();
       return {
-        title: course.title ? `${course.title} — Syllabus & Enrollment` : "Bootcamp Syllabus — ERAAO",
+        title: course.title ? `${course.title} | Syllabus and Enrollment` : "Bootcamp Syllabus | ERAAO",
         description: course.short_description || "Professional practitioner course syllabus and training at ERAAO Academy.",
         alternates: {
           canonical: `/academy/courses/${slug}`,

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (res.ok) {
       const post = await res.json();
       return {
-        title: post.title ? `${post.title} — ERAAO Research` : "Article — ERAAO",
+        title: post.title ? `${post.title} | ERAAO Research` : "Article | ERAAO",
         description: post.summary || post.content?.slice(0, 160) || "Research and insights from ERAAO.",
         alternates: {
           canonical: `/blog/${slug}`,

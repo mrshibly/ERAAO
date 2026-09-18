@@ -640,7 +640,7 @@ a {
   font-size: var(--text-xs);
 }
 
-/* Footer link hover — CSS-based, works on touch + desktop */
+/* Footer link hover: CSS-based, works on touch + desktop */
 .footer-link {
   color: #94a3b8;
   text-decoration: none;
@@ -653,7 +653,7 @@ a {
   transform: translateX(3px);
 }
 
-/* Footer social icon hover — CSS-based */
+/* Footer social icon hover: CSS-based */
 .footer-social-icon {
   width: 36px;
   height: 36px;
@@ -992,7 +992,7 @@ a {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ACADEMY PAGE STYLES — Ultra-Premium Course Catalog
+   ACADEMY PAGE STYLES: Ultra-Premium Course Catalog
    ═══════════════════════════════════════════════════════════════ */
 .academy-hero {
   position: relative;
@@ -1103,7 +1103,7 @@ a {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SERVICES PAGE STYLES — Ultra-Premium Technical Services
+   SERVICES PAGE STYLES: Ultra-Premium Technical Services
    ═══════════════════════════════════════════════════════════════ */
 .services-hero {
   position: relative;
@@ -1669,7 +1669,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ANIMATIONS — Simple, tasteful entrance & ambient motion
+   ANIMATIONS: Simple, tasteful entrance & ambient motion
    ═══════════════════════════════════════════════════════════════ */
 
 /* Keyframes */
@@ -1848,11 +1848,11 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   REUSABLE COMPONENT CLASSES — Design System Utilities
+   REUSABLE COMPONENT CLASSES: Design System Utilities
    Replace inline style={{}} patterns across all pages
    ═══════════════════════════════════════════════════════════════ */
 
-/* Section Header — centered title block with optional badge */
+/* Section Header: centered title block with optional badge */
 .section-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -1886,7 +1886,7 @@ input:focus, select:focus, textarea:focus {
   margin: 0.5rem auto 0 auto;
 }
 
-/* Badge — small uppercase pill label */
+/* Badge: small uppercase pill label */
 .badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
@@ -1927,7 +1927,7 @@ input:focus, select:focus, textarea:focus {
   color: var(--text-muted);
 }
 
-/* Card Grid — responsive auto-fit grid */
+/* Card Grid: responsive auto-fit grid */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1946,7 +1946,7 @@ input:focus, select:focus, textarea:focus {
   gap: 1.5rem;
 }
 
-/* Stat Card — dashboard metric card */
+/* Stat Card: dashboard metric card */
 .stat-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -1987,7 +1987,7 @@ input:focus, select:focus, textarea:focus {
   letter-spacing: -0.02em;
 }
 
-/* Form Group — label + input wrapper */
+/* Form Group: label + input wrapper */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -2013,7 +2013,7 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-/* Page Header — dashboard page title + actions bar */
+/* Page Header: dashboard page title + actions bar */
 .page-header {
   display: flex;
   align-items: center;
@@ -2036,7 +2036,7 @@ input:focus, select:focus, textarea:focus {
   margin-top: 0.25rem;
 }
 
-/* Table Container — styled table wrapper */
+/* Table Container: styled table wrapper */
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -2084,7 +2084,7 @@ input:focus, select:focus, textarea:focus {
   background: rgba(14, 165, 233, 0.02);
 }
 
-/* Status Badge — colored status pills */
+/* Status Badge: colored status pills */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -2431,7 +2431,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LEARNING CYCLE GRID — Balanced 6x1 Desktop / 3x2 Tablet / 2x3 Mobile
+   LEARNING CYCLE GRID: Balanced 6x1 Desktop / 3x2 Tablet / 2x3 Mobile
    ═══════════════════════════════════════════════════════════════ */
 .learning-cycle-grid {
   display: grid;
@@ -2454,7 +2454,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE GRID SPLIT — Premium Hero Split Layout
+   RESPONSIVE GRID SPLIT: Premium Hero Split Layout
    ═══════════════════════════════════════════════════════════════ */
 .responsive-grid-split {
   display: grid;

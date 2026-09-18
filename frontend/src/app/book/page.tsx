@@ -99,7 +99,7 @@ export default function BookPage() {
 
   const displaySlots = useApiSlots
     ? slotsForDate.map(s => ({
-        label: formatTime(s.start_time) + " – " + formatTime(s.end_time),
+        label: formatTime(s.start_time) + " to " + formatTime(s.end_time),
         id: s.id,
       }))
     : FALLBACK_SLOTS.map(s => ({ label: s, id: null as string | null }));
@@ -185,7 +185,7 @@ export default function BookPage() {
                 Technical Discovery Call
               </h2>
               <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "2rem" }}>
-                Direct access to our senior engineering specialists. Pure technical scope analysis — no high-pressure sales.
+                Direct access to our senior engineering specialists. Pure technical scope analysis with zero high-pressure sales.
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>

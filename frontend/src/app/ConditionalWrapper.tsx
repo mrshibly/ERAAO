@@ -15,7 +15,7 @@ export default function ConditionalWrapper({
   const isDashboard = pathname.startsWith("/dashboard");
 
   if (isDashboard) {
-    // Dashboard routes use their own layout (sidebar) — no public navbar/footer
+    // Dashboard routes use their own layout (sidebar): no public navbar/footer
     return <>{children}</>;
   }
 

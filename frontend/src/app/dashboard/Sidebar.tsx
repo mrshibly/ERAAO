@@ -206,7 +206,7 @@ export default function DashboardSidebar({
         ))}
       </div>
 
-      {/* Sidebar Footer — User Profile Card */}
+      {/* Sidebar Footer: User Profile Card */}
       <div className="dashboard-sidebar-footer">
         {user && user.roles.length > 1 && !collapsed && (
           <div className="sidebar-workspace-select-wrapper">

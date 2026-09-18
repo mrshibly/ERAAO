@@ -452,7 +452,7 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
       {/* Main Studio Grid */}
       <div className="builder-workspace">
 
-        {/* Left Column — Modules Tree */}
+        {/* Left Column: Modules Tree */}
         <div className="tree-panel">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
             <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
@@ -620,7 +620,7 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
           </div>
         </div>
 
-        {/* Right Column — Item Content Editor Canvas */}
+        {/* Right Column: Item Content Editor Canvas */}
         <div className="editor-panel">
           {!activeLessonId ? (
             <div style={{ textAlign: "center", padding: "6rem 2rem", color: "var(--text-secondary)" }}>

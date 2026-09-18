@@ -178,7 +178,7 @@ class AIChatService:
             )
         elif any(w in last_msg for w in ["ai", "bot", "llm", "automation", "agent", "software", "app", "develop"]):
             return (
-                "We build custom, production-ready AI solutions—including private document search (RAG), autonomous multi-agent workflows, customer service chatbots, and full-stack web applications.\n\n"
+                "We build custom, production-ready AI solutions, including private document search (RAG), autonomous multi-agent workflows, customer service chatbots, and full-stack web applications.\n\n"
                 "Everything we build is designed to be secure and private. You can check out our practice areas under [AI & Automation Services](/services) or [Book a Discovery Call](/book) to talk through your project."
             )
         elif any(w in last_msg for w in ["quote", "price", "cost", "fee", "rate", "how much"]):

@@ -209,7 +209,7 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {/* Main Content Layout — Symmetric 2-Column Grid */}
+      {/* Main Content Layout: Symmetric 2-Column Grid */}
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -217,7 +217,7 @@ export default function StudentDashboard() {
         alignItems: "start"
       }}>
 
-        {/* Left Column — My Enrolled Courses */}
+        {/* Left Column: My Enrolled Courses */}
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: "32px", marginBottom: "1rem" }}>
             <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -331,7 +331,7 @@ export default function StudentDashboard() {
           )}
         </div>
 
-        {/* Right Column — My Certificates & Help */}
+        {/* Right Column: My Certificates & Help */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", minHeight: "32px", marginBottom: "1rem" }}>
             <h2 style={{ fontSize: "var(--text-lg)", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>

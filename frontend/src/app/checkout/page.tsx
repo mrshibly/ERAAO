@@ -16,9 +16,9 @@ function CheckoutContent() {
 
   // Mapping static titles to checkout
   const courseTitles: Record<string, string> = {
-    "course-1": "Ethical Hacking & Penetration Testing — Course Tuition",
-    "course-2": "Practical Bug Bounty Hunting — Course Tuition",
-    "course-3": "Secure AI Applications Development — Course Tuition"
+    "course-1": "Ethical Hacking & Penetration Testing | Course Tuition",
+    "course-2": "Practical Bug Bounty Hunting | Course Tuition",
+    "course-3": "Secure AI Applications Development | Course Tuition"
   };
 
   useEffect(() => {

@@ -120,7 +120,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          FLAGSHIP ACADEMY BOOTCAMPS SHOWCASE — Grouped by Practitioner Tracks
+          FLAGSHIP ACADEMY BOOTCAMPS SHOWCASE: Grouped by Practitioner Tracks
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-secondary)" }}>
         <div className="container">
@@ -375,7 +375,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          WHY ERAAO ACADEMY — Factual Advantages
+          WHY ERAAO ACADEMY: Factual Advantages
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
         <div className="container">
@@ -448,7 +448,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          ENTERPRISE SERVICES — AUXILIARY SECTION FOR BUSINESSES
+          ENTERPRISE SERVICES: AUXILIARY SECTION FOR BUSINESSES
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         padding: "5rem 0",

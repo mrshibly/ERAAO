@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ShieldCheck, Cpu, Target } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us — ERAAO Academy",
+  title: "About Us | ERAAO Academy",
   description: "Learn more about our elite practitioner instructors in Spoken English, Applied AI, and Offensive Cyber Security.",
 };
 

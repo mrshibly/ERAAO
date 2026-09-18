@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ERAAO — Applied AI & Cybersecurity Academy",
+    name: "ERAAO | Applied AI and Cybersecurity Academy",
     short_name: "ERAAO",
     description: "Enterprise AI Development, Defensive & Offensive Cybersecurity Services, and Professional Practitioner Academy.",
     start_url: "/",

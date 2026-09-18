@@ -149,11 +149,11 @@ export default function FreeBootcampPage() {
               </h1>
 
               <p style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.25rem)", color: "var(--accent-blue)", fontWeight: 600, lineHeight: 1.5, marginBottom: "1.25rem" }}>
-                মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
+                মাত্র ২ ঘণ্টায় বুঝে নিন: কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
               </p>
 
               <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: "2rem", maxWidth: "34rem" }}>
-                বছরের পর বছর Grammar আর Vocabulary পড়ার পরেও যদি কথা বলতে গেলে আটকে যান, তবে সমস্যা আপনার দক্ষতায় নয়—পদ্ধতিতে। শিখুন সহজ Sentence Building ও Fluency তৈরি করার প্রমাণিত উপায়।
+                বছরের পর বছর Grammar আর Vocabulary পড়ার পরেও যদি কথা বলতে গেলে আটকে যান, তবে সমস্যা আপনার দক্ষতায় নয়, পদ্ধতিতে। শিখুন সহজ Sentence Building ও Fluency তৈরি করার প্রমাণিত উপায়।
               </p>
 
               {/* Event Specs Quick Pill */}
@@ -179,7 +179,7 @@ export default function FreeBootcampPage() {
                   <Clock size={18} style={{ color: "var(--accent-teal)" }} />
                   <div>
                     <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase" }}>Time & Duration</div>
-                    <div style={{ fontSize: "var(--text-xs)", fontWeight: 700 }}>09:00 - 11:00 PM (2h)</div>
+                    <div style={{ fontSize: "var(--text-xs)", fontWeight: 700 }}>09:00 to 11:00 PM (2h)</div>
                   </div>
                 </div>
 
@@ -321,7 +321,7 @@ export default function FreeBootcampPage() {
               >
                 <Image
                   src="/banners/zero-to-fluent-free-bootcamp.png"
-                  alt="Zero to Fluent Free English Bootcamp - ERAAO Academy"
+                  alt="Zero to Fluent Free English Bootcamp | ERAAO Academy"
                   width={1024}
                   height={537}
                   priority
@@ -392,14 +392,14 @@ export default function FreeBootcampPage() {
               এই সমস্যাগুলো কি আপনার ক্ষেত্রেও ঘটে?
             </h2>
             <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              প্রতিটি প্রশ্নের উত্তর যদি ‘হ্যাঁ’ হয়, তবে জেনে রাখুন—আপনি একা নন। দেশের হাজারো শিক্ষার্থীর এই একই সংকট।
+              প্রতিটি প্রশ্নের উত্তর যদি ‘হ্যাঁ’ হয়, তবে জেনে রাখুন, আপনি একা নন। দেশের হাজারো শিক্ষার্থীর এই একই সংকট।
             </p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
             {[
               {
-                q: "বছরের পর বছর English Grammar পড়েছেন, Vocabulary শিখেছেন— তবুও Speaking করতে গেলে ভয় লাগে?",
+                q: "বছরের পর বছর English Grammar পড়েছেন, Vocabulary শিখেছেন, তবুও Speaking করতে গেলে ভয় লাগে?",
                 note: "Brain Freeze",
                 iconColor: "#ef4444"
               },
@@ -462,10 +462,10 @@ export default function FreeBootcampPage() {
               The Core Breakthrough
             </div>
             <h3 style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.5rem)", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
-              তাহলে সমস্যা হয়তো English না জানা নয়—সঠিকভাবে English Practice না করা!
+              তাহলে সমস্যা হয়তো English না জানা নয়, সঠিকভাবে English Practice না করা!
             </h3>
             <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: "42rem", margin: "0 auto 1.5rem auto" }}>
-              সাঁতার শেখার বই মুখস্থ করে যেমন সাঁতারু হওয়া যায় না, তেমনি শুধু খাতা-কলমে গ্রামার পড়ে স্পিকিং আসে না। দরকার বৈজ্ঞানিক প্র্যাকটিস টেকনিক—যা এই ২ ঘণ্টার সেশনে সরাসরি শেখানো হবে।
+              সাঁতার শেখার বই মুখস্থ করে যেমন সাঁতারু হওয়া যায় না, তেমনি শুধু খাতা-কলমে গ্রামার পড়ে স্পিকিং আসে না। দরকার বৈজ্ঞানিক প্র্যাকটিস টেকনিক যা এই ২ ঘণ্টার সেশনে সরাসরি শেখানো হবে।
             </p>
             <a
               href={TELEGRAM_JOIN_URL}
@@ -840,7 +840,7 @@ export default function FreeBootcampPage() {
               </span>
               <span>•</span>
               <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
-                <Clock size={14} style={{ color: "var(--accent-teal)" }} /> রাত ৯:০০ টা - ১১:০০ টা
+                <Clock size={14} style={{ color: "var(--accent-teal)" }} /> রাত ৯:০০ টা থেকে ১১:০০ টা
               </span>
               <span>•</span>
               <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>

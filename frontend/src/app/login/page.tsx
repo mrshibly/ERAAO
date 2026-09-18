@@ -133,7 +133,7 @@ export default function LoginPage() {
       backgroundColor: "var(--bg-primary)"
     }} className="responsive-flex-column">
       
-      {/* Left Column — Simple, Clean Form */}
+      {/* Left Column: Simple, Clean Form */}
       <div style={{
         flex: "1 1 50%",
         display: "flex",
@@ -263,7 +263,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Column — Simple High-Quality Tech Image Card */}
+      {/* Right Column: Simple High-Quality Tech Image Card */}
       <div className="login-graphic" style={{
         flex: "1 1 50%",
         position: "relative",

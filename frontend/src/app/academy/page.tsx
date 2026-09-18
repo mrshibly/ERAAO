@@ -207,7 +207,7 @@ export default function AcademyPage() {
               </h3>
 
               <p style={{ fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700, marginBottom: "0.5rem" }}>
-                মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
+                মাত্র ২ ঘণ্টায় বুঝে নিন: কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
               </p>
 
               <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "1.25rem" }}>
@@ -282,7 +282,7 @@ export default function AcademyPage() {
       <section style={{ paddingTop: "1.25rem", paddingBottom: "3rem" }}>
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           {/* ═══════════════════════════════════════════════════════════════
-              THE ERAAO LEARNING CYCLE — Authentic Core Pedagogy
+              THE ERAAO LEARNING CYCLE: Authentic Core Pedagogy
               ═══════════════════════════════════════════════════════════════ */}
           <div id="learning-cycle" style={{
             marginTop: "0.5rem",
@@ -300,7 +300,7 @@ export default function AcademyPage() {
                 From Understanding Context to Spontaneous Application
               </h3>
               <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", maxWidth: "34rem", margin: "0.35rem auto 0 auto" }}>
-                Every class moves through the same six stages. No memorizing rules or reciting scripts — you build, speak, and retain naturally.
+                Every class moves through the same six stages. No memorizing rules or reciting scripts: you build, speak, and retain naturally.
               </p>
             </div>
 
@@ -435,7 +435,7 @@ export default function AcademyPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          CATALOG SECTION — Interactive Filters & Course Grid
+          CATALOG SECTION: Interactive Filters & Course Grid
           ═══════════════════════════════════════════════════════════════ */}
       <section id="bootcamps" style={{ padding: "3.5rem 0", background: "var(--bg-secondary)" }}>
         <div className="container">
@@ -536,7 +536,7 @@ export default function AcademyPage() {
               </div>
 
               <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                Showing {courses.length > 0 ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, total)} of {total} bootcamps
+                Showing {courses.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min(page * pageSize, total)} of {total} bootcamps
               </span>
             </div>
 
@@ -721,7 +721,7 @@ export default function AcademyPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          WHY ERAAO ACADEMY — Advantage & Learning Methodology
+          WHY ERAAO ACADEMY: Advantage & Learning Methodology
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
         <div className="container">
