@@ -29,6 +29,7 @@ class EnrollmentRepository:
             .where(Enrollment.user_id == user_id)
             .options(
                 selectinload(Enrollment.lesson_progress),
+                selectinload(Enrollment.cohort),
                 selectinload(Enrollment.course).selectinload(Course.modules).selectinload(Module.lessons)
             )
             .order_by(Enrollment.enrolled_at.desc())

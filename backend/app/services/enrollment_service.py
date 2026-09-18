@@ -150,6 +150,7 @@ class EnrollmentService:
                 selectinload(Enrollment.course)
                 .selectinload(Course.modules)
                 .selectinload(Module.lessons),
+                selectinload(Enrollment.cohort),
                 selectinload(Enrollment.lesson_progress)
             )
         )

@@ -114,6 +114,17 @@ async def get_enrollment_detail(
         "id": str(enrollment.id),
         "user_id": str(enrollment.user_id),
         "status": enrollment.status.value,
+        "cohort_id": str(enrollment.cohort_id) if enrollment.cohort_id else None,
+        "cohort": {
+            "id": str(enrollment.cohort.id),
+            "title": enrollment.cohort.title,
+            "meeting_url": enrollment.cohort.meeting_url,
+            "meeting_passcode": enrollment.cohort.meeting_passcode,
+            "schedule_info": enrollment.cohort.schedule_info,
+            "announcement": enrollment.cohort.announcement,
+            "start_date": enrollment.cohort.start_date.isoformat(),
+            "end_date": enrollment.cohort.end_date.isoformat(),
+        } if enrollment.cohort else None,
         "course": CourseRead.model_validate(enrollment.course).model_dump(),
         "completed_lessons": [str(p.lesson_id) for p in enrollment.lesson_progress if p.status.value == "completed"],
         "certificate": {

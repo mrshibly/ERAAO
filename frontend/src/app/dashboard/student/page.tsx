@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import {
   BookOpen, Award, CheckCircle2, Clock, Play, ShieldCheck,
-  ArrowRight, Sparkles, HelpCircle, Activity, Compass
+  ArrowRight, Sparkles, HelpCircle, Activity, Compass,
+  Video, Calendar, Megaphone, Key, ExternalLink, Users
 } from "lucide-react";
 import StudentOnboardingModal from "@/components/StudentOnboardingModal";
 import BrandLoader from "@/components/BrandLoader";
@@ -76,6 +77,7 @@ export default function StudentDashboard() {
   const currentActiveCourse = activeCourses[0];
   const activeProgress = currentActiveCourse ? Math.round(currentActiveCourse.progress ?? currentActiveCourse.completion_pct ?? 0) : 0;
   const completedLessonsTotal = activeCourses.reduce((acc, c) => acc + Math.round((((c.progress ?? c.completion_pct ?? 0)) / 100) * 10), 0);
+  const activeCohortCourse = activeCourses.find(c => c.cohort && (c.cohort.meeting_url || c.cohort.schedule_info || c.cohort.announcement));
 
   return (
     <div style={{ paddingBottom: "3rem" }}>
@@ -209,6 +211,105 @@ export default function StudentDashboard() {
         </div>
       </div>
 
+      {/* Live Cohort Classroom Hub Banner */}
+      {activeCohortCourse && (
+        <div className="card anim-fade-up" style={{
+          background: "linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(99, 102, 241, 0.08))",
+          border: "1px solid rgba(14, 165, 233, 0.3)",
+          borderRadius: "var(--radius-lg)",
+          padding: "1.5rem 1.75rem",
+          marginBottom: "2.25rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.75rem"
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <div style={{
+                width: "42px", height: "42px", borderRadius: "var(--radius-md)",
+                background: "var(--accent-blue-bg)", color: "var(--accent-blue)",
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}>
+                <Video size={22} />
+              </div>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span className="badge badge-blue">Live Cohort Session</span>
+                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", fontWeight: 600 }}>
+                    {activeCohortCourse.course?.title}
+                  </span>
+                </div>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "0.2rem" }}>
+                  {activeCohortCourse.cohort?.title}
+                </h3>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              {activeCohortCourse.cohort?.meeting_passcode && (
+                <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                  <Key size={13} /> Passcode: <code>{activeCohortCourse.cohort.meeting_passcode}</code>
+                </span>
+              )}
+              {activeCohortCourse.cohort?.meeting_url ? (
+                <a
+                  href={activeCohortCourse.cohort.meeting_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-accent btn-sm"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", textDecoration: "none" }}
+                >
+                  <Video size={14} />
+                  <span>Join Live Classroom</span>
+                  <ExternalLink size={12} />
+                </a>
+              ) : (
+                <Link
+                  href={`/learn/${activeCohortCourse.id}`}
+                  className="btn btn-secondary btn-sm"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+                >
+                  <Play size={14} />
+                  <span>Enter Study Room</span>
+                </Link>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "1.5rem", fontSize: "0.82rem", color: "var(--text-secondary)", flexWrap: "wrap" }}>
+            {activeCohortCourse.cohort?.schedule_info && (
+              <span style={{ display: "flex", alignItems: "center", gap: "0.35rem", color: "var(--accent-blue)", fontWeight: 600 }}>
+                <Clock size={14} /> Schedule: {activeCohortCourse.cohort.schedule_info}
+              </span>
+            )}
+            {activeCohortCourse.cohort?.start_date && (
+              <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                <Calendar size={14} /> Cohort Dates: {new Date(activeCohortCourse.cohort.start_date).toLocaleDateString()} to {new Date(activeCohortCourse.cohort.end_date).toLocaleDateString()}
+              </span>
+            )}
+          </div>
+
+          {activeCohortCourse.cohort?.announcement && (
+            <div style={{
+              padding: "0.65rem 0.85rem",
+              background: "rgba(0, 0, 0, 0.2)",
+              borderRadius: "var(--radius-sm)",
+              fontSize: "0.82rem",
+              color: "var(--text-primary)",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "0.5rem"
+            }}>
+              <Megaphone size={15} style={{ color: "var(--accent-blue)", flexShrink: 0, marginTop: "2px" }} />
+              <div>
+                <strong style={{ color: "var(--accent-blue)" }}>Cohort Announcement: </strong>
+                <span>{activeCohortCourse.cohort.announcement}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Main Content Layout: Symmetric 2-Column Grid */}
       <div style={{
         display: "grid",
@@ -289,10 +390,17 @@ export default function StudentDashboard() {
 
                     <div style={{ padding: "1.25rem", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                       <div>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                          <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", lineHeight: "1.3" }}>
-                            {course.title || "Untitled Course"}
-                          </h3>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.5rem" }}>
+                          <div>
+                            <h3 style={{ fontSize: "var(--text-base)", fontWeight: 800, color: "var(--text-primary)", lineHeight: "1.3" }}>
+                              {course.title || "Untitled Course"}
+                            </h3>
+                            {item.cohort && (
+                              <span className="badge badge-purple" style={{ fontSize: "10px", marginTop: "0.35rem", display: "inline-flex", alignItems: "center", gap: "0.25rem" }}>
+                                <Users size={10} /> {item.cohort.title}
+                              </span>
+                            )}
+                          </div>
                           <span className={`badge ${progress >= 100 ? "badge-green" : "badge-blue"}`}>
                             {progress >= 100 ? "Completed" : `${progress}%`}
                           </span>
