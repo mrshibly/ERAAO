@@ -8,7 +8,10 @@ import CustomModal from "@/components/CustomModal";
 import {
   BookOpen, CheckSquare, Square, ArrowLeft, PlayCircle, FileText,
   Award, HelpCircle, Download, Menu, X, ChevronLeft, ChevronRight,
-  Keyboard, Volume2, VolumeX, Maximize, CheckCircle2
+  Keyboard, Volume2, VolumeX, Maximize, CheckCircle2,
+  Video, Calendar, Clock, Megaphone, Key, ExternalLink,
+  FileCode, Edit3, MessageSquare, Send, Check, Sparkles, FolderDown,
+  FileSpreadsheet, Terminal, Info, Lock, XCircle, GitBranch, UploadCloud
 } from "lucide-react";
 
 interface Lesson {
@@ -20,6 +23,7 @@ interface Lesson {
   content_body?: string;
   content?: string;
   duration_minutes?: number;
+  attachments?: string | any[];
 }
 
 interface Module {
@@ -31,10 +35,12 @@ interface Module {
 export default function LearnPage() {
   const params = useParams();
   const router = useRouter();
-  const { token, loading } = useAuth();
+  const { token, user, loading } = useAuth();
   const enrollmentId = params.enrollment_id as string;
+  const isAdminOrInstructor = user?.roles?.some(r => r === "admin" || r === "instructor");
 
   const [course, setCourse] = useState<any>(null);
+  const [cohort, setCohort] = useState<any>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
   const [completedLessonIds, setCompletedLessonIds] = useState<Set<string>>(new Set());
@@ -42,20 +48,44 @@ export default function LearnPage() {
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 4 Responsive Workspace Tabs
+  const [activeTab, setActiveTab] = useState<"lecture" | "resources" | "notes" | "ask">("lecture");
+
   // Mobile syllabus drawer
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
 
-  // Video player reference & auto-pause
+  // Video player reference & playback speed
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
 
-  // Quiz state
+  // Personal notes state
+  const [notes, setNotes] = useState<string>("");
+
+  // Ask instructor ticket state
+  const [askSubject, setAskSubject] = useState<string>("");
+  const [askBody, setAskBody] = useState<string>("");
+  const [askSubmitting, setAskSubmitting] = useState<boolean>(false);
+  const [askSuccessMessage, setAskSuccessMessage] = useState<string | null>(null);
+
+  // Server-Evaluated Quiz State
+  const [quizData, setQuizData] = useState<any>(null);
+  const [quizLoading, setQuizLoading] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<{ [qIdx: number]: number }>({});
+  const [quizSubmitting, setQuizSubmitting] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [quizPassed, setQuizPassed] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
+  const [quizResults, setQuizResults] = useState<any[]>([]);
+
+  // Project Assignment Submission State
+  const [assignmentData, setAssignmentData] = useState<any>(null);
+  const [assignmentLoading, setAssignmentLoading] = useState(false);
+  const [assignmentUrl, setAssignmentUrl] = useState("");
+  const [assignmentNotes, setAssignmentNotes] = useState("");
+  const [assignmentSubmitting, setAssignmentSubmitting] = useState(false);
 
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
@@ -78,14 +108,214 @@ export default function LearnPage() {
     }
   }, []);
 
-  // Reset quiz states & pause video when lesson changes
+  // Reset lesson-specific states and fetch assessment data when activeLesson changes
   useEffect(() => {
     setQuizAnswers({});
     setQuizSubmitted(false);
     setQuizPassed(false);
     setQuizScore(0);
+    setQuizResults([]);
     setIsPlaying(false);
-  }, [activeLesson]);
+    setActiveTab("lecture");
+    setAskSuccessMessage(null);
+    setAskSubject(activeLesson ? `Question regarding ${activeLesson.title}` : "");
+    setAskBody("");
+
+    // Load saved notes from localStorage
+    if (activeLesson && course) {
+      try {
+        const savedNote = localStorage.getItem(`note-${course.id}-${activeLesson.id}`);
+        setNotes(savedNote || "");
+      } catch {
+        setNotes("");
+      }
+    }
+
+    const lesType = (activeLesson?.content_type || activeLesson?.type || "").toLowerCase();
+
+    // Fetch sanitized quiz if quiz lesson
+    if (lesType === "quiz" && activeLesson && token) {
+      setQuizLoading(true);
+      fetch(`/api/v1/enrollments/${enrollmentId}/lessons/${activeLesson.id}/quiz`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          setQuizData(data);
+        })
+        .catch(() => setQuizData(null))
+        .finally(() => setQuizLoading(false));
+    }
+
+    // Fetch assignment status if assignment lesson
+    if (lesType === "assignment" && activeLesson && token) {
+      setAssignmentLoading(true);
+      fetch(`/api/v1/enrollments/${enrollmentId}/lessons/${activeLesson.id}/assignment`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          setAssignmentData(data);
+          if (data) {
+            setAssignmentUrl(data.submission_url || "");
+            setAssignmentNotes(data.notes || "");
+          } else {
+            setAssignmentUrl("");
+            setAssignmentNotes("");
+          }
+        })
+        .catch(() => setAssignmentData(null))
+        .finally(() => setAssignmentLoading(false));
+    }
+  }, [activeLesson, course, token, enrollmentId]);
+
+  const handleSubmitQuiz = async () => {
+    if (!activeLesson || !quizData?.questions || quizData.questions.length === 0) return;
+    setQuizSubmitting(true);
+    try {
+      const res = await fetch(`/api/v1/enrollments/${enrollmentId}/lessons/${activeLesson.id}/quiz/submit`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ answers: quizAnswers })
+      });
+      if (res.ok) {
+        const result = await res.json();
+        setQuizScore(result.score);
+        setQuizPassed(result.passed);
+        setQuizResults(result.results || []);
+        setQuizSubmitted(true);
+        if (result.passed) {
+          setCompletedLessonIds(prev => new Set(prev).add(activeLesson.id));
+        }
+      } else {
+        const err = await res.json().catch(() => ({}));
+        setModalConfig({
+          isOpen: true,
+          type: "danger",
+          title: "Examination Submission Error",
+          message: err.detail || "Failed to process examination answers."
+        });
+      }
+    } catch {
+      setModalConfig({
+        isOpen: true,
+        type: "danger",
+        title: "Network Error",
+        message: "Failed to connect to assessment engine."
+      });
+    } finally {
+      setQuizSubmitting(false);
+    }
+  };
+
+  const handleSubmitAssignment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activeLesson || !assignmentUrl.trim()) return;
+    setAssignmentSubmitting(true);
+    try {
+      const res = await fetch(`/api/v1/enrollments/${enrollmentId}/lessons/${activeLesson.id}/assignment`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          submission_url: assignmentUrl.trim(),
+          notes: assignmentNotes.trim() || null
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAssignmentData(data);
+        setModalConfig({
+          isOpen: true,
+          type: "success",
+          title: "Assignment Submitted",
+          message: "Your project implementation has been recorded for faculty review."
+        });
+      } else {
+        const err = await res.json().catch(() => ({}));
+        setModalConfig({
+          isOpen: true,
+          type: "danger",
+          title: "Submission Error",
+          message: err.detail || "Failed to submit project assignment."
+        });
+      }
+    } catch {
+      setModalConfig({
+        isOpen: true,
+        type: "danger",
+        title: "Network Error",
+        message: "Failed to connect to assignment submission engine."
+      });
+    } finally {
+      setAssignmentSubmitting(false);
+    }
+  };
+
+  const handleNoteChange = (text: string) => {
+    setNotes(text);
+    if (activeLesson && course) {
+      try {
+        localStorage.setItem(`note-${course.id}-${activeLesson.id}`, text);
+      } catch {
+        // Ignore localStorage errors
+      }
+    }
+  };
+
+  const handleExportNotes = () => {
+    if (!activeLesson) return;
+    const blob = new Blob([notes], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `Notes_${activeLesson.title.replace(/[^a-zA-Z0-9]/g, "_")}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleAskSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!askBody.trim()) return;
+    setAskSubmitting(true);
+    try {
+      const res = await fetch("/api/v1/tickets", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          subject: askSubject.trim() || `Question regarding ${activeLesson?.title}`,
+          body: `[Course: ${course?.title} | Lesson: ${activeLesson?.title}]\n\n${askBody.trim()}`
+        })
+      });
+
+      if (res.ok) {
+        setAskSuccessMessage("Your question has been dispatched to your instructor. You will be notified when they reply!");
+        setAskBody("");
+      } else {
+        const err = await res.json();
+        alert(err.detail || "Failed to submit question.");
+      }
+    } catch {
+      alert("Error sending question to instructor.");
+    } finally {
+      setAskSubmitting(false);
+    }
+  };
+
+  const changePlaybackSpeed = (speed: number) => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = speed;
+    }
+    setPlaybackSpeed(speed);
+  };
 
   // Auto-pause video when opening mobile syllabus drawer
   useEffect(() => {
@@ -110,6 +340,9 @@ export default function LearnPage() {
         if (res.ok) {
           const data = await res.json();
           setCourse(data.course);
+          if (data.cohort) {
+            setCohort(data.cohort);
+          }
           const mods: Module[] = data.course?.modules || [];
           setModules(mods);
 
@@ -212,8 +445,38 @@ export default function LearnPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [hasNext, hasPrevious, currentLessonIndex, allLessons, pauseVideo]);
 
+  const isLessonUnlocked = (lessonIndex: number) => {
+    if (lessonIndex === 0) return true;
+    if (isAdminOrInstructor) return true;
+    const prevLesson = allLessons[lessonIndex - 1];
+    return prevLesson ? completedLessonIds.has(prevLesson.id) : true;
+  };
+
   const handleToggleComplete = async (lessonId: string) => {
+    const targetLes = allLessons.find(l => l.id === lessonId);
+    const lesType = (targetLes?.content_type || targetLes?.type || "").toLowerCase();
     const isDone = completedLessonIds.has(lessonId);
+
+    if (!isDone && lesType === "quiz") {
+      setModalConfig({
+        isOpen: true,
+        type: "info",
+        title: "Examination Required",
+        message: "This lesson is an interactive examination. You must pass the quiz with a 70% score or higher to earn completion."
+      });
+      return;
+    }
+
+    if (!isDone && lesType === "assignment") {
+      setModalConfig({
+        isOpen: true,
+        type: "info",
+        title: "Faculty Evaluation Required",
+        message: "This lesson is a project assignment. Please submit your project repository for instructor grading."
+      });
+      return;
+    }
+
     const newDoneState = !isDone;
 
     try {
@@ -326,6 +589,43 @@ export default function LearnPage() {
     activeLesson.content_url.endsWith(".m3u8")
   );
 
+  // Parse attachments from activeLesson
+  let parsedAttachments: any[] = [];
+  if (activeLesson) {
+    const rawAtt = (activeLesson as any).attachments;
+    if (rawAtt) {
+      try {
+        parsedAttachments = typeof rawAtt === "string" ? JSON.parse(rawAtt) : rawAtt;
+        if (!Array.isArray(parsedAttachments)) parsedAttachments = [];
+      } catch {
+        parsedAttachments = [];
+      }
+    }
+    // Also include content_url if it's a downloadable material
+    if (activeLesson.content_type === "material" && activeLesson.content_url && !parsedAttachments.some(a => a.url === activeLesson.content_url)) {
+      parsedAttachments.unshift({
+        id: "primary_material",
+        title: "Primary Course Document",
+        url: activeLesson.content_url,
+        type: "Course Document"
+      });
+    }
+  }
+
+  const getAttachmentIcon = (type?: string) => {
+    switch ((type || "").toLowerCase()) {
+      case "starter code":
+      case "source code":
+        return <Terminal size={18} style={{ color: "var(--accent-blue)" }} />;
+      case "worksheet":
+        return <FileSpreadsheet size={18} style={{ color: "#10b981" }} />;
+      case "audio pack":
+        return <Volume2 size={18} style={{ color: "#f59e0b" }} />;
+      default:
+        return <FileCode size={18} style={{ color: "var(--accent-blue)" }} />;
+    }
+  };
+
   return (
     <div className="learn-layout-container">
       
@@ -399,10 +699,23 @@ export default function LearnPage() {
                 {mod.lessons?.map((les: Lesson) => {
                   const isActive = activeLesson?.id === les.id;
                   const isDone = completedLessonIds.has(les.id);
+                  const lIdx = allLessons.findIndex(l => l.id === les.id);
+                  const isUnlocked = isLessonUnlocked(lIdx);
+                  const lesType = (les.content_type || les.type || "").toLowerCase();
+
                   return (
                     <button
                       key={les.id}
                       onClick={() => {
+                        if (!isUnlocked) {
+                          setModalConfig({
+                            isOpen: true,
+                            type: "info",
+                            title: "Prerequisite Required",
+                            message: "Please complete the preceding curriculum lesson or evaluation to unlock this module."
+                          });
+                          return;
+                        }
                         pauseVideo();
                         setActiveLesson(les);
                         setMobileDrawerOpen(false);
@@ -416,16 +729,21 @@ export default function LearnPage() {
                         border: "none",
                         background: isActive ? "var(--accent-blue-bg)" : "transparent",
                         borderLeft: isActive ? "3px solid var(--accent-blue)" : "3px solid transparent",
-                        cursor: "pointer",
+                        cursor: isUnlocked ? "pointer" : "not-allowed",
+                        opacity: isUnlocked ? 1 : 0.5,
                         textAlign: "left",
-                        color: isActive ? "var(--accent-blue)" : "var(--text-primary)",
+                        color: isActive ? "var(--accent-blue)" : isUnlocked ? "var(--text-primary)" : "var(--text-muted)",
                         transition: "var(--transition-fast)"
                       }}
                     >
                       <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", width: "85%" }}>
-                        {(les.content_type || les.type) === "quiz" ? (
+                        {!isUnlocked ? (
+                          <Lock size={15} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
+                        ) : lesType === "quiz" ? (
                           <HelpCircle size={16} style={{ color: "var(--accent-violet)", flexShrink: 0 }} />
-                        ) : (les.content_type || les.type) === "video" ? (
+                        ) : lesType === "assignment" ? (
+                          <FileCode size={16} style={{ color: "var(--accent-blue)", flexShrink: 0 }} />
+                        ) : lesType === "video" ? (
                           <PlayCircle size={16} style={{ color: "var(--accent-blue)", flexShrink: 0 }} />
                         ) : (
                           <FileText size={16} style={{ color: "var(--accent-teal)", flexShrink: 0 }} />
@@ -437,12 +755,18 @@ export default function LearnPage() {
                       <span
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleToggleComplete(les.id);
+                          if (isUnlocked) {
+                            handleToggleComplete(les.id);
+                          }
                         }}
-                        style={{ color: isDone ? "var(--color-success)" : "var(--text-muted)", cursor: "pointer", padding: "4px" }}
-                        title={isDone ? "Mark as not completed" : "Mark as completed"}
+                        style={{
+                          color: isDone ? "var(--color-success)" : "var(--text-muted)",
+                          cursor: isUnlocked ? "pointer" : "not-allowed",
+                          padding: "4px"
+                        }}
+                        title={!isUnlocked ? "Prerequisite locked" : isDone ? "Mark as not completed" : "Mark as completed"}
                       >
-                        {isDone ? <CheckSquare size={16} /> : <Square size={16} />}
+                        {!isUnlocked ? <Lock size={13} /> : isDone ? <CheckSquare size={16} /> : <Square size={16} />}
                       </span>
                     </button>
                   );
@@ -469,22 +793,99 @@ export default function LearnPage() {
       {/* Right panel: Main Lesson Content Area */}
       <div className="learn-main-content">
         
+        {/* Live Cohort Classroom Hub Banner */}
+        {cohort && (cohort.meeting_url || cohort.schedule_info || cohort.announcement) && (
+          <div style={{
+            background: "linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(99, 102, 241, 0.08))",
+            border: "1px solid rgba(14, 165, 233, 0.25)",
+            borderRadius: "var(--radius-lg)",
+            padding: "1.25rem 1.75rem",
+            marginBottom: "1.75rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.75rem"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <span className="badge badge-blue" style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <span className="pulse-dot-live" />
+                  <Video size={13} /> Cohort Live Classroom
+                </span>
+                <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text-primary)" }}>
+                  {cohort.title}
+                </span>
+              </div>
+
+              {cohort.meeting_url && (
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  {cohort.meeting_passcode && (
+                    <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                      <Key size={13} /> Passcode: <code>{cohort.meeting_passcode}</code>
+                    </span>
+                  )}
+                  <a
+                    href={cohort.meeting_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-accent btn-sm glow-blue"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", textDecoration: "none" }}
+                  >
+                    <Video size={14} />
+                    <span>Join Live Class</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: "flex", gap: "1.5rem", fontSize: "0.82rem", color: "var(--text-secondary)", flexWrap: "wrap" }}>
+              {cohort.schedule_info && (
+                <span style={{ display: "flex", alignItems: "center", gap: "0.35rem", color: "var(--accent-blue)", fontWeight: 600 }}>
+                  <Clock size={14} /> Schedule: {cohort.schedule_info}
+                </span>
+              )}
+              <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                <Calendar size={14} /> Cohort Dates: {new Date(cohort.start_date).toLocaleDateString()} to {new Date(cohort.end_date).toLocaleDateString()}
+              </span>
+            </div>
+
+            {cohort.announcement && (
+              <div style={{
+                padding: "0.6rem 0.85rem",
+                background: "rgba(0, 0, 0, 0.2)",
+                borderRadius: "var(--radius-sm)",
+                fontSize: "0.82rem",
+                color: "var(--text-primary)",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "0.5rem"
+              }}>
+                <Megaphone size={15} style={{ color: "var(--accent-blue)", flexShrink: 0, marginTop: "2px" }} />
+                <div>
+                  <strong style={{ color: "var(--accent-blue)" }}>Instructor Announcement: </strong>
+                  <span>{cohort.announcement}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Graduation Banner when completed */}
         {totalLessons > 0 && completedLessonIds.size === totalLessons && (
           <div style={{
             background: "linear-gradient(135deg, var(--accent-blue), var(--accent-violet))",
             color: "white",
             padding: "2rem 2.5rem",
-            margin: "1.5rem auto 0 auto",
-            maxWidth: "52rem",
-            width: "calc(100% - 2rem)",
+            marginBottom: "1.75rem",
             borderRadius: "var(--radius-lg)",
             boxShadow: "var(--shadow-md)"
           }}>
             <span className="badge" style={{ background: "rgba(255,255,255,0.25)", color: "white", marginBottom: "0.5rem" }}>
               Course Completed!
             </span>
-            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginTop: "0.5rem" }}>Congratulations on Completing the Bootcamp!</h2>
+            <h2 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, marginTop: "0.5rem" }}>
+              Congratulations on Completing the Track!
+            </h2>
             <p style={{ opacity: 0.9, fontSize: "var(--text-sm)", marginTop: "0.35rem" }}>
               You have completed all curriculum requirements and earned your official certificate!
             </p>
@@ -527,82 +928,167 @@ export default function LearnPage() {
 
             {/* VIDEO PLAYER COMPONENT */}
             {(activeLesson.content_type || activeLesson.type) === "video" && (
-              <div className="learn-video-wrapper">
-                {embedUrl ? (
-                  <iframe
-                    src={embedUrl}
-                    className="learn-video-element"
-                    title={activeLesson.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : isDirectVideo ? (
-                  <video
-                    ref={videoRef}
-                    src={activeLesson.content_url}
-                    controls
-                    className="learn-video-element"
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    onEnded={() => {
-                      if (!completedLessonIds.has(activeLesson.id)) {
-                        handleToggleComplete(activeLesson.id);
-                      }
-                    }}
-                  />
-                ) : (
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", color: "white" }}>
-                    <PlayCircle size={64} style={{ color: "var(--accent-blue)", opacity: 0.9 }} />
-                    <span style={{ fontSize: "var(--text-sm)", color: "#94a3b8" }}>
-                      {activeLesson.content_url || "Secure Practitioner Video Lecture"}
-                    </span>
+              <div style={{ marginBottom: "1.75rem" }}>
+                <div className="learn-video-wrapper">
+                  {embedUrl ? (
+                    <iframe
+                      src={embedUrl}
+                      className="learn-video-element"
+                      title={activeLesson.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : isDirectVideo ? (
+                    <video
+                      ref={videoRef}
+                      src={activeLesson.content_url}
+                      controls
+                      className="learn-video-element"
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                      onEnded={() => {
+                        if (!completedLessonIds.has(activeLesson.id)) {
+                          handleToggleComplete(activeLesson.id);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", color: "white" }}>
+                      <PlayCircle size={64} style={{ color: "var(--accent-blue)", opacity: 0.9 }} />
+                      <span style={{ fontSize: "var(--text-sm)", color: "#94a3b8" }}>
+                        {activeLesson.content_url || "Secure Practitioner Video Lecture"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Video Playback Speed Controls for Direct Video */}
+                {isDirectVideo && (
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0.5rem 1rem",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border-color)",
+                    borderRadius: "0 0 var(--radius-md) var(--radius-md)",
+                    fontSize: "0.8rem"
+                  }}>
+                    <span style={{ color: "var(--text-secondary)", fontWeight: 600 }}>Playback Rate:</span>
+                    <div style={{ display: "flex", gap: "0.35rem" }}>
+                      {[0.75, 1, 1.25, 1.5, 2].map((speed) => (
+                        <button
+                          key={speed}
+                          type="button"
+                          onClick={() => changePlaybackSpeed(speed)}
+                          style={{
+                            padding: "0.2rem 0.6rem",
+                            borderRadius: "var(--radius-sm)",
+                            border: playbackSpeed === speed ? "1px solid var(--accent-blue)" : "1px solid var(--border-color)",
+                            background: playbackSpeed === speed ? "var(--accent-blue)" : "transparent",
+                            color: playbackSpeed === speed ? "white" : "var(--text-secondary)",
+                            fontWeight: playbackSpeed === speed ? 700 : 500,
+                            cursor: "pointer",
+                            fontSize: "0.75rem"
+                          }}
+                        >
+                          {speed}x
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
             )}
 
-            {/* QUIZ LESSON PLAYER */}
-            {(activeLesson.content_type || activeLesson.type) === "quiz" && (
-              (() => {
-                let quizQuestions: any[] = [];
-                let parseError = false;
-                try {
-                  const raw = activeLesson.content_body || "[]";
-                  const parsed = JSON.parse(raw);
-                  if (Array.isArray(parsed)) {
-                    quizQuestions = parsed;
-                  } else if (parsed && parsed.questions && Array.isArray(parsed.questions)) {
-                    quizQuestions = parsed.questions;
-                  } else if (parsed && parsed.question) {
-                    quizQuestions = [parsed];
-                  }
-                } catch {
-                  parseError = true;
-                }
+            {/* 4 WORKSPACE TABS */}
+            <div style={{ display: "flex", gap: "0.5rem", borderBottom: "1px solid var(--border-color)", marginBottom: "1.75rem", overflowX: "auto" }}>
+              <button
+                onClick={() => setActiveTab("lecture")}
+                style={{
+                  padding: "0.75rem 1.25rem",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === "lecture" ? "2px solid var(--accent-blue)" : "2px solid transparent",
+                  color: activeTab === "lecture" ? "var(--accent-blue)" : "var(--text-secondary)",
+                  fontWeight: activeTab === "lecture" ? 700 : 500,
+                  fontSize: "0.875rem",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                <BookOpen size={16} /> Lecture
+              </button>
 
-                const handleSubmitQuiz = () => {
-                  if (quizQuestions.length === 0) return;
-                  let correctCount = 0;
-                  quizQuestions.forEach((q: any, idx: number) => {
-                    const targetAns = q.answer !== undefined ? q.answer : q.answer_index;
-                    if (quizAnswers[idx] === targetAns) {
-                      correctCount++;
-                    }
-                  });
-                  const score = Math.round((correctCount / quizQuestions.length) * 100);
-                  setQuizScore(score);
-                  setQuizSubmitted(true);
-                  const passed = score >= 70;
-                  setQuizPassed(passed);
+              <button
+                onClick={() => setActiveTab("resources")}
+                style={{
+                  padding: "0.75rem 1.25rem",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === "resources" ? "2px solid var(--accent-blue)" : "2px solid transparent",
+                  color: activeTab === "resources" ? "var(--accent-blue)" : "var(--text-secondary)",
+                  fontWeight: activeTab === "resources" ? 700 : 500,
+                  fontSize: "0.875rem",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                <FileText size={16} /> Resources & Worksheets ({parsedAttachments.length})
+              </button>
 
-                  if (passed) {
-                    if (!completedLessonIds.has(activeLesson.id)) {
-                      handleToggleComplete(activeLesson.id);
-                    }
-                  }
-                };
+              <button
+                onClick={() => setActiveTab("notes")}
+                style={{
+                  padding: "0.75rem 1.25rem",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === "notes" ? "2px solid var(--accent-blue)" : "2px solid transparent",
+                  color: activeTab === "notes" ? "var(--accent-blue)" : "var(--text-secondary)",
+                  fontWeight: activeTab === "notes" ? 700 : 500,
+                  fontSize: "0.875rem",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                <Edit3 size={16} /> Personal Notes {notes.trim() && <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent-blue)" }} />}
+              </button>
 
-                return (
+              <button
+                onClick={() => setActiveTab("ask")}
+                style={{
+                  padding: "0.75rem 1.25rem",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === "ask" ? "2px solid var(--accent-blue)" : "2px solid transparent",
+                  color: activeTab === "ask" ? "var(--accent-blue)" : "var(--text-secondary)",
+                  fontWeight: activeTab === "ask" ? 700 : 500,
+                  fontSize: "0.875rem",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                <MessageSquare size={16} /> Ask Instructor
+              </button>
+            </div>
+
+            {/* TAB 1: LECTURE WORKSPACE */}
+            {activeTab === "lecture" && (
+              <div>
+                {/* QUIZ LESSON PLAYER (Server-Evaluated Assessment) */}
+                {(activeLesson.content_type || activeLesson.type) === "quiz" && (
                   <div className="card" style={{ padding: "2.5rem", boxShadow: "var(--shadow-sm)", marginBottom: "2rem" }}>
                     <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "1rem", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <h3 style={{ fontWeight: 800, fontSize: "var(--text-lg)", display: "flex", alignItems: "center", gap: "0.5rem", margin: 0, color: "var(--text-primary)" }}>
@@ -613,109 +1099,171 @@ export default function LearnPage() {
                       </span>
                     </div>
 
-                    {parseError || quizQuestions.length === 0 ? (
+                    {quizLoading ? (
+                      <div style={{ padding: "2.5rem", textAlign: "center", color: "var(--text-secondary)" }}>
+                        <p>Loading examination questions from secure assessment engine...</p>
+                      </div>
+                    ) : !quizData?.questions || quizData.questions.length === 0 ? (
                       <div className="empty-state">
                         <HelpCircle size={40} style={{ margin: "0 auto 1rem auto", color: "var(--text-muted)", opacity: 0.5 }} />
-                        <p style={{ fontWeight: 600 }}>Practice exam questions are not configured yet.</p>
+                        <p style={{ fontWeight: 600 }}>Practice exam questions are not configured yet for this module.</p>
                       </div>
                     ) : (
                       <div>
                         {!quizSubmitted ? (
                           <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                            {quizQuestions.map((q: any, qIdx: number) => (
-                              <div key={qIdx} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                            {quizData.questions.map((q: any, qIdx: number) => (
+                              <div key={q.index ?? qIdx} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                                 <h4 style={{ fontWeight: 700, fontSize: "var(--text-base)", color: "var(--text-primary)" }}>
                                   {qIdx + 1}. {q.question}
                                 </h4>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
                                   {q.options?.map((opt: string, oIdx: number) => {
-                                    const isChecked = quizAnswers[qIdx] === oIdx;
+                                    const isChecked = quizAnswers[q.index ?? qIdx] === oIdx;
+                                    const optionLetter = String.fromCharCode(65 + oIdx);
                                     return (
                                       <label
                                         key={oIdx}
                                         style={{
                                           display: "flex",
                                           alignItems: "center",
-                                          gap: "0.75rem",
-                                          padding: "0.75rem 1rem",
+                                          gap: "0.85rem",
+                                          padding: "0.85rem 1.15rem",
                                           border: isChecked ? "2px solid var(--accent-violet)" : "1px solid var(--border-color)",
-                                          background: isChecked ? "rgba(124, 58, 237, 0.04)" : "transparent",
+                                          background: isChecked ? "rgba(124, 58, 237, 0.05)" : "var(--card-bg)",
                                           borderRadius: "var(--radius-md)",
                                           cursor: "pointer",
                                           fontSize: "var(--text-sm)",
                                           fontWeight: isChecked ? 600 : 500,
-                                          color: "var(--text-primary)"
+                                          color: "var(--text-primary)",
+                                          transition: "var(--transition-all)",
+                                          boxShadow: isChecked ? "0 0 16px -3px rgba(139, 92, 246, 0.2)" : "none"
                                         }}
                                       >
+                                        <span style={{
+                                          width: "26px",
+                                          height: "26px",
+                                          borderRadius: "50%",
+                                          background: isChecked ? "var(--accent-violet)" : "var(--bg-secondary)",
+                                          color: isChecked ? "white" : "var(--text-secondary)",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          fontSize: "0.75rem",
+                                          fontWeight: 700,
+                                          flexShrink: 0,
+                                          transition: "var(--transition-all)",
+                                          border: isChecked ? "none" : "1px solid var(--border-color)"
+                                        }}>
+                                          {optionLetter}
+                                        </span>
                                         <input
                                           type="radio"
-                                          name={`question-${qIdx}`}
+                                          name={`question-${q.index ?? qIdx}`}
                                           checked={isChecked}
-                                          onChange={() => setQuizAnswers(prev => ({ ...prev, [qIdx]: oIdx }))}
-                                          style={{ accentColor: "var(--accent-violet)" }}
+                                          onChange={() => setQuizAnswers(prev => ({ ...prev, [q.index ?? qIdx]: oIdx }))}
+                                          style={{ display: "none" }}
                                         />
-                                        <span>{opt}</span>
+                                        <span style={{ flex: 1, lineHeight: 1.5 }}>{opt}</span>
                                       </label>
                                     );
                                   })}
                                 </div>
                               </div>
                             ))}
-                            
+
                             <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end" }}>
                               <button
                                 onClick={handleSubmitQuiz}
-                                disabled={Object.keys(quizAnswers).length < quizQuestions.length}
+                                disabled={quizSubmitting || Object.keys(quizAnswers).length < quizData.questions.length}
                                 className="btn btn-accent"
                                 style={{
-                                  backgroundColor: Object.keys(quizAnswers).length < quizQuestions.length ? "var(--text-muted)" : "var(--accent-violet)",
-                                  cursor: Object.keys(quizAnswers).length < quizQuestions.length ? "not-allowed" : "pointer"
+                                  backgroundColor: Object.keys(quizAnswers).length < quizData.questions.length ? "var(--text-muted)" : "var(--accent-violet)",
+                                  cursor: Object.keys(quizAnswers).length < quizData.questions.length ? "not-allowed" : "pointer"
                                 }}
                               >
-                                Submit Examination
+                                {quizSubmitting ? "Evaluating Answers..." : "Submit Examination"}
                               </button>
                             </div>
                           </div>
                         ) : (
-                          <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
-                            <div style={{
-                              width: "5rem", height: "5rem", borderRadius: "50%",
-                              background: quizPassed ? "var(--color-success-bg)" : "var(--color-error-bg)",
-                              color: quizPassed ? "var(--color-success)" : "var(--color-error)",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              margin: "0 auto 1.5rem auto"
-                            }}>
-                              <Award size={36} />
-                            </div>
-                            <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>
-                              {quizPassed ? "Exam Passed Successfully" : "Exam Not Passed"}
-                            </h3>
-                            <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem", fontSize: "var(--text-sm)" }}>
-                              You scored <strong>{quizScore}%</strong> on this examination.
-                            </p>
-
-                            {quizPassed ? (
-                              <div style={{ marginTop: "1.5rem" }}>
-                                <p style={{ fontSize: "var(--text-sm)", color: "var(--color-success)", fontWeight: 600 }}>
-                                  Lesson marked as completed! Continue to the next syllabus module.
-                                </p>
+                          <div style={{ padding: "1.5rem 0" }}>
+                            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                              <div style={{
+                                width: "5rem", height: "5rem", borderRadius: "50%",
+                                background: quizPassed ? "var(--color-success-bg)" : "var(--color-error-bg)",
+                                color: quizPassed ? "var(--color-success)" : "var(--color-error)",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                margin: "0 auto 1.5rem auto"
+                              }}>
+                                <Award size={36} />
                               </div>
-                            ) : (
-                              <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
-                                <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-                                  A minimum score of <strong>70%</strong> is required to pass.
-                                </p>
-                                <button
-                                  onClick={() => {
-                                    setQuizAnswers({});
-                                    setQuizSubmitted(false);
-                                    setQuizPassed(false);
-                                    setQuizScore(0);
-                                  }}
-                                  className="btn btn-outline"
-                                >
-                                  Retake Examination
-                                </button>
+                              <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: 800, color: "var(--text-primary)" }}>
+                                {quizPassed ? "Exam Passed Successfully" : "Exam Not Passed"}
+                              </h3>
+                              <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem", fontSize: "var(--text-sm)" }}>
+                                You scored <strong>{quizScore}%</strong> on this examination.
+                              </p>
+                              {quizPassed ? (
+                                <div style={{ marginTop: "1rem" }}>
+                                  <p style={{ fontSize: "var(--text-sm)", color: "var(--color-success)", fontWeight: 600 }}>
+                                    Lesson marked as completed! You may proceed to the next syllabus module.
+                                  </p>
+                                </div>
+                              ) : (
+                                <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}>
+                                  <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                                    A minimum score of <strong>70%</strong> is required to pass.
+                                  </p>
+                                  <button
+                                    onClick={() => {
+                                      setQuizAnswers({});
+                                      setQuizSubmitted(false);
+                                      setQuizPassed(false);
+                                      setQuizScore(0);
+                                      setQuizResults([]);
+                                    }}
+                                    className="btn btn-outline"
+                                  >
+                                    Retake Examination
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Question by question rationale breakdown */}
+                            {quizResults.length > 0 && (
+                              <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                                <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                                  Question Breakdown & Rationale:
+                                </h4>
+                                {quizResults.map((r: any, idx: number) => (
+                                  <div
+                                    key={idx}
+                                    style={{
+                                      padding: "1rem",
+                                      borderRadius: "var(--radius-md)",
+                                      border: r.is_correct ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid rgba(239, 68, 68, 0.3)",
+                                      background: r.is_correct ? "rgba(16, 185, 129, 0.03)" : "rgba(239, 68, 68, 0.03)"
+                                    }}
+                                  >
+                                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+                                      {r.is_correct ? (
+                                        <CheckCircle2 size={16} style={{ color: "var(--color-success)" }} />
+                                      ) : (
+                                        <XCircle size={16} style={{ color: "var(--color-error)" }} />
+                                      )}
+                                      <span style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                                        {idx + 1}. {r.question}
+                                      </span>
+                                    </div>
+                                    {r.explanation && (
+                                      <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", margin: "0.25rem 0 0 1.5rem" }}>
+                                        <strong>Explanation: </strong> {r.explanation}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
                             )}
                           </div>
@@ -723,32 +1271,331 @@ export default function LearnPage() {
                       </div>
                     )}
                   </div>
-                );
-              })()
+                )}
+
+                {/* ASSIGNMENT / CAPSTONE SUBMISSION WORKSPACE */}
+                {(activeLesson.content_type || activeLesson.type) === "assignment" && (
+                  <div className="card" style={{ padding: "2.5rem", boxShadow: "var(--shadow-sm)", marginBottom: "2rem" }}>
+                    <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "1rem", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+                      <h3 style={{ fontWeight: 800, fontSize: "var(--text-lg)", display: "flex", alignItems: "center", gap: "0.5rem", margin: 0, color: "var(--text-primary)" }}>
+                        <FileCode style={{ color: "var(--accent-blue)" }} size={22} /> Project Assignment Submission
+                      </h3>
+                      {assignmentData?.status === "graded" ? (
+                        <span className="badge badge-green">
+                          Graded: Grade {assignmentData.grade || "Passed"} ({assignmentData.score}%)
+                        </span>
+                      ) : assignmentData ? (
+                        <span className="badge badge-blue">
+                          Pending Faculty Review
+                        </span>
+                      ) : (
+                        <span className="badge badge-yellow">
+                          Submission Required
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Assignment Instructions / Body */}
+                    <div style={{ marginBottom: "1.5rem", background: "rgba(14, 165, 233, 0.05)", border: "1px solid rgba(14, 165, 233, 0.2)", borderRadius: "var(--radius-md)", padding: "1.25rem" }}>
+                      <h4 style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--accent-blue)", marginBottom: "0.4rem" }}>
+                        Assignment Specifications
+                      </h4>
+                      <p style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", lineHeight: 1.6, whiteSpace: "pre-line", margin: 0 }}>
+                        {activeLesson.content_body || activeLesson.content || "Build and submit your project implementation according to the academic guidelines."}
+                      </p>
+                    </div>
+
+                    {/* Faculty Feedback Grade Card if graded */}
+                    {assignmentData?.status === "graded" && (
+                      <div style={{ marginBottom: "1.75rem", background: "var(--color-success-bg)", border: "1px solid rgba(16, 185, 129, 0.3)", borderRadius: "var(--radius-md)", padding: "1.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.75rem" }}>
+                          <Award size={20} style={{ color: "var(--color-success)" }} />
+                          <span style={{ fontWeight: 800, fontSize: "var(--text-base)", color: "var(--color-success)" }}>
+                            Faculty Evaluation: Grade {assignmentData.grade} ({assignmentData.score}%)
+                          </span>
+                        </div>
+                        {assignmentData.feedback && (
+                          <div style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)", background: "var(--card-bg)", padding: "1rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                            <strong>Instructor Feedback: </strong>
+                            <span>{assignmentData.feedback}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Submission Form */}
+                    <form onSubmit={handleSubmitAssignment}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                        <div>
+                          <label style={{ display: "block", fontSize: "var(--text-sm)", fontWeight: 700, marginBottom: "0.4rem", color: "var(--text-primary)" }}>
+                            Project Repository URL or Asset Link
+                          </label>
+                          <div style={{ position: "relative" }}>
+                            <input
+                              type="url"
+                              required
+                              value={assignmentUrl}
+                              onChange={(e) => setAssignmentUrl(e.target.value)}
+                              placeholder="https://github.com/username/project-repo"
+                              className="input-field"
+                              style={{ width: "100%", paddingLeft: "2.5rem" }}
+                            />
+                            <GitBranch size={16} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label style={{ display: "block", fontSize: "var(--text-sm)", fontWeight: 700, marginBottom: "0.4rem", color: "var(--text-primary)" }}>
+                            Implementation Notes & Architectural Details
+                          </label>
+                          <textarea
+                            rows={4}
+                            value={assignmentNotes}
+                            onChange={(e) => setAssignmentNotes(e.target.value)}
+                            placeholder="Detail key architectural decisions, test procedures, or deployment URLs..."
+                            className="input-field"
+                            style={{ width: "100%", resize: "vertical" }}
+                          />
+                        </div>
+
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
+                          {assignmentData?.submitted_at && (
+                            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                              Submitted on: {new Date(assignmentData.submitted_at).toLocaleDateString()} at {new Date(assignmentData.submitted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          )}
+                          <button
+                            type="submit"
+                            disabled={assignmentSubmitting || !assignmentUrl.trim()}
+                            className="btn btn-primary"
+                            style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+                          >
+                            <Send size={15} />
+                            <span>{assignmentSubmitting ? "Submitting..." : assignmentData ? "Update Project Submission" : "Submit Project Assignment"}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                {/* DOCUMENT / READING MATERIAL BANNER */}
+                {(activeLesson.content_type || activeLesson.type) !== "video" && (activeLesson.content_type || activeLesson.type) !== "quiz" && (
+                  <div style={{ width: "100%", padding: "1.25rem 1.5rem", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-lg)", display: "flex", alignItems: "center", gap: "1rem", background: "var(--card-bg)", marginBottom: "1.5rem" }}>
+                    <FileText size={32} style={{ color: "var(--accent-teal)", flexShrink: 0 }} />
+                    <div>
+                      <span style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--text-primary)", display: "block" }}>
+                        Interactive Lab Guide &amp; Resources
+                      </span>
+                      <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                        Read through the instructions below before executing commands in your practice environment.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* LESSON BODY / OVERVIEW */}
+                <div className="card" style={{ padding: "2rem", boxShadow: "var(--shadow-sm)" }}>
+                  <h3 style={{ fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)" }}>Lesson Content</h3>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.7, whiteSpace: "pre-line" }}>
+                    {activeLesson.content_body || activeLesson.content || "Welcome to this syllabus lecture. Please proceed with the curriculum outline and resources."}
+                  </p>
+                </div>
+              </div>
             )}
 
-            {/* DOCUMENT / READING MATERIAL */}
-            {(activeLesson.content_type || activeLesson.type) !== "video" && (activeLesson.content_type || activeLesson.type) !== "quiz" && (
-              <div style={{ width: "100%", height: "8rem", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-lg)", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem", background: "var(--card-bg)", marginBottom: "2rem" }}>
-                <FileText size={32} style={{ color: "var(--accent-teal)" }} />
-                <div>
-                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--text-primary)", display: "block" }}>
-                    Interactive Lab Guide &amp; Resources
+            {/* TAB 2: RESOURCES & WORKSHEETS */}
+            {activeTab === "resources" && (
+              <div className="card" style={{ padding: "2rem" }}>
+                <div style={{ marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <FolderDown size={20} style={{ color: "var(--accent-blue)" }} /> Downloadable Materials & Worksheets
+                    </h3>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
+                      Access starter code, documentation, audio assets, and project files for this lesson
+                    </p>
+                  </div>
+                  <span className="badge badge-blue">
+                    {parsedAttachments.length} Available
                   </span>
-                  <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-                    Read through the instructions below before executing commands in your practice terminal.
+                </div>
+
+                {parsedAttachments.length === 0 ? (
+                  <div className="empty-state" style={{ padding: "3rem 1rem", textAlign: "center" }}>
+                    <FileCode size={40} style={{ color: "var(--text-muted)", margin: "0 auto 1rem auto" }} />
+                    <h4 style={{ fontWeight: 700, color: "var(--text-primary)" }}>No Attachments For This Lecture</h4>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
+                      All required instructions are provided in the main lecture overview.
+                    </p>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                    {parsedAttachments.map((att: any, aIdx: number) => (
+                      <div
+                        key={att.id || aIdx}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          padding: "1rem 1.25rem",
+                          background: "var(--bg-primary)",
+                          border: "1px solid var(--border-color)",
+                          borderRadius: "var(--radius-md)",
+                          gap: "1rem"
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", overflow: "hidden", flex: 1 }}>
+                          {getAttachmentIcon(att.type)}
+                          <div style={{ overflow: "hidden" }}>
+                            <div style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                              {att.title}
+                            </div>
+                            <span className="badge badge-purple" style={{ fontSize: "0.7rem", marginTop: "0.2rem" }}>
+                              {att.type || "Document"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <a
+                          href={att.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-secondary btn-sm"
+                          style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", textDecoration: "none", flexShrink: 0 }}
+                        >
+                          <Download size={14} />
+                          <span>Open Resource</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 3: PERSONAL NOTES */}
+            {activeTab === "notes" && (
+              <div className="card" style={{ padding: "2rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", flexWrap: "wrap", gap: "0.75rem" }}>
+                  <div>
+                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <Edit3 size={18} style={{ color: "var(--accent-blue)" }} /> Personal Lecture Notes
+                    </h3>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", marginTop: "0.2rem" }}>
+                      Notes are stored in your browser session and can be exported as a text file
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleExportNotes}
+                    disabled={!notes.trim()}
+                    className="btn btn-secondary btn-sm"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
+                  >
+                    <Download size={14} /> Export Notes (.txt)
+                  </button>
+                </div>
+
+                <textarea
+                  rows={10}
+                  value={notes}
+                  onChange={(e) => handleNoteChange(e.target.value)}
+                  placeholder="Type your notes, key takeaways, or syntax snippets here. They are automatically saved."
+                  style={{
+                    width: "100%",
+                    padding: "1rem",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--border-color)",
+                    background: "var(--bg-primary)",
+                    color: "var(--text-primary)",
+                    fontSize: "var(--text-sm)",
+                    lineHeight: 1.6,
+                    resize: "vertical",
+                    fontFamily: "inherit"
+                  }}
+                />
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.5rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                  <span>{notes.length} characters | {notes.trim() ? notes.trim().split(/\s+/).length : 0} words</span>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.25rem", color: "#10b981" }}>
+                    <Check size={12} /> Auto-saved
                   </span>
                 </div>
               </div>
             )}
 
-            {/* LESSON BODY / OVERVIEW */}
-            <div className="card" style={{ padding: "2rem", boxShadow: "var(--shadow-sm)" }}>
-              <h3 style={{ fontWeight: 700, marginBottom: "0.75rem", color: "var(--text-primary)" }}>Lesson Content</h3>
-              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.7, whiteSpace: "pre-line" }}>
-                {activeLesson.content_body || activeLesson.content || "Welcome to this syllabus lecture. Please proceed with the curriculum outline and resources."}
-              </p>
-            </div>
+            {/* TAB 4: ASK INSTRUCTOR */}
+            {activeTab === "ask" && (
+              <div className="card" style={{ padding: "2rem" }}>
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <MessageSquare size={18} style={{ color: "var(--accent-blue)" }} /> Ask Instructor / Support
+                  </h3>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "0.25rem" }}>
+                    Have questions about this lesson? Send a direct question to the instructional team.
+                  </p>
+                </div>
+
+                {askSuccessMessage && (
+                  <div style={{
+                    padding: "1rem",
+                    background: "rgba(16, 185, 129, 0.1)",
+                    border: "1px solid rgba(16, 185, 129, 0.2)",
+                    borderRadius: "var(--radius-md)",
+                    color: "var(--color-success)",
+                    fontWeight: 600,
+                    fontSize: "var(--text-sm)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    marginBottom: "1.5rem"
+                  }}>
+                    <CheckCircle2 size={16} />
+                    <span>{askSuccessMessage}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleAskSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <div className="form-group">
+                    <label className="form-label">Subject</label>
+                    <input
+                      type="text"
+                      required
+                      value={askSubject}
+                      onChange={(e) => setAskSubject(e.target.value)}
+                      className="input-field"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Describe Your Question or Issue</label>
+                    <textarea
+                      rows={5}
+                      required
+                      placeholder="Please explain the topic or exercise step you would like clarification on..."
+                      value={askBody}
+                      onChange={(e) => setAskBody(e.target.value)}
+                      className="input-field"
+                      style={{ resize: "vertical" }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button
+                      type="submit"
+                      disabled={askSubmitting || !askBody.trim()}
+                      className="btn btn-accent btn-sm"
+                      style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}
+                    >
+                      <Send size={14} />
+                      <span>{askSubmitting ? "Sending Question..." : "Send Question to Instructor"}</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
 
           </div>
         ) : (
@@ -863,3 +1710,4 @@ export default function LearnPage() {
     </div>
   );
 }
+

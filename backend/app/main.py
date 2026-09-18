@@ -35,7 +35,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
         from app.db.session import engine, async_session_factory
         from app.db.base import Base
-        from app.models import user, role, course, enrollment, certificate, ticket, booking, contact, blog, career  # noqa
+        from app.models import user, role, course, enrollment, certificate, ticket, booking, contact, blog, career, assessment  # noqa
         from app.models.role import Role
         from sqlalchemy import select
 
@@ -65,7 +65,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 
 def create_app() -> FastAPI:
-    """Application factory — builds and configures the FastAPI instance."""
+    """Application factory : builds and configures the FastAPI instance."""
     settings = get_settings()
 
     application = FastAPI(
@@ -98,12 +98,13 @@ def create_app() -> FastAPI:
     )
 
     # ---- Security headers middleware ----
-    # Note: X-Frame-Options is set in nginx (SAMEORIGIN). Do not duplicate here.
     @application.middleware("http")
     async def add_security_headers(request: Request, call_next) -> Response:  # type: ignore[no-untyped-def]
         response: Response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()"
         if settings.ENVIRONMENT == "production":
             response.headers["Strict-Transport-Security"] = (
                 "max-age=31536000; includeSubDomains"
@@ -115,7 +116,10 @@ def create_app() -> FastAPI:
                 "font-src 'self' https://fonts.gstatic.com; "
                 "img-src 'self' data: https://images.unsplash.com https://*.googleusercontent.com blob:; "
                 "connect-src 'self' https://accounts.google.com https://openrouter.ai; "
-                "frame-src https://accounts.google.com;"
+                "frame-src https://accounts.google.com; "
+                "frame-ancestors 'self'; "
+                "base-uri 'self'; "
+                "object-src 'none';"
             )
         return response
 
@@ -142,14 +146,14 @@ def create_app() -> FastAPI:
 
     @application.get("/healthz", tags=["Health"], status_code=200)
     async def healthz() -> JSONResponse:
-        """Liveness probe — the process is running."""
+        """Liveness probe : the process is running."""
         return JSONResponse(content={"status": "ok"})
 
     @application.get("/readyz", tags=["Health"], status_code=200)
     async def readyz(
         db = Depends(get_db)
     ) -> JSONResponse:
-        """Readiness probe — the app can serve traffic."""
+        """Readiness probe : the app can serve traffic."""
         from sqlalchemy import text
         from app.core.redis_cache import get_redis_client
 

@@ -10,7 +10,8 @@ import { useAuth } from "@/context/AuthContext";
 import {
   ArrowLeft, Plus, Trash2, Edit3, Save, Video, FileText, CheckSquare,
   HelpCircle, ChevronUp, ChevronDown, Eye, CheckCircle, AlertCircle,
-  Layers, FileCode, Sparkles, BookOpen, Clock, FileCheck, Award
+  Layers, FileCode, Sparkles, BookOpen, Clock, FileCheck, Award,
+  Paperclip, Download, ExternalLink
 } from "lucide-react";
 
 export default function CourseSyllabusBuilderPage({ params }: { params: Promise<{ id: string }> }) {
@@ -49,7 +50,15 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
     content_url: "",
     content_body: "",
     duration_minutes: 15,
-    is_free_preview: false
+    is_free_preview: false,
+    attachments: [] as { id: string; title: string; url: string; type: string }[]
+  });
+
+  // New attachment draft state
+  const [attachmentDraft, setAttachmentDraft] = useState({
+    title: "",
+    url: "",
+    type: "PDF Document"
   });
 
   const headers = { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" };
@@ -94,6 +103,16 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
 
   const selectLesson = (lesson: any) => {
     setActiveLessonId(lesson.id);
+    let parsedAttachments: any[] = [];
+    if (lesson.attachments) {
+      try {
+        parsedAttachments = typeof lesson.attachments === "string" ? JSON.parse(lesson.attachments) : lesson.attachments;
+        if (!Array.isArray(parsedAttachments)) parsedAttachments = [];
+      } catch {
+        parsedAttachments = [];
+      }
+    }
+
     setLessonForm({
       id: lesson.id,
       title: lesson.title || "",
@@ -101,8 +120,73 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
       content_url: lesson.content_url || "",
       content_body: lesson.content_body || "",
       duration_minutes: lesson.duration_minutes || 15,
-      is_free_preview: lesson.is_free_preview || false
+      is_free_preview: lesson.is_free_preview || false,
+      attachments: parsedAttachments
     });
+  };
+
+  const handleAddAttachment = () => {
+    if (!attachmentDraft.title.trim() || !attachmentDraft.url.trim()) {
+      showMessage("Please provide both title and URL for the attachment.", "error");
+      return;
+    }
+    const newAttach = {
+      id: "att_" + Date.now(),
+      title: attachmentDraft.title.trim(),
+      url: attachmentDraft.url.trim(),
+      type: attachmentDraft.type
+    };
+    setLessonForm({
+      ...lessonForm,
+      attachments: [...lessonForm.attachments, newAttach]
+    });
+    setAttachmentDraft({ title: "", url: "", type: "PDF Document" });
+  };
+
+  const handleRemoveAttachment = (attId: string) => {
+    setLessonForm({
+      ...lessonForm,
+      attachments: lessonForm.attachments.filter(a => a.id !== attId)
+    });
+  };
+
+  const handleMoveLesson = async (moduleId: string, lessonId: string, direction: "up" | "down", e: React.MouseEvent) => {
+    e.stopPropagation();
+    const targetModule = course?.modules?.find((m: any) => m.id === moduleId);
+    if (!targetModule || !targetModule.lessons) return;
+    const sortedLessons = [...targetModule.lessons].sort((a: any, b: any) => a.order - b.order);
+    const index = sortedLessons.findIndex((l: any) => l.id === lessonId);
+    if (index === -1) return;
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= sortedLessons.length) return;
+
+    const currentLesson = sortedLessons[index];
+    const targetLesson = sortedLessons[targetIndex];
+
+    const currentOrder = currentLesson.order;
+    const targetOrder = targetLesson.order;
+
+    setSavingStatus("Reordering lessons...");
+    try {
+      await Promise.all([
+        fetch(`/api/v1/courses/lessons/${currentLesson.id}`, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({ order: targetOrder })
+        }),
+        fetch(`/api/v1/courses/lessons/${targetLesson.id}`, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({ order: currentOrder })
+        })
+      ]);
+      await fetchCourseData();
+      showMessage("Lesson order updated successfully!");
+    } catch {
+      showMessage("Failed to reorder lessons.", "error");
+    } finally {
+      setSavingStatus(null);
+    }
   };
 
   // Add Module
@@ -217,7 +301,8 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
           content_url: lessonForm.content_url !== undefined ? lessonForm.content_url : "",
           content_body: lessonForm.content_body !== undefined ? lessonForm.content_body : "",
           duration_minutes: lessonForm.duration_minutes || 0,
-          is_free_preview: lessonForm.is_free_preview
+          is_free_preview: lessonForm.is_free_preview,
+          attachments: JSON.stringify(lessonForm.attachments)
         })
       });
 
@@ -452,7 +537,7 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
       {/* Main Studio Grid */}
       <div className="builder-workspace">
 
-        {/* Left Column — Modules Tree */}
+        {/* Left Column: Modules Tree */}
         <div className="tree-panel">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
             <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
@@ -498,23 +583,58 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
                         Empty section. Add items below!
                       </div>
                     ) : (
-                      module.lessons.sort((a: any, b: any) => a.order - b.order).map((lesson: any) => (
-                        <div
-                          key={lesson.id}
-                          onClick={() => selectLesson(lesson)}
-                          className={`tree-lesson-row ${activeLessonId === lesson.id ? "active" : ""}`}
-                        >
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", overflow: "hidden" }}>
-                            {getItemIcon(lesson.content_type)}
-                            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                              {lesson.title}
-                            </span>
+                      (() => {
+                        const sorted = [...module.lessons].sort((a: any, b: any) => a.order - b.order);
+                        return sorted.map((lesson: any, lIdx: number) => (
+                          <div
+                            key={lesson.id}
+                            onClick={() => selectLesson(lesson)}
+                            className={`tree-lesson-row ${activeLessonId === lesson.id ? "active" : ""}`}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", overflow: "hidden", flex: 1 }}>
+                              {getItemIcon(lesson.content_type)}
+                              <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                {lesson.title}
+                              </span>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                              <span style={{ fontSize: "0.68rem", textTransform: "uppercase", fontWeight: 700, color: "var(--text-muted)" }}>
+                                {lesson.content_type}
+                              </span>
+                              <div style={{ display: "flex", gap: "1px", alignItems: "center" }}>
+                                <button
+                                  type="button"
+                                  disabled={lIdx === 0}
+                                  onClick={(e) => handleMoveLesson(module.id, lesson.id, "up", e)}
+                                  style={{
+                                    background: "none", border: "none",
+                                    cursor: lIdx === 0 ? "not-allowed" : "pointer",
+                                    opacity: lIdx === 0 ? 0.25 : 0.8,
+                                    color: "var(--text-secondary)", padding: "1px 2px"
+                                  }}
+                                  title="Move Up"
+                                >
+                                  <ChevronUp size={13} />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={lIdx === sorted.length - 1}
+                                  onClick={(e) => handleMoveLesson(module.id, lesson.id, "down", e)}
+                                  style={{
+                                    background: "none", border: "none",
+                                    cursor: lIdx === sorted.length - 1 ? "not-allowed" : "pointer",
+                                    opacity: lIdx === sorted.length - 1 ? 0.25 : 0.8,
+                                    color: "var(--text-secondary)", padding: "1px 2px"
+                                  }}
+                                  title="Move Down"
+                                >
+                                  <ChevronDown size={13} />
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                          <span style={{ fontSize: "0.68rem", textTransform: "uppercase", fontWeight: 700, color: "var(--text-muted)" }}>
-                            {lesson.content_type}
-                          </span>
-                        </div>
-                      ))
+                        ));
+                      })()
                     )}
                   </div>
 
@@ -620,7 +740,7 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
           </div>
         </div>
 
-        {/* Right Column — Item Content Editor Canvas */}
+        {/* Right Column: Item Content Editor Canvas */}
         <div className="editor-panel">
           {!activeLessonId ? (
             <div style={{ textAlign: "center", padding: "6rem 2rem", color: "var(--text-secondary)" }}>
@@ -912,6 +1032,148 @@ export default function CourseSyllabusBuilderPage({ params }: { params: Promise<
                   onChange={(jsonString) => setLessonForm({ ...lessonForm, content_body: jsonString })}
                 />
               )}
+
+              {/* Downloadable Materials & Attachments Builder */}
+              <div style={{ marginTop: "2.5rem", paddingTop: "1.75rem", borderTop: "1px solid var(--border-color)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+                  <div>
+                    <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <Paperclip size={16} style={{ color: "var(--accent-blue)" }} /> Downloadable Materials & Worksheets ({lessonForm.attachments.length})
+                    </h4>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
+                      Attach downloadable files, starter repositories, lab guides, or cheat sheets for students
+                    </p>
+                  </div>
+                </div>
+
+                {/* Attached items list */}
+                {lessonForm.attachments.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.25rem" }}>
+                    {lessonForm.attachments.map((att) => (
+                      <div
+                        key={att.id}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          padding: "0.65rem 0.85rem",
+                          background: "var(--bg-primary)",
+                          border: "1px solid var(--border-color)",
+                          borderRadius: "var(--radius-md)"
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", overflow: "hidden", flex: 1, marginRight: "1rem" }}>
+                          <FileCode size={16} style={{ color: "var(--accent-blue)", flexShrink: 0 }} />
+                          <div style={{ overflow: "hidden" }}>
+                            <div style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--text-primary)" }}>{att.title}</div>
+                            <a
+                              href={att.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "inline-flex", alignItems: "center", gap: "0.25rem", textDecoration: "none" }}
+                            >
+                              <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "300px" }}>{att.url}</span>
+                              <ExternalLink size={10} />
+                            </a>
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                          <span className="badge badge-purple" style={{ fontSize: "0.7rem" }}>{att.type}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveAttachment(att.id)}
+                            style={{ color: "var(--color-error)", background: "transparent", border: "none", cursor: "pointer", padding: "2px" }}
+                            title="Remove attachment"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Add new attachment form */}
+                <div style={{ background: "rgba(14, 165, 233, 0.03)", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-md)", padding: "1rem" }}>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
+                    Add New Resource Attachment
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr 160px auto", gap: "0.6rem", alignItems: "end" }}>
+                    <div>
+                      <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "0.25rem" }}>
+                        Resource Title
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Lab 04 Starter Code"
+                        value={attachmentDraft.title}
+                        onChange={(e) => setAttachmentDraft({ ...attachmentDraft, title: e.target.value })}
+                        style={{
+                          width: "100%",
+                          padding: "0.5rem 0.65rem",
+                          borderRadius: "var(--radius-sm)",
+                          border: "1px solid var(--border-color)",
+                          background: "var(--bg-primary)",
+                          color: "var(--text-primary)",
+                          fontSize: "0.82rem"
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "0.25rem" }}>
+                        File / Resource URL
+                      </label>
+                      <input
+                        type="url"
+                        placeholder="https://github.com/... or https://drive..."
+                        value={attachmentDraft.url}
+                        onChange={(e) => setAttachmentDraft({ ...attachmentDraft, url: e.target.value })}
+                        style={{
+                          width: "100%",
+                          padding: "0.5rem 0.65rem",
+                          borderRadius: "var(--radius-sm)",
+                          border: "1px solid var(--border-color)",
+                          background: "var(--bg-primary)",
+                          color: "var(--text-primary)",
+                          fontSize: "0.82rem"
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "0.25rem" }}>
+                        Type
+                      </label>
+                      <select
+                        value={attachmentDraft.type}
+                        onChange={(e) => setAttachmentDraft({ ...attachmentDraft, type: e.target.value })}
+                        style={{
+                          width: "100%",
+                          padding: "0.5rem 0.65rem",
+                          borderRadius: "var(--radius-sm)",
+                          border: "1px solid var(--border-color)",
+                          background: "var(--bg-primary)",
+                          color: "var(--text-primary)",
+                          fontSize: "0.82rem"
+                        }}
+                      >
+                        <option value="PDF Document">PDF Document</option>
+                        <option value="Starter Code">Starter Code</option>
+                        <option value="Worksheet">Worksheet</option>
+                        <option value="Audio Pack">Audio Pack</option>
+                        <option value="Resource Archive">Resource Archive</option>
+                      </select>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddAttachment}
+                      className="btn btn-secondary btn-sm"
+                      style={{ height: "36px", whiteSpace: "nowrap" }}
+                    >
+                      <Plus size={14} /> Add File
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

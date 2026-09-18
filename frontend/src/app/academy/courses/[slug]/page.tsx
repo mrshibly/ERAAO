@@ -79,6 +79,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         setTimeout(() => {
           router.push(`/learn/${enrollment.id}`);
         }, 1200);
+      } else if (res.status === 403) {
+        // Requires payment: redirect to bKash manual checkout
+        router.push(`/checkout?course=${course.slug || course.id}`);
       } else {
         const err = await res.json().catch(() => ({}));
         setModalConfig({
@@ -184,9 +187,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
               <span className="badge" style={{ background: "rgba(255, 255, 255, 0.12)", color: "white", textTransform: "capitalize", fontWeight: 700 }}>
                 {course.level || "All Levels"} Level
               </span>
-              <span className="badge" style={{ background: "rgba(16, 185, 129, 0.2)", color: "var(--accent-teal)", fontWeight: 700 }}>
-                <Clock size={13} style={{ marginRight: "4px" }} />
-                12 Weeks • 36 Live Classes
+              <span className="badge" style={{ background: "rgba(16, 185, 129, 0.2)", color: "var(--accent-teal)", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                <Clock size={13} />
+                <span>12 Weeks, 36 Live Classes</span>
               </span>
             </div>
 
@@ -246,7 +249,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         {/* Main Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2.5rem" }}>
 
-          {/* Left Column — Detailed Course Description, Learning Cycle & Syllabus */}
+          {/* Left Column: Detailed Course Description, Learning Cycle & Syllabus */}
           <div style={{ gridColumn: "span 2" }}>
             
             {/* ERAAO 6-Stage Learning Cycle Box */}
@@ -261,7 +264,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 How This Course Works: 6-Stage Learning Cycle
               </h2>
               <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-                Every module in this bootcamp moves systematically through 6 scientific retention stages so you don&apos;t just memorize information — you gain unconscious fluency.
+                Every module in this bootcamp moves systematically through 6 scientific retention stages so you don&apos;t just memorize information; you gain unconscious fluency.
               </p>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "0.75rem" }}>
@@ -462,7 +465,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
           </div>
 
-          {/* Right Column — Enrollment Action Box */}
+          {/* Right Column: Enrollment Action Box */}
           <div>
             <div className="card" style={{ padding: "2rem", position: "sticky", top: "2rem", boxShadow: "var(--shadow-md)" }}>
               <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
@@ -489,7 +492,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   className="btn btn-accent"
                   style={{ width: "100%", padding: "0.85rem", fontSize: "var(--text-base)", marginBottom: "1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
                 >
-                  <span>{enrolling ? "Enrolling..." : "Enroll in Bootcamp"}</span>
+                  <span>{enrolling ? "Connecting..." : course.price > 0 ? "Enroll via bKash" : "Enroll in Bootcamp"}</span>
                   <ArrowRight size={18} />
                 </button>
               )}

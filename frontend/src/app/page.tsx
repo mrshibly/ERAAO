@@ -120,7 +120,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          FLAGSHIP ACADEMY BOOTCAMPS SHOWCASE — Grouped by Practitioner Tracks
+          FLAGSHIP ACADEMY BOOTCAMPS SHOWCASE: Grouped by Practitioner Tracks
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-secondary)" }}>
         <div className="container">
@@ -189,7 +189,7 @@ export default function Home() {
                       <div key={c.id} className="academy-card">
                         <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
                           <Image
-                            src={c.thumbnail_url || "/banners/banner-spoken-english.jpg"}
+                            src={c.thumbnail_url || "/banners/professional-zero-to-fluent-english.jpg"}
                             alt={c.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -375,7 +375,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          WHY ERAAO ACADEMY — Factual Advantages
+          WHY ERAAO ACADEMY: Factual Advantages
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
         <div className="container">
@@ -448,7 +448,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          ENTERPRISE SERVICES — AUXILIARY SECTION FOR BUSINESSES
+          ENTERPRISE SERVICES: AUXILIARY SECTION FOR BUSINESSES
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{
         padding: "5rem 0",

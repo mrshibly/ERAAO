@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.core.dependencies import require_role
-from app.schemas.cohort import CohortCreate, CohortRead, CohortEnrollRequest
+from app.schemas.cohort import CohortCreate, CohortUpdate, CohortRead, CohortEnrollRequest
 from app.schemas.auth import MessageResponse
 from app.services.cohort_service import CohortService
 
@@ -21,6 +21,13 @@ async def list_cohorts(db: AsyncSession = Depends(get_db)):
 async def create_cohort(data: CohortCreate, db: AsyncSession = Depends(get_db)):
     svc = CohortService(db)
     cohort = await svc.create_cohort(**data.model_dump())
+    return CohortRead.model_validate(cohort)
+
+@router.patch("/{cohort_id}", response_model=CohortRead, status_code=200, dependencies=[Depends(require_role("admin"))])
+async def update_cohort(cohort_id: UUID, data: CohortUpdate, db: AsyncSession = Depends(get_db)):
+    """Admin: update a training cohort (live links, schedule, announcements, dates, capacity)."""
+    svc = CohortService(db)
+    cohort = await svc.update_cohort(cohort_id, **data.model_dump(exclude_unset=True))
     return CohortRead.model_validate(cohort)
 
 @router.post("/{cohort_id}/enroll", response_model=MessageResponse, status_code=201, dependencies=[Depends(require_role("admin"))])

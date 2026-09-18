@@ -1,4 +1,4 @@
-"""Support ticket and replies — lightweight helpdesk."""
+"""Support ticket and replies : lightweight helpdesk."""
 from __future__ import annotations
 import enum, uuid
 from sqlalchemy import Boolean, Enum, ForeignKey, String, Text, Uuid

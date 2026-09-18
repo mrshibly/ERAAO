@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Download, Copy, Check, Share2, Loader, XCircle, Award } from "lucide-react";
+import { Download, Copy, Check, Share2, Loader, XCircle, Award, Printer, ShieldCheck } from "lucide-react";
 import Logo from "@/components/Logo";
 
 const FacebookIcon = () => (
@@ -114,10 +114,51 @@ export default function CertificateVerificationPage() {
           </div>
         ) : data?.is_valid ? (
           <div>
+            {/* Authenticity Verification Banner */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "0.85rem 1.25rem",
+              background: "#f0fdf4",
+              border: "1px solid #bbf7d0",
+              borderRadius: "10px",
+              marginBottom: "1.75rem",
+              fontSize: "0.85rem",
+              color: "#166534",
+              flexWrap: "wrap",
+              gap: "0.75rem"
+            }} className="no-print">
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <span className="pulse-dot-live" style={{ backgroundColor: "#16a34a" }} />
+                <span style={{ fontWeight: 800 }}>Official Credential Verified:</span>
+                <span style={{ color: "#15803d" }}>Authentic record on ERAAO Academic Ledger</span>
+              </div>
+              <button
+                onClick={() => window.print()}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  background: "#ffffff",
+                  border: "1px solid #86efac",
+                  borderRadius: "6px",
+                  padding: "0.4rem 0.85rem",
+                  fontSize: "0.78rem",
+                  fontWeight: 700,
+                  color: "#15803d",
+                  cursor: "pointer",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.04)"
+                }}
+              >
+                <Printer size={14} /> Print Certificate
+              </button>
+            </div>
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "2.5rem", alignItems: "start" }} className="responsive-grid-split">
               
               {/* Left Column: Premium Certificate Visual Card */}
-              <div style={{
+              <div className="certificate-print-wrap" style={{
                 background: "#fcfdfd",
                 borderRadius: "14px",
                 padding: "0",
@@ -139,11 +180,11 @@ export default function CertificateVerificationPage() {
                   <Logo size={320} withText={false} href={null} />
                 </div>
 
-                {/* Guilloché Border Frame — Layer 1 (Outer Solid) */}
+                {/* Guilloché Border Frame: Layer 1 (Outer Solid) */}
                 <div style={{ position: "absolute", inset: "14px", border: "2px solid #cbd5e1", borderRadius: "10px", pointerEvents: "none" }} />
-                {/* Guilloché Border Frame — Layer 2 (Gold/Blue Accent Line) */}
+                {/* Guilloché Border Frame: Layer 2 (Gold/Blue Accent Line) */}
                 <div style={{ position: "absolute", inset: "19px", border: "1px solid rgba(14,165,233,0.35)", borderRadius: "8px", pointerEvents: "none" }} />
-                {/* Guilloché Border Frame — Layer 3 (Inner Fine Dashed) */}
+                {/* Guilloché Border Frame: Layer 3 (Inner Fine Dashed) */}
                 <div style={{ position: "absolute", inset: "24px", border: "1px solid #e2e8f0", borderRadius: "6px", pointerEvents: "none" }} />
 
                 {/* Intricate Corner Filigree Ornaments */}
@@ -292,21 +333,56 @@ export default function CertificateVerificationPage() {
                   padding: "0 3.25rem 2rem 3.25rem"
                 }}>
                   
-                  {/* Left: Issue Date & Cert ID */}
-                  <div style={{ textAlign: "left", fontSize: "0.72rem" }}>
-                    <div style={{ color: "#64748b", marginBottom: "2px" }}>
-                      <span style={{ fontWeight: 500 }}>Date of Issuance: </span>
-                      <strong style={{ color: "#0f172a" }}>{formattedDate}</strong>
+                  {/* Left: Issue Date, Cert ID, and QR Code */}
+                  <div style={{ textAlign: "left", fontSize: "0.72rem", display: "flex", gap: "0.75rem", alignItems: "flex-end" }}>
+                    {/* Mini Official Verification QR Code */}
+                    <div style={{ textAlign: "center" }}>
+                      <svg width="44" height="44" viewBox="0 0 42 42" fill="none" style={{ borderRadius: "4px", border: "1px solid #cbd5e1", background: "#ffffff", padding: "2px", display: "block" }}>
+                        <rect x="2" y="2" width="12" height="12" rx="2" fill="#0f172a" />
+                        <rect x="4" y="4" width="8" height="8" rx="1" fill="#ffffff" />
+                        <rect x="6" y="6" width="4" height="4" fill="#0f172a" />
+                        
+                        <rect x="28" y="2" width="12" height="12" rx="2" fill="#0f172a" />
+                        <rect x="30" y="4" width="8" height="8" rx="1" fill="#ffffff" />
+                        <rect x="32" y="6" width="4" height="4" fill="#0f172a" />
+                        
+                        <rect x="2" y="28" width="12" height="12" rx="2" fill="#0f172a" />
+                        <rect x="4" y="30" width="8" height="8" rx="1" fill="#ffffff" />
+                        <rect x="6" y="32" width="4" height="4" fill="#0f172a" />
+                        
+                        <rect x="18" y="4" width="3" height="3" fill="#0ea5e9" />
+                        <rect x="22" y="8" width="3" height="3" fill="#0f172a" />
+                        <rect x="18" y="12" width="3" height="3" fill="#0f172a" />
+                        <rect x="8" y="18" width="3" height="3" fill="#0ea5e9" />
+                        <rect x="14" y="20" width="3" height="3" fill="#0f172a" />
+                        <rect x="20" y="18" width="3" height="3" fill="#0ea5e9" />
+                        <rect x="26" y="22" width="3" height="3" fill="#0f172a" />
+                        <rect x="32" y="18" width="3" height="3" fill="#0ea5e9" />
+                        <rect x="18" y="26" width="3" height="3" fill="#0f172a" />
+                        <rect x="24" y="28" width="3" height="3" fill="#0ea5e9" />
+                        <rect x="30" y="30" width="3" height="3" fill="#0f172a" />
+                        <rect x="36" y="26" width="3" height="3" fill="#0ea5e9" />
+                        <rect x="20" y="34" width="3" height="3" fill="#0f172a" />
+                        <rect x="28" y="36" width="3" height="3" fill="#0ea5e9" />
+                      </svg>
+                      <span style={{ fontSize: "0.52rem", color: "#64748b", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase" }}>Scan to Verify</span>
                     </div>
-                    <div style={{
-                      fontFamily: "monospace",
-                      fontSize: "0.68rem",
-                      color: "#0ea5e9",
-                      fontWeight: 700,
-                      letterSpacing: "0.05em",
-                      marginTop: "2px"
-                    }}>
-                      VERIFICATION ID: {shortId}
+
+                    <div>
+                      <div style={{ color: "#64748b", marginBottom: "2px" }}>
+                        <span style={{ fontWeight: 500 }}>Date of Issuance: </span>
+                        <strong style={{ color: "#0f172a" }}>{formattedDate}</strong>
+                      </div>
+                      <div style={{
+                        fontFamily: "monospace",
+                        fontSize: "0.68rem",
+                        color: "#0ea5e9",
+                        fontWeight: 700,
+                        letterSpacing: "0.05em",
+                        marginTop: "2px"
+                      }}>
+                        VERIFICATION ID: {shortId}
+                      </div>
                     </div>
                   </div>
 
@@ -374,7 +450,7 @@ export default function CertificateVerificationPage() {
               </div>
 
               {/* Right Column: Actions Sidebar */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+              <div className="actions-sidebar no-print" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 
                 {/* 1. Name Editor Box */}
                 <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "1.25rem", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
@@ -399,6 +475,7 @@ export default function CertificateVerificationPage() {
                   <button
                     onClick={handleRegenerate}
                     disabled={isUpdating}
+                    className="btn-shimmer"
                     style={{
                       background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
                       color: "#ffffff",
@@ -471,53 +548,78 @@ export default function CertificateVerificationPage() {
                     </div>
                   </div>
 
-                  {/* LinkedIn Add to Profile & Download PDF */}
-                  <div style={{ display: "flex", gap: "0.75rem" }}>
-                    <a
-                      href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(data.course_title || "Certificate")}&organizationName=Academy&issueYear=2026&issueMonth=7&certUrl=${encodeURIComponent(publicUrl)}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{
-                        flex: 1,
-                        background: "#0a66c2",
-                        color: "#ffffff",
-                        padding: "0.5rem",
-                        borderRadius: "6px",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        textAlign: "center",
-                        textDecoration: "none",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "4px"
-                      }}
-                    >
-                      <LinkedinIcon /> Add to profile
-                    </a>
+                  {/* LinkedIn Add to Profile, Download, and Print */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                    <div style={{ display: "flex", gap: "0.6rem" }}>
+                      <a
+                        href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(data.course_title || "Certificate")}&organizationName=Academy&issueYear=2026&issueMonth=7&certUrl=${encodeURIComponent(publicUrl)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          flex: 1,
+                          background: "#0a66c2",
+                          color: "#ffffff",
+                          padding: "0.55rem 0.5rem",
+                          borderRadius: "6px",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          textAlign: "center",
+                          textDecoration: "none",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "4px"
+                        }}
+                      >
+                        <LinkedinIcon /> Add to profile
+                      </a>
 
-                    <a
-                      href={`/api/v1/certificates/fallback/${id}.pdf`}
-                      target="_blank"
-                      rel="noreferrer"
+                      <a
+                        href={`/api/v1/certificates/fallback/${id}.pdf`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-shimmer"
+                        style={{
+                          flex: 1,
+                          background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
+                          color: "#ffffff",
+                          padding: "0.55rem 0.5rem",
+                          borderRadius: "6px",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          textAlign: "center",
+                          textDecoration: "none",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "4px"
+                        }}
+                      >
+                        Download <Download size={14} />
+                      </a>
+                    </div>
+
+                    <button
+                      onClick={() => window.print()}
                       style={{
-                        flex: 1,
-                        background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
-                        color: "#ffffff",
-                        padding: "0.5rem",
+                        width: "100%",
+                        background: "#ffffff",
+                        color: "#0f172a",
+                        border: "1px solid #cbd5e1",
+                        padding: "0.55rem",
                         borderRadius: "6px",
                         fontSize: "0.75rem",
                         fontWeight: 700,
-                        textAlign: "center",
-                        textDecoration: "none",
+                        cursor: "pointer",
                         display: "inline-flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: "4px"
+                        gap: "6px",
+                        transition: "all 0.15s ease"
                       }}
                     >
-                      Download <Download size={14} />
-                    </a>
+                      <Printer size={14} /> Print or Export Full Page
+                    </button>
                   </div>
                 </div>
 
@@ -534,7 +636,7 @@ export default function CertificateVerificationPage() {
             </div>
 
             {/* Bottom Section: User's Other Certificates */}
-            <div style={{ marginTop: "3rem" }}>
+            <div style={{ marginTop: "3rem" }} className="no-print">
               <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", marginBottom: "1rem" }}>
                 {data.holder_name}'s Academy Certificates
               </h3>
@@ -570,9 +672,16 @@ export default function CertificateVerificationPage() {
       </main>
 
       {/* Footer */}
-      <footer style={{ background: "#ffffff", borderTop: "1px solid #e2e8f0", padding: "1.5rem 0", marginTop: "4rem", textAlign: "center", fontSize: "0.75rem", color: "#64748b" }}>
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <span>Blog</span> | <span>Scoring</span> | <span>Environment</span> | <span>FAQ</span> | <span>About Us</span> | <span>Helpdesk</span> | <span>Careers</span> | <span>Terms Of Service</span> | <span>Privacy Policy</span>
+      <footer style={{ background: "#ffffff", borderTop: "1px solid #e2e8f0", padding: "1.5rem 0", marginTop: "4rem", textAlign: "center", fontSize: "0.8rem", color: "#64748b" }} className="no-print">
+        <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", flexWrap: "wrap", alignItems: "center" }}>
+          <Link href="/" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Home</Link>
+          <Link href="/academy" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Academy</Link>
+          <Link href="/blog" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Blog</Link>
+          <Link href="/about" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>About Us</Link>
+          <Link href="/contact" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Helpdesk</Link>
+          <Link href="/careers" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Careers</Link>
+          <Link href="/terms" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Terms of Service</Link>
+          <Link href="/privacy" style={{ color: "#64748b", textDecoration: "none", fontWeight: 500 }}>Privacy Policy</Link>
         </div>
       </footer>
     </div>

@@ -8,7 +8,7 @@ import {
   Home, BookOpen, User, Users, FolderKanban,
   Award, ShieldAlert, LogOut, ChevronDown,
   X, Briefcase, Calendar, ChevronLeft, ChevronRight, PhoneCall,
-  Settings, FileText, HelpCircle, Compass
+  Settings, FileText, HelpCircle, Compass, GraduationCap, FileCode
 } from "lucide-react";
 
 import Logo from "@/components/Logo";
@@ -93,6 +93,8 @@ export default function DashboardSidebar({
       items: [
         { label: "Courses", href: "/dashboard/admin/courses", icon: <BookOpen size={18} /> },
         { label: "Cohorts", href: "/dashboard/admin/cohorts", icon: <FolderKanban size={18} /> },
+        { label: "Enrollments & Payments", href: "/dashboard/admin/enrollments", icon: <GraduationCap size={18} /> },
+        { label: "Submissions & Grading", href: "/dashboard/admin/submissions", icon: <FileCode size={18} /> },
         { label: "Certificates", href: "/dashboard/admin/certificates", icon: <Award size={18} /> }
       ]
     },
@@ -114,6 +116,7 @@ export default function DashboardSidebar({
       items: [
         { label: "Overview", href: "/dashboard/instructor", icon: <Home size={18} /> },
         { label: "My Courses", href: "/dashboard/instructor/courses", icon: <BookOpen size={18} /> },
+        { label: "Submissions & Grading", href: "/dashboard/admin/submissions", icon: <FileCode size={18} /> },
         { label: "Articles", href: "/dashboard/instructor/blog", icon: <FileText size={18} /> }
       ]
     }
@@ -198,7 +201,8 @@ export default function DashboardSidebar({
                   title={collapsed ? item.label : undefined}
                 >
                   {item.icon}
-                  {!collapsed && <span>{item.label}</span>}
+                  {!collapsed && <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis" }}>{item.label}</span>}
+                  {!collapsed && isActive && <span className="dashboard-sidebar-active-indicator" />}
                 </Link>
               );
             })}
@@ -206,7 +210,7 @@ export default function DashboardSidebar({
         ))}
       </div>
 
-      {/* Sidebar Footer — User Profile Card */}
+      {/* Sidebar Footer: User Profile Card */}
       <div className="dashboard-sidebar-footer">
         {user && user.roles.length > 1 && !collapsed && (
           <div className="sidebar-workspace-select-wrapper">
@@ -229,19 +233,23 @@ export default function DashboardSidebar({
           <button
             onClick={() => setUserDropdownOpen(!userDropdownOpen)}
             className="sidebar-user-btn"
+            title={user?.full_name ? `${user.full_name} (${user.email})` : undefined}
           >
             <div className="sidebar-user-avatar">
               {getInitials()}
             </div>
             {!collapsed && (
-              <div style={{ textAlign: "left", overflow: "hidden", width: "100%" }}>
-                <div className="nav-dropdown-name">
+              <div style={{ textAlign: "left", overflow: "hidden", flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", lineHeight: 1.25 }}>
                   {user?.full_name}
                 </div>
-                <div className="nav-dropdown-email">
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {user?.email}
                 </div>
               </div>
+            )}
+            {!collapsed && (
+              <ChevronDown size={13} style={{ color: "var(--text-muted)", flexShrink: 0, transition: "transform 0.2s", transform: userDropdownOpen ? "rotate(180deg)" : "none" }} />
             )}
           </button>
 

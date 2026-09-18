@@ -14,7 +14,7 @@ import redis.asyncio as aioredis
 
 from app.core.config import get_settings
 
-# Module-level reference — set by ``init_cache`` during app startup.
+# Module-level reference : set by ``init_cache`` during app startup.
 _redis: aioredis.Redis | None = None
 
 

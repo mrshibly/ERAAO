@@ -1,4 +1,4 @@
-"""Booking routes — public slot listing/booking + admin management."""
+"""Booking routes : public slot listing/booking + admin management."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession

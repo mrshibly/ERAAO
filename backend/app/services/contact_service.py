@@ -1,4 +1,4 @@
-"""Contact service — captures service inquiries and quote requests."""
+"""Contact service : captures service inquiries and quote requests."""
 from __future__ import annotations
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.contact import ContactSubmission, QuoteRequest

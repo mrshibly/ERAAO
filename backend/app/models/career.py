@@ -1,4 +1,4 @@
-"""Job postings and applications — careers page."""
+"""Job postings and applications : careers page."""
 from __future__ import annotations
 import enum, uuid
 from sqlalchemy import Enum, ForeignKey, String, Text, Uuid

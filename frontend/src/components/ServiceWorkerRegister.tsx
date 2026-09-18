@@ -85,12 +85,12 @@ export default function ServiceWorkerRegister() {
       {isOffline ? (
         <>
           <WifiOff size={16} style={{ color: "#f87171" }} />
-          <span>Offline Mode — Cached lessons &amp; course syllabus available</span>
+          <span>Offline Mode: Cached lessons &amp; course syllabus available</span>
         </>
       ) : (
         <>
           <Wifi size={16} style={{ color: "#ffffff" }} />
-          <span>Back Online — Live sync restored</span>
+          <span>Back Online: Live sync restored</span>
         </>
       )}
     </div>

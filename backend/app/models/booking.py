@@ -1,4 +1,4 @@
-"""Booking and TimeSlot models — consultation scheduling."""
+"""Booking and TimeSlot models : consultation scheduling."""
 from __future__ import annotations
 import enum, uuid
 from datetime import date, time

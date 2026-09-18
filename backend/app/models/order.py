@@ -1,5 +1,5 @@
 """
-Order, OrderItem, and Invoice models — payment and billing records.
+Order, OrderItem, and Invoice models : payment and billing records.
 """
 
 from __future__ import annotations

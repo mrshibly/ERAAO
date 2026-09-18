@@ -1,1 +1,1 @@
-"""Empty init — marks `schemas` as a Python package."""
+"""Empty init : marks `schemas` as a Python package."""

@@ -1,1 +1,1 @@
-"""Empty init — marks `app` as a Python package."""
+"""Empty init : marks `app` as a Python package."""

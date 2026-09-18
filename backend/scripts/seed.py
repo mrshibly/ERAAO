@@ -55,19 +55,20 @@ ROLE_PERMISSIONS = {
 
 AUTHENTIC_COURSES = [
     # ═══════════════════════════════════════════════════════════════
-    # TRACK 1: BASIC ENGLISH
+    # TRACK 1: PROFESSIONAL ZERO TO FLUENT ENGLISH
     # ═══════════════════════════════════════════════════════════════
     {
-        "title": "Basic English: Build a Usable Foundation",
-        "slug": "basic-english-foundation",
-        "short_description": "Turn fragmented school English into a usable spoken system. Learn through context, pattern building, and real-life practice without memorizing rules.",
+        "title": "Professional Zero to Fluent English",
+        "slug": "professional-zero-to-fluent-english",
+        "short_description": "Turn fragmented school English into spontaneous professional fluency. Learn through context, pattern building, and real-life practice without memorizing rules.",
         "description": "Build a usable English foundation from the English you already half-know. Built entirely on the 6-stage ERAAO Learning Cycle: Understand -> Notice -> Build -> Practice -> Use -> Recall. 12 weeks, 36 classes (3 classes per week, 60 mins each). Every week includes 1 free physical worksheet per module and self-made listening audio packs.",
         "level": "BEGINNER",
         "price": 12000.00,
         "currency": "BDT",
         "duration_hours": 36.0,
-        "thumbnail_url": "/banners/banner-spoken-english.jpg",
+        "thumbnail_url": "/banners/professional-zero-to-fluent-english.jpg",
         "category_slug": "english-communication",
+        "status": "PUBLISHED",
         "modules": [
             {
                 "title": "Module 1: Reset Your English",

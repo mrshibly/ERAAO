@@ -1,4 +1,4 @@
-"""Upload service — handles file validation and storage."""
+"""Upload service : handles file validation and storage."""
 from __future__ import annotations
 import uuid
 import boto3
@@ -58,7 +58,16 @@ class UploadService:
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
         )
-        file_key = f"uploads/{user_id}/{uuid.uuid4()}/{filename}"
+        # Sanitize filename: strip directory traversal, non-ASCII, and control characters
+        import os
+        import re
+
+        base_name = os.path.basename(filename)
+        safe_name = re.sub(r"[^a-zA-Z0-9_.-]", "_", base_name)
+        if not safe_name or safe_name.startswith("."):
+            safe_name = f"file_{uuid.uuid4().hex[:8]}"
+
+        file_key = f"uploads/{user_id}/{uuid.uuid4()}/{safe_name}"
         s3_client.put_object(Bucket=settings.S3_BUCKET_NAME, Key=file_key, Body=contents, ContentType=content_type)
 
         file_url = (
@@ -67,5 +76,5 @@ class UploadService:
             else f"https://{settings.S3_BUCKET_NAME}.s3.{settings.S3_REGION}.amazonaws.com/{file_key}"
         )
 
-        return {"url": file_url, "filename": filename, "size": len(contents)}
+        return {"url": file_url, "filename": safe_name, "size": len(contents)}
 

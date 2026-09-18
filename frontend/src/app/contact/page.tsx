@@ -201,7 +201,7 @@ export default function ContactPage() {
                 Consultation Hours
               </div>
               <div style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.25rem" }}>
-                Sun – Thu, 9am – 6pm BST
+                Sun to Thu, 9am to 6pm BST
               </div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8rem", color: "var(--color-success)", fontWeight: 600 }}>
                 <span style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "var(--color-success)", display: "inline-block" }}></span>

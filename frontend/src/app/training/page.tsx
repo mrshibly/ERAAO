@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Calendar, ArrowRight, Video, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Live Bootcamps & Hacking Cohorts — Academy Bangladesh",
+  title: "Live Bootcamps & Hacking Cohorts | Academy Bangladesh",
   description: "Enroll in live virtual ethical hacking classes, offensive penetration testing training, and secure AI systems engineering bootcamps in Bangladesh.",
   alternates: {
     canonical: "/training",
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function TrainingPage() {
   const bootcamps = [
-    { title: "Offensive Security Cohort", schedule: "August 1st — October 15th, 2026", format: "Live Virtual + Practical Labs", description: "Comprehensive preparation covering active directory compromise, buffer overflows, and complex network pivoting.", price: "৳35,000 / Seat" },
-    { title: "Secure AI Solutions Architect", schedule: "September 5th — October 30th, 2026", format: "Live Class + Capstone Project", description: "Design fully secure enterprise agent architectures, secure RAG nodes, and protect models from malicious prompt injections.", price: "৳45,000 / Seat" }
+    { title: "Offensive Security Cohort", schedule: "August 1st to October 15th, 2026", format: "Live Virtual + Practical Labs", description: "Comprehensive preparation covering active directory compromise, buffer overflows, and complex network pivoting.", price: "৳35,000 / Seat" },
+    { title: "Secure AI Solutions Architect", schedule: "September 5th to October 30th, 2026", format: "Live Class + Capstone Project", description: "Design fully secure enterprise agent architectures, secure RAG nodes, and protect models from malicious prompt injections.", price: "৳45,000 / Seat" }
   ];
 
   return (

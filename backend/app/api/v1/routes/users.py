@@ -1,4 +1,4 @@
-"""User routes — profile and admin user management."""
+"""User routes : profile and admin user management."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession

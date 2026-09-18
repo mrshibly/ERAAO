@@ -91,7 +91,7 @@ export default function ServicesPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
       
       {/* ═══════════════════════════════════════════════════════════════
-          SERVICES HERO SECTION — Modern Glow & Trust Metrics
+          SERVICES HERO SECTION: Modern Glow & Trust Metrics
           ═══════════════════════════════════════════════════════════════ */}
       <section className="services-hero">
         <div className="services-hero-glow" />
@@ -605,7 +605,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          HOW WE ENGAGE — Engineering Workflow
+          HOW WE ENGAGE: Engineering Workflow
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
         <div className="container">

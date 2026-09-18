@@ -17,3 +17,4 @@ from app.models.certificate import Certificate  # noqa: F401
 from app.models.ticket import SupportTicket, TicketReply  # noqa: F401
 from app.models.audit import AuditLog  # noqa: F401
 from app.models.career import JobPosting, JobApplication  # noqa: F401
+from app.models.assessment import QuizAttempt, AssignmentSubmission, SubmissionStatus  # noqa: F401

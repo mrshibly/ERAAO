@@ -1,1 +1,1 @@
-"""Empty init — marks `db` as a Python package."""
+"""Empty init : marks `db` as a Python package."""

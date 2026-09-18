@@ -1,4 +1,4 @@
-"""Certificate service — completion certificate verifications."""
+"""Certificate service : completion certificate verifications."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

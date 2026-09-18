@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Zero to Fluent: 1-Day Free English Bootcamp | ERAAO Academy",
   description:
-    "মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন! Join ERAAO Academy's 1-Day Free English Bootcamp on 26 Sep 2026 with Mentor Ayesha Anika.",
+    "মাত্র ২ ঘণ্টায় বুঝে নিন: কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন! Join ERAAO Academy's 1-Day Free English Bootcamp on 26 Sep 2026 with Mentor Ayesha Anika.",
   keywords: [
     "Free English Bootcamp",
     "Zero to Fluent English",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Zero to Fluent: 1-Day Free English Bootcamp | ERAAO Academy",
     description:
-      "মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন! 26 Sep 2026 • 09:00 PM (Live Online Session).",
+      "মাত্র ২ ঘণ্টায় বুঝে নিন: কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন! 26 Sep 2026 • 09:00 PM (Live Online Session).",
     url: "https://eraao.com/academy/free-bootcamp",
     siteName: "ERAAO Academy",
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         url: "/banners/zero-to-fluent-free-bootcamp.png",
         width: 1024,
         height: 537,
-        alt: "Zero to Fluent Free English Bootcamp - ERAAO Academy",
+        alt: "Zero to Fluent Free English Bootcamp | ERAAO Academy",
       },
     ],
     locale: "bn_BD",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zero to Fluent: 1-Day Free English Bootcamp | ERAAO Academy",
     description:
-      "মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন! 26 Sep 2026 • 09:00 PM.",
+      "মাত্র ২ ঘণ্টায় বুঝে নিন: কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন! 26 Sep 2026 • 09:00 PM.",
     images: ["/banners/zero-to-fluent-free-bootcamp.png"],
   },
 };

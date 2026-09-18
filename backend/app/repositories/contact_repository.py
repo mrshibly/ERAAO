@@ -1,4 +1,4 @@
-"""Contact and Quote repository — all contact-related DB queries."""
+"""Contact and Quote repository : all contact-related DB queries."""
 from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession

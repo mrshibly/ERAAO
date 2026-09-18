@@ -1,4 +1,4 @@
-"""Booking repository — all booking and time-slot DB queries."""
+"""Booking repository : all booking and time-slot DB queries."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select

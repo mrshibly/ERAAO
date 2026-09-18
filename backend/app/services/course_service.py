@@ -1,4 +1,4 @@
-"""Course service — course CRUD, module/lesson management."""
+"""Course service : course CRUD, module/lesson management."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

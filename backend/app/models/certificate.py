@@ -1,4 +1,4 @@
-"""Certificate model — auto-generated on course completion."""
+"""Certificate model : auto-generated on course completion."""
 from __future__ import annotations
 import uuid
 from datetime import datetime

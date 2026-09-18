@@ -1,4 +1,4 @@
-"""Career routes — public job listings + applications + admin management."""
+"""Career routes : public job listings + applications + admin management."""
 from __future__ import annotations
 from uuid import UUID
 from fastapi import APIRouter, Depends

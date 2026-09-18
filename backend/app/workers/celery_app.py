@@ -1,4 +1,4 @@
-"""Celery application configuration — uses Redis as broker and result backend."""
+"""Celery application configuration : uses Redis as broker and result backend."""
 from __future__ import annotations
 from celery import Celery
 from app.core.config import get_settings

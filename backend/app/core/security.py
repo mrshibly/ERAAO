@@ -1,7 +1,7 @@
 """
 Security utilities: password hashing (argon2) and JWT token management.
 
-Never import directly into routers — use the dependency layer instead.
+Never import directly into routers : use the dependency layer instead.
 """
 
 from __future__ import annotations

@@ -1,12 +1,12 @@
-"""Payment service — Stripe checkout, webhook handling, order management."""
+"""Payment service : Stripe checkout, webhook handling, order management."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 import stripe
 from app.core.config import get_settings
-from app.core.exceptions import PaymentError, NotFoundError, ValidationError
-from app.models.order import Order, OrderItem, OrderStatus, ItemType
+from app.core.exceptions import PaymentError, NotFoundError, ValidationError, ConflictError
+from app.models.order import Order, OrderItem, Invoice, OrderStatus, ItemType, InvoiceStatus
 from app.models.course import Course
 
 class PaymentService:
@@ -184,7 +184,214 @@ class PaymentService:
                     if user:
                         send_email_task.delay(
                             to_email=user.email,
-                            subject="Payment Confirmation — Academy",
+                            subject="Payment Confirmation | Academy",
                             body_html=f"<h3>Hello {user.full_name},</h3><p>Your payment for Order #{order.id} was successful! You have been enrolled in your courses.</p>"
                         )
                     await self.db.commit()
+
+    async def submit_manual_bkash(
+        self,
+        user_id: UUID,
+        course_id: UUID,
+        sender_number: str,
+        trx_id: str,
+        amount: float,
+        notes: str | None = None
+    ) -> dict:
+        clean_trx = trx_id.strip().upper()
+        clean_sender = sender_number.strip()
+
+        # Check course
+        course_stmt = select(Course).where(Course.id == course_id)
+        course = (await self.db.execute(course_stmt)).scalar_one_or_none()
+        if not course:
+            raise NotFoundError(resource="Course")
+
+        # Check if student is already enrolled
+        from app.models.enrollment import Enrollment
+        enrolled_stmt = select(Enrollment).where(
+            Enrollment.user_id == user_id,
+            Enrollment.course_id == course_id,
+            Enrollment.deleted_at.is_(None)
+        )
+        already_enrolled = (await self.db.execute(enrolled_stmt)).scalar_one_or_none()
+        if already_enrolled:
+            raise ConflictError(message="You are already enrolled in this bootcamp track.")
+
+        # Check for duplicate TrxID
+        dup_stmt = select(Order).where(Order.gateway_payment_id == clean_trx)
+        existing = (await self.db.execute(dup_stmt)).scalar_one_or_none()
+        if existing:
+            raise ConflictError(message=f"bKash Transaction ID '{clean_trx}' has already been submitted.")
+
+        # Create Order with manual bkash details
+        order = Order(
+            user_id=user_id,
+            status=OrderStatus.PENDING,
+            total_amount=amount,
+            currency="BDT",
+            payment_gateway="bkash_manual",
+            gateway_payment_id=clean_trx,
+            gateway_event_id=clean_sender,
+        )
+        self.db.add(order)
+        await self.db.flush()
+
+        # Order Item
+        item = OrderItem(
+            order_id=order.id,
+            item_type=ItemType.COURSE,
+            item_id=course.id,
+            quantity=1,
+            unit_price=amount,
+        )
+        self.db.add(item)
+
+        # Invoice
+        short_id = str(order.id)[:8].upper()
+        invoice = Invoice(
+            order_id=order.id,
+            invoice_number=f"INV-BKASH-{short_id}",
+            status=InvoiceStatus.DRAFT,
+            notes=f"bKash Sender: {clean_sender} | TrxID: {clean_trx} | Note: {notes or 'N/A'}"
+        )
+        self.db.add(invoice)
+
+        await self.db.commit()
+        await self.db.refresh(order)
+
+        return {
+            "order_id": order.id,
+            "status": order.status.value,
+            "course_id": course.id,
+            "course_title": course.title,
+            "amount": float(order.total_amount),
+            "currency": order.currency,
+            "sender_number": clean_sender,
+            "trx_id": clean_trx,
+            "created_at": order.created_at,
+            "message": "bKash transaction details submitted successfully. Verification takes 1-2 hours."
+        }
+
+    async def get_user_manual_orders(self, user_id: UUID) -> list[dict]:
+        from sqlalchemy.orm import selectinload
+        stmt = (
+            select(Order)
+            .where(Order.user_id == user_id, Order.payment_gateway == "bkash_manual")
+            .options(selectinload(Order.items), selectinload(Order.invoice))
+            .order_by(Order.created_at.desc())
+        )
+        orders = (await self.db.execute(stmt)).scalars().all()
+        result = []
+        for o in orders:
+            course_title = "Course Tuition"
+            course_id = None
+            if o.items:
+                item = o.items[0]
+                course_id = item.item_id
+                c_stmt = select(Course.title).where(Course.id == item.item_id)
+                t = (await self.db.execute(c_stmt)).scalar_one_or_none()
+                if t:
+                    course_title = t
+            result.append({
+                "order_id": o.id,
+                "course_id": course_id,
+                "course_title": course_title,
+                "amount": float(o.total_amount),
+                "currency": o.currency,
+                "sender_number": o.gateway_event_id or "",
+                "trx_id": o.gateway_payment_id or "",
+                "status": o.status.value,
+                "created_at": o.created_at,
+                "notes": o.invoice.notes if o.invoice else None
+            })
+        return result
+
+    async def list_manual_orders(self, status: str | None = None) -> list[dict]:
+        from sqlalchemy.orm import selectinload
+        stmt = (
+            select(Order)
+            .where(Order.payment_gateway == "bkash_manual")
+            .options(
+                selectinload(Order.user),
+                selectinload(Order.items),
+                selectinload(Order.invoice)
+            )
+            .order_by(Order.created_at.desc())
+        )
+        if status:
+            stmt = stmt.where(Order.status == OrderStatus(status))
+
+        orders = (await self.db.execute(stmt)).scalars().all()
+        result = []
+        for o in orders:
+            course_title = "Course Tuition"
+            course_id = None
+            if o.items:
+                item = o.items[0]
+                course_id = item.item_id
+                c_stmt = select(Course.title).where(Course.id == item.item_id)
+                t = (await self.db.execute(c_stmt)).scalar_one_or_none()
+                if t:
+                    course_title = t
+
+            result.append({
+                "order_id": o.id,
+                "user_id": o.user_id,
+                "user_name": o.user.full_name if o.user else "Unknown Student",
+                "user_email": o.user.email if o.user else "unknown@eraao.com",
+                "course_id": course_id,
+                "course_title": course_title,
+                "sender_number": o.gateway_event_id or "",
+                "trx_id": o.gateway_payment_id or "",
+                "amount": float(o.total_amount),
+                "currency": o.currency,
+                "status": o.status.value,
+                "created_at": o.created_at,
+                "notes": o.invoice.notes if o.invoice else None
+            })
+        return result
+
+    async def approve_manual_order(self, order_id: UUID) -> dict:
+        from sqlalchemy.orm import selectinload
+        stmt = (
+            select(Order)
+            .where(Order.id == order_id)
+            .options(selectinload(Order.items), selectinload(Order.invoice))
+        )
+        order = (await self.db.execute(stmt)).scalar_one_or_none()
+        if not order:
+            raise NotFoundError(resource="Order")
+
+        order.status = OrderStatus.PAID
+        if order.invoice:
+            order.invoice.status = InvoiceStatus.PAID
+
+        from app.services.enrollment_service import EnrollmentService
+        enroll_svc = EnrollmentService(self.db)
+        for item in order.items:
+            if item.item_type == ItemType.COURSE:
+                try:
+                    await enroll_svc.enroll(order.user_id, item.item_id, bypass_payment_check=True)
+                except Exception:
+                    pass
+
+        await self.db.commit()
+        return {"message": "bKash payment approved and student enrolled successfully.", "status": "paid"}
+
+    async def reject_manual_order(self, order_id: UUID, reason: str | None = None) -> dict:
+        from sqlalchemy.orm import selectinload
+        stmt = select(Order).where(Order.id == order_id).options(selectinload(Order.invoice))
+        order = (await self.db.execute(stmt)).scalar_one_or_none()
+        if not order:
+            raise NotFoundError(resource="Order")
+
+        order.status = OrderStatus.FAILED
+        if order.invoice:
+            order.invoice.status = InvoiceStatus.CANCELLED
+            if reason:
+                order.invoice.notes = f"{order.invoice.notes or ''} | Rejected: {reason}"
+
+        await self.db.commit()
+        return {"message": "Payment rejected.", "status": "failed"}
+

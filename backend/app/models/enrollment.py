@@ -1,5 +1,5 @@
 """
-Enrollment and LessonProgress models — tracks student progress through courses.
+Enrollment and LessonProgress models : tracks student progress through courses.
 """
 
 from __future__ import annotations
@@ -51,6 +51,7 @@ class Enrollment(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # Relationships
     user: Mapped["app.models.user.User"] = relationship("User")
     course: Mapped["app.models.course.Course"] = relationship("Course")
+    cohort: Mapped["app.models.cohort.Cohort | None"] = relationship("Cohort")
     lesson_progress: Mapped[list["LessonProgress"]] = relationship("LessonProgress", back_populates="enrollment")
 
 

@@ -1,4 +1,4 @@
-"""Auth service — registration, login, token management, password reset, email verification."""
+"""Auth service : registration, login, token management, password reset, email verification."""
 from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import UUID
@@ -59,7 +59,7 @@ class AuthService:
             verification_url = f"{base_url}/verify-email?token={verification_token}"
             send_email_task.delay(
                 to_email=user.email,
-                subject="Verify Your Email — Eraao",
+                subject="Verify Your Email | Eraao",
                 body_html=f"<h3>Welcome to Eraao!</h3><p>Please click the link below to verify your email address:</p><p><a href='{verification_url}'>Verify Email</a></p>"
             )
         except Exception:
@@ -270,7 +270,7 @@ class AuthService:
             reset_url = f"{get_settings().allowed_origins_list[0]}/reset-password?token={token}"
             send_email_task.delay(
                 to_email=user.email,
-                subject="Reset Your Password — Academy",
+                subject="Reset Your Password | Academy",
                 body_html=f"<h3>Password Reset Request</h3><p>Please click the link below to reset your password:</p><p><a href='{reset_url}'>Reset Password</a></p>"
             )
         except Exception:

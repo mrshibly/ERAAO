@@ -34,7 +34,7 @@ async def list_tickets(db: AsyncSession = Depends(get_db)):
 async def add_reply(ticket_id: UUID, data: TicketReplyCreate, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     from app.core.exceptions import ForbiddenError, NotFoundError
     from sqlalchemy import select
-    from app.models.ticket import Ticket as TicketModel
+    from app.models.ticket import SupportTicket as TicketModel
 
     is_staff = any(ur.role.name == "admin" for ur in user.user_roles)
     stmt = select(TicketModel.user_id).where(TicketModel.id == ticket_id)

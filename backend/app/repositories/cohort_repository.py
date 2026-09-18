@@ -1,4 +1,4 @@
-"""Cohort repository — all cohort-related DB queries."""
+"""Cohort repository : all cohort-related DB queries."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select

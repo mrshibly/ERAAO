@@ -28,6 +28,7 @@ interface Course {
   duration_hours?: number;
   lessons_count?: number;
   modules_count?: number;
+  thumbnail_url?: string;
   category_id?: string;
   category?: Category;
 }
@@ -101,11 +102,7 @@ export default function AcademyPage() {
       }
     };
 
-    const timer = setTimeout(() => {
-      fetchCourses();
-    }, 200);
-
-    return () => clearTimeout(timer);
+    fetchCourses();
   }, [page, pageSize, searchQuery, selectedLevel, selectedCategory]);
 
   const totalPages = Math.ceil(total / pageSize) || 1;
@@ -120,8 +117,8 @@ export default function AcademyPage() {
   const getCourseThumbnail = (title: string, slug?: string) => {
     const t = (title || "").toLowerCase();
     const s = (slug || "").toLowerCase();
-    if (s.includes("english") || t.includes("english") || t.includes("spoken")) {
-      return "/banners/banner-spoken-english.jpg";
+    if (s.includes("english") || t.includes("english") || t.includes("spoken") || s.includes("fluent") || t.includes("fluent")) {
+      return "/banners/professional-zero-to-fluent-english.jpg";
     }
     if (s.includes("ai") || t.includes("ai") || t.includes("agent") || t.includes("llm")) {
       return "/banners/banner-ai-automation.jpg";
@@ -129,7 +126,7 @@ export default function AcademyPage() {
     if (s.includes("cyber") || t.includes("security") || t.includes("pentest") || t.includes("hack")) {
       return "/banners/banner-cyber-security.jpg";
     }
-    return "/banners/banner-spoken-english.jpg";
+    return "/banners/professional-zero-to-fluent-english.jpg";
   };
 
   const getLevelBadgeClass = (level: string) => {
@@ -207,7 +204,7 @@ export default function AcademyPage() {
               </h3>
 
               <p style={{ fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700, marginBottom: "0.5rem" }}>
-                মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
+                মাত্র ২ ঘণ্টায় বুঝে নিন: কেন English পড়েও আপনি English Speaking-এ আটকে যাচ্ছেন!
               </p>
 
               <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "1.25rem" }}>
@@ -282,7 +279,7 @@ export default function AcademyPage() {
       <section style={{ paddingTop: "1.25rem", paddingBottom: "3rem" }}>
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           {/* ═══════════════════════════════════════════════════════════════
-              THE ERAAO LEARNING CYCLE — Authentic Core Pedagogy
+              THE ERAAO LEARNING CYCLE: Authentic Core Pedagogy
               ═══════════════════════════════════════════════════════════════ */}
           <div id="learning-cycle" style={{
             marginTop: "0.5rem",
@@ -300,7 +297,7 @@ export default function AcademyPage() {
                 From Understanding Context to Spontaneous Application
               </h3>
               <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", maxWidth: "34rem", margin: "0.35rem auto 0 auto" }}>
-                Every class moves through the same six stages. No memorizing rules or reciting scripts — you build, speak, and retain naturally.
+                Every class moves through the same six stages. No memorizing rules or reciting scripts: you build, speak, and retain naturally.
               </p>
             </div>
 
@@ -435,7 +432,7 @@ export default function AcademyPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          CATALOG SECTION — Interactive Filters & Course Grid
+          CATALOG SECTION: Interactive Filters & Course Grid
           ═══════════════════════════════════════════════════════════════ */}
       <section id="bootcamps" style={{ padding: "3.5rem 0", background: "var(--bg-secondary)" }}>
         <div className="container">
@@ -536,7 +533,7 @@ export default function AcademyPage() {
               </div>
 
               <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>
-                Showing {courses.length > 0 ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, total)} of {total} bootcamps
+                Showing {courses.length > 0 ? (page - 1) * pageSize + 1 : 0} to {Math.min(page * pageSize, total)} of {total} bootcamps
               </span>
             </div>
 
@@ -572,7 +569,7 @@ export default function AcademyPage() {
                   {/* Thumbnail Banner with Zoom Effect */}
                   <Link href={`/academy/courses/${course.slug}`} className="academy-card-image-wrap">
                     <Image
-                      src={getCourseThumbnail(course.title)}
+                      src={course.thumbnail_url || getCourseThumbnail(course.title, course.slug)}
                       alt={course.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -721,7 +718,7 @@ export default function AcademyPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          WHY ERAAO ACADEMY — Advantage & Learning Methodology
+          WHY ERAAO ACADEMY: Advantage & Learning Methodology
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)" }}>
         <div className="container">

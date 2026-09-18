@@ -13,6 +13,7 @@ class LessonCreate(BaseModel):
     content_body: str | None = None
     duration_minutes: int | None = None
     is_free_preview: bool = False
+    attachments: str | None = None
 
 class LessonRead(BaseModel):
     id: UUID
@@ -23,6 +24,7 @@ class LessonRead(BaseModel):
     content_body: str | None = None
     duration_minutes: int | None = None
     is_free_preview: bool
+    attachments: str | None = None
     model_config = {"from_attributes": True}
 
 class ModuleCreate(BaseModel):
@@ -96,3 +98,4 @@ class LessonUpdate(BaseModel):
     content_body: str | None = None
     duration_minutes: int | None = None
     is_free_preview: bool | None = None
+    attachments: str | None = None

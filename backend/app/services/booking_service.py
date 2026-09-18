@@ -1,4 +1,4 @@
-"""Booking service — booking and slot conflict resolution business logic."""
+"""Booking service : booking and slot conflict resolution business logic."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession

@@ -1,4 +1,4 @@
-"""Search service — concurrent, multi-entity search logic."""
+"""Search service : concurrent, multi-entity search logic."""
 from __future__ import annotations
 import asyncio
 from sqlalchemy import select, or_
@@ -41,7 +41,7 @@ class SearchService:
             rows = (await self.db.execute(stmt)).all()
             return [{"type": "service", "id": str(r.id), "title": r.title, "slug": r.slug, "excerpt": (r.description or "")[:200]} for r in rows]
 
-        # Run queries sequentially — AsyncSession is NOT safe for concurrent use
+        # Run queries sequentially : AsyncSession is NOT safe for concurrent use
         if entity_type is None or entity_type == "course":
             results.extend(await search_courses())
         if entity_type is None or entity_type == "blog":

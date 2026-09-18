@@ -8,7 +8,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   return {
-    title: "Certificate Verification — ERAAO Ledger",
+    title: "Certificate Verification | ERAAO Ledger",
     description: `Official cryptographic verification ledger for ERAAO credential ${id}.`,
     alternates: {
       canonical: `/verify/${id}`,

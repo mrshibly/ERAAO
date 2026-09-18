@@ -15,7 +15,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 class Base(DeclarativeBase):
-    """Application-wide declarative base — all models inherit from this."""
+    """Application-wide declarative base : all models inherit from this."""
 
     pass
 

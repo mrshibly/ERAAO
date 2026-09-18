@@ -42,18 +42,19 @@ export interface CourseData {
   }[];
   outcomes: string[];
   modules: ModuleData[];
+  status?: "published" | "draft";
 }
 
 export const ALL_COURSES: CourseData[] = [
   // ─────────────────────────────────────────────────────────────
-  // 1. BASIC ENGLISH
+  // 1. PROFESSIONAL ZERO TO FLUENT ENGLISH (PUBLISHED)
   // ─────────────────────────────────────────────────────────────
   {
     id: "c1-basic-english",
-    slug: "basic-english-foundation",
-    title: "Basic English: Build a Usable Foundation",
-    short_description: "Turn fragmented school English into a usable spoken system. Learn through context, pattern building, and real-life practice without memorizing rules.",
-    description: "Build a usable English foundation from the English you already half-know. This is not English from A-Z — it turns the student's fragmented school English into one usable system built entirely on the 6-stage ERAAO Learning Cycle: Understand → Notice → Build → Practice → Use → Recall.\n\nOver 12 structured weeks (36 live interactive classes), you will progress from understanding sentence architecture to speaking comfortably in everyday, phone, and workplace situations.",
+    slug: "professional-zero-to-fluent-english",
+    title: "Professional Zero to Fluent English",
+    short_description: "Turn fragmented school English into spontaneous professional fluency. Learn through context, pattern building, and real-life practice without memorizing rules.",
+    description: "Build a usable English foundation from the English you already half-know. This is not English from A to Z; it turns the student's fragmented school English into one usable system built entirely on the 6-stage ERAAO Learning Cycle: Understand → Notice → Build → Practice → Use → Recall.\n\nOver 12 structured weeks (36 live interactive classes), you will progress from understanding sentence architecture to speaking comfortably in everyday, phone, and workplace situations.",
     level: "beginner",
     category: "English Communication",
     category_slug: "english-communication",
@@ -64,7 +65,8 @@ export const ALL_COURSES: CourseData[] = [
     class_length_minutes: 60,
     price: 12000,
     currency: "BDT",
-    thumbnail_url: "/banners/banner-spoken-english.jpg",
+    thumbnail_url: "/banners/professional-zero-to-fluent-english.jpg",
+    status: "published",
     weekly_rhythm: "Mon / Wed / Fri • Class 1: Input (Understand→Notice→Build), Class 2: Speaking (Practice→Use), Class 3: Listening + Recall/Review",
     resources_included: "15 Worksheets & Guides + 7 Self-Made Listening Audio Packs + Official Certificate of Completion",
     target_audience: [
@@ -218,7 +220,7 @@ export const ALL_COURSES: CourseData[] = [
     slug: "english-for-freelancers",
     title: "English for Freelancers: International Client Communication",
     short_description: "Communicate professionally, pitch proposals, run client calls, negotiate deadlines and scope, and win high-ticket international contracts.",
-    description: "This is not simply Basic English plus freelance vocabulary — the entire methodology shifts toward professional communication with real international clients.\n\nOver 12 weeks (36 classes), you master how to write compelling project proposals, manage client discovery calls, negotiate pricing and scope changes, and deliver projects professionally. The course culminates in a full 2-week end-to-end client simulation from initial inquiry to final hand-off.",
+    description: "This is not simply Basic English plus freelance vocabulary: the entire methodology shifts toward professional communication with real international clients.\n\nOver 12 weeks (36 classes), you master how to write compelling project proposals, manage client discovery calls, negotiate pricing and scope changes, and deliver projects professionally. The course culminates in a full 2-week end-to-end client simulation from initial inquiry to final hand-off.",
     level: "intermediate",
     category: "English Communication",
     category_slug: "english-communication",
@@ -230,6 +232,7 @@ export const ALL_COURSES: CourseData[] = [
     price: 15000,
     currency: "BDT",
     thumbnail_url: "/banners/banner-spoken-english.jpg",
+    status: "draft",
     weekly_rhythm: "Mon / Wed / Fri • Class 1: Professional Input, Class 2: Speaking & Role-Play, Class 3: Listening + Recall",
     resources_included: "16 Worksheets/Guides + 12 Self-Made Listening Audios + Full Client Simulation Script & Rubric + Freelancer Portfolio Pack",
     target_audience: [
@@ -396,7 +399,7 @@ export const ALL_COURSES: CourseData[] = [
     slug: "advanced-english-fluency",
     title: "Advanced English: Natural Fluency & Nuanced Communication",
     short_description: "Move from consciously constructing English to expressing complex, abstract thoughts naturally with tone, subtlety, and persuasive power.",
-    description: "Not harder grammar — this course moves the student from consciously constructing English to expressing complex thought naturally. Built for professionals who can already speak functional English but want to eliminate hesitation, master connected speech, build persuasive arguments, and command executive meetings.\n\nCovers advanced syntax, meaning-based grammar, collocations, natural listening labs, debate structures, cultural nuance, and ends in a full fluency capstone presentation.",
+    description: "Not harder grammar: this course moves the student from consciously constructing English to expressing complex thought naturally. Built for professionals who can already speak functional English but want to eliminate hesitation, master connected speech, build persuasive arguments, and command executive meetings.\n\nCovers advanced syntax, meaning-based grammar, collocations, natural listening labs, debate structures, cultural nuance, and ends in a full fluency capstone presentation.",
     level: "advanced",
     category: "English Communication",
     category_slug: "english-communication",
@@ -408,6 +411,7 @@ export const ALL_COURSES: CourseData[] = [
     price: 18000,
     currency: "BDT",
     thumbnail_url: "/banners/banner-spoken-english.jpg",
+    status: "draft",
     weekly_rhythm: "Mon / Wed / Fri • Class 1: Nuance Input, Class 2: Advanced Speaking & Debate, Class 3: Natural Listening + Recall",
     resources_included: "16 Worksheets/Guides + 13 Self-Made Listening Audios + Final Fluency Report + Capstone Presentation",
     target_audience: [
@@ -586,6 +590,7 @@ export const ALL_COURSES: CourseData[] = [
     price: 25000,
     currency: "BDT",
     thumbnail_url: "/banners/banner-ai-automation.jpg",
+    status: "draft",
     weekly_rhythm: "Mon / Wed / Fri • Class 1: Architecture & Tools, Class 2: Live Agent Build, Class 3: Testing & Client Deployment",
     resources_included: "12 Production Templates + GitHub Repos + Cloud Sandboxes + Capstone Client Deliverable",
     target_audience: [
@@ -700,7 +705,8 @@ export const ALL_COURSES: CourseData[] = [
     price: 28000,
     currency: "BDT",
     thumbnail_url: "/banners/banner-cyber-security.jpg",
-    weekly_rhythm: "Mon / Wed / Fri • Class 1: Attack Vector Theory, Class 2: Live Target Exploitation, Class 3: Defensive Analysis & Reporting",
+    status: "draft",
+    weekly_rhythm: "Mon / Wed / Fri • Class 1: Vulnerability Theory, Class 2: Sandbox Exploitation, Class 3: PrivEsc & Defense Reporting",
     resources_included: "Browser Kali Linux Labs + Target Machine Access + Vulnerability Cheat Sheets + Pentest Report Template",
     target_audience: [
       {
@@ -796,10 +802,14 @@ export const ALL_COURSES: CourseData[] = [
 ];
 
 export function getCourseBySlug(slug: string): CourseData | undefined {
+  if (slug === "basic-english-foundation" || slug === "zero-to-fluent-english") {
+    return ALL_COURSES.find((c) => c.slug === "professional-zero-to-fluent-english");
+  }
   return ALL_COURSES.find((c) => c.slug === slug);
 }
 
 export function getCoursesByCategory(categorySlug: string): CourseData[] {
-  if (categorySlug === "all") return ALL_COURSES;
-  return ALL_COURSES.filter((c) => c.category_slug === categorySlug);
+  const published = ALL_COURSES.filter((c) => c.status !== "draft");
+  if (categorySlug === "all") return published;
+  return published.filter((c) => c.category_slug === categorySlug);
 }

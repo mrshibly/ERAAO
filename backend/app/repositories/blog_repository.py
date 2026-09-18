@@ -1,4 +1,4 @@
-"""Blog repository — all blog post DB queries."""
+"""Blog repository : all blog post DB queries."""
 from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import UUID

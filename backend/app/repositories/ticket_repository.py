@@ -1,4 +1,4 @@
-"""Support ticket repository — tickets and replies DB queries."""
+"""Support ticket repository : tickets and replies DB queries."""
 from __future__ import annotations
 from uuid import UUID
 from sqlalchemy import select

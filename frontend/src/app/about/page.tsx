@@ -1,18 +1,13 @@
 import { Metadata } from "next";
-import { ShieldCheck, Cpu, Target } from "lucide-react";
+import Link from "next/link";
+import { ShieldCheck, Cpu, Target, CheckCircle2, Sparkles, ArrowRight, Award, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us — ERAAO Academy",
-  description: "Learn more about our elite practitioner instructors in Spoken English, Applied AI, and Offensive Cyber Security.",
+  title: "Meet the Instructor | ERAAO Academy",
+  description: "Learn more about our Lead English Communication Mentor, Ayesha Anika, directing the Professional Zero to Fluent English program.",
 };
 
 export default function AboutPage() {
-  const team = [
-    { name: "Alex Mercer", role: "Principal Security Consultant", certs: "OSCP, OSCE, OSWE", desc: "10+ years of offensive penetration testing and infrastructure compromise simulation.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&auto=format&fit=crop" },
-    { name: "Dr. Sarah Chen", role: "AI Research Lead", certs: "PhD Machine Learning", desc: "Author of multiple whitepapers on LLM prompt injection defense and secure agent orchestration.", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&auto=format&fit=crop" },
-    { name: "Marcus Vance", role: "Director of Academy Operations", certs: "CISSP, CEH", desc: "Architect of structured practitioner bootcamps, hands-on cloud labs, and professional communication curricula.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop" }
-  ];
-
   return (
     <div style={{ padding: "var(--spacing-section) 0" }}>
       <div className="container">
@@ -24,7 +19,7 @@ export default function AboutPage() {
           </span>
           <h1 className="section-title">About Our Academy</h1>
           <p className="section-subtitle">
-            We exist at the convergence of Applied AI and Offensive Security, delivering state-of-the-art enterprise services and practitioner-led bootcamps.
+            We exist to empower ambitious students, professionals, and freelancers with real-world communication fluency and high-demand modern skills.
           </p>
         </div>
 
@@ -51,9 +46,9 @@ export default function AboutPage() {
             padding: "3rem"
           }}>
             <div>
-              <h3 style={{ color: "var(--text-on-dark)", fontSize: "var(--text-2xl)", fontWeight: 800 }}>Pioneering Secure AI Operations</h3>
+              <h3 style={{ color: "var(--text-on-dark)", fontSize: "var(--text-2xl)", fontWeight: 800 }}>Empowering Confident Communicators</h3>
               <p style={{ color: "var(--text-on-dark-subtle)", marginTop: "0.5rem", maxWidth: "32rem", fontSize: "var(--text-base)" }}>
-                Our solutions enable tech-forward companies to deploy custom LLMs securely while defending their network perimeters from advanced adversaries.
+                Our cognitive, drill-based methodology enables learners to eliminate hesitation, master spontaneous speaking, and thrive in international careers.
               </p>
             </div>
           </div>
@@ -65,9 +60,9 @@ export default function AboutPage() {
             <div style={{ width: "48px", height: "48px", borderRadius: "var(--radius-md)", background: "var(--accent-blue-bg)", color: "var(--accent-blue)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem" }}>
               <ShieldCheck size={24} />
             </div>
-            <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>Technical Rigor</h3>
+            <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>The 6-Stage Learning Cycle</h3>
             <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6 }}>
-              No marketing fluff. All of our course content and advisory perimeters are designed and reviewed by elite practitioner labs.
+              No dry memorization. We advance learners through Understand, Notice, Build, Practice, Use, and Recall for permanent speech retention.
             </p>
           </div>
 
@@ -75,9 +70,9 @@ export default function AboutPage() {
             <div style={{ width: "48px", height: "48px", borderRadius: "var(--radius-md)", background: "rgba(139, 92, 246, 0.1)", color: "var(--accent-violet)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem" }}>
               <Cpu size={24} />
             </div>
-            <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>Applied AI Focus</h3>
+            <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>Practical Conversational Drills</h3>
             <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6 }}>
-              We build and secure agents, configure scalable vector indexing databases, and block critical injection flaws in modern applications.
+              Interactive pair exercises, live phone scenarios, client pitching simulations, and hesitation removal drills every single week.
             </p>
           </div>
 
@@ -85,44 +80,154 @@ export default function AboutPage() {
             <div style={{ width: "48px", height: "48px", borderRadius: "var(--radius-md)", background: "rgba(13, 148, 136, 0.1)", color: "var(--accent-teal)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem" }}>
               <Target size={24} />
             </div>
-            <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>Zero-Trust Integrity</h3>
+            <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 700, marginBottom: "0.75rem" }}>1-on-1 Mentor Feedback</h3>
             <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", lineHeight: 1.6 }}>
-              Every network boundary, Active Directory forest, and API pipeline is verified under the most rigorous standards.
+              Direct audio and speech diagnostics from our dedicated mentor to correct pronunciation and unlock natural fluency.
             </p>
           </div>
         </div>
 
-        {/* Team Section */}
-        <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "var(--spacing-section)" }}>
-          <div className="section-header">
-            <h2 className="section-title">Meet the Instructors</h2>
-            <p className="section-subtitle">Elite credential holders directing our live bootcamps and corporate training.</p>
+        {/* Meet the Instructor Spotlight Section */}
+        <div id="instructor" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "var(--spacing-section)" }}>
+          <div className="section-header" style={{ marginBottom: "2.5rem" }}>
+            <span className="section-badge" style={{ background: "rgba(14, 165, 233, 0.1)", color: "var(--accent-blue)" }}>
+              Lead English Mentor
+            </span>
+            <h2 className="section-title">Meet the Instructor</h2>
+            <p className="section-subtitle">Guiding you step-by-step from zero to spontaneous English fluency.</p>
           </div>
 
-          <div className="card-grid">
-            {team.map((member, i) => (
-              <div key={i} className="card hover-lift" style={{ padding: 0, overflow: "hidden" }}>
-                <div style={{ height: "260px", overflow: "hidden" }}>
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                </div>
-                <div style={{ padding: "1.5rem" }}>
-                  <h4 style={{ fontWeight: 700, fontSize: "var(--text-lg)", color: "var(--text-primary)" }}>{member.name}</h4>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.25rem" }}>
-                    <span style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", fontWeight: 500 }}>{member.role}</span>
-                    <span className="badge badge-blue">
-                      {member.certs}
-                    </span>
-                  </div>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-sm)", marginTop: "1rem", lineHeight: 1.5 }}>
-                    {member.desc}
-                  </p>
+          <div
+            className="card hover-lift"
+            style={{
+              padding: "2.5rem",
+              background: "linear-gradient(135deg, var(--card-bg) 0%, rgba(14, 165, 233, 0.04) 100%)",
+              border: "1px solid var(--border-color)",
+              borderRadius: "var(--radius-xl)",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "2.5rem",
+              alignItems: "center"
+            }}
+          >
+            {/* Instructor Portrait */}
+            <div style={{ position: "relative", textAlign: "center" }}>
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: "420px",
+                  height: "380px",
+                  margin: "0 auto",
+                  borderRadius: "var(--radius-xl)",
+                  overflow: "hidden",
+                  boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+                  border: "2px solid rgba(56, 189, 248, 0.2)"
+                }}
+              >
+                <img
+                  src="/instructor/ayesha-anika.jpg"
+                  alt="Ayesha Anika - Lead English Mentor"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 25%" }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    insetInline: 0,
+                    background: "linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.2) 60%, transparent 100%)",
+                    padding: "1.25rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <span className="badge badge-blue" style={{ fontSize: "0.72rem", fontWeight: 700 }}>
+                    Official Academy Mentor
+                  </span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--accent-teal)", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                    <Award size={14} /> 4+ Years Exp.
+                  </span>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Instructor Bio & Credentials */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.75rem", flexWrap: "wrap" }}>
+                <span className="badge badge-green" style={{ fontSize: "0.72rem", fontWeight: 800, padding: "0.25rem 0.65rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                  <Sparkles size={12} />
+                  <span>English Fluency Specialist</span>
+                </span>
+                <span className="badge badge-blue" style={{ fontSize: "0.72rem", fontWeight: 700 }}>
+                  Senior Communication Mentor
+                </span>
+              </div>
+
+              <h3 style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)", fontWeight: 900, color: "var(--text-primary)", lineHeight: 1.2, marginBottom: "0.4rem" }}>
+                Ayesha Anika
+              </h3>
+
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--accent-teal)", fontWeight: 700, marginBottom: "1.25rem" }}>
+                Lead English Communication Mentor • 4+ Years of Dedicated Mentorship
+              </p>
+
+              <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-base)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+                Ayesha Anika has guided hundreds of students, working professionals, and freelancers to eliminate speech hesitation and achieve spontaneous English fluency. Her teaching pedagogy centers on the 6-stage ERAAO learning cycle—replacing mechanical grammar memorization with active sentence-building frameworks, listening comprehension labs, and real-time conversational practice.
+              </p>
+
+              {/* Highlights Checklist */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.85rem", marginBottom: "2rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                  <CheckCircle2 size={16} style={{ color: "var(--accent-teal)", flexShrink: 0 }} />
+                  <span>100% Practical Speaking Drills</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                  <CheckCircle2 size={16} style={{ color: "var(--accent-teal)", flexShrink: 0 }} />
+                  <span>Hesitation &amp; Fear Removal</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                  <CheckCircle2 size={16} style={{ color: "var(--accent-teal)", flexShrink: 0 }} />
+                  <span>1-on-1 Speech Diagnostics</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
+                  <CheckCircle2 size={16} style={{ color: "var(--accent-teal)", flexShrink: 0 }} />
+                  <span>Client Pitch &amp; Interview Mastery</span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
+                <Link
+                  href="/academy/courses/professional-zero-to-fluent-english"
+                  className="btn btn-primary"
+                  style={{
+                    padding: "0.75rem 1.5rem",
+                    fontWeight: 800,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    borderRadius: "var(--radius-md)"
+                  }}
+                >
+                  <span>Explore Zero to Fluent Course</span>
+                  <ArrowRight size={16} />
+                </Link>
+
+                <Link
+                  href="/academy/free-bootcamp"
+                  className="btn btn-outline"
+                  style={{
+                    padding: "0.75rem 1.4rem",
+                    fontWeight: 700,
+                    borderRadius: "var(--radius-md)"
+                  }}
+                >
+                  <span>1-Day Free Bootcamp</span>
+                </Link>
+              </div>
+
+            </div>
           </div>
         </div>
 

@@ -14,7 +14,7 @@ function QuoteForm() {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [serviceType, setServiceType] = useState(requestedService);
-  const [budgetRange, setBudgetRange] = useState("৳1,00,000 - ৳5,00,000");
+  const [budgetRange, setBudgetRange] = useState("৳1,00,000 to ৳5,00,000");
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -160,9 +160,9 @@ function QuoteForm() {
               <div className="form-group">
                 <label className="form-label">Est. Budget Range</label>
                 <select value={budgetRange} onChange={(e) => setBudgetRange(e.target.value)} className="input-field">
-                  <option value="৳1,00,000 - ৳5,00,000">৳1,00,000 - ৳5,00,000 BDT</option>
-                  <option value="৳5,00,000 - ৳10,00,000">৳5,00,000 - ৳10,00,000 BDT</option>
-                  <option value="৳10,00,000 - ৳25,00,000">৳10,00,000 - ৳25,00,000 BDT</option>
+                  <option value="৳1,00,000 to ৳5,00,000">৳1,00,000 to ৳5,00,000 BDT</option>
+                  <option value="৳5,00,000 to ৳10,00,000">৳5,00,000 to ৳10,00,000 BDT</option>
+                  <option value="৳10,00,000 to ৳25,00,000">৳10,00,000 to ৳25,00,000 BDT</option>
                   <option value="৳25,00,000+">৳25,00,000+ BDT</option>
                 </select>
               </div>

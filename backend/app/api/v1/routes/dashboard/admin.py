@@ -1,4 +1,4 @@
-"""Admin dashboard routes — key business metrics and audit logs."""
+"""Admin dashboard routes : key business metrics and audit logs."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession

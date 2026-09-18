@@ -1,4 +1,4 @@
-"""Course repository — all course-related DB queries."""
+"""Course repository : all course-related DB queries."""
 from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import UUID
@@ -50,7 +50,19 @@ class CourseRepository:
         return list(result.scalars().unique().all()), int(total)
 
     async def get_by_slug(self, slug: str) -> Course | None:
-        stmt = select(Course).where(Course.slug == slug, Course.deleted_at.is_(None)).options(
+        conditions = [Course.slug == slug]
+        if slug in ("professional-zero-to-fluent-english", "basic-english-foundation", "zero-to-fluent-english"):
+            conditions.extend([
+                Course.slug == "professional-zero-to-fluent-english",
+                Course.slug == "basic-english-foundation"
+            ])
+        try:
+            val_uuid = UUID(str(slug))
+            conditions.append(Course.id == val_uuid)
+        except (ValueError, TypeError, AttributeError):
+            pass
+
+        stmt = select(Course).where(or_(*conditions), Course.deleted_at.is_(None)).options(
             selectinload(Course.modules).selectinload(Module.lessons),
             selectinload(Course.category)
         )

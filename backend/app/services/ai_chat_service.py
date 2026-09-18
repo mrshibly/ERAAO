@@ -1,5 +1,5 @@
 """
-AI Chat Service — Integrates with OpenRouter API to provide ERAAO platform support.
+AI Chat Service : Integrates with OpenRouter API to provide ERAAO platform support.
 Features robust fallback intent matching if OpenRouter API is unconfigured or unreachable.
 Includes security guardrails against prompt injection and sensitive data leakage.
 """
@@ -16,7 +16,7 @@ from app.schemas.chat import ChatMessage, ChatResponse
 
 logger = logging.getLogger(__name__)
 
-# ERAAO Official Knowledge Base System Prompt — Humanized, Realistic & Convincing Advisor
+# ERAAO Official Knowledge Base System Prompt : Humanized, Realistic & Convincing Advisor
 ERAAO_SYSTEM_PROMPT = """You are a knowledgeable, friendly, and articulate Solutions Advisor at ERAAO (eraao.com), an enterprise AI development agency and practitioner academy based in Dhaka, Bangladesh.
 Your company slogan is: "Lighting the future."
 
@@ -79,13 +79,14 @@ class AIChatService:
         # Build payload history
         formatted_messages = [{"role": "system", "content": ERAAO_SYSTEM_PROMPT}]
 
-        # Add optional context hint
+        # Add optional context hint (strictly validate path format to prevent prompt injection)
         if context_url:
-            clean_url = AIChatService._sanitize_input(context_url)
-            formatted_messages.append({
-                "role": "system",
-                "content": f"The visitor is currently viewing this page on ERAAO: {clean_url}"
-            })
+            clean_url = AIChatService._sanitize_input(context_url).strip()
+            if re.match(r"^/[a-zA-Z0-9_\-/?=&%.]{1,200}$", clean_url):
+                formatted_messages.append({
+                    "role": "system",
+                    "content": f"The visitor is currently viewing this page on ERAAO: {clean_url}"
+                })
 
         for msg in sanitized_messages:
             formatted_messages.append({"role": msg.role, "content": msg.content})
@@ -178,7 +179,7 @@ class AIChatService:
             )
         elif any(w in last_msg for w in ["ai", "bot", "llm", "automation", "agent", "software", "app", "develop"]):
             return (
-                "We build custom, production-ready AI solutions—including private document search (RAG), autonomous multi-agent workflows, customer service chatbots, and full-stack web applications.\n\n"
+                "We build custom, production-ready AI solutions, including private document search (RAG), autonomous multi-agent workflows, customer service chatbots, and full-stack web applications.\n\n"
                 "Everything we build is designed to be secure and private. You can check out our practice areas under [AI & Automation Services](/services) or [Book a Discovery Call](/book) to talk through your project."
             )
         elif any(w in last_msg for w in ["quote", "price", "cost", "fee", "rate", "how much"]):

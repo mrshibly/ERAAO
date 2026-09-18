@@ -1,4 +1,4 @@
-"""Payment routes — checkout and Stripe webhook."""
+"""Payment routes : checkout and Stripe webhook."""
 from __future__ import annotations
 from fastapi import APIRouter, Depends, Request, Header, Form
 from fastapi.responses import RedirectResponse
@@ -8,16 +8,24 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.core.config import get_settings
-from app.core.dependencies import get_current_active_user
+from app.core.dependencies import get_current_active_user, require_role
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.models.order import Order, OrderStatus, ItemType
-from app.schemas.order import CheckoutRequest, CheckoutResponse
+from app.schemas.order import (
+    CheckoutRequest,
+    CheckoutResponse,
+    ManualBkashPaymentRequest,
+    ManualBkashPaymentResponse,
+    PendingManualPaymentItem,
+)
 from app.services.payment_service import PaymentService
 
 router = APIRouter()
 
 @router.post("/checkout", response_model=CheckoutResponse, status_code=201)
-async def checkout(data: CheckoutRequest, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
+@limiter.limit("10/minute")
+async def checkout(request: Request, data: CheckoutRequest, user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     """Create a Stripe or SSLCommerz checkout session for the given items."""
     svc = PaymentService(db)
     result = await svc.create_checkout(user.id, [item.model_dump() for item in data.items])
@@ -25,11 +33,70 @@ async def checkout(data: CheckoutRequest, user: User = Depends(get_current_activ
 
 @router.post("/webhook", status_code=200)
 async def stripe_webhook(request: Request, stripe_signature: str = Header(alias="stripe-signature"), db: AsyncSession = Depends(get_db)):
-    """Stripe webhook endpoint — no auth required, verified via signature."""
+    """Stripe webhook endpoint : no auth required, verified via signature."""
     payload = await request.body()
     svc = PaymentService(db)
     await svc.handle_webhook(payload, stripe_signature)
     return {"received": True}
+
+@router.post("/manual-bkash", response_model=ManualBkashPaymentResponse, status_code=201)
+@limiter.limit("5/minute")
+async def submit_manual_bkash(
+    request: Request,
+    data: ManualBkashPaymentRequest,
+    user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Student: submit manual bKash transaction details for verification."""
+    svc = PaymentService(db)
+    result = await svc.submit_manual_bkash(
+        user_id=user.id,
+        course_id=data.course_id,
+        sender_number=data.sender_number,
+        trx_id=data.trx_id,
+        amount=data.amount,
+        notes=data.notes
+    )
+    return ManualBkashPaymentResponse(**result)
+
+@router.get("/manual-bkash/my-submissions", status_code=200)
+async def get_my_manual_submissions(
+    user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Student: view own submitted manual bKash payments and verification statuses."""
+    svc = PaymentService(db)
+    return await svc.get_user_manual_orders(user.id)
+
+@router.get("/manual-bkash/pending", response_model=list[PendingManualPaymentItem], status_code=200, dependencies=[Depends(require_role("admin"))])
+async def list_pending_manual_payments(
+    status: str | None = None,
+    db: AsyncSession = Depends(get_db)
+):
+    """Admin: list all manual bKash transactions (filter optional by status: pending, paid, failed)."""
+    svc = PaymentService(db)
+    items = await svc.list_manual_orders(status=status)
+    return [PendingManualPaymentItem(**i) for i in items]
+
+@router.post("/manual-bkash/{order_id}/approve", status_code=200, dependencies=[Depends(require_role("admin"))])
+async def approve_manual_payment(
+    order_id: UUID,
+    db: AsyncSession = Depends(get_db)
+):
+    """Admin: approve a manual bKash transaction and automatically enroll the student."""
+    svc = PaymentService(db)
+    return await svc.approve_manual_order(order_id)
+
+@router.post("/manual-bkash/{order_id}/reject", status_code=200, dependencies=[Depends(require_role("admin"))])
+async def reject_manual_payment(
+    order_id: UUID,
+    reason: str | None = None,
+    db: AsyncSession = Depends(get_db)
+):
+    """Admin: reject a manual bKash transaction."""
+    svc = PaymentService(db)
+    return await svc.reject_manual_order(order_id, reason=reason)
+
 
 @router.post("/sslcommerz/success")
 async def sslcommerz_success(

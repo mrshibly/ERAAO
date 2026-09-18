@@ -106,10 +106,9 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.85rem", fontSize: "var(--text-xs)" }}>
               {[
-                { label: "Cybersecurity Track", href: "/academy" },
-                { label: "AI & LLM Engineering", href: "/academy" },
-                { label: "Hands-on Virtual Labs", href: "/academy" },
-                { label: "Live Bootcamps", href: "/academy" },
+                { label: "Zero to Fluent English", href: "/academy/courses/professional-zero-to-fluent-english" },
+                { label: "Meet the Instructor", href: "/meet-the-instructor" },
+                { label: "Free English Bootcamp", href: "/academy/free-bootcamp" },
                 { label: "Verify Certificates", href: "/verify" }
               ].map((link, idx) => (
                 <li key={idx}>
@@ -170,7 +169,7 @@ export default function Footer() {
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <Phone size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
                 <a href="tel:+8801517835859" className="footer-link" style={{ color: "#cbd5e1" }}>
-                  +880 1517-835859
+                  +880 1517 835859
                 </a>
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
@@ -182,7 +181,7 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar — Copyright & Legal Links */}
+        {/* Bottom Bar: Copyright & Legal Links */}
         <div className="footer-bottom">
           <div>
             &copy; {new Date().getFullYear()} ERAAO Platform. All rights reserved.

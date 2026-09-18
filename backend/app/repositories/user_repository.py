@@ -1,4 +1,4 @@
-"""User repository — all user-related DB queries."""
+"""User repository : all user-related DB queries."""
 from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import UUID
