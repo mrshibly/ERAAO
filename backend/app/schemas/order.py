@@ -22,3 +22,38 @@ class OrderRead(BaseModel):
     currency: str
     created_at: datetime
     model_config = {"from_attributes": True}
+
+class ManualBkashPaymentRequest(BaseModel):
+    course_id: UUID
+    sender_number: str
+    trx_id: str
+    amount: float
+    notes: str | None = None
+
+class ManualBkashPaymentResponse(BaseModel):
+    order_id: UUID
+    status: str
+    course_id: UUID
+    course_title: str
+    amount: float
+    currency: str
+    sender_number: str
+    trx_id: str
+    created_at: datetime
+    message: str
+
+class PendingManualPaymentItem(BaseModel):
+    order_id: UUID
+    user_id: UUID
+    user_name: str
+    user_email: str
+    course_id: UUID
+    course_title: str
+    sender_number: str
+    trx_id: str
+    amount: float
+    currency: str
+    status: str
+    created_at: datetime
+    notes: str | None = None
+

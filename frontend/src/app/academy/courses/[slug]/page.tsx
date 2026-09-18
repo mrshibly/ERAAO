@@ -79,6 +79,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
         setTimeout(() => {
           router.push(`/learn/${enrollment.id}`);
         }, 1200);
+      } else if (res.status === 403) {
+        // Requires payment — redirect to bKash manual checkout
+        router.push(`/checkout?course=${course.slug || course.id}`);
       } else {
         const err = await res.json().catch(() => ({}));
         setModalConfig({
@@ -489,7 +492,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   className="btn btn-accent"
                   style={{ width: "100%", padding: "0.85rem", fontSize: "var(--text-base)", marginBottom: "1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
                 >
-                  <span>{enrolling ? "Enrolling..." : "Enroll in Bootcamp"}</span>
+                  <span>{enrolling ? "Connecting..." : course.price > 0 ? "Enroll via bKash" : "Enroll in Bootcamp"}</span>
                   <ArrowRight size={18} />
                 </button>
               )}
