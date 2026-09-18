@@ -189,7 +189,7 @@ export default function Home() {
                       <div key={c.id} className="academy-card">
                         <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
                           <Image
-                            src={c.thumbnail_url || "/banners/banner-spoken-english.jpg"}
+                            src={c.thumbnail_url || "/banners/professional-zero-to-fluent-english.jpg"}
                             alt={c.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

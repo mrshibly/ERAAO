@@ -91,6 +91,11 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
+              <Link href="/meet-the-instructor" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+                Instructor
+              </Link>
+            </li>
+            <li>
               <Link href="/services" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
                 <span>Services</span>
                 <span className="nav-enterprise-pill">

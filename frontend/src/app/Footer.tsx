@@ -106,10 +106,9 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.85rem", fontSize: "var(--text-xs)" }}>
               {[
-                { label: "Cybersecurity Track", href: "/academy" },
-                { label: "AI & LLM Engineering", href: "/academy" },
-                { label: "Hands-on Virtual Labs", href: "/academy" },
-                { label: "Live Bootcamps", href: "/academy" },
+                { label: "Zero to Fluent English", href: "/academy/courses/professional-zero-to-fluent-english" },
+                { label: "Meet the Instructor", href: "/meet-the-instructor" },
+                { label: "Free English Bootcamp", href: "/academy/free-bootcamp" },
                 { label: "Verify Certificates", href: "/verify" }
               ].map((link, idx) => (
                 <li key={idx}>

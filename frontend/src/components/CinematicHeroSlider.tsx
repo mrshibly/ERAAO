@@ -46,7 +46,7 @@ const TRACKS: HeroSlide[] = [
     description:
       "Master live Zoom discovery calls, high-converting Upwork pitching, and confident rate negotiations with 1-on-1 mentor diagnostics.",
     ctaPrimaryText: "Enroll in English Cohort",
-    ctaPrimaryHref: "/academy/courses/english-for-freelancers",
+    ctaPrimaryHref: "/academy/courses/professional-zero-to-fluent-english",
     ctaSecondaryText: "Free Level Assessment",
     ctaSecondaryHref: "/book",
     accentColor: "#38bdf8",
@@ -57,9 +57,8 @@ const TRACKS: HeroSlide[] = [
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(14, 165, 233, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     unsplashBg:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=80&auto=format&fit=crop",
-    cardImage:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1000&auto=format&fit=crop&q=85",
-    cardImagePosition: "center 12%",
+    cardImage: "/banners/professional-zero-to-fluent-english.jpg",
+    cardImagePosition: "center 22%",
     chipTop: { dotColor: "#10b981", text: "Live Zoom Pitch Simulation" },
     chipBottom: {
       icon: <Sparkles size={14} style={{ color: "#38bdf8" }} />,

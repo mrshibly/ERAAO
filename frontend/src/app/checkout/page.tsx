@@ -31,8 +31,17 @@ const FALLBACK_COURSES: CourseOption[] = [
     duration_hours: 36
   },
   {
+    id: "professional-zero-to-fluent-english",
+    title: "Professional Zero to Fluent English",
+    slug: "professional-zero-to-fluent-english",
+    price: 12000,
+    currency: "BDT",
+    level: "BEGINNER",
+    duration_hours: 36
+  },
+  {
     id: "basic-english-foundation",
-    title: "Basic English: Build a Usable Foundation",
+    title: "Professional Zero to Fluent English",
     slug: "basic-english-foundation",
     price: 12000,
     currency: "BDT",

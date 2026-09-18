@@ -51,6 +51,11 @@ class CourseRepository:
 
     async def get_by_slug(self, slug: str) -> Course | None:
         conditions = [Course.slug == slug]
+        if slug in ("professional-zero-to-fluent-english", "basic-english-foundation", "zero-to-fluent-english"):
+            conditions.extend([
+                Course.slug == "professional-zero-to-fluent-english",
+                Course.slug == "basic-english-foundation"
+            ])
         try:
             val_uuid = UUID(str(slug))
             conditions.append(Course.id == val_uuid)
