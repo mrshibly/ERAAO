@@ -41,6 +41,13 @@ class AppException(Exception):
 # Concrete exceptions
 # ---------------------------------------------------------------------------
 
+class BadRequestError(AppException):
+    """Malformed or invalid client request."""
+
+    def __init__(self, message: str = "Bad request.", details: Dict[str, Any] | None = None) -> None:
+        super().__init__(code="BAD_REQUEST", message=message, status_code=400, details=details)
+
+
 class NotFoundError(AppException):
     """Requested resource does not exist."""
 
