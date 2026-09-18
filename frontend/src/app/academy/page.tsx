@@ -163,7 +163,7 @@ export default function AcademyPage() {
               fill
               priority
               sizes="(max-width: 768px) 100vw, 1200px"
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              style={{ objectFit: "contain", objectPosition: "center" }}
             />
           </div>
         </div>
@@ -566,14 +566,27 @@ export default function AcademyPage() {
               {courses.map((course) => (
                 <div key={course.id} className="academy-card">
                   
-                  {/* Thumbnail Banner with Zoom Effect */}
+                  {/* Thumbnail Banner without cropping or stretching */}
                   <Link href={`/academy/courses/${course.slug}`} className="academy-card-image-wrap">
+                    {/* Ambient blurred backdrop so any aspect ratio fills naturally without harsh bars */}
+                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+                      <Image
+                        src={course.thumbnail_url || getCourseThumbnail(course.title, course.slug)}
+                        alt=""
+                        fill
+                        sizes="400px"
+                        style={{ objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
+                        aria-hidden="true"
+                      />
+                    </div>
+
+                    {/* Full uncropped, unstretched foreground image */}
                     <Image
                       src={course.thumbnail_url || getCourseThumbnail(course.title, course.slug)}
                       alt={course.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: "cover" }}
+                      style={{ objectFit: "contain", objectPosition: "center", zIndex: 1 }}
                     />
                     
                     {/* Level Pill Overlay */}

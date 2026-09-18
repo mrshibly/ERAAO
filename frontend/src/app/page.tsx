@@ -188,12 +188,25 @@ export default function Home() {
                     {englishCourses.map((c) => (
                       <div key={c.id} className="academy-card">
                         <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
+                          {/* Ambient blurred backdrop so any aspect ratio fills naturally without harsh bars */}
+                          <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+                            <Image
+                              src={c.thumbnail_url || "/banners/professional-zero-to-fluent-english.jpg"}
+                              alt=""
+                              fill
+                              sizes="400px"
+                              style={{ objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
+                              aria-hidden="true"
+                            />
+                          </div>
+
+                          {/* Full uncropped, unstretched foreground image */}
                           <Image
                             src={c.thumbnail_url || "/banners/professional-zero-to-fluent-english.jpg"}
                             alt={c.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            style={{ objectFit: "cover" }}
+                            style={{ objectFit: "contain", objectPosition: "center", zIndex: 1 }}
                           />
                           <div style={{
                             position: "absolute",
