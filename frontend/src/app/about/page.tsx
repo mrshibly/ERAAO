@@ -200,7 +200,7 @@ export default function AboutPage() {
 
                 <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
                   <Link
-                    href="/academy/courses/ai-automation-agents"
+                    href="/academy/courses/practical-ai-automation"
                     className="btn btn-primary"
                     style={{
                       padding: "0.75rem 1.5rem",
@@ -211,7 +211,7 @@ export default function AboutPage() {
                       borderRadius: "var(--radius-md)"
                     }}
                   >
-                    <span>Explore AI Bootcamp</span>
+                    <span>Explore AI Bootcamp (Coming Soon)</span>
                     <ArrowRight size={16} />
                   </Link>
 
@@ -224,7 +224,7 @@ export default function AboutPage() {
                       borderRadius: "var(--radius-md)"
                     }}
                   >
-                    <span>Explore Security Bootcamp</span>
+                    <span>Explore Security Labs (Coming Soon)</span>
                   </Link>
                 </div>
               </div>

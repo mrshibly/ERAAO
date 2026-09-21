@@ -42,24 +42,24 @@ const DEFAULT_CATEGORIES: Category[] = [
 const ACADEMY_BANNERS = [
   {
     id: "zero-to-fluent",
-    src: "/banners/zero-to-fluent-english.jpg",
-    alt: "Zero to Fluent English - Free Bootcamp & Flagship Cohort",
+    src: "/banners/professional-zero-to-fluent-english.jpg",
+    alt: "Zero to Fluent Free English Bootcamp - Running Now",
     href: "/academy/free-bootcamp",
-    tag: "English Communication",
+    tag: "Running Now • Free Bootcamp",
   },
   {
     id: "ai-automation",
     src: "/banners/banner-ai-automation.jpg",
-    alt: "Practical AI Automation & Intelligent Agents",
-    href: "/academy/courses/ai-automation-agents",
-    tag: "Artificial Intelligence",
+    alt: "Professional AI Automation - Cohort Coming Soon",
+    href: "/academy/courses/practical-ai-automation",
+    tag: "Coming Soon • Pre-Register",
   },
   {
     id: "cyber-security",
     src: "/banners/banner-cyber-security.jpg",
-    alt: "Offensive Cyber Security & Penetration Testing",
+    alt: "Professional Cyber Security & Ethical Hacking - Cohort Coming Soon",
     href: "/academy/courses/offensive-cyber-security",
-    tag: "Cybersecurity",
+    tag: "Coming Soon • Pre-Register",
   },
 ];
 
@@ -642,135 +642,199 @@ export default function AcademyPage() {
               </button>
             </div>
           ) : (
-            <div className="card-grid">
-              {courses.map((course) => (
-                <div key={course.id} className="academy-card">
-                  
-                  {/* Thumbnail Banner without cropping or stretching */}
-                  <Link href={`/academy/courses/${course.slug}`} className="academy-card-image-wrap">
-                    {/* Ambient blurred backdrop so any aspect ratio fills naturally without harsh bars */}
-                    <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+            <>
+              {/* Active Running Bootcamp Notice Banner */}
+              <div style={{
+                background: "linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%)",
+                border: "1px solid rgba(56, 189, 248, 0.3)",
+                borderRadius: "var(--radius-xl)",
+                padding: "1.1rem 1.4rem",
+                marginBottom: "2rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "1rem",
+                flexWrap: "wrap",
+                boxShadow: "0 8px 24px -6px rgba(0, 0, 0, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
+                  <span className="badge badge-green" style={{ fontWeight: 800, padding: "0.3rem 0.75rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                    <Sparkles size={13} />
+                    <span>RUNNING NOW</span>
+                  </span>
+                  <div>
+                    <strong style={{ color: "#ffffff", fontSize: "var(--text-sm)", display: "block" }}>
+                      Zero to Fluent Free English Bootcamp is Actively Running!
+                    </strong>
+                    <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                      Open for live batch registration. The 12-week regular bootcamps below are currently <strong>Coming Soon</strong>.
+                    </span>
+                  </div>
+                </div>
+                <Link href="/academy/free-bootcamp" className="btn btn-primary btn-sm" style={{ fontWeight: 700, fontSize: "var(--text-xs)", whiteSpace: "nowrap" }}>
+                  <span>Join Free Bootcamp</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+
+              <div className="card-grid">
+                {courses.map((course) => (
+                  <div key={course.id} className="academy-card">
+                    
+                    {/* Thumbnail Banner without cropping or stretching */}
+                    <Link href={`/academy/courses/${course.slug}`} className="academy-card-image-wrap">
+                      {/* Ambient blurred backdrop so any aspect ratio fills naturally without harsh bars */}
+                      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+                        <Image
+                          src={course.thumbnail_url || getCourseThumbnail(course.title, course.slug)}
+                          alt=""
+                          fill
+                          sizes="400px"
+                          style={{ objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
+                          aria-hidden="true"
+                        />
+                      </div>
+
+                      {/* Full uncropped, unstretched foreground image */}
                       <Image
                         src={course.thumbnail_url || getCourseThumbnail(course.title, course.slug)}
-                        alt=""
+                        alt={course.title}
                         fill
-                        sizes="400px"
-                        style={{ objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
-                        aria-hidden="true"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        style={{ objectFit: "contain", objectPosition: "center", zIndex: 1 }}
                       />
-                    </div>
-
-                    {/* Full uncropped, unstretched foreground image */}
-                    <Image
-                      src={course.thumbnail_url || getCourseThumbnail(course.title, course.slug)}
-                      alt={course.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: "contain", objectPosition: "center", zIndex: 1 }}
-                    />
-                    
-                    {/* Level Pill Overlay */}
-                    <div style={{
-                      position: "absolute",
-                      top: "0.85rem",
-                      left: "0.85rem",
-                      background: "rgba(15, 23, 42, 0.85)",
-                      backdropFilter: "blur(6px)",
-                      border: "1px solid rgba(255, 255, 255, 0.15)",
-                      padding: "0.25rem 0.75rem",
-                      borderRadius: "var(--radius-full)",
-                      fontSize: "var(--text-xs)",
-                      fontWeight: 700,
-                      color: "white",
-                      textTransform: "capitalize",
-                      zIndex: 2
-                    }}>
-                      {course.level}
-                    </div>
-
-                    {/* Official Certificate Icon Overlay */}
-                    <div style={{
-                      position: "absolute",
-                      top: "0.85rem",
-                      right: "0.85rem",
-                      background: "rgba(15, 23, 42, 0.85)",
-                      backdropFilter: "blur(6px)",
-                      border: "1px solid rgba(255, 255, 255, 0.15)",
-                      padding: "0.25rem 0.6rem",
-                      borderRadius: "var(--radius-full)",
-                      fontSize: "var(--text-xs)",
-                      fontWeight: 700,
-                      color: "var(--accent-teal)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.25rem",
-                      zIndex: 2
-                    }}>
-                      <Award size={13} />
-                      <span>Certified</span>
-                    </div>
-                  </Link>
-
-                  {/* Card Content Body */}
-                  <div className="academy-card-body">
-                    
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
-                      <span className={`badge ${getLevelBadgeClass(course.level)}`}>
-                        {course.category?.name || "Practitioner Track"}
-                      </span>
                       
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
-                        <Clock size={13} />
-                        <span>{course.duration_weeks || 12} Weeks • 36 Classes</span>
+                      {/* Level Pill Overlay */}
+                      <div style={{
+                        position: "absolute",
+                        top: "0.85rem",
+                        left: "0.85rem",
+                        background: "rgba(15, 23, 42, 0.85)",
+                        backdropFilter: "blur(6px)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "var(--radius-full)",
+                        fontSize: "var(--text-xs)",
+                        fontWeight: 700,
+                        color: "white",
+                        textTransform: "capitalize",
+                        zIndex: 2
+                      }}>
+                        {course.level}
                       </div>
-                    </div>
 
-                    <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
-                      <Link href={`/academy/courses/${course.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
-                        {course.title}
-                      </Link>
-                    </h3>
-
-                    <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
-                      {course.short_description || "Comprehensive hands-on curriculum with real-world browser attack/defense environments and official graduation diploma."}
-                    </p>
-
-                    {/* Features checklist - 100% authentic program specs */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                        <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
-                        <span>3 Live Classes / Week • Mentored Sessions</span>
+                      {/* Official Certificate Icon Overlay */}
+                      <div style={{
+                        position: "absolute",
+                        top: "0.85rem",
+                        right: "0.85rem",
+                        background: "rgba(15, 23, 42, 0.85)",
+                        backdropFilter: "blur(6px)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                        padding: "0.25rem 0.6rem",
+                        borderRadius: "var(--radius-full)",
+                        fontSize: "var(--text-xs)",
+                        fontWeight: 700,
+                        color: "var(--accent-teal)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        zIndex: 2
+                      }}>
+                        <Award size={13} />
+                        <span>Certified</span>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                        <Layers size={13} style={{ color: "var(--accent-teal)" }} />
-                        <span>{course.modules_count || 10} Structured Modules • Downloadable Practice Materials</span>
+
+                      {/* Coming Soon Overlay Badge */}
+                      <div style={{
+                        position: "absolute",
+                        bottom: "0.85rem",
+                        right: "0.85rem",
+                        background: "rgba(15, 23, 42, 0.92)",
+                        backdropFilter: "blur(6px)",
+                        border: "1px solid rgba(245, 158, 11, 0.5)",
+                        padding: "0.25rem 0.65rem",
+                        borderRadius: "var(--radius-full)",
+                        fontSize: "0.72rem",
+                        fontWeight: 800,
+                        color: "#fbbf24",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.3rem",
+                        zIndex: 2,
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)"
+                      }}>
+                        <Clock size={12} style={{ color: "#fbbf24" }} />
+                        <span>Coming Soon</span>
                       </div>
-                    </div>
-
-                  </div>
-
-                  {/* Card Footer with Price & CTA */}
-                  <div className="academy-card-footer">
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                      <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
-                      <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
-                        ৳{course.price ? course.price.toLocaleString() : "Free"} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>BDT</span>
-                      </span>
-                    </div>
-
-                    <Link
-                      href={`/academy/courses/${course.slug}`}
-                      className="btn btn-accent"
-                      style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
-                    >
-                      <span>Explore Syllabus</span>
-                      <ArrowRight size={16} />
                     </Link>
-                  </div>
 
-                </div>
-              ))}
-            </div>
+                    {/* Card Content Body */}
+                    <div className="academy-card-body">
+                      
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                        <span className={`badge ${getLevelBadgeClass(course.level)}`}>
+                          {course.category?.name || "Practitioner Track"}
+                        </span>
+                        
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                          <Clock size={13} />
+                          <span>{course.duration_weeks || 12} Weeks • 36 Classes</span>
+                        </div>
+                      </div>
+
+                      <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
+                        <Link href={`/academy/courses/${course.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+                          {course.title}
+                        </Link>
+                      </h3>
+
+                      <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
+                        {course.short_description || "Comprehensive hands-on curriculum with real-world browser attack/defense environments and official graduation diploma."}
+                      </p>
+
+                      {/* Features checklist - 100% authentic program specs */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                          <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
+                          <span>3 Live Classes / Week • Mentored Sessions</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                          <Layers size={13} style={{ color: "var(--accent-teal)" }} />
+                          <span>{course.modules_count || 10} Structured Modules • Downloadable Practice Materials</span>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Card Footer with Price & CTA */}
+                    <div className="academy-card-footer">
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                        <div>
+                          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                          <span style={{ display: "block", fontSize: "0.7rem", color: "#f59e0b", fontWeight: 700 }}>
+                            Launching Soon
+                          </span>
+                        </div>
+                        <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
+                          ৳{course.price ? course.price.toLocaleString() : "Free"} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>BDT</span>
+                        </span>
+                      </div>
+
+                      <Link
+                        href={`/academy/courses/${course.slug}`}
+                        className="btn btn-outline"
+                        style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)", borderColor: "rgba(245, 158, 11, 0.4)", color: "var(--text-primary)" }}
+                      >
+                        <span>View Syllabus (Coming Soon)</span>
+                        <ArrowRight size={16} />
+                      </Link>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+            </>
           )}
 
           {/* Pagination Bar */}

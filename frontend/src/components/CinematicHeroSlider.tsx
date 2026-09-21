@@ -12,6 +12,7 @@ import {
   Bot,
   ShieldCheck,
   Phone,
+  BookOpen,
 } from "lucide-react";
 
 interface HeroSlide {
@@ -40,15 +41,15 @@ interface HeroSlide {
 const TRACKS: HeroSlide[] = [
   {
     id: "spoken-english",
-    tabLabel: "Spoken English for Freelancers",
-    titlePrefix: "Win High-Ticket Global Clients with",
-    titleHighlight: "Fluent English Communication",
+    tabLabel: "Free English Bootcamp (Live Now)",
+    titlePrefix: "Break Speaking Hesitation & Fear:",
+    titleHighlight: "Zero to Fluent Free Bootcamp",
     description:
-      "Master live Zoom discovery calls, high-converting Upwork pitching, and confident rate negotiations with 1-on-1 mentor diagnostics.",
-    ctaPrimaryText: "Enroll in English Cohort",
-    ctaPrimaryHref: "/academy/courses/professional-zero-to-fluent-english",
-    ctaSecondaryText: "Free Level Assessment",
-    ctaSecondaryHref: "/book",
+      "মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও Speaking-এ আটকে যাচ্ছেন। Sentence building, listening drills এবং confident conversation techniques live on Zoom with Mentor Ayesha Anika.",
+    ctaPrimaryText: "Join Free Bootcamp",
+    ctaPrimaryHref: "/academy/free-bootcamp",
+    ctaSecondaryText: "Explore Full Curriculum",
+    ctaSecondaryHref: "/academy/courses/professional-zero-to-fluent-english",
     accentColor: "#38bdf8",
     accentSecondary: "#0284c7",
     gradientText: "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)",
@@ -58,25 +59,25 @@ const TRACKS: HeroSlide[] = [
     unsplashBg:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=80&auto=format&fit=crop",
     cardImage: "/banners/professional-zero-to-fluent-english.jpg",
-    cardImagePosition: "center 22%",
-    chipTop: { dotColor: "#10b981", text: "Live Zoom Pitch Simulation" },
+    cardImagePosition: "center",
+    chipTop: { dotColor: "#10b981", text: "Free Live Bootcamp Running Now" },
     chipBottom: {
       icon: <Sparkles size={14} style={{ color: "#38bdf8" }} />,
-      text: "1-on-1 Mentor Speech Review",
+      text: "Mentor Ayesha Anika • 4+ Yrs Exp",
     },
     trackType: "english",
   },
   {
     id: "ai-automation",
-    tabLabel: "AI Automation & Agents",
+    tabLabel: "AI Automation (Coming Soon)",
     titlePrefix: "Architect & Deploy Enterprise",
     titleHighlight: "Autonomous AI Multi-Agents",
     description:
-      "Build production-grade multi-agent architectures, automated business workflows, and robust LLM tool pipelines using n8n and LangChain.",
-    ctaPrimaryText: "Enroll in AI Cohort",
-    ctaPrimaryHref: "/academy/courses/ai-automation-agents",
-    ctaSecondaryText: "Explore Agent Curriculum",
-    ctaSecondaryHref: "/academy",
+      "Build production-grade multi-agent architectures, automated business workflows, and robust LLM tool pipelines using n8n, LangChain, and Python.",
+    ctaPrimaryText: "Pre-Register (Coming Soon)",
+    ctaPrimaryHref: "https://wa.me/8801606666577?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20pre-register%20for%20the%20AI%20Automation%20Cohort",
+    ctaSecondaryText: "Explore Curriculum",
+    ctaSecondaryHref: "/academy/courses/practical-ai-automation",
     accentColor: "#c084fc",
     accentSecondary: "#a855f7",
     gradientText: "linear-gradient(135deg, #c084fc 0%, #34d399 100%)",
@@ -85,27 +86,26 @@ const TRACKS: HeroSlide[] = [
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(168, 85, 247, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     unsplashBg:
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80&auto=format&fit=crop",
-    cardImage:
-      "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1000&auto=format&fit=crop&q=85",
-    cardImagePosition: "center 22%",
-    chipTop: { dotColor: "#a855f7", text: "Autonomous Agent Lab" },
+    cardImage: "/banners/banner-ai-automation.jpg",
+    cardImagePosition: "center",
+    chipTop: { dotColor: "#f59e0b", text: "Cohort Launching Soon • Pre-Register" },
     chipBottom: {
       icon: <Bot size={14} style={{ color: "#c084fc" }} />,
-      text: "LangChain & n8n Production Pipelines",
+      text: "Tech Lead Mahmudur Rahman Shibly",
     },
     trackType: "ai",
   },
   {
     id: "cyber-security",
-    tabLabel: "Offensive Cyber Security",
+    tabLabel: "Offensive Security (Coming Soon)",
     titlePrefix: "Master Active Adversary Emulation &",
-    titleHighlight: "Real\u2011World Ethical Hacking",
+    titleHighlight: "Real‑World Ethical Hacking",
     description:
       "Gain hands-on attack immersion in live cloud sandboxes, enterprise threat exploitation, and red-team penetration testing.",
-    ctaPrimaryText: "Enroll in Security Cohort",
-    ctaPrimaryHref: "/academy/courses/offensive-cyber-security",
+    ctaPrimaryText: "Pre-Register (Coming Soon)",
+    ctaPrimaryHref: "https://wa.me/8801606666577?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20pre-register%20for%20the%20Cyber%20Security%20Cohort",
     ctaSecondaryText: "Explore Red Team Labs",
-    ctaSecondaryHref: "/academy",
+    ctaSecondaryHref: "/academy/courses/offensive-cyber-security",
     accentColor: "#fb7185",
     accentSecondary: "#e11d48",
     gradientText: "linear-gradient(135deg, #fb7185 0%, #fb923c 100%)",
@@ -114,10 +114,9 @@ const TRACKS: HeroSlide[] = [
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(244, 63, 94, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     unsplashBg:
       "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80&auto=format&fit=crop",
-    cardImage:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000&auto=format&fit=crop&q=85",
+    cardImage: "/banners/banner-cyber-security.jpg",
     cardImagePosition: "center",
-    chipTop: { dotColor: "#ef4444", text: "Live Isolated Red Team Sandbox" },
+    chipTop: { dotColor: "#f59e0b", text: "Cohort Launching Soon • Pre-Register" },
     chipBottom: {
       icon: <ShieldCheck size={14} style={{ color: "#fb7185" }} />,
       text: "Zero-Day Exploit Defense Lab",
@@ -343,6 +342,8 @@ export default function CinematicHeroSlider() {
             >
               <Link
                 href={current.ctaPrimaryHref}
+                target={current.ctaPrimaryHref.startsWith("http") ? "_blank" : undefined}
+                rel={current.ctaPrimaryHref.startsWith("http") ? "noopener noreferrer" : undefined}
                 className="hero-cta-primary"
                 style={{
                   background: current.gradientText,
@@ -358,7 +359,7 @@ export default function CinematicHeroSlider() {
                 href={current.ctaSecondaryHref}
                 className="hero-cta-secondary"
               >
-                <Phone size={16} style={{ color: current.accentColor }} />
+                <BookOpen size={16} style={{ color: current.accentColor }} />
                 <span>{current.ctaSecondaryText}</span>
               </Link>
             </div>

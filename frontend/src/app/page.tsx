@@ -170,6 +170,40 @@ export default function Home() {
             </div>
           ) : (
             <>
+              {/* Active Running Bootcamp Notice Banner */}
+              <div style={{
+                background: "linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%)",
+                border: "1px solid rgba(56, 189, 248, 0.3)",
+                borderRadius: "var(--radius-xl)",
+                padding: "1.1rem 1.4rem",
+                marginBottom: "2.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "1rem",
+                flexWrap: "wrap",
+                boxShadow: "0 8px 24px -6px rgba(0, 0, 0, 0.3)"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
+                  <span className="badge badge-green" style={{ fontWeight: 800, padding: "0.3rem 0.75rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                    <Sparkles size={13} />
+                    <span>RUNNING NOW</span>
+                  </span>
+                  <div>
+                    <strong style={{ color: "#ffffff", fontSize: "var(--text-sm)", display: "block" }}>
+                      Zero to Fluent Free English Bootcamp is Actively Running!
+                    </strong>
+                    <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                      Live Zoom training with mentor guidance. Other 12-week regular bootcamps are currently <strong>Coming Soon</strong>.
+                    </span>
+                  </div>
+                </div>
+                <Link href="/academy/free-bootcamp" className="btn btn-primary btn-sm" style={{ fontWeight: 700, fontSize: "var(--text-xs)", whiteSpace: "nowrap" }}>
+                  <span>Join Free Bootcamp</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+
               {englishCourses.length > 0 && (
                 <>
                   <div style={{ marginBottom: "1.5rem" }}>
@@ -225,6 +259,29 @@ export default function Home() {
                           }}>
                             {c.level}
                           </div>
+
+                          {/* Coming Soon Overlay Badge */}
+                          <div style={{
+                            position: "absolute",
+                            bottom: "0.85rem",
+                            right: "0.85rem",
+                            background: "rgba(15, 23, 42, 0.92)",
+                            backdropFilter: "blur(6px)",
+                            border: "1px solid rgba(245, 158, 11, 0.5)",
+                            padding: "0.25rem 0.65rem",
+                            borderRadius: "var(--radius-full)",
+                            fontSize: "0.72rem",
+                            fontWeight: 800,
+                            color: "#fbbf24",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.3rem",
+                            zIndex: 2,
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)"
+                          }}>
+                            <Clock size={12} style={{ color: "#fbbf24" }} />
+                            <span>Coming Soon</span>
+                          </div>
                         </Link>
 
                         <div className="academy-card-body">
@@ -262,7 +319,12 @@ export default function Home() {
 
                         <div className="academy-card-footer">
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                            <div>
+                              <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                              <span style={{ display: "block", fontSize: "0.7rem", color: "#f59e0b", fontWeight: 700 }}>
+                                Launching Soon
+                              </span>
+                            </div>
                             <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
                               ৳{c.price?.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>{c.currency || "BDT"}</span>
                             </span>
@@ -270,10 +332,10 @@ export default function Home() {
 
                           <Link
                             href={`/academy/courses/${c.slug}`}
-                            className="btn btn-accent"
-                            style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                            className="btn btn-outline"
+                            style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)", borderColor: "rgba(245, 158, 11, 0.4)", color: "var(--text-primary)" }}
                           >
-                            <span>Explore Syllabus</span>
+                            <span>View Syllabus (Coming Soon)</span>
                             <ArrowRight size={16} />
                           </Link>
                         </div>
@@ -301,12 +363,24 @@ export default function Home() {
                     {techCourses.map((c) => (
                       <div key={c.id} className="academy-card">
                         <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
+                          {/* Ambient blurred backdrop so any aspect ratio fills naturally without harsh bars */}
+                          <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+                            <Image
+                              src={c.thumbnail_url || (c.slug?.includes("cyber") ? "/banners/banner-cyber-security.jpg" : "/banners/banner-ai-automation.jpg")}
+                              alt=""
+                              fill
+                              sizes="400px"
+                              style={{ objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
+                              aria-hidden="true"
+                            />
+                          </div>
+
                           <Image
-                            src={c.thumbnail_url || "/banners/banner-ai-automation.jpg"}
+                            src={c.thumbnail_url || (c.slug?.includes("cyber") ? "/banners/banner-cyber-security.jpg" : "/banners/banner-ai-automation.jpg")}
                             alt={c.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                            style={{ objectFit: "cover" }}
+                            style={{ objectFit: "contain", objectPosition: "center", zIndex: 1 }}
                           />
                           <div style={{
                             position: "absolute",
@@ -324,6 +398,29 @@ export default function Home() {
                             zIndex: 2
                           }}>
                             {c.level}
+                          </div>
+
+                          {/* Coming Soon Overlay Badge */}
+                          <div style={{
+                            position: "absolute",
+                            bottom: "0.85rem",
+                            right: "0.85rem",
+                            background: "rgba(15, 23, 42, 0.92)",
+                            backdropFilter: "blur(6px)",
+                            border: "1px solid rgba(245, 158, 11, 0.5)",
+                            padding: "0.25rem 0.65rem",
+                            borderRadius: "var(--radius-full)",
+                            fontSize: "0.72rem",
+                            fontWeight: 800,
+                            color: "#fbbf24",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.3rem",
+                            zIndex: 2,
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)"
+                          }}>
+                            <Clock size={12} style={{ color: "#fbbf24" }} />
+                            <span>Coming Soon</span>
                           </div>
                         </Link>
 
@@ -362,7 +459,12 @@ export default function Home() {
 
                         <div className="academy-card-footer">
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                            <div>
+                              <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                              <span style={{ display: "block", fontSize: "0.7rem", color: "#f59e0b", fontWeight: 700 }}>
+                                Launching Soon
+                              </span>
+                            </div>
                             <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "var(--text-primary)" }}>
                               ৳{c.price?.toLocaleString()} <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>{c.currency || "BDT"}</span>
                             </span>
@@ -370,10 +472,10 @@ export default function Home() {
 
                           <Link
                             href={`/academy/courses/${c.slug}`}
-                            className="btn btn-accent"
-                            style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                            className="btn btn-outline"
+                            style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)", borderColor: "rgba(245, 158, 11, 0.4)", color: "var(--text-primary)" }}
                           >
-                            <span>Explore Syllabus</span>
+                            <span>View Syllabus (Coming Soon)</span>
                             <ArrowRight size={16} />
                           </Link>
                         </div>

@@ -115,7 +115,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
     if (t.includes("hack") || t.includes("penetration") || t.includes("security") || sl.includes("cyber")) {
       return "/banners/banner-cyber-security.jpg";
     }
-    return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200";
+    return "/banners/professional-zero-to-fluent-english.jpg";
   };
 
   if (loading) {
@@ -181,6 +181,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
           <div style={{ position: "relative", zIndex: 2, maxWidth: "800px" }}>
             <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "center", marginBottom: "1.25rem" }}>
+              <span className="badge" style={{ background: "rgba(245, 158, 11, 0.25)", color: "#fbbf24", border: "1px solid rgba(245, 158, 11, 0.5)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                Coming Soon • Pre-Registration Open
+              </span>
               <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em" }}>
                 {course.category || "Bootcamp"}
               </span>
@@ -480,22 +483,36 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                 </span>
               </div>
 
-              {enrollSuccess ? (
-                <div style={{ background: "var(--color-success-bg)", border: "1px solid rgba(34, 197, 94, 0.3)", color: "var(--color-success)", padding: "1rem", borderRadius: "var(--radius-md)", textAlign: "center", fontWeight: 700, marginBottom: "1rem" }}>
-                  <CheckCircle2 size={24} style={{ margin: "0 auto 0.5rem auto", display: "block" }} />
-                  <span>Successfully enrolled! Redirecting to classroom...</span>
+              {/* Pre-Registration Notice & Action */}
+              <div style={{ background: "rgba(245, 158, 11, 0.1)", border: "1px solid rgba(245, 158, 11, 0.3)", borderRadius: "var(--radius-md)", padding: "1rem", textAlign: "center", marginBottom: "1.25rem" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.35rem", color: "#fbbf24", fontWeight: 800, fontSize: "var(--text-sm)", marginBottom: "0.25rem" }}>
+                  <Clock size={16} />
+                  <span>Cohort Launching Soon</span>
                 </div>
-              ) : (
-                <button
-                  onClick={handleEnroll}
-                  disabled={enrolling}
-                  className="btn btn-accent"
-                  style={{ width: "100%", padding: "0.85rem", fontSize: "var(--text-base)", marginBottom: "1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
-                >
-                  <span>{enrolling ? "Connecting..." : course.price > 0 ? "Enroll via bKash" : "Enroll in Bootcamp"}</span>
-                  <ArrowRight size={18} />
-                </button>
-              )}
+                <p style={{ margin: 0, fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                  Official batch start dates and seat confirmations will be sent directly to pre-registered learners.
+                </p>
+              </div>
+
+              <a
+                href={`https://wa.me/8801606666577?text=${encodeURIComponent(`Hello ERAAO Academy, I want to pre-register for the upcoming ${course.title} bootcamp cohort.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-accent"
+                style={{ width: "100%", padding: "0.85rem", fontSize: "var(--text-base)", marginBottom: "0.85rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
+              >
+                <span>Pre-Register on WhatsApp</span>
+                <ArrowRight size={18} />
+              </a>
+
+              <Link
+                href="/academy/free-bootcamp"
+                className="btn btn-outline"
+                style={{ width: "100%", padding: "0.65rem", fontSize: "var(--text-xs)", marginBottom: "1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", borderColor: "rgba(56, 189, 248, 0.4)", color: "var(--accent-blue)" }}
+              >
+                <Sparkles size={14} />
+                <span>Join Live Free Bootcamp Now</span>
+              </Link>
 
               {/* Verified specifications list */}
               <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
