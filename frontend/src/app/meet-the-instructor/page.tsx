@@ -63,8 +63,8 @@ export default function MeetTheInstructorPage() {
                 style={{
                   position: "relative",
                   width: "100%",
-                  maxWidth: "460px",
-                  height: "440px",
+                  maxWidth: "540px",
+                  aspectRatio: "16 / 9",
                   margin: "0 auto",
                   borderRadius: "var(--radius-xl)",
                   overflow: "hidden",
@@ -79,7 +79,7 @@ export default function MeetTheInstructorPage() {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    objectPosition: "center 22%"
+                    objectPosition: "center"
                   }}
                 />
                 
@@ -251,7 +251,7 @@ export default function MeetTheInstructorPage() {
             }}
           >
             {/* Course Thumbnail Image */}
-            <div style={{ position: "relative", minHeight: "260px", background: "#060a16", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", background: "#060a16", overflow: "hidden" }}>
               <img
                 src="/banners/professional-zero-to-fluent-english.jpg"
                 alt=""

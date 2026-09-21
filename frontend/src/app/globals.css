@@ -2784,6 +2784,83 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   HERO SLIDER UNIFIED BUTTONS & HOVER EFFECTS
+   ═══════════════════════════════════════════════════════════════ */
+.hero-cta-primary {
+  min-width: 230px;
+  height: 52px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.55rem;
+  padding: 0 1.75rem !important;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease !important;
+  cursor: pointer;
+}
+
+.hero-cta-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+.hero-cta-secondary {
+  min-width: 210px;
+  height: 52px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem;
+  padding: 0 1.5rem !important;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  cursor: pointer;
+}
+
+.hero-cta-secondary:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.38) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 640px) {
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ENTERPRISE SOLUTIONS GRID (Mobile Fix)
+   ═══════════════════════════════════════════════════════════════ */
+.enterprise-solutions-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .enterprise-solutions-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+
 /* Print Stylesheet for High Fidelity Certificate Printing */
 @media print {
   body {
@@ -2804,4 +2881,5 @@ input:focus, select:focus, textarea:focus {
     page-break-inside: avoid;
   }
 }
+
 

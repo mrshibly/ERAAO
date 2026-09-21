@@ -470,7 +470,7 @@ export default function Home() {
         borderTop: "1px solid rgba(255, 255, 255, 0.1)"
       }}>
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "4rem", alignItems: "center" }}>
+          <div className="enterprise-solutions-grid">
             <div>
               <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", marginBottom: "1rem" }}>
                 For Business &bull; Enterprise Solutions

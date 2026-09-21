@@ -343,20 +343,11 @@ export default function CinematicHeroSlider() {
             >
               <Link
                 href={current.ctaPrimaryHref}
-                className="btn"
+                className="hero-cta-primary"
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.55rem",
-                  padding: "0.95rem 2.25rem",
-                  borderRadius: "14px",
                   background: current.gradientText,
                   color: "#080c16",
-                  fontWeight: 800,
-                  fontSize: "1rem",
-                  textDecoration: "none",
                   boxShadow: `0 10px 25px ${current.glowColor}`,
-                  transition: "all 0.25s ease",
                 }}
               >
                 <span>{current.ctaPrimaryText}</span>
@@ -365,21 +356,7 @@ export default function CinematicHeroSlider() {
 
               <Link
                 href={current.ctaSecondaryHref}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.95rem 1.85rem",
-                  borderRadius: "14px",
-                  background: "rgba(255, 255, 255, 0.06)",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                  color: "#ffffff",
-                  fontWeight: 600,
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                  backdropFilter: "blur(8px)",
-                  transition: "all 0.25s ease",
-                }}
+                className="hero-cta-secondary"
               >
                 <Phone size={16} style={{ color: current.accentColor }} />
                 <span>{current.ctaSecondaryText}</span>
@@ -398,13 +375,13 @@ export default function CinematicHeroSlider() {
               width: "100%",
             }}
           >
-            {/* Studio Photo Glass Card */}
+            {/* Studio Photo Glass Card (Exact 16:9 Aspect Ratio to Prevent Cropping) */}
             <div
               style={{
                 position: "relative",
                 width: "100%",
-                maxWidth: "540px",
-                aspectRatio: "16 / 11",
+                maxWidth: "580px",
+                aspectRatio: "16 / 9",
                 borderRadius: "24px",
                 overflow: "hidden",
                 border: "1px solid rgba(255, 255, 255, 0.12)",
