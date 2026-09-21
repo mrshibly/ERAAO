@@ -200,7 +200,7 @@ export default function AboutPage() {
 
                 <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
                   <Link
-                    href="/academy/courses/practical-ai-automation"
+                    href="/academy/courses/ai-automation-agents"
                     className="btn btn-primary"
                     style={{
                       padding: "0.75rem 1.5rem",

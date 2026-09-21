@@ -182,7 +182,8 @@ export default function AcademyPage() {
             style={{
               position: "relative",
               width: "100%",
-              height: "clamp(130px, 18vw, 240px)",
+              aspectRatio: "16 / 9",
+              maxHeight: "560px",
               borderRadius: "clamp(12px, 1.5vw, 20px)",
               overflow: "hidden",
               boxShadow: "0 20px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08)",

@@ -1119,6 +1119,12 @@ a {
   justify-content: center;
 }
 
+@media (max-width: 640px) {
+  .academy-card-image-wrap {
+    min-height: unset;
+  }
+}
+
 .academy-card-image-wrap img {
   object-fit: contain !important;
   object-position: center !important;

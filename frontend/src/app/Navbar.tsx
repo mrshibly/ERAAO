@@ -92,7 +92,7 @@ export default function Navbar() {
             </li>
             <li>
               <Link href="/meet-the-instructor" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
-                Instructor
+                Instructors
               </Link>
             </li>
             <li>
