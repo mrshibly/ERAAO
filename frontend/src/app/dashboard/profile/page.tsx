@@ -282,7 +282,7 @@ export default function ProfileSettingsPage() {
                 <Phone size={16} style={{ position: "absolute", left: "0.85rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
                 <input
                   type="tel"
-                  placeholder="+880 1517-835859"
+                  placeholder="+880 1606-666577"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="input-field"

@@ -14,7 +14,7 @@ async def test_create_booking_without_slot(db_session: AsyncSession) -> None:
     booking = await svc.create_booking(
         name="Security Director",
         email="director@enterprise.com",
-        phone="+8801517835859",
+        phone="+8801606666577",
         service_type="AI Security Audit",
         notes="Interested in full infra pentesting"
     )
@@ -39,7 +39,7 @@ async def test_create_booking_with_slot_reserves_slot(db_session: AsyncSession) 
     booking = await svc.create_booking(
         name="CTO Client",
         email="cto@startup.dev",
-        phone="+8801517835859",
+        phone="+8801606666577",
         service_type="LLM Architecture Review",
         time_slot_id=slot.id
     )

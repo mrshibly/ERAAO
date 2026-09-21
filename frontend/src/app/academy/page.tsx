@@ -486,7 +486,7 @@ export default function AcademyPage() {
                 <span>Schedule Free Call</span>
               </Link>
               <a
-                href="https://wa.me/8801700000000?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20know%20which%20course%20is%20best%20for%20me"
+                href="https://wa.me/8801606666577?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20know%20which%20course%20is%20best%20for%20me"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-outline"

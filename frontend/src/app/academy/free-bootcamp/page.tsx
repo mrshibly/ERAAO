@@ -26,7 +26,7 @@ import {
 
 const TELEGRAM_JOIN_URL = "https://t.me/+BWxzf8Zk2stmNWY1";
 const WHATSAPP_URL =
-  "https://wa.me/8801700000000?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20know%20more%20about%20the%20Free%20Zero%20to%20Fluent%20Bootcamp";
+  "https://wa.me/8801606666577?text=Hello%20ERAAO%20Academy%2C%20I%20want%20to%20know%20more%20about%20the%20Free%20Zero%20to%20Fluent%20Bootcamp";
 const TARGET_DATE = new Date("2026-09-26T21:00:00+06:00").getTime();
 
 export default function FreeBootcampPage() {

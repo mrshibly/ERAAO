@@ -168,8 +168,8 @@ export default function Footer() {
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                 <Phone size={14} style={{ color: "#38bdf8", flexShrink: 0 }} />
-                <a href="tel:+8801517835859" className="footer-link" style={{ color: "#cbd5e1" }}>
-                  +880 1517 835859
+                <a href="tel:+8801606666577" className="footer-link" style={{ color: "#cbd5e1" }}>
+                  +880 1606-666577
                 </a>
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>

@@ -539,7 +539,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   Speak directly with an ERAAO advisor on WhatsApp for an assessment and syllabus recommendation.
                 </p>
                 <a
-                  href={`https://wa.me/8801700000000?text=${encodeURIComponent(`Hello ERAAO Academy, I would like to learn more about the ${course.title} bootcamp.`)}`}
+                  href={`https://wa.me/8801606666577?text=${encodeURIComponent(`Hello ERAAO Academy, I would like to learn more about the ${course.title} bootcamp.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline"

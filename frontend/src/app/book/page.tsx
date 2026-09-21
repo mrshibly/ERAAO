@@ -230,8 +230,8 @@ export default function BookPage() {
                 <a href="mailto:info@eraao.com" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", textDecoration: "none" }}>
                   <Mail size={14} style={{ color: "var(--accent-blue)" }} /> info@eraao.com
                 </a>
-                <a href="tel:+8801517835859" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", textDecoration: "none" }}>
-                  <Phone size={14} style={{ color: "var(--accent-blue)" }} /> +880 1517-835859
+                <a href="tel:+8801606666577" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", textDecoration: "none" }}>
+                  <Phone size={14} style={{ color: "var(--accent-blue)" }} /> +880 1606-666577
                 </a>
               </div>
             </div>
@@ -362,7 +362,7 @@ export default function BookPage() {
                         <label className="form-label">Phone Number</label>
                         <input
                           type="tel"
-                          placeholder="+880 1517-835859"
+                          placeholder="+880 1606-666577"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           className="input-field"

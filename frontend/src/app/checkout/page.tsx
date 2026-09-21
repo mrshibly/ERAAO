@@ -77,7 +77,7 @@ const FALLBACK_COURSES: CourseOption[] = [
   }
 ];
 
-const BKASH_NUMBER = "01517835859";
+const BKASH_NUMBER = "01606666577";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
