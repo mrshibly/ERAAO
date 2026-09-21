@@ -219,6 +219,124 @@ export default function Home() {
                   </div>
 
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginBottom: "3.5rem" }}>
+                    {/* Featured Running Free English Bootcamp Card */}
+                    <div className="academy-card" style={{ border: "2px solid rgba(16, 185, 129, 0.45)", boxShadow: "0 10px 30px -10px rgba(16, 185, 129, 0.3)" }}>
+                      <Link href="/academy/free-bootcamp" className="academy-card-image-wrap">
+                        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+                          <Image
+                            src="/banners/zero-to-fluent-free-bootcamp.png"
+                            alt=""
+                            fill
+                            sizes="400px"
+                            style={{ objectFit: "cover", filter: "blur(22px) brightness(0.5)", transform: "scale(1.25)", opacity: 0.85 }}
+                            aria-hidden="true"
+                          />
+                        </div>
+
+                        <Image
+                          src="/banners/zero-to-fluent-free-bootcamp.png"
+                          alt="ZERO TO FLUENT: Free English Bootcamp"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          style={{ objectFit: "contain", objectPosition: "center", zIndex: 1 }}
+                        />
+                        
+                        <div style={{
+                          position: "absolute",
+                          top: "0.85rem",
+                          left: "0.85rem",
+                          background: "rgba(15, 23, 42, 0.85)",
+                          backdropFilter: "blur(6px)",
+                          border: "1px solid rgba(255, 255, 255, 0.15)",
+                          padding: "0.25rem 0.75rem",
+                          borderRadius: "var(--radius-full)",
+                          fontSize: "var(--text-xs)",
+                          fontWeight: 700,
+                          color: "white",
+                          zIndex: 2
+                        }}>
+                          Beginner
+                        </div>
+
+                        {/* Running Now Overlay Badge */}
+                        <div style={{
+                          position: "absolute",
+                          bottom: "0.85rem",
+                          right: "0.85rem",
+                          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                          padding: "0.3rem 0.75rem",
+                          borderRadius: "var(--radius-full)",
+                          fontSize: "0.72rem",
+                          fontWeight: 800,
+                          color: "#ffffff",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                          zIndex: 2,
+                          boxShadow: "0 4px 14px rgba(16, 185, 129, 0.45)"
+                        }}>
+                          <Sparkles size={12} />
+                          <span>RUNNING NOW</span>
+                        </div>
+                      </Link>
+
+                      <div className="academy-card-body">
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                          <span className="badge badge-green">
+                            English Communication
+                          </span>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "var(--text-xs)", color: "var(--accent-teal)", fontWeight: 700 }}>
+                            <Clock size={13} />
+                            <span>2 Hours • Live Zoom</span>
+                          </div>
+                        </div>
+
+                        <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 800, marginBottom: "0.6rem", color: "var(--text-primary)", lineHeight: 1.35 }}>
+                          <Link href="/academy/free-bootcamp" style={{ color: "inherit", textDecoration: "none" }}>
+                            ZERO TO FLUENT: Free English Bootcamp
+                          </Link>
+                        </h3>
+
+                        <p style={{ color: "var(--text-secondary)", fontSize: "var(--text-xs)", lineHeight: 1.6, marginBottom: "1.25rem", flex: 1 }}>
+                          মাত্র ২ ঘণ্টায় বুঝে নিন—কেন English পড়েও Speaking-এ আটকে যাচ্ছেন। Sentence building, listening drills এবং confident speaking drills শিখুন live with Mentor Ayesha Anika।
+                        </p>
+
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginBottom: "1rem", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                            <CheckCircle2 size={13} style={{ color: "var(--accent-blue)" }} />
+                            <span>Live Zoom Training • Dedicated Q&amp;A</span>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                            <Layers size={13} style={{ color: "var(--accent-teal)" }} />
+                            <span>Telegram Community Access &amp; Worksheet</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="academy-card-footer">
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                          <div>
+                            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600 }}>Tuition</span>
+                            <span style={{ display: "block", fontSize: "0.7rem", color: "#10b981", fontWeight: 700 }}>
+                              Active Batch
+                            </span>
+                          </div>
+                          <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: "#10b981" }}>
+                            FREE <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-muted)" }}>100% Access</span>
+                          </span>
+                        </div>
+
+                        <Link
+                          href="/academy/free-bootcamp"
+                          className="btn btn-primary"
+                          style={{ width: "100%", justifyContent: "center", fontWeight: 700, borderRadius: "var(--radius-md)" }}
+                        >
+                          <span>Join Free Bootcamp (Live Now)</span>
+                          <ArrowRight size={16} />
+                        </Link>
+                      </div>
+                    </div>
+
                     {englishCourses.map((c) => (
                       <div key={c.id} className="academy-card">
                         <Link href={`/academy/courses/${c.slug}`} className="academy-card-image-wrap">
