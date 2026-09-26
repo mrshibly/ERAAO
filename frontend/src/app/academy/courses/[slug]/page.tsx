@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import { getCourseBySlug } from "@/data/courses";
 import {
   ArrowLeft, Clock, Award, CheckCircle2, PlayCircle, BookOpen,
   Shield, Video, FileText, CheckSquare, HelpCircle, ArrowRight,
@@ -14,9 +15,10 @@ import {
 import BrandLoader from "@/components/BrandLoader";
 import CustomModal from "@/components/CustomModal";
 
-export default function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const resolvedParams = use(params);
-  const slug = resolvedParams.slug;
+export default function CourseDetailPage() {
+  const params = useParams();
+  const rawSlug = params?.slug;
+  const slug = Array.isArray(rawSlug) ? rawSlug[0] : (rawSlug as string) || "";
 
   const router = useRouter();
   const { user, token } = useAuth();
@@ -34,23 +36,32 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
   });
 
   useEffect(() => {
+    if (!slug) return;
     const fetchCourse = async () => {
       try {
         const res = await fetch(`/api/v1/courses/${slug}`);
         if (res.ok) {
           const apiData = await res.json();
-          setCourse(apiData);
-          if (apiData?.title) {
+          if (apiData && apiData.title) {
+            setCourse(apiData);
             document.title = `${apiData.title} | ERAAO Academy`;
+            setLoading(false);
+            return;
           }
-        } else {
-          setError("Course not found.");
         }
-      } catch {
-        setError("Error connecting to server.");
-      } finally {
-        setLoading(false);
+      } catch (err) {
+        console.warn("Could not fetch course from API, falling back to local data:", err);
       }
+
+      // Fallback to static verified course curriculum from courses.ts
+      const fallbackCourse = getCourseBySlug(slug);
+      if (fallbackCourse) {
+        setCourse(fallbackCourse);
+        document.title = `${fallbackCourse.title} | ERAAO Academy`;
+      } else {
+        setError("Course not found.");
+      }
+      setLoading(false);
     };
 
     fetchCourse();
@@ -415,7 +426,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
                   Syllabus details are currently being finalized by the instructor team.
                 </div>
               ) : (
-                course.modules.sort((a: any, b: any) => a.order - b.order).map((mod: any, idx: number) => (
+                [...(course.modules || [])].sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((mod: any, idx: number) => (
                   <div key={mod.id || idx} style={{ background: "var(--card-bg)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", marginBottom: "1.25rem", overflow: "hidden" }}>
                     <div style={{ padding: "1.15rem 1.25rem", background: "var(--bg-secondary)", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: mod.lessons?.length > 0 ? "1px solid var(--border-color)" : "none", flexWrap: "wrap", gap: "0.5rem" }}>
                       <div>
@@ -444,7 +455,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
                     {mod.lessons && mod.lessons.length > 0 && (
                       <div style={{ padding: "0.75rem 1.25rem", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-                        {mod.lessons.sort((a: any, b: any) => a.order - b.order).map((lesson: any) => (
+                        {[...(mod.lessons || [])].sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((lesson: any) => (
                           <div key={lesson.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 0", fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                               {lesson.content_type === "video" && <Video size={16} style={{ color: "var(--accent-blue)" }} />}

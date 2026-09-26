@@ -190,7 +190,7 @@ export default function Home() {
                     <span>RUNNING NOW</span>
                   </span>
                   <div>
-                    <strong style={{ color: "#ffffff", fontSize: "var(--text-sm)", display: "block" }}>
+                    <strong style={{ color: "var(--text-primary)", fontSize: "var(--text-sm)", display: "block" }}>
                       Zero to Fluent Free English Bootcamp is Actively Running!
                     </strong>
                     <span style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
