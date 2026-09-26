@@ -39,43 +39,10 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: "cybersecurity", name: "Cybersecurity", slug: "cybersecurity" },
 ];
 
-const ACADEMY_BANNERS = [
-  {
-    id: "zero-to-fluent",
-    src: "/banners/zero-to-fluent-english.jpg",
-    alt: "Zero to Fluent English - Free Bootcamp & Flagship Cohort",
-    href: "/academy/free-bootcamp",
-    tag: "English Communication",
-  },
-  {
-    id: "ai-automation",
-    src: "/banners/banner-ai-automation.jpg",
-    alt: "Practical AI Automation & Intelligent Agents",
-    href: "/academy/courses/ai-automation-agents",
-    tag: "Artificial Intelligence",
-  },
-  {
-    id: "cyber-security",
-    src: "/banners/banner-cyber-security.jpg",
-    alt: "Offensive Cyber Security & Penetration Testing",
-    href: "/academy/courses/offensive-cyber-security",
-    tag: "Cybersecurity",
-  },
-];
-
 export default function AcademyPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [loading, setLoading] = useState(true);
-  const [currentBannerIdx, setCurrentBannerIdx] = useState(0);
-
-  // Auto-advance banner carousel
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentBannerIdx((prev) => (prev + 1) % ACADEMY_BANNERS.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState("");
@@ -174,78 +141,29 @@ export default function AcademyPage() {
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
       
       {/* ═══════════════════════════════════════════════════════════════
-          ACADEMY 3-TRACK BANNER CAROUSEL (Interactive Clickable Links)
+          ACADEMY BANNER
           ═══════════════════════════════════════════════════════════════ */}
       <section style={{ paddingTop: "1.75rem", paddingBottom: "0.5rem" }}>
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div
+          <Link
+            href="/academy/courses/professional-zero-to-fluent-english"
             style={{
-              position: "relative",
-              width: "100%",
-              aspectRatio: "21 / 9",
+              display: "block",
               borderRadius: "clamp(12px, 1.5vw, 20px)",
               overflow: "hidden",
               boxShadow: "0 20px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08)",
-              background: "#060a16"
             }}
           >
-            {ACADEMY_BANNERS.map((banner, idx) => (
-              <Link
-                key={banner.id}
-                href={banner.href}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  opacity: idx === currentBannerIdx ? 1 : 0,
-                  transform: idx === currentBannerIdx ? "scale(1)" : "scale(1.02)",
-                  pointerEvents: idx === currentBannerIdx ? "auto" : "none",
-                  transition: "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-                  display: "block"
-                }}
-              >
-                <Image
-                  src={banner.src}
-                  alt={banner.alt}
-                  fill
-                  priority={idx === 0}
-                  sizes="(max-width: 768px) 100vw, 1200px"
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-                />
-              </Link>
-            ))}
-
-            {/* Prev Button */}
-            <button
-              onClick={() => setCurrentBannerIdx((prev) => (prev - 1 + ACADEMY_BANNERS.length) % ACADEMY_BANNERS.length)}
-              className="academy-slider-nav-btn academy-slider-prev"
-              style={{ top: "50%", transform: "translateY(-50%)", width: "36px", height: "36px" }}
-              aria-label="Previous Slide"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            {/* Next Button */}
-            <button
-              onClick={() => setCurrentBannerIdx((prev) => (prev + 1) % ACADEMY_BANNERS.length)}
-              className="academy-slider-nav-btn academy-slider-next"
-              style={{ top: "50%", transform: "translateY(-50%)", width: "36px", height: "36px" }}
-              aria-label="Next Slide"
-            >
-              <ChevronRight size={18} />
-            </button>
-
-            {/* Indicators */}
-            <div className="academy-slider-indicators" style={{ bottom: "0.75rem" }}>
-              {ACADEMY_BANNERS.map((b, idx) => (
-                <button
-                  key={b.id}
-                  onClick={() => setCurrentBannerIdx(idx)}
-                  className={`academy-slider-dot ${idx === currentBannerIdx ? "active" : ""}`}
-                  aria-label={`Slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-          </div>
+            <Image
+              src="/banners/professional-zero-to-fluent-english.jpg"
+              alt="Professional Zero to Fluent English"
+              width={1280}
+              height={720}
+              priority
+              sizes="(max-width: 768px) 100vw, 1200px"
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+          </Link>
         </div>
       </section>
 
