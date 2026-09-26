@@ -155,10 +155,10 @@ export default function AcademyPage() {
             }}
           >
             <Image
-              src="/banners/professional-zero-to-fluent-english.jpg"
-              alt="Professional Zero to Fluent English"
-              width={1280}
-              height={720}
+              src="/banners/zero-to-fluent-english.jpg"
+              alt="Zero to Fluent English"
+              width={1600}
+              height={293}
               priority
               sizes="(max-width: 768px) 100vw, 1200px"
               style={{ width: "100%", height: "auto", display: "block" }}
