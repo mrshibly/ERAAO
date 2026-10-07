@@ -85,9 +85,8 @@ const TRACKS: HeroSlide[] = [
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(168, 85, 247, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     unsplashBg:
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80&auto=format&fit=crop",
-    cardImage:
-      "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1000&auto=format&fit=crop&q=85",
-    cardImagePosition: "center 22%",
+    cardImage: "/banners/banner-ai-automation.jpg",
+    cardImagePosition: "center",
     chipTop: { dotColor: "#a855f7", text: "Autonomous Agent Lab" },
     chipBottom: {
       icon: <Bot size={14} style={{ color: "#c084fc" }} />,
@@ -99,7 +98,7 @@ const TRACKS: HeroSlide[] = [
     id: "cyber-security",
     tabLabel: "Offensive Cyber Security",
     titlePrefix: "Master Active Adversary Emulation &",
-    titleHighlight: "Real\u2011World Ethical Hacking",
+    titleHighlight: "Real‑World Ethical Hacking",
     description:
       "Gain hands-on attack immersion in live cloud sandboxes, enterprise threat exploitation, and red-team penetration testing.",
     ctaPrimaryText: "Enroll in Security Cohort",
@@ -114,8 +113,7 @@ const TRACKS: HeroSlide[] = [
       "radial-gradient(ellipse 90% 70% at 80% 25%, rgba(244, 63, 94, 0.22) 0%, rgba(6, 10, 20, 0) 70%)",
     unsplashBg:
       "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80&auto=format&fit=crop",
-    cardImage:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000&auto=format&fit=crop&q=85",
+    cardImage: "/banners/banner-cyber-security.jpg",
     cardImagePosition: "center",
     chipTop: { dotColor: "#ef4444", text: "Live Isolated Red Team Sandbox" },
     chipBottom: {
