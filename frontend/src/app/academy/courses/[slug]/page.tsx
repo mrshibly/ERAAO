@@ -43,7 +43,38 @@ export default function CourseDetailPage() {
         if (res.ok) {
           const apiData = await res.json();
           if (apiData && apiData.title) {
-            setCourse(apiData);
+            const fallbackCourse = getCourseBySlug(slug);
+            const merged = {
+              ...(fallbackCourse || {}),
+              ...apiData,
+              // Normalize category to prevent object-as-child React crash
+              category:
+                typeof apiData.category === "object" && apiData.category !== null
+                  ? apiData.category.name
+                  : typeof apiData.category === "string"
+                  ? apiData.category
+                  : fallbackCourse?.category || "Bootcamp",
+              category_slug:
+                typeof apiData.category === "object" && apiData.category !== null
+                  ? apiData.category.slug
+                  : apiData.category_slug || fallbackCourse?.category_slug || "all",
+              target_audience:
+                fallbackCourse?.target_audience && fallbackCourse.target_audience.length > 0
+                  ? fallbackCourse.target_audience
+                  : apiData.target_audience || [],
+              outcomes:
+                fallbackCourse?.outcomes && fallbackCourse.outcomes.length > 0
+                  ? fallbackCourse.outcomes
+                  : apiData.outcomes || [],
+              weekly_rhythm: fallbackCourse?.weekly_rhythm || apiData.weekly_rhythm,
+              resources_included: fallbackCourse?.resources_included || apiData.resources_included,
+              class_length_minutes: fallbackCourse?.class_length_minutes || apiData.class_length_minutes || 70,
+              modules:
+                fallbackCourse?.modules && fallbackCourse.modules.length > 0
+                  ? fallbackCourse.modules
+                  : apiData.modules || [],
+            };
+            setCourse(merged);
             document.title = `${apiData.title} | ERAAO Academy`;
             setLoading(false);
             return;
@@ -149,6 +180,14 @@ export default function CourseDetailPage() {
   }
 
   const totalLessons = (course.modules || []).reduce((acc: number, m: any) => acc + (m.lessons?.length || 0), 0);
+  const displayCategory =
+    typeof course.category === "object" && course.category !== null
+      ? course.category.name
+      : typeof course.category === "string"
+      ? course.category
+      : course.category_slug
+      ? course.category_slug.replace(/-/g, " ")
+      : "Bootcamp";
 
   return (
     <div style={{ minHeight: "90vh", paddingBottom: "5rem", paddingTop: "2rem" }}>
@@ -161,7 +200,7 @@ export default function CourseDetailPage() {
           </Link>
           <span>/</span>
           <span style={{ color: "var(--accent-blue)", fontWeight: 700 }}>
-            {course.category || (course.category_slug ? course.category_slug.replace(/-/g, " ") : "Bootcamp")}
+            {displayCategory}
           </span>
           <span>/</span>
           <span style={{ color: "var(--text-muted)" }}>{course.title}</span>
@@ -196,7 +235,7 @@ export default function CourseDetailPage() {
                 Coming Soon • Pre-Registration Open
               </span>
               <span className="badge" style={{ background: "rgba(14, 165, 233, 0.2)", color: "var(--accent-blue)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                {course.category || "Bootcamp"}
+                {displayCategory}
               </span>
               <span className="badge" style={{ background: "rgba(255, 255, 255, 0.12)", color: "white", textTransform: "capitalize", fontWeight: 700 }}>
                 {course.level || "All Levels"} Level

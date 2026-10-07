@@ -802,8 +802,17 @@ export const ALL_COURSES: CourseData[] = [
 ];
 
 export function getCourseBySlug(slug: string): CourseData | undefined {
-  if (slug === "basic-english-foundation" || slug === "zero-to-fluent-english") {
+  if (slug === "basic-english-foundation" || slug === "zero-to-fluent-english" || slug === "spoken-english" || slug === "fluent-english") {
     return ALL_COURSES.find((c) => c.slug === "professional-zero-to-fluent-english");
+  }
+  if (slug === "freelance-english" || slug === "english-freelancers" || slug === "english-freelancer") {
+    return ALL_COURSES.find((c) => c.slug === "english-for-freelancers");
+  }
+  if (slug === "ai-automation" || slug === "practical-ai-automation" || slug === "ai-agents") {
+    return ALL_COURSES.find((c) => c.slug === "ai-automation-agents");
+  }
+  if (slug === "cyber-security" || slug === "cybersecurity" || slug === "ethical-hacking") {
+    return ALL_COURSES.find((c) => c.slug === "offensive-cyber-security");
   }
   return ALL_COURSES.find((c) => c.slug === slug);
 }
