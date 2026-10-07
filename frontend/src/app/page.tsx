@@ -484,7 +484,7 @@ export default function Home() {
                           {/* Ambient blurred backdrop so any aspect ratio fills naturally without harsh bars */}
                           <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
                             <Image
-                              src={c.thumbnail_url || (c.slug?.includes("cyber") ? "/banners/banner-cyber-security.jpg" : "/banners/banner-ai-automation.jpg")}
+                              src={c.thumbnail_url || (c.slug?.includes("cyber") ? "/banners/banner-cyber-security.jpg?v=2" : "/banners/banner-ai-automation.jpg?v=2")}
                               alt=""
                               fill
                               sizes="400px"
@@ -494,7 +494,7 @@ export default function Home() {
                           </div>
 
                           <Image
-                            src={c.thumbnail_url || (c.slug?.includes("cyber") ? "/banners/banner-cyber-security.jpg" : "/banners/banner-ai-automation.jpg")}
+                            src={c.thumbnail_url || (c.slug?.includes("cyber") ? "/banners/banner-cyber-security.jpg?v=2" : "/banners/banner-ai-automation.jpg?v=2")}
                             alt={c.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"

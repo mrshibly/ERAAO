@@ -382,7 +382,7 @@ AUTHENTIC_COURSES = [
         "price": 25000.00,
         "currency": "BDT",
         "duration_hours": 36.0,
-        "thumbnail_url": "/banners/banner-ai-automation.jpg",
+        "thumbnail_url": "/banners/banner-ai-automation.jpg?v=2",
         "category_slug": "artificial-intelligence",
         "modules": [
             {
@@ -454,7 +454,7 @@ AUTHENTIC_COURSES = [
         "price": 28000.00,
         "currency": "BDT",
         "duration_hours": 36.0,
-        "thumbnail_url": "/banners/banner-cyber-security.jpg",
+        "thumbnail_url": "/banners/banner-cyber-security.jpg?v=2",
         "category_slug": "cybersecurity",
         "modules": [
             {

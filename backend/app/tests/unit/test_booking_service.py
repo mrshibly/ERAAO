@@ -8,7 +8,6 @@ from app.services.booking_service import BookingService
 from app.models.booking import TimeSlot, BookingStatus
 from app.core.exceptions import NotFoundError, ConflictError
 
-@pytest.mark.anyio
 async def test_create_booking_without_slot(db_session: AsyncSession) -> None:
     svc = BookingService(db_session)
     booking = await svc.create_booking(
@@ -22,7 +21,6 @@ async def test_create_booking_without_slot(db_session: AsyncSession) -> None:
     assert booking.name == "Security Director"
     assert booking.status == BookingStatus.PENDING
 
-@pytest.mark.anyio
 async def test_create_booking_with_slot_reserves_slot(db_session: AsyncSession) -> None:
     # 1. Create an available time slot
     slot = TimeSlot(
@@ -49,7 +47,6 @@ async def test_create_booking_with_slot_reserves_slot(db_session: AsyncSession) 
     available_slots = await svc.list_available_slots()
     assert slot.id not in [s.id for s in available_slots]
 
-@pytest.mark.anyio
 async def test_create_booking_double_booking_conflict(db_session: AsyncSession) -> None:
     # 1. Create a time slot
     slot = TimeSlot(

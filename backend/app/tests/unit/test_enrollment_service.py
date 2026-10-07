@@ -11,7 +11,6 @@ from app.models.order import Order, OrderItem, OrderStatus, ItemType
 from app.core.exceptions import ConflictError, NotFoundError, ForbiddenError
 from app.core.security import hash_password
 
-@pytest.mark.anyio
 async def test_enroll_student_success(db_session: AsyncSession) -> None:
     # 1. Create a user
     user = User(
@@ -47,7 +46,6 @@ async def test_enroll_student_success(db_session: AsyncSession) -> None:
     assert enrollment.course_id == course.id
     assert enrollment.status == EnrollmentStatus.ACTIVE
 
-@pytest.mark.anyio
 async def test_enroll_paid_course_without_order_fails(db_session: AsyncSession) -> None:
     user = User(
         email=f"payer_{uuid.uuid4().hex[:6]}@academy.dev",
@@ -77,7 +75,6 @@ async def test_enroll_paid_course_without_order_fails(db_session: AsyncSession) 
     with pytest.raises(ForbiddenError):
         await svc.enroll(user_id=user.id, course_id=course.id)
 
-@pytest.mark.anyio
 async def test_enroll_paid_course_with_order_succeeds(db_session: AsyncSession) -> None:
     user = User(
         email=f"paid_{uuid.uuid4().hex[:6]}@academy.dev",
@@ -117,7 +114,6 @@ async def test_enroll_paid_course_with_order_succeeds(db_session: AsyncSession) 
     assert enrollment.id is not None
     assert enrollment.status == EnrollmentStatus.ACTIVE
 
-@pytest.mark.anyio
 async def test_enroll_student_duplicate_fails(db_session: AsyncSession) -> None:
     user = User(
         email=f"student_dup_{uuid.uuid4().hex[:6]}@academy.dev",
@@ -149,7 +145,6 @@ async def test_enroll_student_duplicate_fails(db_session: AsyncSession) -> None:
     with pytest.raises(ConflictError):
         await svc.enroll(user_id=user.id, course_id=course.id)
 
-@pytest.mark.anyio
 async def test_update_progress_and_completion(db_session: AsyncSession) -> None:
     # 1. Create user and course
     user = User(

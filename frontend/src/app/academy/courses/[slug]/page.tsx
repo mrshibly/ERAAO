@@ -121,10 +121,10 @@ export default function CourseDetailPage() {
       return "/banners/banner-spoken-english.jpg";
     }
     if (t.includes("ai") || t.includes("automation") || sl.includes("ai")) {
-      return "/banners/banner-ai-automation.jpg";
+      return "/banners/banner-ai-automation.jpg?v=2";
     }
     if (t.includes("hack") || t.includes("penetration") || t.includes("security") || sl.includes("cyber")) {
-      return "/banners/banner-cyber-security.jpg";
+      return "/banners/banner-cyber-security.jpg?v=2";
     }
     return "/banners/professional-zero-to-fluent-english.jpg";
   };

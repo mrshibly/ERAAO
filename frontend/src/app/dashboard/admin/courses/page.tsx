@@ -395,8 +395,8 @@ export default function AdminCoursesPage() {
               <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.4rem", flexWrap: "wrap" }}>
                 {[
                   { label: "English Banner", src: "/banners/banner-spoken-english.jpg" },
-                  { label: "AI Banner", src: "/banners/banner-ai-automation.jpg" },
-                  { label: "Cyber Banner", src: "/banners/banner-cyber-security.jpg" }
+                  { label: "AI Banner", src: "/banners/banner-ai-automation.jpg?v=2" },
+                  { label: "Cyber Banner", src: "/banners/banner-cyber-security.jpg?v=2" }
                 ].map((b) => (
                   <button
                     key={b.src}

@@ -8,7 +8,6 @@ from app.models.enrollment import Enrollment, EnrollmentStatus
 from app.models.certificate import Certificate
 from app.services.certificate_utils import render_certificate_pdf_bytes, generate_certificate_in_process
 
-@pytest.mark.anyio
 async def test_render_certificate_pdf_bytes(db_session: AsyncSession) -> None:
     # 1. Create a course instructor
     instructor = User(
@@ -78,7 +77,6 @@ async def test_render_certificate_pdf_bytes(db_session: AsyncSession) -> None:
         assert "Dr. Jane Doe" in html_str
         assert "data:image/png;base64" in html_str
 
-@pytest.mark.anyio
 async def test_generate_certificate_in_process(db_session: AsyncSession) -> None:
     # Set up records
     instructor = User(
@@ -131,7 +129,6 @@ async def test_generate_certificate_in_process(db_session: AsyncSession) -> None
     assert cert.pdf_url is not None
     assert "/api/v1/certificates/fallback/" in cert.pdf_url or "academy-uploads" in cert.pdf_url
 
-@pytest.mark.anyio
 async def test_certificate_fallback_route(db_session: AsyncSession) -> None:
     from httpx import AsyncClient, ASGITransport
     from app.main import app

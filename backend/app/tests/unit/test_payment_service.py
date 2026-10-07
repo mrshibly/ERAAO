@@ -10,7 +10,6 @@ from app.models.user import User
 from app.core.exceptions import NotFoundError, ValidationError
 from app.core.security import hash_password
 
-@pytest.mark.anyio
 async def test_create_checkout_nonexistent_course(db_session: AsyncSession) -> None:
     svc = PaymentService(db_session)
     dummy_user_id = uuid.uuid4()
@@ -20,7 +19,6 @@ async def test_create_checkout_nonexistent_course(db_session: AsyncSession) -> N
             items=[{"item_type": "course", "item_id": str(uuid.uuid4())}]
         )
 
-@pytest.mark.anyio
 async def test_create_checkout_success(db_session: AsyncSession) -> None:
     # 1. Create a user
     user = User(
@@ -69,7 +67,6 @@ async def test_create_checkout_success(db_session: AsyncSession) -> None:
     assert "order_id" in result
     assert result["checkout_url"] == "https://sandbox.sslcommerz.com/gwprocess/v4/gw.php?Q=mock_session_key_123"
 
-@pytest.mark.anyio
 async def test_stripe_webhook_invalid_signature(db_session: AsyncSession) -> None:
     svc = PaymentService(db_session)
     with pytest.raises(ValidationError):

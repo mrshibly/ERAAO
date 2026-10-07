@@ -121,10 +121,10 @@ export default function AcademyPage() {
       return "/banners/professional-zero-to-fluent-english.jpg";
     }
     if (s.includes("ai") || t.includes("ai") || t.includes("agent") || t.includes("llm")) {
-      return "/banners/banner-ai-automation.jpg";
+      return "/banners/banner-ai-automation.jpg?v=2";
     }
     if (s.includes("cyber") || t.includes("security") || t.includes("pentest") || t.includes("hack")) {
-      return "/banners/banner-cyber-security.jpg";
+      return "/banners/banner-cyber-security.jpg?v=2";
     }
     return "/banners/professional-zero-to-fluent-english.jpg";
   };

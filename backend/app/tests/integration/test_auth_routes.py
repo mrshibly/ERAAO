@@ -4,7 +4,6 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 
-@pytest.mark.anyio
 async def test_register_and_login_flow() -> None:
     # Use httpx AsyncClient to perform full integration testing against application routing
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
