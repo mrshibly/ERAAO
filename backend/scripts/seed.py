@@ -1,8 +1,8 @@
 """
 Comprehensive Production Seeder for ERAAO Academy.
 Extracts and populates authentic bootcamps from official curriculum PDFs:
-- ERAAO_Academy_Ultimate_Course_Module.pdf
-- ERAAO_Course_Modules_Only.pdf
+- docs/curriculum/ERAAO_Academy_Ultimate_Course_Module.pdf
+- docs/curriculum/ERAAO_Course_Modules_Only.pdf
 
 Operates directly with asyncpg for blazing-fast, robust PostgreSQL execution.
 """

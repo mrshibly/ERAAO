@@ -62,14 +62,8 @@ yarn-error.log*
 celerybeat-schedule*
 celerybeat.pid
 
-# Standalone Visit Landing Page (Pushed to separate repository)
-landing-page/
-
 # Local Tunnel Tools
 cloudflared.exe
-
-# Documentation & Spec Plans
-docs/
 
 # Root-level temporary scratch files, dropped media & audit exports
 /*.png
@@ -79,3 +73,4 @@ docs/
 /*.webp
 /*.pdf
 /*.csv
+
